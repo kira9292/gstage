@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity DemandeStage.
+    -->
+    <changeSet id="20241023125614-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="candidat_id"
+                                 baseTableName="demande_stage"
+                                 constraintName="fk_demande_stage__candidat_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidat"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="assistantgwte_id"
+                                 baseTableName="demande_stage"
+                                 constraintName="fk_demande_stage__assistantgwte_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="assistant_gwte"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="manager_id"
+                                 baseTableName="demande_stage"
+                                 constraintName="fk_demande_stage__manager_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="manager"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="departement_id"
+                                 baseTableName="demande_stage"
+                                 constraintName="fk_demande_stage__departement_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="departement"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="business_unit_id"
+                                 baseTableName="demande_stage"
+                                 constraintName="fk_demande_stage__business_unit_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="business_unit"
+                                 />
+    </changeSet>
+</databaseChangeLog>

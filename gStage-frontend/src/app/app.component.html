@@ -1,0 +1,19 @@
+ <!-- Navbar et Sidebar uniquement si on n'est pas sur login ou register -->
+ <div class="flex flex-col h-screen">
+  <app-navbar (menuToggle)="toggleSidebar()"></app-navbar>
+
+  <div class="flex flex-1 overflow-hidden">
+    <app-sidebar 
+      *ngIf="!isAuthPage()"
+      [isSidebarOpen]="isSidebarOpen"
+      (sidebarClose)="closeSidebar()"
+      class="h-full">
+    </app-sidebar>
+
+    <!-- Le contenu principal -->
+    <div class="flex-1 overflow-auto bg-gray-50" [ngClass]="{'p-4 md:p-8': !isAuthPage()}">
+      <app-breadcrump *ngIf="!isAuthPage()"></app-breadcrump>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

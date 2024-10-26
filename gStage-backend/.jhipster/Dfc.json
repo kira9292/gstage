@@ -1,0 +1,25 @@
+{
+  "annotations": {
+    "changelogDate": "20241023125616"
+  },
+  "applications": "*",
+  "clientRootFolder": "gStage",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "gStage",
+  "name": "Dfc",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "etatPaiement",
+      "otherEntityRelationshipName": "dfc",
+      "relationshipName": "etatPaiements",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

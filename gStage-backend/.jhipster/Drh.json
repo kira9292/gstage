@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20241023125617"
+  },
+  "applications": "*",
+  "clientRootFolder": "gStage",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "phone",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern"],
+      "fieldValidateRulesPattern": "^[0-9]{9}$"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "gStage",
+  "name": "Drh",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "contrat",
+      "otherEntityRelationshipName": "drh",
+      "relationshipName": "contrats",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

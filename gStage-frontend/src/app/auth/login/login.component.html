@@ -1,0 +1,93 @@
+<!-- Login Form -->
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="max-w-md w-full space-y-8">
+    <!-- Orange Accent Line -->
+    <div class="h-1 w-24 bg-gradient-to-r from-sonatel-orange to-orange-400 rounded-full mx-auto"></div>
+    
+    <!-- Form Container -->
+    <div class="bg-white rounded-xl shadow-lg p-8 space-y-6 relative border border-gray-100">
+      <!-- Logo Container with subtle orange background -->
+      <div class="absolute -top-10 left-1/2 transform -translate-x-1/2">
+        <div class="bg-white rounded-full p-3 shadow-md">
+          <img class="h-14 w-auto transition-transform duration-300 hover:scale-110" 
+               src="assets/images/LOGO_SONATEL_HD_FB.JPG" 
+               alt="Sonatel Logo">
+        </div>
+      </div>
+
+      <div class="text-center space-y-3 mt-8">
+        <h2 class="text-2xl font-bold text-gray-900">Connexion</h2>
+        <p class="text-sm text-gray-500">Connectez-vous à votre compte</p>
+      </div>
+
+  
+      <!-- Formulaire -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Email -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <div class="relative">
+            <input type="email" 
+                   formControlName="email"
+                   class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                   [ngClass]="{'border-red-500 focus:ring-red-500': loginForm.get('email')?.invalid && loginForm.get('email')?.touched}">
+            <div class="absolute left-0 top-0 mt-3 ml-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Mot de passe -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
+          <div class="relative">
+            <input type="password" 
+                   formControlName="password"
+                   class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                   [ngClass]="{'border-red-500 focus:ring-red-500': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}">
+            <div class="absolute left-0 top-0 mt-3 ml-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Bouton Submit -->
+        <div>
+          <button type="submit" 
+                  [disabled]="!loginForm.valid || isLoading"
+                  class="w-full flex justify-center items-center py-3 px-4 rounded-lg font-medium text-white bg-gradient-to-r from-sonatel-orange to-orange-600 hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transform transition-all duration-300 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+            <span *ngIf="!isLoading" class="flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.707 3.293a1 1 0 010 1.414L9.414 9H17a1 1 0 110 2H9.414l1.293 1.293a1 1 0 01-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span>Se connecter</span>
+            </span>
+            <div *ngIf="isLoading" class="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+          </button>
+        </div>
+  
+        <!-- Liens -->
+        <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:justify-between sm:items-center pt-4">
+          <a [routerLink]="['/register']" 
+             class="inline-flex items-center space-x-2 text-sonatel-orange hover:text-orange-600 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+            </svg>
+            <span>Créer un compte</span>
+          </a>
+          <a routerLink="/auth/forgot-password" 
+             class="inline-flex items-center space-x-2 text-sonatel-orange hover:text-orange-600 transition-colors duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+            <span>Mot de passe oublié ?</span>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>

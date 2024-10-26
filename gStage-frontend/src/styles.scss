@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Couleurs personnalisées de Sonatel */
+:root {
+  --sonatel-orange: #FF7900;
+  --sonatel-black: #000000;
+}
+
+/* Classes utilitaires personnalisées */
+.bg-sonatel-orange {
+  background-color: var(--sonatel-orange);
+}
+
+.text-sonatel-orange {
+  color: var(--sonatel-orange);
+}
+
+.icon-sonatel-orange {
+  color: var(--sonatel-orange);
+}
+
+.icon-sonatel-black {
+  color: var(--sonatel-black);
+}
+
+/* Styles de validation des formulaires */
+.ng-invalid.ng-touched {
+  border-color: #EF4444;
+}
+
+.error-message {
+  color: #EF4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Transitions */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Effets de survol pour les cartes */
+.hover-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.hover-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+input[type="file"]:focus + .file-label {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 121, 0, 0.2);
+}
+
+/* Animation de transition pour le bouton */
+.file-label {
+  position: relative;
+  overflow: hidden;
+}
+
+.file-label:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+.file-label:active:after {
+  width: 200px;
+  height: 200px;
+}
+
+/* Style pour l'état hover des selects */
+select:hover {
+  border-color: var(--sonatel-orange);
+}
+
+/* Style pour les états désactivés */
+.file-label.disabled {
+  background-color: #E5E7EB;
+  cursor: not-allowed;
+}
+
+/* Style pour l'icône de succès */
+.file-success {
+  color: #059669;
+}
+
+/* Animation pour l'apparition du nom de fichier */
+.file-name {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.file-name.ng-enter {
+  opacity: 0;
+}
+
+.file-name.ng-enter-active {
+  opacity: 1;
+}

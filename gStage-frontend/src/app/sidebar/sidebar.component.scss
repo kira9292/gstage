@@ -1,0 +1,75 @@
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: #4B5563;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    transform-origin: left center;
+  }
+
+  .nav-link:hover {
+    transform: scale(1.02);
+    color: #F97316;
+    padding-left: 2rem;
+  }
+
+  .active-link {
+    color: #F97316;
+    background: rgba(249, 115, 22, 0.05);
+    font-weight: 500;
+    
+  }
+
+  .nav-link i {
+    transition: all 0.3s ease;
+  }
+
+  .nav-link:hover i {
+    transform: translateX(4px);
+  }
+
+  /* Animation pour le bouton de déconnexion */
+  button.nav-link {
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+
+  button.nav-link:hover {
+    background: rgba(249, 115, 22, 0.05);
+  }
+
+  /* Styles globaux */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100%; /* Pour remplir l'écran */
+}
+
+/* Dans sidebar.component.css ou global style.css */
+.hidden {
+  display: none;
+}
+
+.block {
+  display: block; /* Affiche la sidebar quand elle est ouverte */
+}
+
+
+
+
+/* Media Queries pour ajuster la taille des éléments sur différents écrans */
+@media (max-width: 768px) {
+  .nav-link {
+    padding: 1rem; /* Plus de padding sur mobile */
+  }
+
+  .sidebar {
+    width: 100%; /* La sidebar prend toute la largeur sur mobile */
+  }
+
+}

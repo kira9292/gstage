@@ -1,0 +1,47 @@
+{
+  "annotations": {
+    "changelogDate": "20241023125608"
+  },
+  "applications": "*",
+  "clientRootFolder": "gStage",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "entityTableName": "assistant_gwte",
+  "fields": [
+    {
+      "fieldName": "phone",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern"],
+      "fieldValidateRulesPattern": "^[0-9]{9}$"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "microserviceName": "gStage",
+  "name": "AssistantGWTE",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "demandeStage",
+      "otherEntityRelationshipName": "assistantGWTE",
+      "relationshipName": "demandeStages",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "contrat",
+      "otherEntityRelationshipName": "assistantGWTECreator",
+      "relationshipName": "contrats",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "etatPaiement",
+      "otherEntityRelationshipName": "assistantGWTECreator",
+      "relationshipName": "etatPaiements",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}
