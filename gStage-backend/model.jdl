@@ -1,0 +1,217 @@
+entity AppUser {
+  username String required minlength(3) maxlength(50)
+  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+  password String required minlength(8)
+  name String required
+  firstName String required
+}
+
+entity Role{
+  name ERole
+}
+
+entity Service {
+  name String required minlength(2)
+  description String
+}
+
+entity Departement {
+  name String required minlength(2)
+  description String
+}
+
+
+entity DemandeStage {
+  reference String required unique
+  creationDate LocalDate required
+  status InternshipStatus required
+  description TextBlob required
+  internshipType InternshipType required
+  startDate LocalDate required
+  endDate LocalDate required
+  resume Blob required
+  coverLetter Blob required
+  validated Boolean
+}
+
+entity EtatPaiement {
+  reference String required unique
+  paymentNumber String required unique
+  paymentDate LocalDate required
+  amount Double required min(0)
+  actCode String required
+  paymentPhone String required pattern(/^[0-9]{9}$/)
+  status PaymentStatus required
+  processingDate LocalDate
+  comments String
+}
+
+entity AttestationPresence {
+  reference String required unique
+  startDate LocalDate required
+  endDate LocalDate required
+  signatureDate LocalDate required
+  status Boolean required
+  comments String
+}
+
+entity Candidat {
+  firstName String required minlength(2)
+  lastName String required minlength(2)
+  birthDate LocalDate required
+  nationality String required
+  birthPlace String required
+  idNumber String required unique
+  address String required
+  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+  phone String required pattern(/^[0-9]{9}$/)
+  educationLevel EducationLevel required
+  school String required
+  registrationNumber String unique
+  currentEducation String required
+  status CandidateStatus required
+}
+
+entity Contrat {
+  reference String required unique
+  startDate LocalDate required
+  endDate LocalDate required
+  compensation Double required min(0)
+  status ContractStatus required
+  assignmentSite String required
+  signatureDate LocalDate
+  comments String
+}
+
+entity AttestationFinStage {
+  reference String required unique
+  issueDate LocalDate required
+  signatureDate LocalDate
+  comments String
+}
+
+entity Validation {
+  reference String required unique
+  validationDate LocalDate required
+  status ValidationStatus required
+  comments String
+  validatedBy String required
+}
+
+entity RestaurationStagiaire {
+  startDate LocalDate required
+  endDate LocalDate required
+  status Boolean required
+  cardNumber String unique
+}
+
+entity BusinessUnit {
+  name String required unique
+  description String
+  code String required unique
+}
+
+enum ValidationStatus {
+  En_ATTENTE,
+  VISE_GWTE,
+  VISE_DSP,
+  VISE_DRH,
+  VISE_DFC,
+  VISE_DPC,
+  VISE_DFCFIN,
+  VISE_OFMS,
+  COMPLETE
+}
+
+enum PaymentStatus {
+  EN_ATTENTE,
+  EN_COURS,
+  PAYE,
+  REJETE
+}
+
+enum InternshipStatus {
+  EN_ATTENTE,
+  ACCEPTE,
+  REFUSE,
+  EN_COURS,
+  TERMINE
+}
+
+enum ContractStatus {
+  EN_PREPARATION,
+  EN_SIGNATURE,
+  SIGNE,
+  TERMINE,
+  RESILIE
+}
+
+enum CandidateStatus {
+  EN_ATTENTE,
+  ACCEPTE,
+  REFUSE,
+  ACTIF,
+  INACTIF
+}
+
+enum InternshipType {
+  ACADEMIQUE,
+  PROFESSIONNEL,
+  PROJET_FIN_ETUDES
+}
+
+enum EducationLevel {
+  BAC,
+  BAC_PLUS_2,
+  BAC_PLUS_3,
+  BAC_PLUS_4,
+  BAC_PLUS_5
+}
+
+enum ERole{
+  ADMIN,
+  MANAGER,
+  RH,
+  DEMANDEUR
+}
+
+relationship OneToMany {
+  AttestationPresence{validations} to Validation{attestationPresence}
+    AppUser to EtatPaiement
+  AppUser to Contrat
+    AppUser to DemandeStage
+  AppUser to Contrat
+    AppUser to EtatPaiement
+ AppUser to AttestationPresence
+   AppUser to Candidat
+    AppUser to DemandeStage
+  EtatPaiement{attestationPresences} to AttestationPresence{etatPaiement}
+    Contrat{validations} to Validation{contrat}
+  AttestationFinStage{validations} to Validation{attestationFinStage}
+    AppUser{validations} to Validation{user}
+  Candidat{contrats} to Contrat{candidat}
+    Departement{services} to Service{departemen}
+  Departement{demandeStages} to DemandeStage{departement}
+    BusinessUnit{demandeStages} to DemandeStage{businessUnit}
+}
+
+relationship OneToOne {
+  DemandeStage{candidat} to Candidat{demandeStage}
+    AppUser to Service
+  Contrat{attestationFinStage} to AttestationFinStage{contrat}
+}
+
+relationship ManyToOne {
+  Service{businessUnit} to BusinessUnit
+    RestaurationStagiaire{candidat} to Candidat
+  AttestationPresence{contrat} to Contrat
+    EtatPaiement{contrat} to Contrat
+}
+relationship ManyToMany{
+  AppUser to Role
+}
+
+// Options pour l'application
+paginate * with pagination
+service AppUser with serviceClass
+
