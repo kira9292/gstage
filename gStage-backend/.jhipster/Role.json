@@ -1,0 +1,28 @@
+{
+  "annotations": {
+    "changelogDate": "20241028162235"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "ERole",
+      "fieldValues": "ADMIN,MANAGER,RH,DEMANDEUR,ASSISTANT_GWTE,DFC"
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "Role",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "appUser",
+      "otherEntityRelationshipName": "role",
+      "relationshipName": "appUser",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

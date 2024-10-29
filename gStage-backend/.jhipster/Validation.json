@@ -1,0 +1,69 @@
+{
+  "annotations": {
+    "changelogDate": "20241028162237"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "reference",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "validationDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "ValidationStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "En_ATTENTE,VISE_GWTE,VISE_DSP,VISE_DRH,VISE_DFC,VISE_DPC,VISE_DFCFIN,VISE_OFMS,COMPLETE"
+    },
+    {
+      "fieldName": "comments",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "validatedBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "Validation",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "attestationPresence",
+      "otherEntityRelationshipName": "validations",
+      "relationshipName": "attestationPresence",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "contrat",
+      "otherEntityRelationshipName": "validations",
+      "relationshipName": "contrat",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "attestationFinStage",
+      "otherEntityRelationshipName": "validations",
+      "relationshipName": "attestationFinStage",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "appUser",
+      "otherEntityRelationshipName": "validations",
+      "relationshipName": "user",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

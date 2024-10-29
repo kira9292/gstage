@@ -1,3 +1,4 @@
+
 entity AppUser {
   username String required minlength(3) maxlength(50)
   email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
@@ -19,7 +20,6 @@ entity Departement {
   name String required minlength(2)
   description String
 }
-
 
 entity DemandeStage {
   reference String required unique
@@ -168,45 +168,48 @@ enum EducationLevel {
   BAC_PLUS_5
 }
 
-enum ERole{
+enum ERole {
   ADMIN,
   MANAGER,
   RH,
-  DEMANDEUR
+  DEMANDEUR,
+  ASSISTANT_GWTE,
+  DFC
 }
 
 relationship OneToMany {
   AttestationPresence{validations} to Validation{attestationPresence}
-    AppUser to EtatPaiement
+  AppUser to EtatPaiement
   AppUser to Contrat
-    AppUser to DemandeStage
+  AppUser to DemandeStage
   AppUser to Contrat
-    AppUser to EtatPaiement
- AppUser to AttestationPresence
-   AppUser to Candidat
-    AppUser to DemandeStage
+  AppUser to EtatPaiement
+  AppUser to AttestationPresence
+  AppUser to Candidat
+  AppUser to DemandeStage
   EtatPaiement{attestationPresences} to AttestationPresence{etatPaiement}
-    Contrat{validations} to Validation{contrat}
+  Contrat{validations} to Validation{contrat}
   AttestationFinStage{validations} to Validation{attestationFinStage}
-    AppUser{validations} to Validation{user}
+  AppUser{validations} to Validation{user}
   Candidat{contrats} to Contrat{candidat}
-    Departement{services} to Service{departemen}
+  Departement{services} to Service{departemen}
   Departement{demandeStages} to DemandeStage{departement}
-    BusinessUnit{demandeStages} to DemandeStage{businessUnit}
+  BusinessUnit{demandeStages} to DemandeStage{businessUnit}
 }
 
 relationship OneToOne {
   DemandeStage{candidat} to Candidat{demandeStage}
-    AppUser to Service
+  AppUser to Service
   Contrat{attestationFinStage} to AttestationFinStage{contrat}
 }
 
 relationship ManyToOne {
   Service{businessUnit} to BusinessUnit
-    RestaurationStagiaire{candidat} to Candidat
+  RestaurationStagiaire{candidat} to Candidat
   AttestationPresence{contrat} to Contrat
-    EtatPaiement{contrat} to Contrat
+  EtatPaiement{contrat} to Contrat
 }
+
 relationship ManyToMany{
   AppUser to Role
 }

@@ -11,7 +11,29 @@
     <property name="datetimeType" value="datetime(6)" dbms="mysql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162225_added_entity_AppUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162226_added_entity_AttestationFinStage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162227_added_entity_AttestationPresence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162228_added_entity_BusinessUnit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162229_added_entity_Candidat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162230_added_entity_Contrat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162231_added_entity_DemandeStage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162232_added_entity_Departement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162233_added_entity_EtatPaiement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162234_added_entity_RestaurationStagiaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162235_added_entity_Role.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162236_added_entity_Service.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162237_added_entity_Validation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20241028162225_added_entity_constraints_AppUser.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162227_added_entity_constraints_AttestationPresence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162229_added_entity_constraints_Candidat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162230_added_entity_constraints_Contrat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162231_added_entity_constraints_DemandeStage.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162233_added_entity_constraints_EtatPaiement.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162234_added_entity_constraints_RestaurationStagiaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162236_added_entity_constraints_Service.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241028162237_added_entity_constraints_Validation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

@@ -1,0 +1,11 @@
+id;reference;creation_date;status;description;internship_type;start_date;end_date;resume;resume_content_type;cover_letter;cover_letter_content_type;validated
+1;provided;2024-10-28;EN_COURS;../fake-data/blob/hipster.txt;PROFESSIONNEL;2024-10-28;2024-10-27;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;true
+2;sizzling that wash;2024-10-28;REFUSE;../fake-data/blob/hipster.txt;PROFESSIONNEL;2024-10-27;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;false
+3;outside leading;2024-10-28;REFUSE;../fake-data/blob/hipster.txt;PROFESSIONNEL;2024-10-27;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;false
+4;taro because kooky;2024-10-28;EN_ATTENTE;../fake-data/blob/hipster.txt;PROFESSIONNEL;2024-10-27;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;false
+5;indeed dearly;2024-10-27;ACCEPTE;../fake-data/blob/hipster.txt;PROJET_FIN_ETUDES;2024-10-28;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;true
+6;blah;2024-10-28;TERMINE;../fake-data/blob/hipster.txt;PROFESSIONNEL;2024-10-27;2024-10-27;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;false
+7;intermix solemnly beep;2024-10-28;ACCEPTE;../fake-data/blob/hipster.txt;PROJET_FIN_ETUDES;2024-10-27;2024-10-27;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;true
+8;ugh;2024-10-27;EN_COURS;../fake-data/blob/hipster.txt;PROJET_FIN_ETUDES;2024-10-28;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;true
+9;ample duh;2024-10-27;ACCEPTE;../fake-data/blob/hipster.txt;PROJET_FIN_ETUDES;2024-10-27;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;true
+10;gah yesterday;2024-10-28;EN_ATTENTE;../fake-data/blob/hipster.txt;PROFESSIONNEL;2024-10-28;2024-10-27;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;true

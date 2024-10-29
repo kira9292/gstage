@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20241028162228"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "BusinessUnit",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "demandeStage",
+      "otherEntityRelationshipName": "businessUnit",
+      "relationshipName": "demandeStages",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}
