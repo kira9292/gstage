@@ -1,0 +1,48 @@
+{
+  "annotations": {
+    "changelogDate": "20241029173803"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "reference",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "issueDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "signatureDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "comments",
+      "fieldType": "String"
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "AttestationFinStage",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "validation",
+      "otherEntityRelationshipName": "attestationFinStage",
+      "relationshipName": "validations",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "contrat",
+      "otherEntityRelationshipName": "attestationFinStage",
+      "relationshipName": "contrat",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

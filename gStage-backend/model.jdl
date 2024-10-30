@@ -1,9 +1,20 @@
+entity ValidationStatusUser{
+  creation Instant
+  expire Instant
+  activation Instant
+  code String
+}
+
+
+
+
 entity AppUser {
   username String required minlength(3) maxlength(50)
   email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
   password String required minlength(8)
   name String required
   firstName String required
+  statue Boolean
 }
 
 entity Role{
@@ -199,6 +210,7 @@ relationship OneToOne {
   DemandeStage{candidat} to Candidat{demandeStage}
     AppUser to Service
   Contrat{attestationFinStage} to AttestationFinStage{contrat}
+  ValidationStatusUser to AppUser
 }
 
 relationship ManyToOne {

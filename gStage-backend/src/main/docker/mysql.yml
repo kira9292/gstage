@@ -6,7 +6,8 @@ services:
     volumes:
       - ./config/mysql:/etc/mysql/conf.d
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ALLOW_EMPTY_PASSWORD=no
+      - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=backend
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
@@ -14,7 +15,21 @@ services:
       - 127.0.0.1:3306:3306
     command: mysqld --lower_case_table_names=1 --skip-mysqlx --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
     healthcheck:
-      test: ['CMD', 'mysql', '-e', 'SHOW DATABASES;']
+      test: ['CMD', 'mysql','-uroot','root', '-e', 'SHOW DATABASES;']
       interval: 5s
       timeout: 5s
       retries: 10
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9080:8080
+  smtp4dev:
+    image: rnwood/smtp4dev:v3
+    restart: always
+    ports:
+      # Change the number before : to the port the web interface should be accessible on
+      - 9082:80
+      # Change the number before : to the port the SMTP server should be accessible on
+      - 9083:25
+

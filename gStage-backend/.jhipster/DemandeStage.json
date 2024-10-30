@@ -1,0 +1,95 @@
+{
+  "annotations": {
+    "changelogDate": "20241029173808"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "reference",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "creationDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "InternshipStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EN_ATTENTE,ACCEPTE,REFUSE,EN_COURS,TERMINE"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "TextBlob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "internshipType",
+      "fieldType": "InternshipType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ACADEMIQUE,PROFESSIONNEL,PROJET_FIN_ETUDES"
+    },
+    {
+      "fieldName": "startDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "endDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "resume",
+      "fieldType": "Blob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "coverLetter",
+      "fieldType": "Blob",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "validated",
+      "fieldType": "Boolean"
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "DemandeStage",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "candidat",
+      "otherEntityRelationshipName": "demandeStage",
+      "relationshipName": "candidat",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "appUser",
+      "otherEntityRelationshipName": "demandeStage",
+      "relationshipName": "appUser",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "departement",
+      "otherEntityRelationshipName": "demandeStages",
+      "relationshipName": "departement",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "businessUnit",
+      "otherEntityRelationshipName": "demandeStages",
+      "relationshipName": "businessUnit",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}
