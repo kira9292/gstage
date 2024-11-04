@@ -23,7 +23,10 @@ interface PasswordCriteria {
     RouterLink
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss','../auth.component.scss']
+  styleUrls: [
+    './register.component.scss',
+    '../auth.component.scss'
+  ]
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
@@ -47,14 +50,16 @@ export class RegisterComponent implements OnInit {
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [
-        Validators.required,
-        Validators.pattern(/^(70|75|76|77|78)[0-9]{7}$/)
-      ]],
-      formation: ['', [Validators.required, Validators.minLength(2)]],
-      niveau: ['', [Validators.required]],
+      username: ['', [Validators.required, Validators.minLength(2)]],
+
+      // phone: ['', [
+      //   Validators.required,
+      //   Validators.pattern(/^(70|75|76|77|78)[0-9]{7}$/)
+      // ]],
+      // formation: ['', [Validators.required, Validators.minLength(2)]],
+      // niveau: ['', [Validators.required]],
       password: ['', [
         Validators.required,
         Validators.minLength(8),
@@ -94,7 +99,7 @@ export class RegisterComponent implements OnInit {
   }
 
   get lastNameError(): string {
-    const control = this.registerForm.get('lastName');
+    const control = this.registerForm.get('name');
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Le nom est requis';
       if (control.errors['minlength']) return 'Le nom doit contenir au moins 2 caractères';
