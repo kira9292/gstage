@@ -38,7 +38,7 @@ public class JwtService {
         final long expirationTime = currentTime + 30*60*1000;
 
        final Map<String,Object> claims = Map.of(
-            "nom",user.getName(),
+//            "nom",user.getName(),
            Claims.EXPIRATION,new Date(expirationTime),
            Claims.SUBJECT,user.getEmail(),
            "roles", user.getAuthorities()

@@ -36,6 +36,19 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "formation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "niveau",
+      "fieldType": "EducationLevel",
+      "fieldValues": "BAC,BAC_PLUS_2,BAC_PLUS_3,BAC_PLUS_4,BAC_PLUS_5"
+    },
+    {
       "fieldName": "statue",
       "fieldType": "Boolean"
     }

@@ -29,6 +29,15 @@
             <column name="first_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="phone" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="formation" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="niveau" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="statue" type="boolean">
                 <constraints nullable="true" />
             </column>
@@ -75,6 +84,9 @@
             <column name="password" type="string"/>
             <column name="name" type="string"/>
             <column name="first_name" type="string"/>
+            <column name="phone" type="string"/>
+            <column name="formation" type="string"/>
+            <column name="niveau" type="string"/>
             <column name="statue" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

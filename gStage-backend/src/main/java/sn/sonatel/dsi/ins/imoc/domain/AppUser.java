@@ -3,13 +3,13 @@ package sn.sonatel.dsi.ins.imoc.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.io.Serializable;
+import java.util.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.io.Serializable;
-import java.util.*;
-import java.util.stream.Collectors;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 
 /**
  * A AppUser.
@@ -48,6 +48,16 @@ public class AppUser implements Serializable, UserDetails {
     @NotNull
     @Column(name = "first_name", nullable = false)
     private String firstName;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "formation")
+    private String formation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "niveau")
+    private EducationLevel niveau;
 
     @Column(name = "statue")
     private Boolean statue;
@@ -96,6 +106,38 @@ public class AppUser implements Serializable, UserDetails {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<SimpleGrantedAuthority> list = new ArrayList<>();
+        for (Role role : this.roles) {
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_"+role.getName());
+            list.add(simpleGrantedAuthority);
+        }
+        return list;
+    }
+
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -131,38 +173,8 @@ public class AppUser implements Serializable, UserDetails {
         return this;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> list = new ArrayList<>();
-        for (Role role : this.roles) {
-            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_"+role.getName());
-            list.add(simpleGrantedAuthority);
-        }
-        return list;
     }
 
     public String getPassword() {
@@ -202,6 +214,45 @@ public class AppUser implements Serializable, UserDetails {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public AppUser phone(String phone) {
+        this.setPhone(phone);
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getFormation() {
+        return this.formation;
+    }
+
+    public AppUser formation(String formation) {
+        this.setFormation(formation);
+        return this;
+    }
+
+    public void setFormation(String formation) {
+        this.formation = formation;
+    }
+
+    public EducationLevel getNiveau() {
+        return this.niveau;
+    }
+
+    public AppUser niveau(EducationLevel niveau) {
+        this.setNiveau(niveau);
+        return this;
+    }
+
+    public void setNiveau(EducationLevel niveau) {
+        this.niveau = niveau;
     }
 
     public Boolean getStatue() {
@@ -487,11 +538,10 @@ public class AppUser implements Serializable, UserDetails {
             ", password='" + getPassword() + "'" +
             ", name='" + getName() + "'" +
             ", firstName='" + getFirstName() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", formation='" + getFormation() + "'" +
+            ", niveau='" + getNiveau() + "'" +
             ", statue='" + getStatue() + "'" +
             "}";
     }
-
-
-
-
 }

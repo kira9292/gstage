@@ -30,7 +30,9 @@ import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
 @Transactional
 public class AppUserService implements UserDetailsService {
 
+
     private static final Logger LOG = LoggerFactory.getLogger(AppUserService.class);
+
     @Autowired
     private  AppUserRepository appUserRepository;
     @Autowired
@@ -98,31 +100,9 @@ public class AppUserService implements UserDetailsService {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public AppUserService(AppUserRepository appUserRepository) {
+        this.appUserRepository = appUserRepository;
+    }
 
     /**
      * Save a appUser.
@@ -173,6 +153,15 @@ public class AppUserService implements UserDetailsService {
                 if (appUser.getFirstName() != null) {
                     existingAppUser.setFirstName(appUser.getFirstName());
                 }
+                if (appUser.getPhone() != null) {
+                    existingAppUser.setPhone(appUser.getPhone());
+                }
+                if (appUser.getFormation() != null) {
+                    existingAppUser.setFormation(appUser.getFormation());
+                }
+                if (appUser.getNiveau() != null) {
+                    existingAppUser.setNiveau(appUser.getNiveau());
+                }
                 if (appUser.getStatue() != null) {
                     existingAppUser.setStatue(appUser.getStatue());
                 }
@@ -181,29 +170,6 @@ public class AppUserService implements UserDetailsService {
             })
             .map(appUserRepository::save);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Get all the appUsers.
@@ -259,6 +225,4 @@ public class AppUserService implements UserDetailsService {
         LOG.debug("Request to delete AppUser : {}", id);
         appUserRepository.deleteById(id);
     }
-
-
 }

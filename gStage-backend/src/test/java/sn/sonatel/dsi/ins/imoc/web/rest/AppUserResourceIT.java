@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.IntegrationTest;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 
@@ -55,6 +56,15 @@ class AppUserResourceIT {
 
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PHONE = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_FORMATION = "AAAAAAAAAA";
+    private static final String UPDATED_FORMATION = "BBBBBBBBBB";
+
+    private static final EducationLevel DEFAULT_NIVEAU = EducationLevel.BAC;
+    private static final EducationLevel UPDATED_NIVEAU = EducationLevel.BAC_PLUS_2;
 
     private static final Boolean DEFAULT_STATUE = false;
     private static final Boolean UPDATED_STATUE = true;
@@ -100,6 +110,9 @@ class AppUserResourceIT {
             .password(DEFAULT_PASSWORD)
             .name(DEFAULT_NAME)
             .firstName(DEFAULT_FIRST_NAME)
+            .phone(DEFAULT_PHONE)
+            .formation(DEFAULT_FORMATION)
+            .niveau(DEFAULT_NIVEAU)
             .statue(DEFAULT_STATUE);
     }
 
@@ -116,6 +129,9 @@ class AppUserResourceIT {
             .password(UPDATED_PASSWORD)
             .name(UPDATED_NAME)
             .firstName(UPDATED_FIRST_NAME)
+            .phone(UPDATED_PHONE)
+            .formation(UPDATED_FORMATION)
+            .niveau(UPDATED_NIVEAU)
             .statue(UPDATED_STATUE);
     }
 
@@ -268,6 +284,9 @@ class AppUserResourceIT {
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
+            .andExpect(jsonPath("$.[*].formation").value(hasItem(DEFAULT_FORMATION)))
+            .andExpect(jsonPath("$.[*].niveau").value(hasItem(DEFAULT_NIVEAU.toString())))
             .andExpect(jsonPath("$.[*].statue").value(hasItem(DEFAULT_STATUE.booleanValue())));
     }
 
@@ -305,6 +324,9 @@ class AppUserResourceIT {
             .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
+            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
+            .andExpect(jsonPath("$.formation").value(DEFAULT_FORMATION))
+            .andExpect(jsonPath("$.niveau").value(DEFAULT_NIVEAU.toString()))
             .andExpect(jsonPath("$.statue").value(DEFAULT_STATUE.booleanValue()));
     }
 
@@ -333,6 +355,9 @@ class AppUserResourceIT {
             .password(UPDATED_PASSWORD)
             .name(UPDATED_NAME)
             .firstName(UPDATED_FIRST_NAME)
+            .phone(UPDATED_PHONE)
+            .formation(UPDATED_FORMATION)
+            .niveau(UPDATED_NIVEAU)
             .statue(UPDATED_STATUE);
 
         restAppUserMockMvc
@@ -414,7 +439,8 @@ class AppUserResourceIT {
             .password(UPDATED_PASSWORD)
             .name(UPDATED_NAME)
             .firstName(UPDATED_FIRST_NAME)
-            .statue(UPDATED_STATUE);
+            .phone(UPDATED_PHONE)
+            .formation(UPDATED_FORMATION);
 
         restAppUserMockMvc
             .perform(
@@ -448,6 +474,9 @@ class AppUserResourceIT {
             .password(UPDATED_PASSWORD)
             .name(UPDATED_NAME)
             .firstName(UPDATED_FIRST_NAME)
+            .phone(UPDATED_PHONE)
+            .formation(UPDATED_FORMATION)
+            .niveau(UPDATED_NIVEAU)
             .statue(UPDATED_STATUE);
 
         restAppUserMockMvc

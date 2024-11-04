@@ -14,6 +14,9 @@ entity AppUser {
   password String required minlength(8)
   name String required
   firstName String required
+  phone String
+  formation String
+  niveau EducationLevel
   statue Boolean
 }
 
