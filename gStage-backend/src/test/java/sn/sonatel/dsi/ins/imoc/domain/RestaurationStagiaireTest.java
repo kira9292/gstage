@@ -1,7 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.RestaurationStagiaireTestSamples.*;
 
 import org.junit.jupiter.api.Test;
@@ -24,14 +24,14 @@ class RestaurationStagiaireTest {
     }
 
     @Test
-    void candidatTest() {
+    void appUserTest() {
         RestaurationStagiaire restaurationStagiaire = getRestaurationStagiaireRandomSampleGenerator();
-        Candidat candidatBack = getCandidatRandomSampleGenerator();
+        AppUser appUserBack = getAppUserRandomSampleGenerator();
 
-        restaurationStagiaire.setCandidat(candidatBack);
-        assertThat(restaurationStagiaire.getCandidat()).isEqualTo(candidatBack);
+        restaurationStagiaire.setAppUser(appUserBack);
+        assertThat(restaurationStagiaire.getAppUser()).isEqualTo(appUserBack);
 
-        restaurationStagiaire.candidat(null);
-        assertThat(restaurationStagiaire.getCandidat()).isNull();
+        restaurationStagiaire.appUser(null);
+        assertThat(restaurationStagiaire.getAppUser()).isNull();
     }
 }

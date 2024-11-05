@@ -24,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.IntegrationTest;
 import sn.sonatel.dsi.ins.imoc.domain.Candidat;
-import sn.sonatel.dsi.ins.imoc.domain.enumeration.CandidateStatus;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 
@@ -51,8 +50,8 @@ class CandidatResourceIT {
     private static final String DEFAULT_BIRTH_PLACE = "AAAAAAAAAA";
     private static final String UPDATED_BIRTH_PLACE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_ID_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_ID_NUMBER = "BBBBBBBBBB";
+    private static final String DEFAULT_CNI = "AAAAAAAAAA";
+    private static final String UPDATED_CNI = "BBBBBBBBBB";
 
     private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
@@ -68,15 +67,6 @@ class CandidatResourceIT {
 
     private static final String DEFAULT_SCHOOL = "AAAAAAAAAA";
     private static final String UPDATED_SCHOOL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_REGISTRATION_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_REGISTRATION_NUMBER = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CURRENT_EDUCATION = "AAAAAAAAAA";
-    private static final String UPDATED_CURRENT_EDUCATION = "BBBBBBBBBB";
-
-    private static final CandidateStatus DEFAULT_STATUS = CandidateStatus.EN_ATTENTE;
-    private static final CandidateStatus UPDATED_STATUS = CandidateStatus.ACCEPTE;
 
     private static final String ENTITY_API_URL = "/api/candidats";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -113,15 +103,12 @@ class CandidatResourceIT {
             .birthDate(DEFAULT_BIRTH_DATE)
             .nationality(DEFAULT_NATIONALITY)
             .birthPlace(DEFAULT_BIRTH_PLACE)
-            .idNumber(DEFAULT_ID_NUMBER)
+            .cni(DEFAULT_CNI)
             .address(DEFAULT_ADDRESS)
             .email(DEFAULT_EMAIL)
             .phone(DEFAULT_PHONE)
             .educationLevel(DEFAULT_EDUCATION_LEVEL)
-            .school(DEFAULT_SCHOOL)
-            .registrationNumber(DEFAULT_REGISTRATION_NUMBER)
-            .currentEducation(DEFAULT_CURRENT_EDUCATION)
-            .status(DEFAULT_STATUS);
+            .school(DEFAULT_SCHOOL);
     }
 
     /**
@@ -137,15 +124,12 @@ class CandidatResourceIT {
             .birthDate(UPDATED_BIRTH_DATE)
             .nationality(UPDATED_NATIONALITY)
             .birthPlace(UPDATED_BIRTH_PLACE)
-            .idNumber(UPDATED_ID_NUMBER)
+            .cni(UPDATED_CNI)
             .address(UPDATED_ADDRESS)
             .email(UPDATED_EMAIL)
             .phone(UPDATED_PHONE)
             .educationLevel(UPDATED_EDUCATION_LEVEL)
-            .school(UPDATED_SCHOOL)
-            .registrationNumber(UPDATED_REGISTRATION_NUMBER)
-            .currentEducation(UPDATED_CURRENT_EDUCATION)
-            .status(UPDATED_STATUS);
+            .school(UPDATED_SCHOOL);
     }
 
     @BeforeEach
@@ -234,86 +218,6 @@ class CandidatResourceIT {
 
     @Test
     @Transactional
-    void checkBirthDateIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setBirthDate(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkNationalityIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setNationality(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkBirthPlaceIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setBirthPlace(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkIdNumberIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setIdNumber(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkAddressIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setAddress(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkEmailIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -346,70 +250,6 @@ class CandidatResourceIT {
 
     @Test
     @Transactional
-    void checkEducationLevelIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setEducationLevel(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkSchoolIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setSchool(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkCurrentEducationIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setCurrentEducation(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkStatusIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        candidat.setStatus(null);
-
-        // Create the Candidat, which fails.
-
-        restCandidatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(candidat)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllCandidats() throws Exception {
         // Initialize the database
         insertedCandidat = candidatRepository.saveAndFlush(candidat);
@@ -425,15 +265,12 @@ class CandidatResourceIT {
             .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
             .andExpect(jsonPath("$.[*].nationality").value(hasItem(DEFAULT_NATIONALITY)))
             .andExpect(jsonPath("$.[*].birthPlace").value(hasItem(DEFAULT_BIRTH_PLACE)))
-            .andExpect(jsonPath("$.[*].idNumber").value(hasItem(DEFAULT_ID_NUMBER)))
+            .andExpect(jsonPath("$.[*].cni").value(hasItem(DEFAULT_CNI)))
             .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
             .andExpect(jsonPath("$.[*].educationLevel").value(hasItem(DEFAULT_EDUCATION_LEVEL.toString())))
-            .andExpect(jsonPath("$.[*].school").value(hasItem(DEFAULT_SCHOOL)))
-            .andExpect(jsonPath("$.[*].registrationNumber").value(hasItem(DEFAULT_REGISTRATION_NUMBER)))
-            .andExpect(jsonPath("$.[*].currentEducation").value(hasItem(DEFAULT_CURRENT_EDUCATION)))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].school").value(hasItem(DEFAULT_SCHOOL)));
     }
 
     @Test
@@ -453,15 +290,12 @@ class CandidatResourceIT {
             .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()))
             .andExpect(jsonPath("$.nationality").value(DEFAULT_NATIONALITY))
             .andExpect(jsonPath("$.birthPlace").value(DEFAULT_BIRTH_PLACE))
-            .andExpect(jsonPath("$.idNumber").value(DEFAULT_ID_NUMBER))
+            .andExpect(jsonPath("$.cni").value(DEFAULT_CNI))
             .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
             .andExpect(jsonPath("$.educationLevel").value(DEFAULT_EDUCATION_LEVEL.toString()))
-            .andExpect(jsonPath("$.school").value(DEFAULT_SCHOOL))
-            .andExpect(jsonPath("$.registrationNumber").value(DEFAULT_REGISTRATION_NUMBER))
-            .andExpect(jsonPath("$.currentEducation").value(DEFAULT_CURRENT_EDUCATION))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+            .andExpect(jsonPath("$.school").value(DEFAULT_SCHOOL));
     }
 
     @Test
@@ -489,15 +323,12 @@ class CandidatResourceIT {
             .birthDate(UPDATED_BIRTH_DATE)
             .nationality(UPDATED_NATIONALITY)
             .birthPlace(UPDATED_BIRTH_PLACE)
-            .idNumber(UPDATED_ID_NUMBER)
+            .cni(UPDATED_CNI)
             .address(UPDATED_ADDRESS)
             .email(UPDATED_EMAIL)
             .phone(UPDATED_PHONE)
             .educationLevel(UPDATED_EDUCATION_LEVEL)
-            .school(UPDATED_SCHOOL)
-            .registrationNumber(UPDATED_REGISTRATION_NUMBER)
-            .currentEducation(UPDATED_CURRENT_EDUCATION)
-            .status(UPDATED_STATUS);
+            .school(UPDATED_SCHOOL);
 
         restCandidatMockMvc
             .perform(
@@ -581,8 +412,7 @@ class CandidatResourceIT {
             .birthDate(UPDATED_BIRTH_DATE)
             .birthPlace(UPDATED_BIRTH_PLACE)
             .phone(UPDATED_PHONE)
-            .educationLevel(UPDATED_EDUCATION_LEVEL)
-            .status(UPDATED_STATUS);
+            .educationLevel(UPDATED_EDUCATION_LEVEL);
 
         restCandidatMockMvc
             .perform(
@@ -616,15 +446,12 @@ class CandidatResourceIT {
             .birthDate(UPDATED_BIRTH_DATE)
             .nationality(UPDATED_NATIONALITY)
             .birthPlace(UPDATED_BIRTH_PLACE)
-            .idNumber(UPDATED_ID_NUMBER)
+            .cni(UPDATED_CNI)
             .address(UPDATED_ADDRESS)
             .email(UPDATED_EMAIL)
             .phone(UPDATED_PHONE)
             .educationLevel(UPDATED_EDUCATION_LEVEL)
-            .school(UPDATED_SCHOOL)
-            .registrationNumber(UPDATED_REGISTRATION_NUMBER)
-            .currentEducation(UPDATED_CURRENT_EDUCATION)
-            .status(UPDATED_STATUS);
+            .school(UPDATED_SCHOOL);
 
         restCandidatMockMvc
             .perform(

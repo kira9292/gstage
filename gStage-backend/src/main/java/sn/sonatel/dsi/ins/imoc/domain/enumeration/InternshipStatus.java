@@ -7,6 +7,6 @@ public enum InternshipStatus {
     EN_ATTENTE,
     ACCEPTE,
     REFUSE,
+    TERMINER,
     EN_COURS,
-    TERMINE,
 }

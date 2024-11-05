@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import sn.sonatel.dsi.ins.imoc.domain.enumeration.CandidateStatus;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 
 /**
@@ -35,24 +32,19 @@ public class Candidat implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @NotNull
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @NotNull
-    @Column(name = "nationality", nullable = false)
+    @Column(name = "nationality")
     private String nationality;
 
-    @NotNull
-    @Column(name = "birth_place", nullable = false)
+    @Column(name = "birth_place")
     private String birthPlace;
 
-    @NotNull
-    @Column(name = "id_number", nullable = false, unique = true)
-    private String idNumber;
+    @Column(name = "cni", unique = true)
+    private String cni;
 
-    @NotNull
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
     @NotNull
@@ -65,30 +57,12 @@ public class Candidat implements Serializable {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "education_level", nullable = false)
+    @Column(name = "education_level")
     private EducationLevel educationLevel;
 
-    @NotNull
-    @Column(name = "school", nullable = false)
+    @Column(name = "school")
     private String school;
-
-    @Column(name = "registration_number", unique = true)
-    private String registrationNumber;
-
-    @NotNull
-    @Column(name = "current_education", nullable = false)
-    private String currentEducation;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private CandidateStatus status;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidat")
-    @JsonIgnoreProperties(value = { "attestationFinStage", "validations", "appUser", "candidat" }, allowSetters = true)
-    private Set<Contrat> contrats = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
@@ -98,6 +72,7 @@ public class Candidat implements Serializable {
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
@@ -106,6 +81,7 @@ public class Candidat implements Serializable {
             "validations",
             "roles",
             "validationStatusUser",
+            "restaurationStagiaires",
         },
         allowSetters = true
     )
@@ -191,17 +167,17 @@ public class Candidat implements Serializable {
         this.birthPlace = birthPlace;
     }
 
-    public String getIdNumber() {
-        return this.idNumber;
+    public String getCni() {
+        return this.cni;
     }
 
-    public Candidat idNumber(String idNumber) {
-        this.setIdNumber(idNumber);
+    public Candidat cni(String cni) {
+        this.setCni(cni);
         return this;
     }
 
-    public void setIdNumber(String idNumber) {
-        this.idNumber = idNumber;
+    public void setCni(String cni) {
+        this.cni = cni;
     }
 
     public String getAddress() {
@@ -269,76 +245,6 @@ public class Candidat implements Serializable {
         this.school = school;
     }
 
-    public String getRegistrationNumber() {
-        return this.registrationNumber;
-    }
-
-    public Candidat registrationNumber(String registrationNumber) {
-        this.setRegistrationNumber(registrationNumber);
-        return this;
-    }
-
-    public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber;
-    }
-
-    public String getCurrentEducation() {
-        return this.currentEducation;
-    }
-
-    public Candidat currentEducation(String currentEducation) {
-        this.setCurrentEducation(currentEducation);
-        return this;
-    }
-
-    public void setCurrentEducation(String currentEducation) {
-        this.currentEducation = currentEducation;
-    }
-
-    public CandidateStatus getStatus() {
-        return this.status;
-    }
-
-    public Candidat status(CandidateStatus status) {
-        this.setStatus(status);
-        return this;
-    }
-
-    public void setStatus(CandidateStatus status) {
-        this.status = status;
-    }
-
-    public Set<Contrat> getContrats() {
-        return this.contrats;
-    }
-
-    public void setContrats(Set<Contrat> contrats) {
-        if (this.contrats != null) {
-            this.contrats.forEach(i -> i.setCandidat(null));
-        }
-        if (contrats != null) {
-            contrats.forEach(i -> i.setCandidat(this));
-        }
-        this.contrats = contrats;
-    }
-
-    public Candidat contrats(Set<Contrat> contrats) {
-        this.setContrats(contrats);
-        return this;
-    }
-
-    public Candidat addContrats(Contrat contrat) {
-        this.contrats.add(contrat);
-        contrat.setCandidat(this);
-        return this;
-    }
-
-    public Candidat removeContrats(Contrat contrat) {
-        this.contrats.remove(contrat);
-        contrat.setCandidat(null);
-        return this;
-    }
-
     public DemandeStage getDemandeStage() {
         return this.demandeStage;
     }
@@ -400,15 +306,12 @@ public class Candidat implements Serializable {
             ", birthDate='" + getBirthDate() + "'" +
             ", nationality='" + getNationality() + "'" +
             ", birthPlace='" + getBirthPlace() + "'" +
-            ", idNumber='" + getIdNumber() + "'" +
+            ", cni='" + getCni() + "'" +
             ", address='" + getAddress() + "'" +
             ", email='" + getEmail() + "'" +
             ", phone='" + getPhone() + "'" +
             ", educationLevel='" + getEducationLevel() + "'" +
             ", school='" + getSchool() + "'" +
-            ", registrationNumber='" + getRegistrationNumber() + "'" +
-            ", currentEducation='" + getCurrentEducation() + "'" +
-            ", status='" + getStatus() + "'" +
             "}";
     }
 }

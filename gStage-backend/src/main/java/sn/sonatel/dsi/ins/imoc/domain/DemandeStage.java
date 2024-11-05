@@ -2,7 +2,6 @@ package sn.sonatel.dsi.ins.imoc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
@@ -23,56 +22,41 @@ public class DemandeStage implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "reference", nullable = false, unique = true)
-    private String reference;
-
-    @NotNull
-    @Column(name = "creation_date", nullable = false)
+    @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private InternshipStatus status;
-
-    @Lob
-    @Column(name = "description", nullable = false)
-    private String description;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "internship_type", nullable = false)
+    @Column(name = "internship_type")
     private InternshipType internshipType;
 
-    @NotNull
-    @Column(name = "start_date", nullable = false)
+    @Column(name = "start_date")
     private LocalDate startDate;
 
-    @NotNull
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     private LocalDate endDate;
 
     @Lob
-    @Column(name = "resume", nullable = false)
-    private byte[] resume;
+    @Column(name = "cv")
+    private byte[] cv;
 
-    @NotNull
-    @Column(name = "resume_content_type", nullable = false)
-    private String resumeContentType;
+    @Column(name = "cv_content_type")
+    private String cvContentType;
 
     @Lob
-    @Column(name = "cover_letter", nullable = false)
+    @Column(name = "cover_letter")
     private byte[] coverLetter;
 
-    @NotNull
-    @Column(name = "cover_letter_content_type", nullable = false)
+    @Column(name = "cover_letter_content_type")
     private String coverLetterContentType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private InternshipStatus status;
 
     @Column(name = "validated")
     private Boolean validated;
 
-    @JsonIgnoreProperties(value = { "contrats", "demandeStage", "appUser" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "demandeStage", "appUser" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Candidat candidat;
@@ -81,6 +65,7 @@ public class DemandeStage implements Serializable {
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
@@ -89,6 +74,7 @@ public class DemandeStage implements Serializable {
             "validations",
             "roles",
             "validationStatusUser",
+            "restaurationStagiaires",
         },
         allowSetters = true
     )
@@ -117,19 +103,6 @@ public class DemandeStage implements Serializable {
         this.id = id;
     }
 
-    public String getReference() {
-        return this.reference;
-    }
-
-    public DemandeStage reference(String reference) {
-        this.setReference(reference);
-        return this;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public LocalDate getCreationDate() {
         return this.creationDate;
     }
@@ -141,32 +114,6 @@ public class DemandeStage implements Serializable {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public InternshipStatus getStatus() {
-        return this.status;
-    }
-
-    public DemandeStage status(InternshipStatus status) {
-        this.setStatus(status);
-        return this;
-    }
-
-    public void setStatus(InternshipStatus status) {
-        this.status = status;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public DemandeStage description(String description) {
-        this.setDescription(description);
-        return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public InternshipType getInternshipType() {
@@ -208,30 +155,30 @@ public class DemandeStage implements Serializable {
         this.endDate = endDate;
     }
 
-    public byte[] getResume() {
-        return this.resume;
+    public byte[] getCv() {
+        return this.cv;
     }
 
-    public DemandeStage resume(byte[] resume) {
-        this.setResume(resume);
+    public DemandeStage cv(byte[] cv) {
+        this.setCv(cv);
         return this;
     }
 
-    public void setResume(byte[] resume) {
-        this.resume = resume;
+    public void setCv(byte[] cv) {
+        this.cv = cv;
     }
 
-    public String getResumeContentType() {
-        return this.resumeContentType;
+    public String getCvContentType() {
+        return this.cvContentType;
     }
 
-    public DemandeStage resumeContentType(String resumeContentType) {
-        this.resumeContentType = resumeContentType;
+    public DemandeStage cvContentType(String cvContentType) {
+        this.cvContentType = cvContentType;
         return this;
     }
 
-    public void setResumeContentType(String resumeContentType) {
-        this.resumeContentType = resumeContentType;
+    public void setCvContentType(String cvContentType) {
+        this.cvContentType = cvContentType;
     }
 
     public byte[] getCoverLetter() {
@@ -258,6 +205,19 @@ public class DemandeStage implements Serializable {
 
     public void setCoverLetterContentType(String coverLetterContentType) {
         this.coverLetterContentType = coverLetterContentType;
+    }
+
+    public InternshipStatus getStatus() {
+        return this.status;
+    }
+
+    public DemandeStage status(InternshipStatus status) {
+        this.setStatus(status);
+        return this;
+    }
+
+    public void setStatus(InternshipStatus status) {
+        this.status = status;
     }
 
     public Boolean getValidated() {
@@ -349,17 +309,15 @@ public class DemandeStage implements Serializable {
     public String toString() {
         return "DemandeStage{" +
             "id=" + getId() +
-            ", reference='" + getReference() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
-            ", status='" + getStatus() + "'" +
-            ", description='" + getDescription() + "'" +
             ", internshipType='" + getInternshipType() + "'" +
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
-            ", resume='" + getResume() + "'" +
-            ", resumeContentType='" + getResumeContentType() + "'" +
+            ", cv='" + getCv() + "'" +
+            ", cvContentType='" + getCvContentType() + "'" +
             ", coverLetter='" + getCoverLetter() + "'" +
             ", coverLetterContentType='" + getCoverLetterContentType() + "'" +
+            ", status='" + getStatus() + "'" +
             ", validated='" + getValidated() + "'" +
             "}";
     }

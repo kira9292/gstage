@@ -37,9 +37,9 @@
       "relationshipType": "one-to-many"
     },
     {
-      "otherEntityName": "contrat",
+      "otherEntityName": "appUser",
       "otherEntityRelationshipName": "attestationFinStage",
-      "relationshipName": "contrat",
+      "relationshipName": "appuser",
       "relationshipSide": "right",
       "relationshipType": "one-to-one"
     }

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.PaymentStatus;
 
 /**
@@ -24,12 +22,7 @@ public class EtatPaiement implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "reference", nullable = false, unique = true)
-    private String reference;
-
-    @NotNull
-    @Column(name = "payment_number", nullable = false, unique = true)
+    @Column(name = "payment_number")
     private String paymentNumber;
 
     @NotNull
@@ -61,18 +54,11 @@ public class EtatPaiement implements Serializable {
     @Column(name = "comments")
     private String comments;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "etatPaiement")
-    @JsonIgnoreProperties(value = { "validations", "contrat", "appUser", "etatPaiement" }, allowSetters = true)
-    private Set<AttestationPresence> attestationPresences = new HashSet<>();
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "attestationFinStage", "validations", "appUser", "candidat" }, allowSetters = true)
-    private Contrat contrat;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
@@ -81,6 +67,7 @@ public class EtatPaiement implements Serializable {
             "validations",
             "roles",
             "validationStatusUser",
+            "restaurationStagiaires",
         },
         allowSetters = true
     )
@@ -99,19 +86,6 @@ public class EtatPaiement implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getReference() {
-        return this.reference;
-    }
-
-    public EtatPaiement reference(String reference) {
-        this.setReference(reference);
-        return this;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
     }
 
     public String getPaymentNumber() {
@@ -218,50 +192,6 @@ public class EtatPaiement implements Serializable {
         this.comments = comments;
     }
 
-    public Set<AttestationPresence> getAttestationPresences() {
-        return this.attestationPresences;
-    }
-
-    public void setAttestationPresences(Set<AttestationPresence> attestationPresences) {
-        if (this.attestationPresences != null) {
-            this.attestationPresences.forEach(i -> i.setEtatPaiement(null));
-        }
-        if (attestationPresences != null) {
-            attestationPresences.forEach(i -> i.setEtatPaiement(this));
-        }
-        this.attestationPresences = attestationPresences;
-    }
-
-    public EtatPaiement attestationPresences(Set<AttestationPresence> attestationPresences) {
-        this.setAttestationPresences(attestationPresences);
-        return this;
-    }
-
-    public EtatPaiement addAttestationPresences(AttestationPresence attestationPresence) {
-        this.attestationPresences.add(attestationPresence);
-        attestationPresence.setEtatPaiement(this);
-        return this;
-    }
-
-    public EtatPaiement removeAttestationPresences(AttestationPresence attestationPresence) {
-        this.attestationPresences.remove(attestationPresence);
-        attestationPresence.setEtatPaiement(null);
-        return this;
-    }
-
-    public Contrat getContrat() {
-        return this.contrat;
-    }
-
-    public void setContrat(Contrat contrat) {
-        this.contrat = contrat;
-    }
-
-    public EtatPaiement contrat(Contrat contrat) {
-        this.setContrat(contrat);
-        return this;
-    }
-
     public AppUser getAppUser() {
         return this.appUser;
     }
@@ -299,7 +229,6 @@ public class EtatPaiement implements Serializable {
     public String toString() {
         return "EtatPaiement{" +
             "id=" + getId() +
-            ", reference='" + getReference() + "'" +
             ", paymentNumber='" + getPaymentNumber() + "'" +
             ", paymentDate='" + getPaymentDate() + "'" +
             ", amount=" + getAmount() +

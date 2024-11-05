@@ -47,21 +47,19 @@ public class DemandeStageAsserts {
     public static void assertDemandeStageUpdatableFieldsEquals(DemandeStage expected, DemandeStage actual) {
         assertThat(expected)
             .as("Verify DemandeStage relevant properties")
-            .satisfies(e -> assertThat(e.getReference()).as("check reference").isEqualTo(actual.getReference()))
             .satisfies(e -> assertThat(e.getCreationDate()).as("check creationDate").isEqualTo(actual.getCreationDate()))
-            .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
-            .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
             .satisfies(e -> assertThat(e.getInternshipType()).as("check internshipType").isEqualTo(actual.getInternshipType()))
             .satisfies(e -> assertThat(e.getStartDate()).as("check startDate").isEqualTo(actual.getStartDate()))
             .satisfies(e -> assertThat(e.getEndDate()).as("check endDate").isEqualTo(actual.getEndDate()))
-            .satisfies(e -> assertThat(e.getResume()).as("check resume").isEqualTo(actual.getResume()))
-            .satisfies(e -> assertThat(e.getResumeContentType()).as("check resume contenty type").isEqualTo(actual.getResumeContentType()))
+            .satisfies(e -> assertThat(e.getCv()).as("check cv").isEqualTo(actual.getCv()))
+            .satisfies(e -> assertThat(e.getCvContentType()).as("check cv contenty type").isEqualTo(actual.getCvContentType()))
             .satisfies(e -> assertThat(e.getCoverLetter()).as("check coverLetter").isEqualTo(actual.getCoverLetter()))
             .satisfies(e ->
                 assertThat(e.getCoverLetterContentType())
                     .as("check coverLetter contenty type")
                     .isEqualTo(actual.getCoverLetterContentType())
             )
+            .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
             .satisfies(e -> assertThat(e.getValidated()).as("check validated").isEqualTo(actual.getValidated()));
     }
 

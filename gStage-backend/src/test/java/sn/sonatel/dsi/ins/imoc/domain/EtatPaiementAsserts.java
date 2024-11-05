@@ -47,7 +47,6 @@ public class EtatPaiementAsserts {
     public static void assertEtatPaiementUpdatableFieldsEquals(EtatPaiement expected, EtatPaiement actual) {
         assertThat(expected)
             .as("Verify EtatPaiement relevant properties")
-            .satisfies(e -> assertThat(e.getReference()).as("check reference").isEqualTo(actual.getReference()))
             .satisfies(e -> assertThat(e.getPaymentNumber()).as("check paymentNumber").isEqualTo(actual.getPaymentNumber()))
             .satisfies(e -> assertThat(e.getPaymentDate()).as("check paymentDate").isEqualTo(actual.getPaymentDate()))
             .satisfies(e -> assertThat(e.getAmount()).as("check amount").isEqualTo(actual.getAmount()))
@@ -67,7 +66,6 @@ public class EtatPaiementAsserts {
     public static void assertEtatPaiementUpdatableRelationshipsEquals(EtatPaiement expected, EtatPaiement actual) {
         assertThat(expected)
             .as("Verify EtatPaiement relationships")
-            .satisfies(e -> assertThat(e.getContrat()).as("check contrat").isEqualTo(actual.getContrat()))
             .satisfies(e -> assertThat(e.getAppUser()).as("check appUser").isEqualTo(actual.getAppUser()));
     }
 }

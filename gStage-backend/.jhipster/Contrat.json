@@ -52,13 +52,6 @@
   "pagination": "pagination",
   "relationships": [
     {
-      "otherEntityName": "attestationFinStage",
-      "otherEntityRelationshipName": "contrat",
-      "relationshipName": "attestationFinStage",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-one"
-    },
-    {
       "otherEntityName": "validation",
       "otherEntityRelationshipName": "contrat",
       "relationshipName": "validations",
@@ -69,13 +62,6 @@
       "otherEntityName": "appUser",
       "otherEntityRelationshipName": "contrat",
       "relationshipName": "appUser",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "candidat",
-      "otherEntityRelationshipName": "contrats",
-      "relationshipName": "candidat",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"
     }

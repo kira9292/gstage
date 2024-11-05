@@ -2,8 +2,6 @@ package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.AttestationFinStageTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ValidationTestSamples.*;
 
@@ -26,18 +24,6 @@ class ContratTest {
 
         contrat2 = getContratSample2();
         assertThat(contrat1).isNotEqualTo(contrat2);
-    }
-
-    @Test
-    void attestationFinStageTest() {
-        Contrat contrat = getContratRandomSampleGenerator();
-        AttestationFinStage attestationFinStageBack = getAttestationFinStageRandomSampleGenerator();
-
-        contrat.setAttestationFinStage(attestationFinStageBack);
-        assertThat(contrat.getAttestationFinStage()).isEqualTo(attestationFinStageBack);
-
-        contrat.attestationFinStage(null);
-        assertThat(contrat.getAttestationFinStage()).isNull();
     }
 
     @Test
@@ -72,17 +58,5 @@ class ContratTest {
 
         contrat.appUser(null);
         assertThat(contrat.getAppUser()).isNull();
-    }
-
-    @Test
-    void candidatTest() {
-        Contrat contrat = getContratRandomSampleGenerator();
-        Candidat candidatBack = getCandidatRandomSampleGenerator();
-
-        contrat.setCandidat(candidatBack);
-        assertThat(contrat.getCandidat()).isEqualTo(candidatBack);
-
-        contrat.candidat(null);
-        assertThat(contrat.getCandidat()).isNull();
     }
 }

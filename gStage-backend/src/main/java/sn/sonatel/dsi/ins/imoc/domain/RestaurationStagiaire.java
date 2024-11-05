@@ -37,8 +37,23 @@ public class RestaurationStagiaire implements Serializable {
     private String cardNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "contrats", "demandeStage", "appUser" }, allowSetters = true)
-    private Candidat candidat;
+    @JsonIgnoreProperties(
+        value = {
+            "service",
+            "attestationFinStage",
+            "etatPaiements",
+            "contrats",
+            "demandeStages",
+            "attestationPresences",
+            "candidats",
+            "validations",
+            "roles",
+            "validationStatusUser",
+            "restaurationStagiaires",
+        },
+        allowSetters = true
+    )
+    private AppUser appUser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -107,16 +122,16 @@ public class RestaurationStagiaire implements Serializable {
         this.cardNumber = cardNumber;
     }
 
-    public Candidat getCandidat() {
-        return this.candidat;
+    public AppUser getAppUser() {
+        return this.appUser;
     }
 
-    public void setCandidat(Candidat candidat) {
-        this.candidat = candidat;
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 
-    public RestaurationStagiaire candidat(Candidat candidat) {
-        this.setCandidat(candidat);
+    public RestaurationStagiaire appUser(AppUser appUser) {
+        this.setAppUser(appUser);
         return this;
     }
 

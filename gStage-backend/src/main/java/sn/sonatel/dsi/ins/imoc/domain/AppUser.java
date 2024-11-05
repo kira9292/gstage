@@ -17,7 +17,7 @@ import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 @Entity
 @Table(name = "app_user")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class AppUser implements Serializable, UserDetails {
+public class AppUser implements UserDetails,Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -67,12 +67,17 @@ public class AppUser implements Serializable, UserDetails {
     @JoinColumn(unique = true)
     private Service service;
 
+    @JsonIgnoreProperties(value = { "validations", "appuser" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private AttestationFinStage attestationFinStage;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "attestationPresences", "contrat", "appUser" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
     private Set<EtatPaiement> etatPaiements = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "attestationFinStage", "validations", "appUser", "candidat" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "validations", "appUser" }, allowSetters = true)
     private Set<Contrat> contrats = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
@@ -80,11 +85,11 @@ public class AppUser implements Serializable, UserDetails {
     private Set<DemandeStage> demandeStages = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "validations", "contrat", "appUser", "etatPaiement" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "validations", "appUser" }, allowSetters = true)
     private Set<AttestationPresence> attestationPresences = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "contrats", "demandeStage", "appUser" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "demandeStage", "appUser" }, allowSetters = true)
     private Set<Candidat> candidats = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -104,6 +109,10 @@ public class AppUser implements Serializable, UserDetails {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "appUser")
     private ValidationStatusUser validationStatusUser;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
+    private Set<RestaurationStagiaire> restaurationStagiaires = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
 
@@ -116,8 +125,6 @@ public class AppUser implements Serializable, UserDetails {
         }
         return list;
     }
-
-
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
@@ -278,6 +285,19 @@ public class AppUser implements Serializable, UserDetails {
 
     public AppUser service(Service service) {
         this.setService(service);
+        return this;
+    }
+
+    public AttestationFinStage getAttestationFinStage() {
+        return this.attestationFinStage;
+    }
+
+    public void setAttestationFinStage(AttestationFinStage attestationFinStage) {
+        this.attestationFinStage = attestationFinStage;
+    }
+
+    public AppUser attestationFinStage(AttestationFinStage attestationFinStage) {
+        this.setAttestationFinStage(attestationFinStage);
         return this;
     }
 
@@ -506,6 +526,37 @@ public class AppUser implements Serializable, UserDetails {
 
     public AppUser validationStatusUser(ValidationStatusUser validationStatusUser) {
         this.setValidationStatusUser(validationStatusUser);
+        return this;
+    }
+
+    public Set<RestaurationStagiaire> getRestaurationStagiaires() {
+        return this.restaurationStagiaires;
+    }
+
+    public void setRestaurationStagiaires(Set<RestaurationStagiaire> restaurationStagiaires) {
+        if (this.restaurationStagiaires != null) {
+            this.restaurationStagiaires.forEach(i -> i.setAppUser(null));
+        }
+        if (restaurationStagiaires != null) {
+            restaurationStagiaires.forEach(i -> i.setAppUser(this));
+        }
+        this.restaurationStagiaires = restaurationStagiaires;
+    }
+
+    public AppUser restaurationStagiaires(Set<RestaurationStagiaire> restaurationStagiaires) {
+        this.setRestaurationStagiaires(restaurationStagiaires);
+        return this;
+    }
+
+    public AppUser addRestaurationStagiaire(RestaurationStagiaire restaurationStagiaire) {
+        this.restaurationStagiaires.add(restaurationStagiaire);
+        restaurationStagiaire.setAppUser(this);
+        return this;
+    }
+
+    public AppUser removeRestaurationStagiaire(RestaurationStagiaire restaurationStagiaire) {
+        this.restaurationStagiaires.remove(restaurationStagiaire);
+        restaurationStagiaire.setAppUser(null);
         return this;
     }
 

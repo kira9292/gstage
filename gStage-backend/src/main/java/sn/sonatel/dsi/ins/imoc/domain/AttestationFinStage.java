@@ -41,9 +41,24 @@ public class AttestationFinStage implements Serializable {
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
 
-    @JsonIgnoreProperties(value = { "attestationFinStage", "validations", "appUser", "candidat" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = {
+            "service",
+            "attestationFinStage",
+            "etatPaiements",
+            "contrats",
+            "demandeStages",
+            "attestationPresences",
+            "candidats",
+            "validations",
+            "roles",
+            "validationStatusUser",
+            "restaurationStagiaires",
+        },
+        allowSetters = true
+    )
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "attestationFinStage")
-    private Contrat contrat;
+    private AppUser appuser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -143,22 +158,22 @@ public class AttestationFinStage implements Serializable {
         return this;
     }
 
-    public Contrat getContrat() {
-        return this.contrat;
+    public AppUser getAppuser() {
+        return this.appuser;
     }
 
-    public void setContrat(Contrat contrat) {
-        if (this.contrat != null) {
-            this.contrat.setAttestationFinStage(null);
+    public void setAppuser(AppUser appUser) {
+        if (this.appuser != null) {
+            this.appuser.setAttestationFinStage(null);
         }
-        if (contrat != null) {
-            contrat.setAttestationFinStage(this);
+        if (appUser != null) {
+            appUser.setAttestationFinStage(this);
         }
-        this.contrat = contrat;
+        this.appuser = appUser;
     }
 
-    public AttestationFinStage contrat(Contrat contrat) {
-        this.setContrat(contrat);
+    public AttestationFinStage appuser(AppUser appUser) {
+        this.setAppuser(appUser);
         return this;
     }
 

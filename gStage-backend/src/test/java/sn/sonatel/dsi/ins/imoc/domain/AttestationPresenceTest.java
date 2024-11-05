@@ -3,8 +3,6 @@ package sn.sonatel.dsi.ins.imoc.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.AttestationPresenceTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.EtatPaiementTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ValidationTestSamples.*;
 
 import java.util.HashSet;
@@ -51,18 +49,6 @@ class AttestationPresenceTest {
     }
 
     @Test
-    void contratTest() {
-        AttestationPresence attestationPresence = getAttestationPresenceRandomSampleGenerator();
-        Contrat contratBack = getContratRandomSampleGenerator();
-
-        attestationPresence.setContrat(contratBack);
-        assertThat(attestationPresence.getContrat()).isEqualTo(contratBack);
-
-        attestationPresence.contrat(null);
-        assertThat(attestationPresence.getContrat()).isNull();
-    }
-
-    @Test
     void appUserTest() {
         AttestationPresence attestationPresence = getAttestationPresenceRandomSampleGenerator();
         AppUser appUserBack = getAppUserRandomSampleGenerator();
@@ -72,17 +58,5 @@ class AttestationPresenceTest {
 
         attestationPresence.appUser(null);
         assertThat(attestationPresence.getAppUser()).isNull();
-    }
-
-    @Test
-    void etatPaiementTest() {
-        AttestationPresence attestationPresence = getAttestationPresenceRandomSampleGenerator();
-        EtatPaiement etatPaiementBack = getEtatPaiementRandomSampleGenerator();
-
-        attestationPresence.setEtatPaiement(etatPaiementBack);
-        assertThat(attestationPresence.getEtatPaiement()).isEqualTo(etatPaiementBack);
-
-        attestationPresence.etatPaiement(null);
-        assertThat(attestationPresence.getEtatPaiement()).isNull();
     }
 }

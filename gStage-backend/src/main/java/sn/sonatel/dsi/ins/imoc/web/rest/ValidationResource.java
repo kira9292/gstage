@@ -128,9 +128,6 @@ public class ValidationResource {
         Optional<Validation> result = validationRepository
             .findById(validation.getId())
             .map(existingValidation -> {
-                if (validation.getReference() != null) {
-                    existingValidation.setReference(validation.getReference());
-                }
                 if (validation.getValidationDate() != null) {
                     existingValidation.setValidationDate(validation.getValidationDate());
                 }

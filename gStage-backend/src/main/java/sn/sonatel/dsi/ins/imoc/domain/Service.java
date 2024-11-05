@@ -35,6 +35,7 @@ public class Service implements Serializable {
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
@@ -43,6 +44,7 @@ public class Service implements Serializable {
             "validations",
             "roles",
             "validationStatusUser",
+            "restaurationStagiaires",
         },
         allowSetters = true
     )

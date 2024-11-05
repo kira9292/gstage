@@ -16,13 +16,11 @@ public class CandidatTestSamples {
             .lastName("lastName1")
             .nationality("nationality1")
             .birthPlace("birthPlace1")
-            .idNumber("idNumber1")
+            .cni("cni1")
             .address("address1")
             .email("email1")
             .phone("phone1")
-            .school("school1")
-            .registrationNumber("registrationNumber1")
-            .currentEducation("currentEducation1");
+            .school("school1");
     }
 
     public static Candidat getCandidatSample2() {
@@ -32,13 +30,11 @@ public class CandidatTestSamples {
             .lastName("lastName2")
             .nationality("nationality2")
             .birthPlace("birthPlace2")
-            .idNumber("idNumber2")
+            .cni("cni2")
             .address("address2")
             .email("email2")
             .phone("phone2")
-            .school("school2")
-            .registrationNumber("registrationNumber2")
-            .currentEducation("currentEducation2");
+            .school("school2");
     }
 
     public static Candidat getCandidatRandomSampleGenerator() {
@@ -48,12 +44,10 @@ public class CandidatTestSamples {
             .lastName(UUID.randomUUID().toString())
             .nationality(UUID.randomUUID().toString())
             .birthPlace(UUID.randomUUID().toString())
-            .idNumber(UUID.randomUUID().toString())
+            .cni(UUID.randomUUID().toString())
             .address(UUID.randomUUID().toString())
             .email(UUID.randomUUID().toString())
             .phone(UUID.randomUUID().toString())
-            .school(UUID.randomUUID().toString())
-            .registrationNumber(UUID.randomUUID().toString())
-            .currentEducation(UUID.randomUUID().toString());
+            .school(UUID.randomUUID().toString());
     }
 }

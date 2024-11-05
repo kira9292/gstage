@@ -68,6 +68,9 @@ public class AppUserAsserts {
         assertThat(expected)
             .as("Verify AppUser relationships")
             .satisfies(e -> assertThat(e.getService()).as("check service").isEqualTo(actual.getService()))
+            .satisfies(e ->
+                assertThat(e.getAttestationFinStage()).as("check attestationFinStage").isEqualTo(actual.getAttestationFinStage())
+            )
             .satisfies(e -> assertThat(e.getRoles()).as("check roles").isEqualTo(actual.getRoles()));
     }
 }

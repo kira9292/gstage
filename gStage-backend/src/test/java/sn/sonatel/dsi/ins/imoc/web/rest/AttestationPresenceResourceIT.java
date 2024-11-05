@@ -34,9 +34,6 @@ import sn.sonatel.dsi.ins.imoc.repository.AttestationPresenceRepository;
 @WithMockUser
 class AttestationPresenceResourceIT {
 
-    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
-    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
-
     private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_START_DATE = LocalDate.now(ZoneId.systemDefault());
 
@@ -82,7 +79,6 @@ class AttestationPresenceResourceIT {
      */
     public static AttestationPresence createEntity() {
         return new AttestationPresence()
-            .reference(DEFAULT_REFERENCE)
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
             .signatureDate(DEFAULT_SIGNATURE_DATE)
@@ -98,7 +94,6 @@ class AttestationPresenceResourceIT {
      */
     public static AttestationPresence createUpdatedEntity() {
         return new AttestationPresence()
-            .reference(UPDATED_REFERENCE)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
@@ -163,22 +158,6 @@ class AttestationPresenceResourceIT {
 
     @Test
     @Transactional
-    void checkReferenceIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        attestationPresence.setReference(null);
-
-        // Create the AttestationPresence, which fails.
-
-        restAttestationPresenceMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(attestationPresence)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkStartDateIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -211,38 +190,6 @@ class AttestationPresenceResourceIT {
 
     @Test
     @Transactional
-    void checkSignatureDateIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        attestationPresence.setSignatureDate(null);
-
-        // Create the AttestationPresence, which fails.
-
-        restAttestationPresenceMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(attestationPresence)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkStatusIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        attestationPresence.setStatus(null);
-
-        // Create the AttestationPresence, which fails.
-
-        restAttestationPresenceMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(attestationPresence)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllAttestationPresences() throws Exception {
         // Initialize the database
         insertedAttestationPresence = attestationPresenceRepository.saveAndFlush(attestationPresence);
@@ -253,7 +200,6 @@ class AttestationPresenceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(attestationPresence.getId().intValue())))
-            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
             .andExpect(jsonPath("$.[*].signatureDate").value(hasItem(DEFAULT_SIGNATURE_DATE.toString())))
@@ -273,7 +219,6 @@ class AttestationPresenceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(attestationPresence.getId().intValue()))
-            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
             .andExpect(jsonPath("$.signatureDate").value(DEFAULT_SIGNATURE_DATE.toString()))
@@ -301,7 +246,6 @@ class AttestationPresenceResourceIT {
         // Disconnect from session so that the updates on updatedAttestationPresence are not directly saved in db
         em.detach(updatedAttestationPresence);
         updatedAttestationPresence
-            .reference(UPDATED_REFERENCE)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
@@ -386,11 +330,7 @@ class AttestationPresenceResourceIT {
         AttestationPresence partialUpdatedAttestationPresence = new AttestationPresence();
         partialUpdatedAttestationPresence.setId(attestationPresence.getId());
 
-        partialUpdatedAttestationPresence
-            .startDate(UPDATED_START_DATE)
-            .endDate(UPDATED_END_DATE)
-            .status(UPDATED_STATUS)
-            .comments(UPDATED_COMMENTS);
+        partialUpdatedAttestationPresence.endDate(UPDATED_END_DATE).signatureDate(UPDATED_SIGNATURE_DATE).comments(UPDATED_COMMENTS);
 
         restAttestationPresenceMockMvc
             .perform(
@@ -422,7 +362,6 @@ class AttestationPresenceResourceIT {
         partialUpdatedAttestationPresence.setId(attestationPresence.getId());
 
         partialUpdatedAttestationPresence
-            .reference(UPDATED_REFERENCE)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)

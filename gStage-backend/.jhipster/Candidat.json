@@ -20,28 +20,24 @@
     },
     {
       "fieldName": "birthDate",
-      "fieldType": "LocalDate",
-      "fieldValidateRules": ["required"]
+      "fieldType": "LocalDate"
     },
     {
       "fieldName": "nationality",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "String"
     },
     {
       "fieldName": "birthPlace",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "String"
     },
     {
-      "fieldName": "idNumber",
+      "fieldName": "cni",
       "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
+      "fieldValidateRules": ["unique"]
     },
     {
       "fieldName": "address",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldType": "String"
     },
     {
       "fieldName": "email",
@@ -58,42 +54,17 @@
     {
       "fieldName": "educationLevel",
       "fieldType": "EducationLevel",
-      "fieldValidateRules": ["required"],
       "fieldValues": "BAC,BAC_PLUS_2,BAC_PLUS_3,BAC_PLUS_4,BAC_PLUS_5"
     },
     {
       "fieldName": "school",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "registrationNumber",
-      "fieldType": "String",
-      "fieldValidateRules": ["unique"]
-    },
-    {
-      "fieldName": "currentEducation",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "status",
-      "fieldType": "CandidateStatus",
-      "fieldValidateRules": ["required"],
-      "fieldValues": "EN_ATTENTE,ACCEPTE,REFUSE,ACTIF,INACTIF"
+      "fieldType": "String"
     }
   ],
   "microserviceName": "backend",
   "name": "Candidat",
   "pagination": "pagination",
   "relationships": [
-    {
-      "otherEntityName": "contrat",
-      "otherEntityRelationshipName": "candidat",
-      "relationshipName": "contrats",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
     {
       "otherEntityName": "demandeStage",
       "otherEntityRelationshipName": "candidat",

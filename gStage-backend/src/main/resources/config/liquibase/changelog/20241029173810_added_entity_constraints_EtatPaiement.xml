@@ -10,13 +10,6 @@
     -->
     <changeSet id="20241029173810-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="contrat_id"
-                                 baseTableName="etat_paiement"
-                                 constraintName="fk_etat_paiement__contrat_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="contrat"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="app_user_id"
                                  baseTableName="etat_paiement"
                                  constraintName="fk_etat_paiement__app_user_id"

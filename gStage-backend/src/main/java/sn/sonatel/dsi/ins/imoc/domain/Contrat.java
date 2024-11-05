@@ -56,11 +56,6 @@ public class Contrat implements Serializable {
     @Column(name = "comments")
     private String comments;
 
-    @JsonIgnoreProperties(value = { "validations", "contrat" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(unique = true)
-    private AttestationFinStage attestationFinStage;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contrat")
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
@@ -69,6 +64,7 @@ public class Contrat implements Serializable {
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
@@ -77,14 +73,11 @@ public class Contrat implements Serializable {
             "validations",
             "roles",
             "validationStatusUser",
+            "restaurationStagiaires",
         },
         allowSetters = true
     )
     private AppUser appUser;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "contrats", "demandeStage", "appUser" }, allowSetters = true)
-    private Candidat candidat;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -205,19 +198,6 @@ public class Contrat implements Serializable {
         this.comments = comments;
     }
 
-    public AttestationFinStage getAttestationFinStage() {
-        return this.attestationFinStage;
-    }
-
-    public void setAttestationFinStage(AttestationFinStage attestationFinStage) {
-        this.attestationFinStage = attestationFinStage;
-    }
-
-    public Contrat attestationFinStage(AttestationFinStage attestationFinStage) {
-        this.setAttestationFinStage(attestationFinStage);
-        return this;
-    }
-
     public Set<Validation> getValidations() {
         return this.validations;
     }
@@ -259,19 +239,6 @@ public class Contrat implements Serializable {
 
     public Contrat appUser(AppUser appUser) {
         this.setAppUser(appUser);
-        return this;
-    }
-
-    public Candidat getCandidat() {
-        return this.candidat;
-    }
-
-    public void setCandidat(Candidat candidat) {
-        this.candidat = candidat;
-    }
-
-    public Contrat candidat(Candidat candidat) {
-        this.setCandidat(candidat);
         return this;
     }
 

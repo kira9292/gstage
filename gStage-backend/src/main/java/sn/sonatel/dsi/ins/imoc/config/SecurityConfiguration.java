@@ -26,6 +26,8 @@ import sn.sonatel.dsi.ins.imoc.security.*;
 import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 import tech.jhipster.config.JHipsterProperties;
 
+import java.util.List;
+
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
@@ -64,6 +66,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
+            .cors(cors -> cors.configurationSource(request -> {
+                var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200")); // Autorise Angular
+                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                corsConfiguration.setAllowedHeaders(List.of("*"));
+                corsConfiguration.setAllowCredentials(true);
+                return corsConfiguration;}))
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authz ->
                 // prettier-ignore

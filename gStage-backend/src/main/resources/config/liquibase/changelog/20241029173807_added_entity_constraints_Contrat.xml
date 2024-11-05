@@ -10,25 +10,11 @@
     -->
     <changeSet id="20241029173807-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="attestation_fin_stage_id"
-                                 baseTableName="contrat"
-                                 constraintName="fk_contrat__attestation_fin_stage_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="attestation_fin_stage"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="app_user_id"
                                  baseTableName="contrat"
                                  constraintName="fk_contrat__app_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="app_user"
-                                 />
-
-        <addForeignKeyConstraint baseColumnNames="candidat_id"
-                                 baseTableName="contrat"
-                                 constraintName="fk_contrat__candidat_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="candidat"
                                  />
     </changeSet>
 </databaseChangeLog>

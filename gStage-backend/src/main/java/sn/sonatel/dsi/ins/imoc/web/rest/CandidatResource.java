@@ -145,8 +145,8 @@ public class CandidatResource {
                 if (candidat.getBirthPlace() != null) {
                     existingCandidat.setBirthPlace(candidat.getBirthPlace());
                 }
-                if (candidat.getIdNumber() != null) {
-                    existingCandidat.setIdNumber(candidat.getIdNumber());
+                if (candidat.getCni() != null) {
+                    existingCandidat.setCni(candidat.getCni());
                 }
                 if (candidat.getAddress() != null) {
                     existingCandidat.setAddress(candidat.getAddress());
@@ -162,15 +162,6 @@ public class CandidatResource {
                 }
                 if (candidat.getSchool() != null) {
                     existingCandidat.setSchool(candidat.getSchool());
-                }
-                if (candidat.getRegistrationNumber() != null) {
-                    existingCandidat.setRegistrationNumber(candidat.getRegistrationNumber());
-                }
-                if (candidat.getCurrentEducation() != null) {
-                    existingCandidat.setCurrentEducation(candidat.getCurrentEducation());
-                }
-                if (candidat.getStatus() != null) {
-                    existingCandidat.setStatus(candidat.getStatus());
                 }
 
                 return existingCandidat;

@@ -68,7 +68,7 @@ public class AppUserService implements UserDetailsService {
         appUser.setStatue(false);
 
         Role role = new Role();
-        role.setName(ERole.DEMANDEUR);
+        role.setName(ERole.STAGIAIRE);
         role = roleRepository.save(role);
         appUser.getRoles().add(role);
 

@@ -3,11 +3,8 @@ package sn.sonatel.dsi.ins.imoc.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.DemandeStageTestSamples.*;
 
-import java.util.HashSet;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 import sn.sonatel.dsi.ins.imoc.web.rest.TestUtil;
 
@@ -25,28 +22,6 @@ class CandidatTest {
 
         candidat2 = getCandidatSample2();
         assertThat(candidat1).isNotEqualTo(candidat2);
-    }
-
-    @Test
-    void contratsTest() {
-        Candidat candidat = getCandidatRandomSampleGenerator();
-        Contrat contratBack = getContratRandomSampleGenerator();
-
-        candidat.addContrats(contratBack);
-        assertThat(candidat.getContrats()).containsOnly(contratBack);
-        assertThat(contratBack.getCandidat()).isEqualTo(candidat);
-
-        candidat.removeContrats(contratBack);
-        assertThat(candidat.getContrats()).doesNotContain(contratBack);
-        assertThat(contratBack.getCandidat()).isNull();
-
-        candidat.contrats(new HashSet<>(Set.of(contratBack)));
-        assertThat(candidat.getContrats()).containsOnly(contratBack);
-        assertThat(contratBack.getCandidat()).isEqualTo(candidat);
-
-        candidat.setContrats(new HashSet<>());
-        assertThat(candidat.getContrats()).doesNotContain(contratBack);
-        assertThat(contratBack.getCandidat()).isNull();
     }
 
     @Test

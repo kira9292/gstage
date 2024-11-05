@@ -14,11 +14,8 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="reference" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_etat_paiement__reference" />
-            </column>
             <column name="payment_number" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_etat_paiement__payment_number" />
+                <constraints nullable="true" />
             </column>
             <column name="payment_date" type="date">
                 <constraints nullable="false" />
@@ -39,9 +36,6 @@
                 <constraints nullable="true" />
             </column>
             <column name="comments" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="contrat_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <column name="app_user_id" type="bigint">
@@ -68,7 +62,6 @@
                   tableName="etat_paiement"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="reference" type="string"/>
             <column name="payment_number" type="string"/>
             <column name="payment_date" type="date"/>
             <column name="amount" type="numeric"/>

@@ -65,6 +65,13 @@
       "relationshipType": "one-to-one"
     },
     {
+      "otherEntityName": "attestationFinStage",
+      "otherEntityRelationshipName": "appuser",
+      "relationshipName": "attestationFinStage",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
       "otherEntityName": "etatPaiement",
       "otherEntityRelationshipName": "appUser",
       "relationshipName": "etatPaiement",
@@ -119,6 +126,13 @@
       "relationshipName": "validationStatusUser",
       "relationshipSide": "right",
       "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "restaurationStagiaire",
+      "otherEntityRelationshipName": "appUser",
+      "relationshipName": "restaurationStagiaire",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
     }
   ],
   "searchEngine": "no",

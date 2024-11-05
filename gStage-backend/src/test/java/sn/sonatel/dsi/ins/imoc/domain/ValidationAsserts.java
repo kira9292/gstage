@@ -47,7 +47,6 @@ public class ValidationAsserts {
     public static void assertValidationUpdatableFieldsEquals(Validation expected, Validation actual) {
         assertThat(expected)
             .as("Verify Validation relevant properties")
-            .satisfies(e -> assertThat(e.getReference()).as("check reference").isEqualTo(actual.getReference()))
             .satisfies(e -> assertThat(e.getValidationDate()).as("check validationDate").isEqualTo(actual.getValidationDate()))
             .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
             .satisfies(e -> assertThat(e.getComments()).as("check comments").isEqualTo(actual.getComments()))

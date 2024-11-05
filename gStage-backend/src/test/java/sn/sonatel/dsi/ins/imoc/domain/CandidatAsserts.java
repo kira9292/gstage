@@ -52,15 +52,12 @@ public class CandidatAsserts {
             .satisfies(e -> assertThat(e.getBirthDate()).as("check birthDate").isEqualTo(actual.getBirthDate()))
             .satisfies(e -> assertThat(e.getNationality()).as("check nationality").isEqualTo(actual.getNationality()))
             .satisfies(e -> assertThat(e.getBirthPlace()).as("check birthPlace").isEqualTo(actual.getBirthPlace()))
-            .satisfies(e -> assertThat(e.getIdNumber()).as("check idNumber").isEqualTo(actual.getIdNumber()))
+            .satisfies(e -> assertThat(e.getCni()).as("check cni").isEqualTo(actual.getCni()))
             .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()))
             .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
             .satisfies(e -> assertThat(e.getPhone()).as("check phone").isEqualTo(actual.getPhone()))
             .satisfies(e -> assertThat(e.getEducationLevel()).as("check educationLevel").isEqualTo(actual.getEducationLevel()))
-            .satisfies(e -> assertThat(e.getSchool()).as("check school").isEqualTo(actual.getSchool()))
-            .satisfies(e -> assertThat(e.getRegistrationNumber()).as("check registrationNumber").isEqualTo(actual.getRegistrationNumber()))
-            .satisfies(e -> assertThat(e.getCurrentEducation()).as("check currentEducation").isEqualTo(actual.getCurrentEducation()))
-            .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()));
+            .satisfies(e -> assertThat(e.getSchool()).as("check school").isEqualTo(actual.getSchool()));
     }
 
     /**

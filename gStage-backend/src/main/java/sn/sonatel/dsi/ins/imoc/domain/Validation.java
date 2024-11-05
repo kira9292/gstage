@@ -23,10 +23,6 @@ public class Validation implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "reference", nullable = false, unique = true)
-    private String reference;
-
-    @NotNull
     @Column(name = "validation_date", nullable = false)
     private LocalDate validationDate;
 
@@ -43,21 +39,22 @@ public class Validation implements Serializable {
     private String validatedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "validations", "contrat", "appUser", "etatPaiement" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "validations", "appUser" }, allowSetters = true)
     private AttestationPresence attestationPresence;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "attestationFinStage", "validations", "appUser", "candidat" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "validations", "appUser" }, allowSetters = true)
     private Contrat contrat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "validations", "contrat" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "validations", "appuser" }, allowSetters = true)
     private AttestationFinStage attestationFinStage;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
@@ -66,6 +63,7 @@ public class Validation implements Serializable {
             "validations",
             "roles",
             "validationStatusUser",
+            "restaurationStagiaires",
         },
         allowSetters = true
     )
@@ -84,19 +82,6 @@ public class Validation implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getReference() {
-        return this.reference;
-    }
-
-    public Validation reference(String reference) {
-        this.setReference(reference);
-        return this;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
     }
 
     public LocalDate getValidationDate() {
@@ -227,7 +212,6 @@ public class Validation implements Serializable {
     public String toString() {
         return "Validation{" +
             "id=" + getId() +
-            ", reference='" + getReference() + "'" +
             ", validationDate='" + getValidationDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", comments='" + getComments() + "'" +

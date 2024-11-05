@@ -35,9 +35,6 @@ import sn.sonatel.dsi.ins.imoc.repository.EtatPaiementRepository;
 @WithMockUser
 class EtatPaiementResourceIT {
 
-    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
-    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
-
     private static final String DEFAULT_PAYMENT_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_PAYMENT_NUMBER = "BBBBBBBBBB";
 
@@ -92,7 +89,6 @@ class EtatPaiementResourceIT {
      */
     public static EtatPaiement createEntity() {
         return new EtatPaiement()
-            .reference(DEFAULT_REFERENCE)
             .paymentNumber(DEFAULT_PAYMENT_NUMBER)
             .paymentDate(DEFAULT_PAYMENT_DATE)
             .amount(DEFAULT_AMOUNT)
@@ -111,7 +107,6 @@ class EtatPaiementResourceIT {
      */
     public static EtatPaiement createUpdatedEntity() {
         return new EtatPaiement()
-            .reference(UPDATED_REFERENCE)
             .paymentNumber(UPDATED_PAYMENT_NUMBER)
             .paymentDate(UPDATED_PAYMENT_DATE)
             .amount(UPDATED_AMOUNT)
@@ -172,38 +167,6 @@ class EtatPaiementResourceIT {
 
         // Validate the EtatPaiement in the database
         assertSameRepositoryCount(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkReferenceIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        etatPaiement.setReference(null);
-
-        // Create the EtatPaiement, which fails.
-
-        restEtatPaiementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(etatPaiement)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkPaymentNumberIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        etatPaiement.setPaymentNumber(null);
-
-        // Create the EtatPaiement, which fails.
-
-        restEtatPaiementMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(etatPaiement)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
     }
 
     @Test
@@ -298,7 +261,6 @@ class EtatPaiementResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(etatPaiement.getId().intValue())))
-            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].paymentNumber").value(hasItem(DEFAULT_PAYMENT_NUMBER)))
             .andExpect(jsonPath("$.[*].paymentDate").value(hasItem(DEFAULT_PAYMENT_DATE.toString())))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT.doubleValue())))
@@ -321,7 +283,6 @@ class EtatPaiementResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(etatPaiement.getId().intValue()))
-            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.paymentNumber").value(DEFAULT_PAYMENT_NUMBER))
             .andExpect(jsonPath("$.paymentDate").value(DEFAULT_PAYMENT_DATE.toString()))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT.doubleValue()))
@@ -352,7 +313,6 @@ class EtatPaiementResourceIT {
         // Disconnect from session so that the updates on updatedEtatPaiement are not directly saved in db
         em.detach(updatedEtatPaiement);
         updatedEtatPaiement
-            .reference(UPDATED_REFERENCE)
             .paymentNumber(UPDATED_PAYMENT_NUMBER)
             .paymentDate(UPDATED_PAYMENT_DATE)
             .amount(UPDATED_AMOUNT)
@@ -441,11 +401,11 @@ class EtatPaiementResourceIT {
         partialUpdatedEtatPaiement.setId(etatPaiement.getId());
 
         partialUpdatedEtatPaiement
-            .reference(UPDATED_REFERENCE)
             .paymentNumber(UPDATED_PAYMENT_NUMBER)
-            .paymentPhone(UPDATED_PAYMENT_PHONE)
+            .paymentDate(UPDATED_PAYMENT_DATE)
             .status(UPDATED_STATUS)
-            .processingDate(UPDATED_PROCESSING_DATE);
+            .processingDate(UPDATED_PROCESSING_DATE)
+            .comments(UPDATED_COMMENTS);
 
         restEtatPaiementMockMvc
             .perform(
@@ -477,7 +437,6 @@ class EtatPaiementResourceIT {
         partialUpdatedEtatPaiement.setId(etatPaiement.getId());
 
         partialUpdatedEtatPaiement
-            .reference(UPDATED_REFERENCE)
             .paymentNumber(UPDATED_PAYMENT_NUMBER)
             .paymentDate(UPDATED_PAYMENT_DATE)
             .amount(UPDATED_AMOUNT)

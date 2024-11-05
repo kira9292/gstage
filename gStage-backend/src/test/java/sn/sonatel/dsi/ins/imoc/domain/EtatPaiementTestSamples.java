@@ -12,7 +12,6 @@ public class EtatPaiementTestSamples {
     public static EtatPaiement getEtatPaiementSample1() {
         return new EtatPaiement()
             .id(1L)
-            .reference("reference1")
             .paymentNumber("paymentNumber1")
             .actCode("actCode1")
             .paymentPhone("paymentPhone1")
@@ -22,7 +21,6 @@ public class EtatPaiementTestSamples {
     public static EtatPaiement getEtatPaiementSample2() {
         return new EtatPaiement()
             .id(2L)
-            .reference("reference2")
             .paymentNumber("paymentNumber2")
             .actCode("actCode2")
             .paymentPhone("paymentPhone2")
@@ -32,7 +30,6 @@ public class EtatPaiementTestSamples {
     public static EtatPaiement getEtatPaiementRandomSampleGenerator() {
         return new EtatPaiement()
             .id(longCount.incrementAndGet())
-            .reference(UUID.randomUUID().toString())
             .paymentNumber(UUID.randomUUID().toString())
             .actCode(UUID.randomUUID().toString())
             .paymentPhone(UUID.randomUUID().toString())

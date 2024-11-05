@@ -7,11 +7,6 @@
   "databaseType": "sql",
   "fields": [
     {
-      "fieldName": "reference",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
       "fieldName": "validationDate",
       "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]

@@ -24,10 +24,6 @@ public class AttestationPresence implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "reference", nullable = false, unique = true)
-    private String reference;
-
-    @NotNull
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
@@ -35,12 +31,10 @@ public class AttestationPresence implements Serializable {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    @NotNull
-    @Column(name = "signature_date", nullable = false)
+    @Column(name = "signature_date")
     private LocalDate signatureDate;
 
-    @NotNull
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private Boolean status;
 
     @Column(name = "comments")
@@ -51,13 +45,10 @@ public class AttestationPresence implements Serializable {
     private Set<Validation> validations = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "attestationFinStage", "validations", "appUser", "candidat" }, allowSetters = true)
-    private Contrat contrat;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
@@ -66,14 +57,11 @@ public class AttestationPresence implements Serializable {
             "validations",
             "roles",
             "validationStatusUser",
+            "restaurationStagiaires",
         },
         allowSetters = true
     )
     private AppUser appUser;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "attestationPresences", "contrat", "appUser" }, allowSetters = true)
-    private EtatPaiement etatPaiement;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -88,19 +76,6 @@ public class AttestationPresence implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getReference() {
-        return this.reference;
-    }
-
-    public AttestationPresence reference(String reference) {
-        this.setReference(reference);
-        return this;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
     }
 
     public LocalDate getStartDate() {
@@ -199,19 +174,6 @@ public class AttestationPresence implements Serializable {
         return this;
     }
 
-    public Contrat getContrat() {
-        return this.contrat;
-    }
-
-    public void setContrat(Contrat contrat) {
-        this.contrat = contrat;
-    }
-
-    public AttestationPresence contrat(Contrat contrat) {
-        this.setContrat(contrat);
-        return this;
-    }
-
     public AppUser getAppUser() {
         return this.appUser;
     }
@@ -222,19 +184,6 @@ public class AttestationPresence implements Serializable {
 
     public AttestationPresence appUser(AppUser appUser) {
         this.setAppUser(appUser);
-        return this;
-    }
-
-    public EtatPaiement getEtatPaiement() {
-        return this.etatPaiement;
-    }
-
-    public void setEtatPaiement(EtatPaiement etatPaiement) {
-        this.etatPaiement = etatPaiement;
-    }
-
-    public AttestationPresence etatPaiement(EtatPaiement etatPaiement) {
-        this.setEtatPaiement(etatPaiement);
         return this;
     }
 
@@ -262,7 +211,6 @@ public class AttestationPresence implements Serializable {
     public String toString() {
         return "AttestationPresence{" +
             "id=" + getId() +
-            ", reference='" + getReference() + "'" +
             ", startDate='" + getStartDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
             ", signatureDate='" + getSignatureDate() + "'" +

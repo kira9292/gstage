@@ -36,21 +36,18 @@ entity Departement {
 
 
 entity DemandeStage {
-  reference String required unique
-  creationDate LocalDate required
-  status InternshipStatus required
-  description TextBlob required
-  internshipType InternshipType required
-  startDate LocalDate required
-  endDate LocalDate required
-  resume Blob required
-  coverLetter Blob required
+  creationDate LocalDate
+  internshipType InternshipType
+  startDate LocalDate
+  endDate LocalDate
+  cv Blob
+  coverLetter Blob
+  status InternshipStatus
   validated Boolean
 }
 
 entity EtatPaiement {
-  reference String required unique
-  paymentNumber String required unique
+  paymentNumber String
   paymentDate LocalDate required
   amount Double required min(0)
   actCode String required
@@ -61,29 +58,25 @@ entity EtatPaiement {
 }
 
 entity AttestationPresence {
-  reference String required unique
   startDate LocalDate required
   endDate LocalDate required
-  signatureDate LocalDate required
-  status Boolean required
+  signatureDate LocalDate
+  status Boolean
   comments String
 }
 
 entity Candidat {
   firstName String required minlength(2)
   lastName String required minlength(2)
-  birthDate LocalDate required
-  nationality String required
-  birthPlace String required
-  idNumber String required unique
-  address String required
+  birthDate LocalDate
+  nationality String
+  birthPlace String
+  cni String  unique
+  address String
   email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
   phone String required pattern(/^[0-9]{9}$/)
-  educationLevel EducationLevel required
-  school String required
-  registrationNumber String unique
-  currentEducation String required
-  status CandidateStatus required
+  educationLevel EducationLevel
+  school String
 }
 
 entity Contrat {
@@ -105,7 +98,6 @@ entity AttestationFinStage {
 }
 
 entity Validation {
-  reference String required unique
   validationDate LocalDate required
   status ValidationStatus required
   comments String
@@ -148,8 +140,9 @@ enum InternshipStatus {
   EN_ATTENTE,
   ACCEPTE,
   REFUSE,
-  EN_COURS,
-  TERMINE
+  TERMINER,
+  EN_COURS
+
 }
 
 enum ContractStatus {
@@ -186,7 +179,8 @@ enum ERole{
   ADMIN,
   MANAGER,
   RH,
-  DEMANDEUR
+  STAGIAIRE,
+  DFC
 }
 
 relationship OneToMany {
@@ -194,16 +188,11 @@ relationship OneToMany {
     AppUser to EtatPaiement
   AppUser to Contrat
     AppUser to DemandeStage
-  AppUser to Contrat
-    AppUser to EtatPaiement
  AppUser to AttestationPresence
    AppUser to Candidat
-    AppUser to DemandeStage
-  EtatPaiement{attestationPresences} to AttestationPresence{etatPaiement}
     Contrat{validations} to Validation{contrat}
   AttestationFinStage{validations} to Validation{attestationFinStage}
     AppUser{validations} to Validation{user}
-  Candidat{contrats} to Contrat{candidat}
     Departement{services} to Service{departemen}
   Departement{demandeStages} to DemandeStage{departement}
     BusinessUnit{demandeStages} to DemandeStage{businessUnit}
@@ -212,15 +201,13 @@ relationship OneToMany {
 relationship OneToOne {
   DemandeStage{candidat} to Candidat{demandeStage}
     AppUser to Service
-  Contrat{attestationFinStage} to AttestationFinStage{contrat}
+  AppUser{attestationFinStage} to AttestationFinStage{appuser}
   ValidationStatusUser to AppUser
 }
 
 relationship ManyToOne {
   Service{businessUnit} to BusinessUnit
-    RestaurationStagiaire{candidat} to Candidat
-  AttestationPresence{contrat} to Contrat
-    EtatPaiement{contrat} to Contrat
+    RestaurationStagiaire to AppUser
 }
 relationship ManyToMany{
   AppUser to Role

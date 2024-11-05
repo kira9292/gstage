@@ -14,9 +14,6 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="reference" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_validation__reference" />
-            </column>
             <column name="validation_date" type="date">
                 <constraints nullable="false" />
             </column>
@@ -62,7 +59,6 @@
                   tableName="validation"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="reference" type="string"/>
             <column name="validation_date" type="date"/>
             <column name="status" type="string"/>
             <column name="comments" type="string"/>

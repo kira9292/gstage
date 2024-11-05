@@ -32,8 +32,9 @@
   "pagination": "pagination",
   "relationships": [
     {
-      "otherEntityName": "candidat",
-      "relationshipName": "candidat",
+      "otherEntityName": "appUser",
+      "otherEntityRelationshipName": "restaurationStagiaire",
+      "relationshipName": "appUser",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }

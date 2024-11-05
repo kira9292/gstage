@@ -1,8 +1,8 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.AttestationFinStageTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ValidationTestSamples.*;
 
 import java.util.HashSet;
@@ -49,16 +49,16 @@ class AttestationFinStageTest {
     }
 
     @Test
-    void contratTest() {
+    void appuserTest() {
         AttestationFinStage attestationFinStage = getAttestationFinStageRandomSampleGenerator();
-        Contrat contratBack = getContratRandomSampleGenerator();
+        AppUser appUserBack = getAppUserRandomSampleGenerator();
 
-        attestationFinStage.setContrat(contratBack);
-        assertThat(attestationFinStage.getContrat()).isEqualTo(contratBack);
-        assertThat(contratBack.getAttestationFinStage()).isEqualTo(attestationFinStage);
+        attestationFinStage.setAppuser(appUserBack);
+        assertThat(attestationFinStage.getAppuser()).isEqualTo(appUserBack);
+        assertThat(appUserBack.getAttestationFinStage()).isEqualTo(attestationFinStage);
 
-        attestationFinStage.contrat(null);
-        assertThat(attestationFinStage.getContrat()).isNull();
-        assertThat(contratBack.getAttestationFinStage()).isNull();
+        attestationFinStage.appuser(null);
+        assertThat(attestationFinStage.getAppuser()).isNull();
+        assertThat(appUserBack.getAttestationFinStage()).isNull();
     }
 }

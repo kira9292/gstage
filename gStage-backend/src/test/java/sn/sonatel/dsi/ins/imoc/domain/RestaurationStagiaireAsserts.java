@@ -71,6 +71,6 @@ public class RestaurationStagiaireAsserts {
     ) {
         assertThat(expected)
             .as("Verify RestaurationStagiaire relationships")
-            .satisfies(e -> assertThat(e.getCandidat()).as("check candidat").isEqualTo(actual.getCandidat()));
+            .satisfies(e -> assertThat(e.getAppUser()).as("check appUser").isEqualTo(actual.getAppUser()));
     }
 }

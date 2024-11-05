@@ -7,11 +7,6 @@
   "databaseType": "sql",
   "fields": [
     {
-      "fieldName": "reference",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
       "fieldName": "startDate",
       "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
@@ -23,13 +18,11 @@
     },
     {
       "fieldName": "signatureDate",
-      "fieldType": "LocalDate",
-      "fieldValidateRules": ["required"]
+      "fieldType": "LocalDate"
     },
     {
       "fieldName": "status",
-      "fieldType": "Boolean",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Boolean"
     },
     {
       "fieldName": "comments",
@@ -48,22 +41,9 @@
       "relationshipType": "one-to-many"
     },
     {
-      "otherEntityName": "contrat",
-      "relationshipName": "contrat",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
       "otherEntityName": "appUser",
       "otherEntityRelationshipName": "attestationPresence",
       "relationshipName": "appUser",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "etatPaiement",
-      "otherEntityRelationshipName": "attestationPresences",
-      "relationshipName": "etatPaiement",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"
     }

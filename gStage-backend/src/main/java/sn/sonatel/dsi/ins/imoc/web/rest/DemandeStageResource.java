@@ -1,7 +1,5 @@
 package sn.sonatel.dsi.ins.imoc.web.rest;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -53,7 +51,7 @@ public class DemandeStageResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
-    public ResponseEntity<DemandeStage> createDemandeStage(@Valid @RequestBody DemandeStage demandeStage) throws URISyntaxException {
+    public ResponseEntity<DemandeStage> createDemandeStage(@RequestBody DemandeStage demandeStage) throws URISyntaxException {
         LOG.debug("REST request to save DemandeStage : {}", demandeStage);
         if (demandeStage.getId() != null) {
             throw new BadRequestAlertException("A new demandeStage cannot already have an ID", ENTITY_NAME, "idexists");
@@ -77,7 +75,7 @@ public class DemandeStageResource {
     @PutMapping("/{id}")
     public ResponseEntity<DemandeStage> updateDemandeStage(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody DemandeStage demandeStage
+        @RequestBody DemandeStage demandeStage
     ) throws URISyntaxException {
         LOG.debug("REST request to update DemandeStage : {}, {}", id, demandeStage);
         if (demandeStage.getId() == null) {
@@ -111,7 +109,7 @@ public class DemandeStageResource {
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<DemandeStage> partialUpdateDemandeStage(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody DemandeStage demandeStage
+        @RequestBody DemandeStage demandeStage
     ) throws URISyntaxException {
         LOG.debug("REST request to partial update DemandeStage partially : {}, {}", id, demandeStage);
         if (demandeStage.getId() == null) {
@@ -128,17 +126,8 @@ public class DemandeStageResource {
         Optional<DemandeStage> result = demandeStageRepository
             .findById(demandeStage.getId())
             .map(existingDemandeStage -> {
-                if (demandeStage.getReference() != null) {
-                    existingDemandeStage.setReference(demandeStage.getReference());
-                }
                 if (demandeStage.getCreationDate() != null) {
                     existingDemandeStage.setCreationDate(demandeStage.getCreationDate());
-                }
-                if (demandeStage.getStatus() != null) {
-                    existingDemandeStage.setStatus(demandeStage.getStatus());
-                }
-                if (demandeStage.getDescription() != null) {
-                    existingDemandeStage.setDescription(demandeStage.getDescription());
                 }
                 if (demandeStage.getInternshipType() != null) {
                     existingDemandeStage.setInternshipType(demandeStage.getInternshipType());
@@ -149,17 +138,20 @@ public class DemandeStageResource {
                 if (demandeStage.getEndDate() != null) {
                     existingDemandeStage.setEndDate(demandeStage.getEndDate());
                 }
-                if (demandeStage.getResume() != null) {
-                    existingDemandeStage.setResume(demandeStage.getResume());
+                if (demandeStage.getCv() != null) {
+                    existingDemandeStage.setCv(demandeStage.getCv());
                 }
-                if (demandeStage.getResumeContentType() != null) {
-                    existingDemandeStage.setResumeContentType(demandeStage.getResumeContentType());
+                if (demandeStage.getCvContentType() != null) {
+                    existingDemandeStage.setCvContentType(demandeStage.getCvContentType());
                 }
                 if (demandeStage.getCoverLetter() != null) {
                     existingDemandeStage.setCoverLetter(demandeStage.getCoverLetter());
                 }
                 if (demandeStage.getCoverLetterContentType() != null) {
                     existingDemandeStage.setCoverLetterContentType(demandeStage.getCoverLetterContentType());
+                }
+                if (demandeStage.getStatus() != null) {
+                    existingDemandeStage.setStatus(demandeStage.getStatus());
                 }
                 if (demandeStage.getValidated() != null) {
                     existingDemandeStage.setValidated(demandeStage.getValidated());

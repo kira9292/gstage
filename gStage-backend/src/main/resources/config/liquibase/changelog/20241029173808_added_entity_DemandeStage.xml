@@ -14,38 +14,32 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="reference" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_demande_stage__reference" />
-            </column>
             <column name="creation_date" type="date">
-                <constraints nullable="false" />
-            </column>
-            <column name="status" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="description" type="${clobType}">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="internship_type" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="start_date" type="date">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="end_date" type="date">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
-            <column name="resume" type="${blobType}">
-                <constraints nullable="false" />
+            <column name="cv" type="${blobType}">
+                <constraints nullable="true" />
             </column>
-            <column name="resume_content_type" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="cv_content_type" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="cover_letter" type="${blobType}">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="cover_letter_content_type" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="validated" type="boolean">
                 <constraints nullable="true" />
@@ -83,17 +77,15 @@
                   tableName="demande_stage"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="reference" type="string"/>
             <column name="creation_date" type="date"/>
-            <column name="status" type="string"/>
-            <column name="description" type="clob"/>
             <column name="internship_type" type="string"/>
             <column name="start_date" type="date"/>
             <column name="end_date" type="date"/>
-            <column name="resume" type="blob"/>
-            <column name="resume_content_type" type="string"/>
+            <column name="cv" type="blob"/>
+            <column name="cv_content_type" type="string"/>
             <column name="cover_letter" type="blob"/>
             <column name="cover_letter_content_type" type="string"/>
+            <column name="status" type="string"/>
             <column name="validated" type="boolean"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

@@ -47,7 +47,6 @@ public class AttestationPresenceAsserts {
     public static void assertAttestationPresenceUpdatableFieldsEquals(AttestationPresence expected, AttestationPresence actual) {
         assertThat(expected)
             .as("Verify AttestationPresence relevant properties")
-            .satisfies(e -> assertThat(e.getReference()).as("check reference").isEqualTo(actual.getReference()))
             .satisfies(e -> assertThat(e.getStartDate()).as("check startDate").isEqualTo(actual.getStartDate()))
             .satisfies(e -> assertThat(e.getEndDate()).as("check endDate").isEqualTo(actual.getEndDate()))
             .satisfies(e -> assertThat(e.getSignatureDate()).as("check signatureDate").isEqualTo(actual.getSignatureDate()))
@@ -64,8 +63,6 @@ public class AttestationPresenceAsserts {
     public static void assertAttestationPresenceUpdatableRelationshipsEquals(AttestationPresence expected, AttestationPresence actual) {
         assertThat(expected)
             .as("Verify AttestationPresence relationships")
-            .satisfies(e -> assertThat(e.getContrat()).as("check contrat").isEqualTo(actual.getContrat()))
-            .satisfies(e -> assertThat(e.getAppUser()).as("check appUser").isEqualTo(actual.getAppUser()))
-            .satisfies(e -> assertThat(e.getEtatPaiement()).as("check etatPaiement").isEqualTo(actual.getEtatPaiement()));
+            .satisfies(e -> assertThat(e.getAppUser()).as("check appUser").isEqualTo(actual.getAppUser()));
     }
 }

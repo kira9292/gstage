@@ -2,11 +2,13 @@ package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.AttestationFinStageTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.AttestationPresenceTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.DemandeStageTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.EtatPaiementTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.RestaurationStagiaireTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.RoleTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ServiceTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ValidationStatusUserTestSamples.*;
@@ -43,6 +45,18 @@ class AppUserTest {
 
         appUser.service(null);
         assertThat(appUser.getService()).isNull();
+    }
+
+    @Test
+    void attestationFinStageTest() {
+        AppUser appUser = getAppUserRandomSampleGenerator();
+        AttestationFinStage attestationFinStageBack = getAttestationFinStageRandomSampleGenerator();
+
+        appUser.setAttestationFinStage(attestationFinStageBack);
+        assertThat(appUser.getAttestationFinStage()).isEqualTo(attestationFinStageBack);
+
+        appUser.attestationFinStage(null);
+        assertThat(appUser.getAttestationFinStage()).isNull();
     }
 
     @Test
@@ -207,5 +221,27 @@ class AppUserTest {
         appUser.validationStatusUser(null);
         assertThat(appUser.getValidationStatusUser()).isNull();
         assertThat(validationStatusUserBack.getAppUser()).isNull();
+    }
+
+    @Test
+    void restaurationStagiaireTest() {
+        AppUser appUser = getAppUserRandomSampleGenerator();
+        RestaurationStagiaire restaurationStagiaireBack = getRestaurationStagiaireRandomSampleGenerator();
+
+        appUser.addRestaurationStagiaire(restaurationStagiaireBack);
+        assertThat(appUser.getRestaurationStagiaires()).containsOnly(restaurationStagiaireBack);
+        assertThat(restaurationStagiaireBack.getAppUser()).isEqualTo(appUser);
+
+        appUser.removeRestaurationStagiaire(restaurationStagiaireBack);
+        assertThat(appUser.getRestaurationStagiaires()).doesNotContain(restaurationStagiaireBack);
+        assertThat(restaurationStagiaireBack.getAppUser()).isNull();
+
+        appUser.restaurationStagiaires(new HashSet<>(Set.of(restaurationStagiaireBack)));
+        assertThat(appUser.getRestaurationStagiaires()).containsOnly(restaurationStagiaireBack);
+        assertThat(restaurationStagiaireBack.getAppUser()).isEqualTo(appUser);
+
+        appUser.setRestaurationStagiaires(new HashSet<>());
+        assertThat(appUser.getRestaurationStagiaires()).doesNotContain(restaurationStagiaireBack);
+        assertThat(restaurationStagiaireBack.getAppUser()).isNull();
     }
 }

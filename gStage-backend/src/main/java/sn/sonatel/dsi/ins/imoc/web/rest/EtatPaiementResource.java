@@ -128,9 +128,6 @@ public class EtatPaiementResource {
         Optional<EtatPaiement> result = etatPaiementRepository
             .findById(etatPaiement.getId())
             .map(existingEtatPaiement -> {
-                if (etatPaiement.getReference() != null) {
-                    existingEtatPaiement.setReference(etatPaiement.getReference());
-                }
                 if (etatPaiement.getPaymentNumber() != null) {
                     existingEtatPaiement.setPaymentNumber(etatPaiement.getPaymentNumber());
                 }

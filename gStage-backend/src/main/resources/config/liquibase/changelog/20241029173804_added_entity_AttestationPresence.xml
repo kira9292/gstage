@@ -14,9 +14,6 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="reference" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_attestation_presence__reference" />
-            </column>
             <column name="start_date" type="date">
                 <constraints nullable="false" />
             </column>
@@ -24,21 +21,15 @@
                 <constraints nullable="false" />
             </column>
             <column name="signature_date" type="date">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="status" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="comments" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="contrat_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="app_user_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="etat_paiement_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -62,7 +53,6 @@
                   tableName="attestation_presence"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="reference" type="string"/>
             <column name="start_date" type="date"/>
             <column name="end_date" type="date"/>
             <column name="signature_date" type="date"/>

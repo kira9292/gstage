@@ -7,5 +7,6 @@ public enum ERole {
     ADMIN,
     MANAGER,
     RH,
-    DEMANDEUR,
+    STAGIAIRE,
+    DFC,
 }

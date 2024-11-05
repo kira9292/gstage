@@ -7,51 +7,34 @@
   "databaseType": "sql",
   "fields": [
     {
-      "fieldName": "reference",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
       "fieldName": "creationDate",
-      "fieldType": "LocalDate",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "status",
-      "fieldType": "InternshipStatus",
-      "fieldValidateRules": ["required"],
-      "fieldValues": "EN_ATTENTE,ACCEPTE,REFUSE,EN_COURS,TERMINE"
-    },
-    {
-      "fieldName": "description",
-      "fieldType": "TextBlob",
-      "fieldValidateRules": ["required"]
+      "fieldType": "LocalDate"
     },
     {
       "fieldName": "internshipType",
       "fieldType": "InternshipType",
-      "fieldValidateRules": ["required"],
       "fieldValues": "ACADEMIQUE,PROFESSIONNEL,PROJET_FIN_ETUDES"
     },
     {
       "fieldName": "startDate",
-      "fieldType": "LocalDate",
-      "fieldValidateRules": ["required"]
+      "fieldType": "LocalDate"
     },
     {
       "fieldName": "endDate",
-      "fieldType": "LocalDate",
-      "fieldValidateRules": ["required"]
+      "fieldType": "LocalDate"
     },
     {
-      "fieldName": "resume",
-      "fieldType": "Blob",
-      "fieldValidateRules": ["required"]
+      "fieldName": "cv",
+      "fieldType": "Blob"
     },
     {
       "fieldName": "coverLetter",
-      "fieldType": "Blob",
-      "fieldValidateRules": ["required"]
+      "fieldType": "Blob"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "InternshipStatus",
+      "fieldValues": "EN_ATTENTE,ACCEPTE,REFUSE,TERMINER,EN_COURS"
     },
     {
       "fieldName": "validated",

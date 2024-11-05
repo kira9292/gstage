@@ -21,19 +21,19 @@
                 <constraints nullable="false" />
             </column>
             <column name="birth_date" type="date">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="nationality" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="birth_place" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
-            <column name="id_number" type="varchar(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="ux_candidat__id_number" />
+            <column name="cni" type="varchar(255)">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_candidat__cni" />
             </column>
             <column name="address" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="email" type="varchar(255)">
                 <constraints nullable="false" />
@@ -42,19 +42,10 @@
                 <constraints nullable="false" />
             </column>
             <column name="education_level" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="school" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="registration_number" type="varchar(255)">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_candidat__registration_number" />
-            </column>
-            <column name="current_education" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="status" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="app_user_id" type="bigint">
                 <constraints nullable="true" />
@@ -85,15 +76,12 @@
             <column name="birth_date" type="date"/>
             <column name="nationality" type="string"/>
             <column name="birth_place" type="string"/>
-            <column name="id_number" type="string"/>
+            <column name="cni" type="string"/>
             <column name="address" type="string"/>
             <column name="email" type="string"/>
             <column name="phone" type="string"/>
             <column name="education_level" type="string"/>
             <column name="school" type="string"/>
-            <column name="registration_number" type="string"/>
-            <column name="current_education" type="string"/>
-            <column name="status" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

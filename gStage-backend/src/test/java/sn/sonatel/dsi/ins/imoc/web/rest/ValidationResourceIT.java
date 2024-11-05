@@ -35,9 +35,6 @@ import sn.sonatel.dsi.ins.imoc.repository.ValidationRepository;
 @WithMockUser
 class ValidationResourceIT {
 
-    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
-    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
-
     private static final LocalDate DEFAULT_VALIDATION_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_VALIDATION_DATE = LocalDate.now(ZoneId.systemDefault());
 
@@ -80,7 +77,6 @@ class ValidationResourceIT {
      */
     public static Validation createEntity() {
         return new Validation()
-            .reference(DEFAULT_REFERENCE)
             .validationDate(DEFAULT_VALIDATION_DATE)
             .status(DEFAULT_STATUS)
             .comments(DEFAULT_COMMENTS)
@@ -95,7 +91,6 @@ class ValidationResourceIT {
      */
     public static Validation createUpdatedEntity() {
         return new Validation()
-            .reference(UPDATED_REFERENCE)
             .validationDate(UPDATED_VALIDATION_DATE)
             .status(UPDATED_STATUS)
             .comments(UPDATED_COMMENTS)
@@ -152,22 +147,6 @@ class ValidationResourceIT {
 
         // Validate the Validation in the database
         assertSameRepositoryCount(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    void checkReferenceIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        validation.setReference(null);
-
-        // Create the Validation, which fails.
-
-        restValidationMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(validation)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
     }
 
     @Test
@@ -230,7 +209,6 @@ class ValidationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(validation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].validationDate").value(hasItem(DEFAULT_VALIDATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
@@ -249,7 +227,6 @@ class ValidationResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(validation.getId().intValue()))
-            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.validationDate").value(DEFAULT_VALIDATION_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS))
@@ -276,7 +253,6 @@ class ValidationResourceIT {
         // Disconnect from session so that the updates on updatedValidation are not directly saved in db
         em.detach(updatedValidation);
         updatedValidation
-            .reference(UPDATED_REFERENCE)
             .validationDate(UPDATED_VALIDATION_DATE)
             .status(UPDATED_STATUS)
             .comments(UPDATED_COMMENTS)
@@ -358,7 +334,7 @@ class ValidationResourceIT {
         Validation partialUpdatedValidation = new Validation();
         partialUpdatedValidation.setId(validation.getId());
 
-        partialUpdatedValidation.validationDate(UPDATED_VALIDATION_DATE).validatedBy(UPDATED_VALIDATED_BY);
+        partialUpdatedValidation.status(UPDATED_STATUS);
 
         restValidationMockMvc
             .perform(
@@ -390,7 +366,6 @@ class ValidationResourceIT {
         partialUpdatedValidation.setId(validation.getId());
 
         partialUpdatedValidation
-            .reference(UPDATED_REFERENCE)
             .validationDate(UPDATED_VALIDATION_DATE)
             .status(UPDATED_STATUS)
             .comments(UPDATED_COMMENTS)

@@ -129,9 +129,6 @@ public class AttestationPresenceResource {
         Optional<AttestationPresence> result = attestationPresenceRepository
             .findById(attestationPresence.getId())
             .map(existingAttestationPresence -> {
-                if (attestationPresence.getReference() != null) {
-                    existingAttestationPresence.setReference(attestationPresence.getReference());
-                }
                 if (attestationPresence.getStartDate() != null) {
                     existingAttestationPresence.setStartDate(attestationPresence.getStartDate());
                 }

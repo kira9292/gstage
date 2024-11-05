@@ -26,7 +26,7 @@
             <column name="card_number" type="varchar(255)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_restauration_stagiaire__card_number" />
             </column>
-            <column name="candidat_id" type="bigint">
+            <column name="app_user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

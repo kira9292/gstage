@@ -37,17 +37,8 @@ import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 @WithMockUser
 class DemandeStageResourceIT {
 
-    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
-    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
-
     private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
-
-    private static final InternshipStatus DEFAULT_STATUS = InternshipStatus.EN_ATTENTE;
-    private static final InternshipStatus UPDATED_STATUS = InternshipStatus.ACCEPTE;
-
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
-    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     private static final InternshipType DEFAULT_INTERNSHIP_TYPE = InternshipType.ACADEMIQUE;
     private static final InternshipType UPDATED_INTERNSHIP_TYPE = InternshipType.PROFESSIONNEL;
@@ -58,15 +49,18 @@ class DemandeStageResourceIT {
     private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
 
-    private static final byte[] DEFAULT_RESUME = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_RESUME = TestUtil.createByteArray(1, "1");
-    private static final String DEFAULT_RESUME_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_RESUME_CONTENT_TYPE = "image/png";
+    private static final byte[] DEFAULT_CV = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_CV = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_CV_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_CV_CONTENT_TYPE = "image/png";
 
     private static final byte[] DEFAULT_COVER_LETTER = TestUtil.createByteArray(1, "0");
     private static final byte[] UPDATED_COVER_LETTER = TestUtil.createByteArray(1, "1");
     private static final String DEFAULT_COVER_LETTER_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_COVER_LETTER_CONTENT_TYPE = "image/png";
+
+    private static final InternshipStatus DEFAULT_STATUS = InternshipStatus.EN_ATTENTE;
+    private static final InternshipStatus UPDATED_STATUS = InternshipStatus.ACCEPTE;
 
     private static final Boolean DEFAULT_VALIDATED = false;
     private static final Boolean UPDATED_VALIDATED = true;
@@ -101,17 +95,15 @@ class DemandeStageResourceIT {
      */
     public static DemandeStage createEntity() {
         return new DemandeStage()
-            .reference(DEFAULT_REFERENCE)
             .creationDate(DEFAULT_CREATION_DATE)
-            .status(DEFAULT_STATUS)
-            .description(DEFAULT_DESCRIPTION)
             .internshipType(DEFAULT_INTERNSHIP_TYPE)
             .startDate(DEFAULT_START_DATE)
             .endDate(DEFAULT_END_DATE)
-            .resume(DEFAULT_RESUME)
-            .resumeContentType(DEFAULT_RESUME_CONTENT_TYPE)
+            .cv(DEFAULT_CV)
+            .cvContentType(DEFAULT_CV_CONTENT_TYPE)
             .coverLetter(DEFAULT_COVER_LETTER)
             .coverLetterContentType(DEFAULT_COVER_LETTER_CONTENT_TYPE)
+            .status(DEFAULT_STATUS)
             .validated(DEFAULT_VALIDATED);
     }
 
@@ -123,17 +115,15 @@ class DemandeStageResourceIT {
      */
     public static DemandeStage createUpdatedEntity() {
         return new DemandeStage()
-            .reference(UPDATED_REFERENCE)
             .creationDate(UPDATED_CREATION_DATE)
-            .status(UPDATED_STATUS)
-            .description(UPDATED_DESCRIPTION)
             .internshipType(UPDATED_INTERNSHIP_TYPE)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
-            .resume(UPDATED_RESUME)
-            .resumeContentType(UPDATED_RESUME_CONTENT_TYPE)
+            .cv(UPDATED_CV)
+            .cvContentType(UPDATED_CV_CONTENT_TYPE)
             .coverLetter(UPDATED_COVER_LETTER)
             .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
+            .status(UPDATED_STATUS)
             .validated(UPDATED_VALIDATED);
     }
 
@@ -191,102 +181,6 @@ class DemandeStageResourceIT {
 
     @Test
     @Transactional
-    void checkReferenceIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        demandeStage.setReference(null);
-
-        // Create the DemandeStage, which fails.
-
-        restDemandeStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(demandeStage)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkCreationDateIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        demandeStage.setCreationDate(null);
-
-        // Create the DemandeStage, which fails.
-
-        restDemandeStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(demandeStage)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkStatusIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        demandeStage.setStatus(null);
-
-        // Create the DemandeStage, which fails.
-
-        restDemandeStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(demandeStage)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkInternshipTypeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        demandeStage.setInternshipType(null);
-
-        // Create the DemandeStage, which fails.
-
-        restDemandeStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(demandeStage)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkStartDateIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        demandeStage.setStartDate(null);
-
-        // Create the DemandeStage, which fails.
-
-        restDemandeStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(demandeStage)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkEndDateIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        demandeStage.setEndDate(null);
-
-        // Create the DemandeStage, which fails.
-
-        restDemandeStageMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(demandeStage)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllDemandeStages() throws Exception {
         // Initialize the database
         insertedDemandeStage = demandeStageRepository.saveAndFlush(demandeStage);
@@ -297,17 +191,15 @@ class DemandeStageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(demandeStage.getId().intValue())))
-            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].internshipType").value(hasItem(DEFAULT_INTERNSHIP_TYPE.toString())))
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
-            .andExpect(jsonPath("$.[*].resumeContentType").value(hasItem(DEFAULT_RESUME_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].resume").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_RESUME))))
+            .andExpect(jsonPath("$.[*].cvContentType").value(hasItem(DEFAULT_CV_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].cv").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_CV))))
             .andExpect(jsonPath("$.[*].coverLetterContentType").value(hasItem(DEFAULT_COVER_LETTER_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].coverLetter").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_COVER_LETTER))))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].validated").value(hasItem(DEFAULT_VALIDATED.booleanValue())));
     }
 
@@ -323,17 +215,15 @@ class DemandeStageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(demandeStage.getId().intValue()))
-            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.internshipType").value(DEFAULT_INTERNSHIP_TYPE.toString()))
             .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
-            .andExpect(jsonPath("$.resumeContentType").value(DEFAULT_RESUME_CONTENT_TYPE))
-            .andExpect(jsonPath("$.resume").value(Base64.getEncoder().encodeToString(DEFAULT_RESUME)))
+            .andExpect(jsonPath("$.cvContentType").value(DEFAULT_CV_CONTENT_TYPE))
+            .andExpect(jsonPath("$.cv").value(Base64.getEncoder().encodeToString(DEFAULT_CV)))
             .andExpect(jsonPath("$.coverLetterContentType").value(DEFAULT_COVER_LETTER_CONTENT_TYPE))
             .andExpect(jsonPath("$.coverLetter").value(Base64.getEncoder().encodeToString(DEFAULT_COVER_LETTER)))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.validated").value(DEFAULT_VALIDATED.booleanValue()));
     }
 
@@ -357,17 +247,15 @@ class DemandeStageResourceIT {
         // Disconnect from session so that the updates on updatedDemandeStage are not directly saved in db
         em.detach(updatedDemandeStage);
         updatedDemandeStage
-            .reference(UPDATED_REFERENCE)
             .creationDate(UPDATED_CREATION_DATE)
-            .status(UPDATED_STATUS)
-            .description(UPDATED_DESCRIPTION)
             .internshipType(UPDATED_INTERNSHIP_TYPE)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
-            .resume(UPDATED_RESUME)
-            .resumeContentType(UPDATED_RESUME_CONTENT_TYPE)
+            .cv(UPDATED_CV)
+            .cvContentType(UPDATED_CV_CONTENT_TYPE)
             .coverLetter(UPDATED_COVER_LETTER)
             .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
+            .status(UPDATED_STATUS)
             .validated(UPDATED_VALIDATED);
 
         restDemandeStageMockMvc
@@ -449,12 +337,12 @@ class DemandeStageResourceIT {
         partialUpdatedDemandeStage.setId(demandeStage.getId());
 
         partialUpdatedDemandeStage
-            .description(UPDATED_DESCRIPTION)
-            .internshipType(UPDATED_INTERNSHIP_TYPE)
-            .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
-            .resume(UPDATED_RESUME)
-            .resumeContentType(UPDATED_RESUME_CONTENT_TYPE)
+            .cv(UPDATED_CV)
+            .cvContentType(UPDATED_CV_CONTENT_TYPE)
+            .coverLetter(UPDATED_COVER_LETTER)
+            .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
+            .status(UPDATED_STATUS)
             .validated(UPDATED_VALIDATED);
 
         restDemandeStageMockMvc
@@ -487,17 +375,15 @@ class DemandeStageResourceIT {
         partialUpdatedDemandeStage.setId(demandeStage.getId());
 
         partialUpdatedDemandeStage
-            .reference(UPDATED_REFERENCE)
             .creationDate(UPDATED_CREATION_DATE)
-            .status(UPDATED_STATUS)
-            .description(UPDATED_DESCRIPTION)
             .internshipType(UPDATED_INTERNSHIP_TYPE)
             .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
-            .resume(UPDATED_RESUME)
-            .resumeContentType(UPDATED_RESUME_CONTENT_TYPE)
+            .cv(UPDATED_CV)
+            .cvContentType(UPDATED_CV_CONTENT_TYPE)
             .coverLetter(UPDATED_COVER_LETTER)
             .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
+            .status(UPDATED_STATUS)
             .validated(UPDATED_VALIDATED);
 
         restDemandeStageMockMvc

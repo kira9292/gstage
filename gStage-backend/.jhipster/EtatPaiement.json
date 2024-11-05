@@ -7,14 +7,8 @@
   "databaseType": "sql",
   "fields": [
     {
-      "fieldName": "reference",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
-    },
-    {
       "fieldName": "paymentNumber",
-      "fieldType": "String",
-      "fieldValidateRules": ["required", "unique"]
+      "fieldType": "String"
     },
     {
       "fieldName": "paymentDate",
@@ -57,19 +51,6 @@
   "name": "EtatPaiement",
   "pagination": "pagination",
   "relationships": [
-    {
-      "otherEntityName": "attestationPresence",
-      "otherEntityRelationshipName": "etatPaiement",
-      "relationshipName": "attestationPresences",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "contrat",
-      "relationshipName": "contrat",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
     {
       "otherEntityName": "appUser",
       "otherEntityRelationshipName": "etatPaiement",

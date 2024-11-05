@@ -166,11 +166,11 @@ public class AttestationFinStageResource {
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(name = "filter", required = false) String filter
     ) {
-        if ("contrat-is-null".equals(filter)) {
-            LOG.debug("REST request to get all AttestationFinStages where contrat is null");
+        if ("appuser-is-null".equals(filter)) {
+            LOG.debug("REST request to get all AttestationFinStages where appuser is null");
             return new ResponseEntity<>(
                 StreamSupport.stream(attestationFinStageRepository.findAll().spliterator(), false)
-                    .filter(attestationFinStage -> attestationFinStage.getContrat() == null)
+                    .filter(attestationFinStage -> attestationFinStage.getAppuser() == null)
                     .toList(),
                 HttpStatus.OK
             );

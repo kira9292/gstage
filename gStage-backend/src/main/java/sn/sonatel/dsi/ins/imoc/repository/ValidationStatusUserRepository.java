@@ -12,6 +12,5 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface ValidationStatusUserRepository extends JpaRepository<ValidationStatusUser, Long> {
-
     Optional<ValidationStatusUser> findByCode(String code);
 }

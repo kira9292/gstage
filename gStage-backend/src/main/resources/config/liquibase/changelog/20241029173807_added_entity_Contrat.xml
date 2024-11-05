@@ -38,13 +38,7 @@
             <column name="comments" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="attestation_fin_stage_id" type="bigint">
-                <constraints nullable="true" unique="true" uniqueConstraintName="ux_contrat__attestation_fin_stage_id" />
-            </column>
             <column name="app_user_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="candidat_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
