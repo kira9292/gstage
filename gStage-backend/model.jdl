@@ -17,7 +17,7 @@ entity AppUser {
   phone String
   formation String
   niveau EducationLevel
-  statue Boolean
+  status Boolean
 }
 
 entity Role{

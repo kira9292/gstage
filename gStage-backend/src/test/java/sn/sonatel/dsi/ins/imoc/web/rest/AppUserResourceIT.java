@@ -66,8 +66,8 @@ class AppUserResourceIT {
     private static final EducationLevel DEFAULT_NIVEAU = EducationLevel.BAC;
     private static final EducationLevel UPDATED_NIVEAU = EducationLevel.BAC_PLUS_2;
 
-    private static final Boolean DEFAULT_STATUE = false;
-    private static final Boolean UPDATED_STATUE = true;
+    private static final Boolean DEFAULT_STATUS = false;
+    private static final Boolean UPDATED_STATUS = true;
 
     private static final String ENTITY_API_URL = "/api/app-users";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -113,7 +113,7 @@ class AppUserResourceIT {
             .phone(DEFAULT_PHONE)
             .formation(DEFAULT_FORMATION)
             .niveau(DEFAULT_NIVEAU)
-            .statue(DEFAULT_STATUE);
+            .status(DEFAULT_STATUS);
     }
 
     /**
@@ -132,7 +132,7 @@ class AppUserResourceIT {
             .phone(UPDATED_PHONE)
             .formation(UPDATED_FORMATION)
             .niveau(UPDATED_NIVEAU)
-            .statue(UPDATED_STATUE);
+            .status(UPDATED_STATUS);
     }
 
     @BeforeEach
@@ -287,7 +287,7 @@ class AppUserResourceIT {
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
             .andExpect(jsonPath("$.[*].formation").value(hasItem(DEFAULT_FORMATION)))
             .andExpect(jsonPath("$.[*].niveau").value(hasItem(DEFAULT_NIVEAU.toString())))
-            .andExpect(jsonPath("$.[*].statue").value(hasItem(DEFAULT_STATUE.booleanValue())));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.booleanValue())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -327,7 +327,7 @@ class AppUserResourceIT {
             .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
             .andExpect(jsonPath("$.formation").value(DEFAULT_FORMATION))
             .andExpect(jsonPath("$.niveau").value(DEFAULT_NIVEAU.toString()))
-            .andExpect(jsonPath("$.statue").value(DEFAULT_STATUE.booleanValue()));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.booleanValue()));
     }
 
     @Test
@@ -358,7 +358,7 @@ class AppUserResourceIT {
             .phone(UPDATED_PHONE)
             .formation(UPDATED_FORMATION)
             .niveau(UPDATED_NIVEAU)
-            .statue(UPDATED_STATUE);
+            .status(UPDATED_STATUS);
 
         restAppUserMockMvc
             .perform(
@@ -477,7 +477,7 @@ class AppUserResourceIT {
             .phone(UPDATED_PHONE)
             .formation(UPDATED_FORMATION)
             .niveau(UPDATED_NIVEAU)
-            .statue(UPDATED_STATUE);
+            .status(UPDATED_STATUS);
 
         restAppUserMockMvc
             .perform(

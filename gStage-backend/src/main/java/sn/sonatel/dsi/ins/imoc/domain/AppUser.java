@@ -17,7 +17,7 @@ import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 @Entity
 @Table(name = "app_user")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class AppUser implements UserDetails,Serializable {
+public class AppUser implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,8 +59,8 @@ public class AppUser implements UserDetails,Serializable {
     @Column(name = "niveau")
     private EducationLevel niveau;
 
-    @Column(name = "statue")
-    private Boolean statue;
+    @Column(name = "status")
+    private Boolean status;
 
     @JsonIgnoreProperties(value = { "businessUnit", "appUser", "departemen" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
@@ -125,6 +125,7 @@ public class AppUser implements UserDetails,Serializable {
         }
         return list;
     }
+
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
@@ -262,17 +263,17 @@ public class AppUser implements UserDetails,Serializable {
         this.niveau = niveau;
     }
 
-    public Boolean getStatue() {
-        return this.statue;
+    public Boolean getStatus() {
+        return this.status;
     }
 
-    public AppUser statue(Boolean statue) {
-        this.setStatue(statue);
+    public AppUser status(Boolean status) {
+        this.setStatus(status);
         return this;
     }
 
-    public void setStatue(Boolean statue) {
-        this.statue = statue;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Service getService() {
@@ -592,7 +593,7 @@ public class AppUser implements UserDetails,Serializable {
             ", phone='" + getPhone() + "'" +
             ", formation='" + getFormation() + "'" +
             ", niveau='" + getNiveau() + "'" +
-            ", statue='" + getStatue() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
     }
 }

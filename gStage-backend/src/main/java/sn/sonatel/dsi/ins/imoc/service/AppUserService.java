@@ -65,7 +65,7 @@ public class AppUserService implements UserDetailsService {
         }
         String mdpCrypte = this.passwordEncoder.encode(appUser.getPassword());
         appUser.setPassword(mdpCrypte);
-        appUser.setStatue(false);
+        appUser.setStatus(false);
 
         Role role = new Role();
         role.setName(ERole.STAGIAIRE);
@@ -88,7 +88,7 @@ public class AppUserService implements UserDetailsService {
 
         AppUser useractivate = this.appUserRepository.findById(validation.getAppUser().getId()).
             orElseThrow(()-> new RuntimeException("user inconnue"));
-        useractivate.setStatue(true);
+        useractivate.setStatus(true);
     }
 
 
@@ -162,8 +162,8 @@ public class AppUserService implements UserDetailsService {
                 if (appUser.getNiveau() != null) {
                     existingAppUser.setNiveau(appUser.getNiveau());
                 }
-                if (appUser.getStatue() != null) {
-                    existingAppUser.setStatue(appUser.getStatue());
+                if (appUser.getStatus() != null) {
+                    existingAppUser.setStatus(appUser.getStatus());
                 }
 
                 return existingAppUser;

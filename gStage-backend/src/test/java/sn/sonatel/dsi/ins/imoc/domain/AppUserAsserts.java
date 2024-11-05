@@ -55,7 +55,7 @@ public class AppUserAsserts {
             .satisfies(e -> assertThat(e.getPhone()).as("check phone").isEqualTo(actual.getPhone()))
             .satisfies(e -> assertThat(e.getFormation()).as("check formation").isEqualTo(actual.getFormation()))
             .satisfies(e -> assertThat(e.getNiveau()).as("check niveau").isEqualTo(actual.getNiveau()))
-            .satisfies(e -> assertThat(e.getStatue()).as("check statue").isEqualTo(actual.getStatue()));
+            .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()));
     }
 
     /**
