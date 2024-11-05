@@ -20,6 +20,12 @@ entity AppUser {
   status Boolean
 }
 
+entity  Jwt{
+  desactive Boolean
+  expire Boolean
+
+}
+
 entity Role{
   name ERole
 }
@@ -208,6 +214,7 @@ relationship OneToOne {
 relationship ManyToOne {
   Service{businessUnit} to BusinessUnit
     RestaurationStagiaire to AppUser
+  Jwt to AppUser
 }
 relationship ManyToMany{
   AppUser to Role

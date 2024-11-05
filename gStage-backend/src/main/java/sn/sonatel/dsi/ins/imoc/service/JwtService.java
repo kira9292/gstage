@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Service;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.Jwt;
 import sn.sonatel.dsi.ins.imoc.domain.Role;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
 
@@ -18,6 +19,7 @@ import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -31,7 +33,9 @@ public class JwtService {
 
     public Map<String, String> generate(String username) {
         AppUser user = (AppUser) this.appUserService.loadUserByUsername(username);
-        return generatejwt(user);
+        final Map<String, String> jwtMap = this.generatejwt(user);
+
+        return jwtMap;
     }
     public Map<String, String> generatejwt(AppUser user) {
         final long currentTime = System.currentTimeMillis();

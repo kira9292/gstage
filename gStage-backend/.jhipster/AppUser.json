@@ -133,6 +133,13 @@
       "relationshipName": "restaurationStagiaire",
       "relationshipSide": "right",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "jwt",
+      "otherEntityRelationshipName": "appUser",
+      "relationshipName": "jwt",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-many"
     }
   ],
   "searchEngine": "no",

@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
+import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.service.DemandeStageService;
 
@@ -16,10 +18,19 @@ public class DemandeStageController {
 
     @Autowired
     DemandeStageRepository demandeStageRepository;
-    @PostMapping("/api/postuler")
-    public void postuler(@RequestBody DemandeStage demandeStage) {
+
+    @Autowired
+    private CandidatRepository candidatRepository;
+    @PostMapping("/api/demandeStage")
+    public void create(@RequestBody DemandeStage demandeStage) {
         AppUser appUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         demandeStage.setAppUser(appUser);
         this.demandeStageRepository.save(demandeStage);
+    }
+    @PostMapping("/api/candidater")
+    public void postuler(@RequestBody Candidat candidat) {
+
+        this.candidatRepository.save(candidat);
+
     }
 }

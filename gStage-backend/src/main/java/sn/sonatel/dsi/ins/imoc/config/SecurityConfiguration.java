@@ -82,7 +82,8 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/inscription")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/activation")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/connexion")).permitAll()
-                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/connexion")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/demandeStage")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/canditater")).permitAll()
 
                     .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers(mvc.pattern("/api/**")).authenticated()
