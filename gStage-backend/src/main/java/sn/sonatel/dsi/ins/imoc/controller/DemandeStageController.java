@@ -23,6 +23,7 @@ public class DemandeStageController {
     private CandidatRepository candidatRepository;
     @PostMapping("/api/demandeStage")
     public void create(@RequestBody DemandeStage demandeStage) {
+
         AppUser appUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         demandeStage.setAppUser(appUser);
         this.demandeStageRepository.save(demandeStage);
