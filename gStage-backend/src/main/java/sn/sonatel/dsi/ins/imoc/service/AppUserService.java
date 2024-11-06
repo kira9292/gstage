@@ -49,7 +49,7 @@ public class AppUserService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return  this.appUserRepository.
-            findByEmail(username).
+            findByEmailWithRoles(username).
             orElseThrow(()-> new UsernameNotFoundException("Aucun n'utilisateur ne correspond"));
     }
 

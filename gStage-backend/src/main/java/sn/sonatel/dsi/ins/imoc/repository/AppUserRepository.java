@@ -31,6 +31,6 @@ public interface AppUserRepository extends AppUserRepositoryWithBagRelationships
 
     Optional<AppUser> findByEmail(String email);
 
-//    @Query("SELECT u FROM AppUser u JOIN FETCH u.roles WHERE u.email = :email")
-//    Optional<AppUser> findByEmailWithRoles(@Param("email") String email);
+    @Query("SELECT u FROM AppUser u JOIN FETCH u.role WHERE u.email = :email")
+    Optional<AppUser> findByEmailWithRoles(@Param("email") String email);
 }
