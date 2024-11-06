@@ -1,5 +1,7 @@
+
 <!-- Login Form -->
 <div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+
   <div class="max-w-md w-full space-y-8">
     <!-- Orange Accent Line -->
     <div class="h-1 w-24 bg-gradient-to-r from-sonatel-orange to-orange-400 rounded-full mx-auto"></div>
@@ -16,7 +18,11 @@
 
       <div class="text-center space-y-3 mt-8">
         <h2 class="text-2xl font-bold text-gray-900">Connexion</h2>
+
         <p class="text-sm text-gray-500">Connectez-vous à votre compte</p>
+        <div *ngIf="errorMessage" class="text-red-500 text-sm text-center mt-4">
+          {{ errorMessage }}
+        </div>
       </div>
         
       <!-- Formulaire -->
