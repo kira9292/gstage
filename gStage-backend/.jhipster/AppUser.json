@@ -118,7 +118,7 @@
       "otherEntityRelationshipName": "appUser",
       "relationshipName": "role",
       "relationshipSide": "left",
-      "relationshipType": "many-to-many"
+      "relationshipType": "many-to-one"
     },
     {
       "otherEntityName": "validationStatusUser",

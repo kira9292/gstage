@@ -25,7 +25,7 @@
     <include file="config/liquibase/changelog/20241029173813_added_entity_Service.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241029173814_added_entity_Validation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241029183941_added_entity_ValidationStatusUser.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20241105151830_added_entity_Jwt.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20241105151830_added_entity_Jwt.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20241029173802_added_entity_constraints_AppUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241029173804_added_entity_constraints_AttestationPresence.xml" relativeToChangelogFile="false"/>
@@ -37,7 +37,7 @@
     <include file="config/liquibase/changelog/20241029173813_added_entity_constraints_Service.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241029173814_added_entity_constraints_Validation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241029183941_added_entity_constraints_ValidationStatusUser.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20241105151830_added_entity_constraints_Jwt.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/20241105151830_added_entity_constraints_Jwt.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

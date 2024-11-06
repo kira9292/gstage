@@ -334,7 +334,7 @@ class ValidationResourceIT {
         Validation partialUpdatedValidation = new Validation();
         partialUpdatedValidation.setId(validation.getId());
 
-        partialUpdatedValidation.status(UPDATED_STATUS);
+        partialUpdatedValidation.validationDate(UPDATED_VALIDATION_DATE).comments(UPDATED_COMMENTS);
 
         restValidationMockMvc
             .perform(

@@ -47,8 +47,8 @@ class EtatPaiementResourceIT {
     private static final String DEFAULT_ACT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_ACT_CODE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_PAYMENT_PHONE = "798257954";
-    private static final String UPDATED_PAYMENT_PHONE = "083592855";
+    private static final String DEFAULT_PAYMENT_PHONE = "096003370";
+    private static final String UPDATED_PAYMENT_PHONE = "100763277";
 
     private static final PaymentStatus DEFAULT_STATUS = PaymentStatus.EN_ATTENTE;
     private static final PaymentStatus UPDATED_STATUS = PaymentStatus.EN_COURS;
@@ -403,8 +403,10 @@ class EtatPaiementResourceIT {
         partialUpdatedEtatPaiement
             .paymentNumber(UPDATED_PAYMENT_NUMBER)
             .paymentDate(UPDATED_PAYMENT_DATE)
+            .amount(UPDATED_AMOUNT)
+            .actCode(UPDATED_ACT_CODE)
+            .paymentPhone(UPDATED_PAYMENT_PHONE)
             .status(UPDATED_STATUS)
-            .processingDate(UPDATED_PROCESSING_DATE)
             .comments(UPDATED_COMMENTS);
 
         restEtatPaiementMockMvc

@@ -255,6 +255,8 @@ class RoleResourceIT {
         Role partialUpdatedRole = new Role();
         partialUpdatedRole.setId(role.getId());
 
+        partialUpdatedRole.name(UPDATED_NAME);
+
         restRoleMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedRole.getId())

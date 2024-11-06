@@ -288,6 +288,8 @@ class ValidationStatusUserResourceIT {
         ValidationStatusUser partialUpdatedValidationStatusUser = new ValidationStatusUser();
         partialUpdatedValidationStatusUser.setId(validationStatusUser.getId());
 
+        partialUpdatedValidationStatusUser.creation(UPDATED_CREATION).activation(UPDATED_ACTIVATION);
+
         restValidationStatusUserMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedValidationStatusUser.getId())

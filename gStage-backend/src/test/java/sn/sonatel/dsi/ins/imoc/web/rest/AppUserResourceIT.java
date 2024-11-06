@@ -2,7 +2,6 @@ package sn.sonatel.dsi.ins.imoc.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static sn.sonatel.dsi.ins.imoc.domain.AppUserAsserts.*;
@@ -10,19 +9,13 @@ import static sn.sonatel.dsi.ins.imoc.web.rest.TestUtil.createUpdateProxyForBean
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,13 +24,11 @@ import sn.sonatel.dsi.ins.imoc.IntegrationTest;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
-import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 
 /**
  * Integration tests for the {@link AppUserResource} REST controller.
  */
 @IntegrationTest
-@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class AppUserResourceIT {
@@ -45,8 +36,8 @@ class AppUserResourceIT {
     private static final String DEFAULT_USERNAME = "AAAAAAAAAA";
     private static final String UPDATED_USERNAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "i?'Ez@Ki.7";
-    private static final String UPDATED_EMAIL = "\"]:@nV0Kr.Ydt";
+    private static final String DEFAULT_EMAIL = ">@^\\m|y_.=%FV-^";
+    private static final String UPDATED_EMAIL = "U:L@\"5qZ;z.X2\\^H";
 
     private static final String DEFAULT_PASSWORD = "AAAAAAAAAA";
     private static final String UPDATED_PASSWORD = "BBBBBBBBBB";
@@ -80,12 +71,6 @@ class AppUserResourceIT {
 
     @Autowired
     private AppUserRepository appUserRepository;
-
-    @Mock
-    private AppUserRepository appUserRepositoryMock;
-
-    @Mock
-    private AppUserService appUserServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -290,23 +275,6 @@ class AppUserResourceIT {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.booleanValue())));
     }
 
-    @SuppressWarnings({ "unchecked" })
-    void getAllAppUsersWithEagerRelationshipsIsEnabled() throws Exception {
-        when(appUserServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restAppUserMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
-
-        verify(appUserServiceMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({ "unchecked" })
-    void getAllAppUsersWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(appUserServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restAppUserMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
-        verify(appUserRepositoryMock, times(1)).findAll(any(Pageable.class));
-    }
-
     @Test
     @Transactional
     void getAppUser() throws Exception {
@@ -434,13 +402,7 @@ class AppUserResourceIT {
         AppUser partialUpdatedAppUser = new AppUser();
         partialUpdatedAppUser.setId(appUser.getId());
 
-        partialUpdatedAppUser
-            .email(UPDATED_EMAIL)
-            .password(UPDATED_PASSWORD)
-            .name(UPDATED_NAME)
-            .firstName(UPDATED_FIRST_NAME)
-            .phone(UPDATED_PHONE)
-            .formation(UPDATED_FORMATION);
+        partialUpdatedAppUser.username(UPDATED_USERNAME).name(UPDATED_NAME);
 
         restAppUserMockMvc
             .perform(

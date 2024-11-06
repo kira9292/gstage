@@ -56,11 +56,11 @@ class CandidatResourceIT {
     private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "Kr1.!B@LJMe[e.Vcm<iT";
-    private static final String UPDATED_EMAIL = "Z@y.k";
+    private static final String DEFAULT_EMAIL = "/FYe>G@;IS.z";
+    private static final String UPDATED_EMAIL = "b0G\"@4%+M.Td5~7";
 
-    private static final String DEFAULT_PHONE = "719622657";
-    private static final String UPDATED_PHONE = "140247791";
+    private static final String DEFAULT_PHONE = "103896288";
+    private static final String UPDATED_PHONE = "597397496";
 
     private static final EducationLevel DEFAULT_EDUCATION_LEVEL = EducationLevel.BAC;
     private static final EducationLevel UPDATED_EDUCATION_LEVEL = EducationLevel.BAC_PLUS_2;
@@ -408,11 +408,9 @@ class CandidatResourceIT {
 
         partialUpdatedCandidat
             .firstName(UPDATED_FIRST_NAME)
-            .lastName(UPDATED_LAST_NAME)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .birthPlace(UPDATED_BIRTH_PLACE)
-            .phone(UPDATED_PHONE)
-            .educationLevel(UPDATED_EDUCATION_LEVEL);
+            .nationality(UPDATED_NATIONALITY)
+            .address(UPDATED_ADDRESS)
+            .school(UPDATED_SCHOOL);
 
         restCandidatMockMvc
             .perform(

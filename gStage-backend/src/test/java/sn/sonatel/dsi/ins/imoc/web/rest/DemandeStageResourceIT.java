@@ -337,7 +337,9 @@ class DemandeStageResourceIT {
         partialUpdatedDemandeStage.setId(demandeStage.getId());
 
         partialUpdatedDemandeStage
-            .endDate(UPDATED_END_DATE)
+            .creationDate(UPDATED_CREATION_DATE)
+            .internshipType(UPDATED_INTERNSHIP_TYPE)
+            .startDate(UPDATED_START_DATE)
             .cv(UPDATED_CV)
             .cvContentType(UPDATED_CV_CONTENT_TYPE)
             .coverLetter(UPDATED_COVER_LETTER)

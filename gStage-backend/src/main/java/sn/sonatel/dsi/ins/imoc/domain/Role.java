@@ -26,7 +26,7 @@ public class Role implements Serializable {
     @Column(name = "name")
     private ERole name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
     @JsonIgnoreProperties(
         value = {
             "service",
@@ -37,9 +37,10 @@ public class Role implements Serializable {
             "attestationPresences",
             "candidats",
             "validations",
-            "roles",
+            "role",
             "validationStatusUser",
             "restaurationStagiaires",
+            "jwts",
         },
         allowSetters = true
     )
@@ -79,10 +80,10 @@ public class Role implements Serializable {
 
     public void setAppUsers(Set<AppUser> appUsers) {
         if (this.appUsers != null) {
-            this.appUsers.forEach(i -> i.removeRole(this));
+            this.appUsers.forEach(i -> i.setRole(null));
         }
         if (appUsers != null) {
-            appUsers.forEach(i -> i.addRole(this));
+            appUsers.forEach(i -> i.setRole(this));
         }
         this.appUsers = appUsers;
     }
@@ -94,13 +95,13 @@ public class Role implements Serializable {
 
     public Role addAppUser(AppUser appUser) {
         this.appUsers.add(appUser);
-        appUser.getRoles().add(this);
+        appUser.setRole(this);
         return this;
     }
 
     public Role removeAppUser(AppUser appUser) {
         this.appUsers.remove(appUser);
-        appUser.getRoles().remove(this);
+        appUser.setRole(null);
         return this;
     }
 

@@ -21,7 +21,7 @@
       "otherEntityRelationshipName": "role",
       "relationshipName": "appUser",
       "relationshipSide": "right",
-      "relationshipType": "many-to-many"
+      "relationshipType": "one-to-many"
     }
   ],
   "searchEngine": "no"

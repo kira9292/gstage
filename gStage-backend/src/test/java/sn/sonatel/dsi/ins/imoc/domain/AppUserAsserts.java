@@ -71,6 +71,6 @@ public class AppUserAsserts {
             .satisfies(e ->
                 assertThat(e.getAttestationFinStage()).as("check attestationFinStage").isEqualTo(actual.getAttestationFinStage())
             )
-            .satisfies(e -> assertThat(e.getRoles()).as("check roles").isEqualTo(actual.getRoles()));
+            .satisfies(e -> assertThat(e.getRole()).as("check role").isEqualTo(actual.getRole()));
     }
 }

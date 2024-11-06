@@ -32,18 +32,18 @@ class RoleTest {
 
         role.addAppUser(appUserBack);
         assertThat(role.getAppUsers()).containsOnly(appUserBack);
-        assertThat(appUserBack.getRoles()).containsOnly(role);
+        assertThat(appUserBack.getRole()).isEqualTo(role);
 
         role.removeAppUser(appUserBack);
         assertThat(role.getAppUsers()).doesNotContain(appUserBack);
-        assertThat(appUserBack.getRoles()).doesNotContain(role);
+        assertThat(appUserBack.getRole()).isNull();
 
         role.appUsers(new HashSet<>(Set.of(appUserBack)));
         assertThat(role.getAppUsers()).containsOnly(appUserBack);
-        assertThat(appUserBack.getRoles()).containsOnly(role);
+        assertThat(appUserBack.getRole()).isEqualTo(role);
 
         role.setAppUsers(new HashSet<>());
         assertThat(role.getAppUsers()).doesNotContain(appUserBack);
-        assertThat(appUserBack.getRoles()).doesNotContain(role);
+        assertThat(appUserBack.getRole()).isNull();
     }
 }

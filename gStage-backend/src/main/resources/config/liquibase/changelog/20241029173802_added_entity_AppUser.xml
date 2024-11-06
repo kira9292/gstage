@@ -47,22 +47,11 @@
             <column name="attestation_fin_stage_id" type="bigint">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_app_user__attestation_fin_stage_id" />
             </column>
+            <column name="role_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-    </changeSet>
-
-    <changeSet id="20241029173802-1-relations" author="jhipster">
-
-        <createTable tableName="rel_app_user__role">
-            <column name="role_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="app_user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="app_user_id, role_id" tableName="rel_app_user__role"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

@@ -57,8 +57,6 @@ public class RoleAsserts {
      * @param actual the actual entity
      */
     public static void assertRoleUpdatableRelationshipsEquals(Role expected, Role actual) {
-        assertThat(expected)
-            .as("Verify Role relationships")
-            .satisfies(e -> assertThat(e.getAppUsers()).as("check appUsers").isEqualTo(actual.getAppUsers()));
+        // empty method
     }
 }

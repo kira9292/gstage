@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -96,14 +99,9 @@ public class AppUser implements UserDetails, Serializable {
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "rel_app_user__role",
-        joinColumns = @JoinColumn(name = "app_user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "appUsers" }, allowSetters = true)
-    private Set<Role> roles = new HashSet<>();
+    private Role role;
 
     @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "appUser")
@@ -113,22 +111,16 @@ public class AppUser implements UserDetails, Serializable {
     @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
     private Set<RestaurationStagiaire> restaurationStagiaires = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
+    private Set<Jwt> jwts = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> list = new ArrayList<>();
-        for (Role role : this.roles) {
-            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_"+role.getName());
-            list.add(simpleGrantedAuthority);
-        }
-        return list;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
     }
 
     @Override
@@ -144,6 +136,11 @@ public class AppUser implements UserDetails, Serializable {
     @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 
     public Long getId() {
@@ -488,26 +485,16 @@ public class AppUser implements UserDetails, Serializable {
         return this;
     }
 
-    public Set<Role> getRoles() {
-        return this.roles;
+    public Role getRole() {
+        return this.role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public AppUser roles(Set<Role> roles) {
-        this.setRoles(roles);
-        return this;
-    }
-
-    public AppUser addRole(Role role) {
-        this.roles.add(role);
-        return this;
-    }
-
-    public AppUser removeRole(Role role) {
-        this.roles.remove(role);
+    public AppUser role(Role role) {
+        this.setRole(role);
         return this;
     }
 
@@ -558,6 +545,37 @@ public class AppUser implements UserDetails, Serializable {
     public AppUser removeRestaurationStagiaire(RestaurationStagiaire restaurationStagiaire) {
         this.restaurationStagiaires.remove(restaurationStagiaire);
         restaurationStagiaire.setAppUser(null);
+        return this;
+    }
+
+    public Set<Jwt> getJwts() {
+        return this.jwts;
+    }
+
+    public void setJwts(Set<Jwt> jwts) {
+        if (this.jwts != null) {
+            this.jwts.forEach(i -> i.setAppUser(null));
+        }
+        if (jwts != null) {
+            jwts.forEach(i -> i.setAppUser(this));
+        }
+        this.jwts = jwts;
+    }
+
+    public AppUser jwts(Set<Jwt> jwts) {
+        this.setJwts(jwts);
+        return this;
+    }
+
+    public AppUser addJwt(Jwt jwt) {
+        this.jwts.add(jwt);
+        jwt.setAppUser(this);
+        return this;
+    }
+
+    public AppUser removeJwt(Jwt jwt) {
+        this.jwts.remove(jwt);
+        jwt.setAppUser(null);
         return this;
     }
 

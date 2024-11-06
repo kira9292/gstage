@@ -61,9 +61,10 @@ public class Validation implements Serializable {
             "attestationPresences",
             "candidats",
             "validations",
-            "roles",
+            "role",
             "validationStatusUser",
             "restaurationStagiaires",
+            "jwts",
         },
         allowSetters = true
     )

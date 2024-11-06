@@ -412,11 +412,7 @@ class ContratResourceIT {
         Contrat partialUpdatedContrat = new Contrat();
         partialUpdatedContrat.setId(contrat.getId());
 
-        partialUpdatedContrat
-            .reference(UPDATED_REFERENCE)
-            .startDate(UPDATED_START_DATE)
-            .status(UPDATED_STATUS)
-            .assignmentSite(UPDATED_ASSIGNMENT_SITE);
+        partialUpdatedContrat.compensation(UPDATED_COMPENSATION).comments(UPDATED_COMMENTS);
 
         restContratMockMvc
             .perform(

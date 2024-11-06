@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Service;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
-import sn.sonatel.dsi.ins.imoc.domain.Jwt;
 import sn.sonatel.dsi.ins.imoc.domain.Role;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
 

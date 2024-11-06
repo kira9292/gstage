@@ -1,3 +1,7 @@
+
+
+
+
 entity ValidationStatusUser{
   creation Instant
   expire Instant
@@ -212,13 +216,12 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-  Service{businessUnit} to BusinessUnit
+    Service{businessUnit} to BusinessUnit
     RestaurationStagiaire to AppUser
-  Jwt to AppUser
+    AppUser to Role
+    Jwt to AppUser
 }
-relationship ManyToMany{
-  AppUser to Role
-}
+
 
 // Options pour l'application
 paginate * with pagination

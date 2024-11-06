@@ -8,6 +8,7 @@ import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.DemandeStageTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.EtatPaiementTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.JwtTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.RestaurationStagiaireTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.RoleTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ServiceTestSamples.*;
@@ -196,17 +197,11 @@ class AppUserTest {
         AppUser appUser = getAppUserRandomSampleGenerator();
         Role roleBack = getRoleRandomSampleGenerator();
 
-        appUser.addRole(roleBack);
-        assertThat(appUser.getRoles()).containsOnly(roleBack);
+        appUser.setRole(roleBack);
+        assertThat(appUser.getRole()).isEqualTo(roleBack);
 
-        appUser.removeRole(roleBack);
-        assertThat(appUser.getRoles()).doesNotContain(roleBack);
-
-        appUser.roles(new HashSet<>(Set.of(roleBack)));
-        assertThat(appUser.getRoles()).containsOnly(roleBack);
-
-        appUser.setRoles(new HashSet<>());
-        assertThat(appUser.getRoles()).doesNotContain(roleBack);
+        appUser.role(null);
+        assertThat(appUser.getRole()).isNull();
     }
 
     @Test
@@ -243,5 +238,27 @@ class AppUserTest {
         appUser.setRestaurationStagiaires(new HashSet<>());
         assertThat(appUser.getRestaurationStagiaires()).doesNotContain(restaurationStagiaireBack);
         assertThat(restaurationStagiaireBack.getAppUser()).isNull();
+    }
+
+    @Test
+    void jwtTest() {
+        AppUser appUser = getAppUserRandomSampleGenerator();
+        Jwt jwtBack = getJwtRandomSampleGenerator();
+
+        appUser.addJwt(jwtBack);
+        assertThat(appUser.getJwts()).containsOnly(jwtBack);
+        assertThat(jwtBack.getAppUser()).isEqualTo(appUser);
+
+        appUser.removeJwt(jwtBack);
+        assertThat(appUser.getJwts()).doesNotContain(jwtBack);
+        assertThat(jwtBack.getAppUser()).isNull();
+
+        appUser.jwts(new HashSet<>(Set.of(jwtBack)));
+        assertThat(appUser.getJwts()).containsOnly(jwtBack);
+        assertThat(jwtBack.getAppUser()).isEqualTo(appUser);
+
+        appUser.setJwts(new HashSet<>());
+        assertThat(appUser.getJwts()).doesNotContain(jwtBack);
+        assertThat(jwtBack.getAppUser()).isNull();
     }
 }

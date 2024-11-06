@@ -330,7 +330,7 @@ class AttestationPresenceResourceIT {
         AttestationPresence partialUpdatedAttestationPresence = new AttestationPresence();
         partialUpdatedAttestationPresence.setId(attestationPresence.getId());
 
-        partialUpdatedAttestationPresence.endDate(UPDATED_END_DATE).signatureDate(UPDATED_SIGNATURE_DATE).comments(UPDATED_COMMENTS);
+        partialUpdatedAttestationPresence.comments(UPDATED_COMMENTS);
 
         restAttestationPresenceMockMvc
             .perform(

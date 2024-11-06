@@ -322,7 +322,7 @@ class AttestationFinStageResourceIT {
         AttestationFinStage partialUpdatedAttestationFinStage = new AttestationFinStage();
         partialUpdatedAttestationFinStage.setId(attestationFinStage.getId());
 
-        partialUpdatedAttestationFinStage.issueDate(UPDATED_ISSUE_DATE).signatureDate(UPDATED_SIGNATURE_DATE).comments(UPDATED_COMMENTS);
+        partialUpdatedAttestationFinStage.signatureDate(UPDATED_SIGNATURE_DATE);
 
         restAttestationFinStageMockMvc
             .perform(

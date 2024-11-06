@@ -140,27 +140,20 @@ public class AppUserResource {
      * {@code GET  /app-users} : get all the appUsers.
      *
      * @param pageable the pagination information.
-     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of appUsers in body.
      */
     @GetMapping("")
     public ResponseEntity<List<AppUser>> getAllAppUsers(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
-        @RequestParam(name = "filter", required = false) String filter,
-        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+        @RequestParam(name = "filter", required = false) String filter
     ) {
         if ("validationstatususer-is-null".equals(filter)) {
             LOG.debug("REST request to get all AppUsers where validationStatusUser is null");
             return new ResponseEntity<>(appUserService.findAllWhereValidationStatusUserIsNull(), HttpStatus.OK);
         }
         LOG.debug("REST request to get a page of AppUsers");
-        Page<AppUser> page;
-        if (eagerload) {
-            page = appUserService.findAllWithEagerRelationships(pageable);
-        } else {
-            page = appUserService.findAll(pageable);
-        }
+        Page<AppUser> page = appUserService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

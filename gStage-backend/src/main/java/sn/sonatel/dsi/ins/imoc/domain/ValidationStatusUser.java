@@ -35,14 +35,17 @@ public class ValidationStatusUser implements Serializable {
     @JsonIgnoreProperties(
         value = {
             "service",
+            "attestationFinStage",
             "etatPaiements",
             "contrats",
             "demandeStages",
             "attestationPresences",
             "candidats",
             "validations",
-            "roles",
+            "role",
             "validationStatusUser",
+            "restaurationStagiaires",
+            "jwts",
         },
         allowSetters = true
     )
