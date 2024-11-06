@@ -3,11 +3,12 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ApplicationsComponent } from './applications/applications.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { ContractsComponent } from './contracts/contracts.component';
 import { AttestationsComponent } from './attestations/attestations.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { SuiviDemandeStageComponent } from './my-applications/my-applications.component';
+import { ContractsComponent } from './contracts/contracts.component';
 
 export const routes: Routes = [
     { 
@@ -27,13 +28,18 @@ export const routes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         title: 'Tableau de Bord'
-      },
-      {
+    },
+    {
         path: 'application',
         component: ApplicationsComponent,
         title: 'Renouvellement'
-      },
-      {
+    },
+    {
+      path: 'my-applications',
+      component: SuiviDemandeStageComponent,
+      title: "Mes demandes"
+    },
+    {
         path: 'documents',
         component: DocumentsComponent,
         title: 'Mes Documents'
@@ -42,11 +48,11 @@ export const routes: Routes = [
           path: 'notifications', 
           component: NotificationsComponent
       },
-    { 
-        path: 'documents/contracts', 
+      {
+        path: 'documents/contracts',
         component: ContractsComponent,
         title: 'Mes contrats'
-    },
+      },
 
     { 
       path: 'documents/attestations', 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 
@@ -23,7 +23,10 @@ export interface Document {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [
+    RouterLink, 
+    CommonModule
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -32,6 +35,7 @@ export class DashboardComponent {
     private router: Router,
     private navigationService: NavigationService
   ) {}
+  @Input() userType: 'intern' | 'candidate' = 'intern';
   cards: DashboardCard[] = [
     {
       title: 'Mon Contrat',

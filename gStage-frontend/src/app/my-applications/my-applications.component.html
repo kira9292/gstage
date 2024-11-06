@@ -1,0 +1,244 @@
+<div class="p-6">
+  <!-- En-tête avec informations du candidat -->
+  <div class="bg-white rounded-lg shadow mb-6 p-6">
+    <div class="flex justify-between items-start">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Tableau de bord</h2>
+        <p class="mt-1 text-sm text-gray-600">
+          Bienvenue, {{candidat?.firstName}} {{candidat?.lastName}}
+        </p>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-gray-600">N° Étudiant: {{candidat?.registrationNumber}}</p>
+        <p class="text-sm text-gray-600">{{candidat?.school}}</p>
+        <p class="text-sm text-gray-600">Niveau: {{formatEducationLevel(candidat?.educationLevel)}}</p>
+      </div>
+    </div>
+  </div>
+
+ <!-- Résumé des demandes -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white rounded-lg shadow p-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-gray-700">Total</h3>
+        <span class="text-2xl font-bold text-gray-900">{{totalDemandes}}</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-yellow-700">En attente</h3>
+        <span class="text-2xl font-bold text-yellow-600">{{pendingDemandesCount}}</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-green-700">Acceptées</h3>
+        <span class="text-2xl font-bold text-green-600">{{acceptedDemandesCount}}</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg shadow p-4">
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-blue-700">En cours</h3>
+        <span class="text-2xl font-bold text-blue-600">{{inProgressDemandesCount}}</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Liste des demandes -->
+  <div class="bg-white rounded-lg shadow">
+    <div class="p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-4">Mes demandes de stage</h3>
+      
+      <!-- Filtres -->
+      <div class="mb-6 flex gap-4 flex-wrap">
+        <select 
+          [(ngModel)]="statusFilter"
+          (change)="applyFilters()"
+          class="block appearance-none w-48 bg-white border border-gray-300 rounded px-4 py-2">
+          <option value="">Tous les statuts</option>
+          <option *ngFor="let status of internshipStatuses" [value]="status">
+            {{formatStatus(status)}}
+          </option>
+        </select>
+
+        <input 
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+          placeholder="Rechercher une demande..."
+          class="block w-64 border border-gray-300 rounded px-4 py-2"
+        >
+      </div>
+
+      <!-- Liste des demandes -->
+      <div class="space-y-4">
+        <div *ngFor="let demande of paginatedDemandes" 
+             class="border rounded-lg p-4 hover:bg-gray-50">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h4 class="text-lg font-medium text-gray-900">{{demande.reference}}</h4>
+              <p class="text-sm text-gray-600">
+                {{formatInternshipType(demande.internshipType)}} | 
+                Créée le {{demande.creationDate | date:'dd/MM/yyyy'}}
+              </p>
+            </div>
+            <span [class]="getStatusClass(demande.status)">
+              {{formatStatus(demande.status)}}
+            </span>
+          </div>
+
+          <!-- Timeline de progression -->
+          <div class="relative pb-4">
+            <div class="flex items-center space-x-4">
+              <div *ngFor="let step of demande.processSteps; let isLast = last" 
+                   class="flex-1">
+                <div class="flex items-center">
+                  <div [class]="getStepStatusClass(step.status)">
+                    <i [class]="getStepIcon(step.status)" class="fas"></i>
+                  </div>
+                  <div [class]="isLast ? '' : 'flex-1 h-px bg-gray-300 mx-2'"></div>
+                </div>
+                <p class="text-xs mt-1" [class]="getStepTextClass(step.status)">
+                  {{step.step}}
+                </p>
+                <p *ngIf="step.date" class="text-xs text-gray-500">
+                  {{step.date | date:'dd/MM/yyyy'}}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="mt-4 flex justify-end space-x-3">
+            <button 
+              (click)="viewDemande(demande)"
+              class="text-sm text-sonatel-orange hover:text-orange-600 transition-colors">
+              Voir les détails
+            </button>
+            <button 
+              *ngIf="demande.feedback"
+              (click)="viewFeedback(demande)"
+              class="text-sm text-sonatel-orange hover:text-orange-600 transition-colors">
+              Voir le retour
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-4 flex justify-between items-center">
+        <div class="text-sm text-gray-600">
+          Affichage de {{(pagination.currentPage - 1) * pagination.pageSize + 1}} à 
+          {{Math.min(pagination.currentPage * pagination.pageSize, filteredDemandes.length)}}
+          sur {{filteredDemandes.length}} demandes
+        </div>
+        
+        <div class="flex items-center space-x-2">
+          <button
+            (click)="goToPage(pagination.currentPage - 1)"
+            [disabled]="pagination.currentPage === 1"
+            class="px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50">
+            Précédent
+          </button>
+          <button
+            (click)="goToPage(pagination.currentPage + 1)"
+            [disabled]="pagination.currentPage === pagination.totalPages"
+            class="px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50">
+            Suivant
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de détails -->
+<div *ngIf="showDemandeDialog" 
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 w-11/12 max-w-4xl">
+    <div class="flex justify-between items-start mb-6">
+      <div>
+        <h3 class="text-xl font-bold text-gray-900">
+          Détails de la demande
+        </h3>
+        <p class="text-sm text-gray-600 mt-1">
+          {{selectedDemande?.reference}}
+        </p>
+      </div>
+      <button (click)="closeDialog()" class="text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Informations générales -->
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <h4 class="font-medium text-gray-900 mb-2">Informations générales</h4>
+          <dl class="grid grid-cols-2 gap-x-4 gap-y-2">
+            <dt class="text-sm text-gray-500">Type de stage</dt>
+            <dd class="text-sm text-gray-900">
+              {{formatInternshipType(selectedDemande?.internshipType)}}
+            </dd>
+            <dt class="text-sm text-gray-500">Date de création</dt>
+            <dd class="text-sm text-gray-900">
+              {{selectedDemande?.creationDate | date:'dd/MM/yyyy'}}
+            </dd>
+            <dt class="text-sm text-gray-500">Période</dt>
+            <dd class="text-sm text-gray-900">
+              Du {{selectedDemande?.startDate | date:'dd/MM/yyyy'}} 
+              au {{selectedDemande?.endDate | date:'dd/MM/yyyy'}}
+            </dd>
+            <dt class="text-sm text-gray-500">Statut</dt>
+            <dd>
+              <span [class]="getStatusClass(selectedDemande?.status)">
+                {{formatStatus(selectedDemande?.status)}}
+              </span>
+            </dd>
+          </dl>
+        </div>
+
+        <div>
+          <h4 class="font-medium text-gray-900 mb-2">Documents fournis</h4>
+          <div class="space-y-2">
+            <button
+              (click)="downloadResume(selectedDemande!)"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg flex items-center gap-2">
+              <i class="fas fa-file-pdf"></i>
+              CV
+            </button>
+            <button
+              (click)="downloadCoverLetter(selectedDemande!)"
+              class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg flex items-center gap-2">
+              <i class="fas fa-envelope"></i>
+              Lettre de motivation
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <h4 class="font-medium text-gray-900 mb-2">Description du stage recherché</h4>
+        <p class="text-sm text-gray-600">{{selectedDemande?.description}}</p>
+      </div>
+
+      <!-- Feedback si disponible -->
+      <div *ngIf="selectedDemande?.feedback" class="bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-medium text-gray-900 mb-2">Retour sur votre candidature</h4>
+        <p class="text-sm text-gray-600">{{selectedDemande?.feedback}}</p>
+      </div>
+
+      <!-- Prochaine étape si en cours -->
+      <div *ngIf="getNextStep(selectedDemande!)" class="bg-blue-50 p-4 rounded-lg">
+        <h4 class="font-medium text-blue-900 mb-2">Prochaine étape</h4>
+        <p class="text-sm text-blue-600">
+          {{getNextStep(selectedDemande!)?.message}}
+        </p>
+        <p *ngIf="selectedDemande?.interviewDate" class="text-sm text-blue-600 mt-1">
+          Date d'entretien prévue: {{selectedDemande?.interviewDate | date:'dd/MM/yyyy à HH:mm'}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
