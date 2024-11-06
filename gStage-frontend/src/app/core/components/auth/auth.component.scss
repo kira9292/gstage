@@ -1,0 +1,31 @@
+.form-input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 bg-gray-50;
+  }
+
+  .form-button {
+    @apply w-full py-3 px-6 rounded-lg font-medium transform transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .primary-button {
+    @apply form-button bg-gradient-to-r from-sonatel-orange to-orange-500 text-white hover:from-orange-500 hover:to-sonatel-orange focus:ring-orange-500;
+  }
+
+  .secondary-button {
+    @apply form-button bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 focus:ring-orange-500;
+  }
+
+  .bumped-container {
+    perspective: 1000px;
+  }
+  
+  .bumped-effect {
+    transform: translateZ(30px);
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .bumped-effect:hover {
+    transform: translateZ(50px);
+    box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+  }
+  

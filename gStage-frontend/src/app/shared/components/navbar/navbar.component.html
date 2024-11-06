@@ -1,0 +1,27 @@
+<div class="h-16 bg-white shadow-md z-10 flex items-center justify-between px-4">
+  <!-- Section gauche avec menu hamburger et logo -->
+  <div class="flex items-center space-x-4">
+    <button 
+      class="md:hidden p-2 rounded-full hover:bg-gray-100"
+      (click)="toggleMenu()">
+      <i class="fas fa-bars text-xl text-gray-600"></i>
+    </button>
+    <img src="assets/images/LOGO_SONATEL_HD_FB.JPG" alt="Sonatel Logo" class="h-10">
+  </div>
+  
+  <!-- Section des icônes à droite -->
+  <div class="flex items-center space-x-4">
+    <!-- Bouton notification -->
+    <button class="p-2 rounded-full hover:bg-gray-100">
+      <i class="fas fa-bell text-xl text-gray-600"></i>
+    </button>
+    <!-- Profil utilisateur -->
+    <div class="flex items-center space-x-2">
+      <i class="fas fa-user-circle text-2xl text-gray-600"></i>
+      <!-- Texte adaptatif selon la taille d'écran -->
+      <span class="text-sm font-medium text-gray-700 truncate max-w-[120px] md:max-w-none">
+        Mon Espace Stagiaire
+      </span>
+    </div>
+  </div>
+</div>

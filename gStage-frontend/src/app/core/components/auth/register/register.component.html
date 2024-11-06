@@ -1,0 +1,271 @@
+<!-- Register Form -->
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+  <div class="max-w-2xl w-full space-y-8">
+    <!-- Orange Accent Line -->
+    <div class="h-1 w-24 bg-gradient-to-r from-sonatel-orange to-orange-400 rounded-full mx-auto"></div>
+    
+    <!-- Form Container -->
+    <div class="bg-white rounded-xl shadow-lg p-8 space-y-6 relative border border-gray-100">
+      <!-- Logo Container with subtle orange background -->
+      <div class="absolute -top-10 left-1/2 transform -translate-x-1/2">
+        <div class="bg-white rounded-full p-3 shadow-md">
+          <img class="h-14 w-auto transition-transform duration-300 hover:scale-110" 
+               src="assets/images/LOGO_SONATEL_HD_FB.JPG" 
+               alt="Sonatel Logo">
+        </div>
+      </div>
+
+      <div class="text-center space-y-3 mt-8">
+        <h2 class="text-2xl font-bold text-gray-900">Inscription</h2>
+        <p class="text-sm text-gray-500">Créez votre compte pour accéder à la plateforme</p>
+      </div>
+  
+      <!-- Formulaire -->
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-8">
+        <!-- Informations personnelles -->
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <!-- Prénom -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Prénom</label>
+            <div class="relative">
+              <input type="text" 
+                     formControlName="firstName"
+                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                     [ngClass]="{'border-red-500 focus:ring-red-500': firstNameError}">
+              <div *ngIf="firstNameError" class="mt-1 text-sm text-red-500">
+                {{ firstNameError }}
+              </div>
+            </div>
+          </div>
+  
+          <!-- Nom -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Nom</label>
+            <div class="relative">
+              <input type="text" 
+                     formControlName="name"
+                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                     [ngClass]="{'border-red-500 focus:ring-red-500': lastNameError}">
+              <div *ngIf="lastNameError" class="mt-1 text-sm text-red-500">
+                {{ lastNameError }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Username -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Username</label>
+            <div class="relative">
+              <input type="text" 
+                     formControlName="username"
+                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                     [ngClass]="{'border-red-500 focus:ring-red-500': firstNameError}">
+              <div *ngIf="firstNameError" class="mt-1 text-sm text-red-500">
+                {{ lastNameError }}
+              </div>
+            </div>
+          </div>
+          
+  
+          <!-- Email -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <div class="relative">
+              <input type="email" 
+                     formControlName="email"
+                     class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                     [ngClass]="{'border-red-500 focus:ring-red-500': emailError}">
+              <div class="absolute left-0 top-0 mt-3 ml-3 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                </svg>
+              </div>
+              <div *ngIf="emailError" class="mt-1 text-sm text-red-500">
+                {{ emailError }}
+              </div>
+            </div>
+          </div>
+  
+          <!-- Téléphone -->
+          <!-- <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Téléphone</label>
+            <div class="relative">
+              <input type="tel" 
+                     formControlName="phone"
+                     placeholder="7X XXX XX XX"
+                     class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                     [ngClass]="{'border-red-500 focus:ring-red-500': phoneError}">
+              <div class="absolute left-0 top-0 mt-3 ml-3 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+              </div>
+              <div *ngIf="phoneError" class="mt-1 text-sm text-red-500">
+                {{ phoneError }}
+              </div>
+            </div>
+          </div> -->
+  
+          <!-- Formation -->
+          <!-- <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Formation</label>
+            <input type="text" 
+                   formControlName="formation"
+                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300">
+          </div> -->
+  
+          <!-- Niveau -->
+          <!-- <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Niveau d'études</label>
+            <select formControlName="niveau"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 bg-white">
+              <option value="">Sélectionner un niveau</option>
+              <option value="bac">BAC</option>
+              <option value="bac+2">BAC+2</option>
+              <option value="bac+3">BAC+3</option>
+              <option value="bac+4">BAC+4</option>
+              <option value="bac+5">BAC+5</option>
+            </select>
+          </div> -->
+  
+          <!-- Mot de passe -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
+            <div class="relative">
+              <input [type]="showPassword ? 'text' : 'password'"
+                     formControlName="password"
+                     class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                     [ngClass]="{'border-red-500 focus:ring-red-500': passwordError}">
+              <div class="absolute left-0 top-0 mt-3 ml-3 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <button type="button" 
+                      (click)="togglePasswordVisibility('password')"
+                      class="absolute right-0 top-0 mt-3 mr-3 text-gray-400 hover:text-gray-600">
+                <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                </svg>
+                <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd" />
+                  <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                </svg>
+              </button>
+              <div *ngIf="passwordError" class="mt-1 text-sm text-red-500">
+                {{ passwordError }}
+              </div>
+            </div>
+          </div>
+  
+          <!-- Confirmer le mot de passe -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+            <div class="relative">
+              <input [type]="showConfirmPassword ? 'text' : 'password'"
+                     formControlName="confirmPassword"
+                     class="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                     [ngClass]="{'border-red-500 focus:ring-red-500': confirmPasswordError}">
+              <div class="absolute left-0 top-0 mt-3 ml-3 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <button type="button" 
+                      (click)="togglePasswordVisibility('confirmPassword')"
+                      class="absolute right-0 top-0 mt-3 mr-3 text-gray-400 hover:text-gray-600">
+                <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                </svg>
+                <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd" />
+                  <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+              </svg>
+            </button>
+            <div *ngIf="confirmPasswordError" class="mt-1 text-sm text-red-500">
+              {{ confirmPasswordError }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkbox CGU -->
+      <div class="space-y-4">
+        <div class="flex items-center">
+          <input type="checkbox" 
+                 formControlName="acceptTerms"
+                 class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded cursor-pointer">
+          <label class="ml-2 block text-sm text-gray-700">
+            J'accepte les <a href="#" class="text-orange-500 hover:text-orange-600">conditions générales d'utilisation</a>
+          </label>
+        </div>
+        <div *ngIf="termsError" class="text-sm text-red-500">
+          {{ termsError }}
+        </div>
+      </div>
+
+      <!-- Critères de mot de passe -->
+      <div class="space-y-2 bg-gray-50 p-4 rounded-lg">
+        <h4 class="text-sm font-medium text-gray-700">Le mot de passe doit contenir :</h4>
+        <ul class="space-y-1">
+          <li class="text-sm flex items-center" [ngClass]="{'text-green-500': passwordCriteria.length, 'text-gray-500': !passwordCriteria.length}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Au moins 8 caractères
+          </li>
+          <li class="text-sm flex items-center" [ngClass]="{'text-green-500': passwordCriteria.uppercase, 'text-gray-500': !passwordCriteria.uppercase}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Au moins une majuscule
+          </li>
+          <li class="text-sm flex items-center" [ngClass]="{'text-green-500': passwordCriteria.lowercase, 'text-gray-500': !passwordCriteria.lowercase}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Au moins une minuscule
+          </li>
+          <li class="text-sm flex items-center" [ngClass]="{'text-green-500': passwordCriteria.number, 'text-gray-500': !passwordCriteria.number}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Au moins un chiffre
+          </li>
+          <li class="text-sm flex items-center" [ngClass]="{'text-green-500': passwordCriteria.special, 'text-gray-500': !passwordCriteria.special}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Au moins un caractère spécial
+          </li>
+        </ul>
+      </div>
+
+      <!-- Boutons -->
+      <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+        <button type="submit"
+                [disabled]="!registerForm.valid || isSubmitting"
+                class="w-full sm:w-1/2 bg-gradient-to-r from-sonatel-orange to-orange-600 text-white py-3 px-6 rounded-lg font-medium 
+                       hover:from-orange-600 hover:to-sonatel-orange focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                       transform transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed
+                       flex justify-center items-center">
+          <svg *ngIf="isSubmitting" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ isSubmitting ? 'Inscription en cours...' : 'S\'inscrire' }}
+        </button>
+        <button type="button"
+                [routerLink]="['/login']"
+                class="w-full sm:w-1/2 bg-white text-gray-700 py-3 px-6 rounded-lg font-medium border border-gray-300
+                       hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                       transform transition-all duration-300 hover:scale-[1.02]">
+          Se connecter
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

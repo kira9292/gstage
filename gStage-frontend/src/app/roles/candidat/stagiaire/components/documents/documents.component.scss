@@ -1,0 +1,36 @@
+/* Animation de base pour les cartes */
+.cursor-pointer {
+    transform: scale(1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+  }
+  
+  /* Effet au survol combinant scale et ombre */
+  .cursor-pointer:hover {
+    transform: scale(1.03);
+    box-shadow: 
+      0 10px 20px rgba(255, 121, 0, 0.1),
+      0 4px 8px rgba(255, 121, 0, 0.06);
+  }
+  
+  /* Animation pour les alertes */
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  [role="alert"] {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  /* Effet de retour en position initiale plus doux */
+  .cursor-pointer:active {
+    transform: scale(1.01);
+    transition-duration: 0.15s;
+  }

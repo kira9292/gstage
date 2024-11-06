@@ -1,0 +1,172 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-6 text-sonatel-black">Mes Attestations de Présence</h2>
+  
+  <!-- Filtres -->
+  <div class="mb-6 flex gap-4 flex-wrap">
+    <!-- Filtre par mois -->
+    <div class="relative">
+      <select 
+        [(ngModel)]="monthFilter"
+        (change)="applyFilters()"
+        class="block appearance-none w-48 bg-white border border-gray-300 rounded px-4 py-2 pr-8">
+        <option value="">Tous les mois</option>
+        <option *ngFor="let month of availableMonths" [value]="month">
+          {{formatMonth(month)}}
+        </option>
+      </select>
+    </div>
+
+    <!-- Filtre par statut -->
+    <div class="relative">
+      <select 
+        [(ngModel)]="statusFilter"
+        (change)="applyFilters()"
+        class="block appearance-none w-48 bg-white border border-gray-300 rounded px-4 py-2 pr-8">
+        <option value="">Tous les statuts</option>
+        <option value="true">Signée</option>
+        <option value="false">En attente</option>
+      </select>
+    </div>
+    
+    <!-- Barre de recherche -->
+    <input 
+      type="text"
+      [(ngModel)]="searchTerm"
+      (input)="applyFilters()"
+      placeholder="Rechercher une attestation..."
+      class="block w-64 border border-gray-300 rounded px-4 py-2"
+    >
+
+    <!-- Compteur de résultats -->
+    <div class="flex items-center text-sm text-gray-600">
+      {{filteredAttestations.length}} résultat(s) trouvé(s)
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-lg shadow">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Référence</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mois</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Période début</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Période fin</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date signature</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let attestation of paginatedAttestations" class="hover:bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{attestation.reference}}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            {{formatMonth(attestation.month)}}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{attestation.startDate | date:'dd/MM/yyyy'}}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{attestation.endDate | date:'dd/MM/yyyy'}}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+            {{attestation.signatureDate | date:'dd/MM/yyyy'}}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span [class]="getStatusClass(attestation.status)">
+              {{getStatusLabel(attestation.status)}}
+            </span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-4">
+            <button 
+              *ngIf="attestation.status"
+              (click)="viewAttestation(attestation)"
+              class="text-sonatel-orange hover:text-orange-600 transition-colors inline-flex items-center"
+              title="Voir l'attestation">
+              <i class="fas fa-eye h-5 w-5"></i>
+            </button>
+            <button
+              *ngIf="attestation.status"
+              (click)="downloadDocument(attestation)"
+              class="text-sonatel-orange hover:text-orange-600 transition-colors inline-flex items-center"
+              title="Télécharger l'attestation">
+              <i class="fas fa-download h-5 w-5"></i>
+            </button>
+          </td>
+        </tr>
+
+        <!-- Message si aucun résultat -->
+        <tr *ngIf="paginatedAttestations.length === 0">
+          <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+            Aucune attestation trouvée
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <select 
+        [(ngModel)]="pagination.pageSize"
+        (change)="onPageSizeChange()"
+        class="border border-gray-300 rounded px-2 py-1">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+        <option [value]="50">50</option>
+      </select>
+      <span class="text-sm text-gray-600">éléments par page</span>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button
+        (click)="goToPage(pagination.currentPage - 1)"
+        [disabled]="pagination.currentPage === 1"
+        class="px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <span class="text-sm text-gray-600">
+        Page {{pagination.currentPage}} sur {{pagination.totalPages}}
+        ({{pagination.totalItems}} éléments)
+      </span>
+      
+      <button
+        (click)="goToPage(pagination.currentPage + 1)"
+        [disabled]="pagination.currentPage === pagination.totalPages"
+        class="px-3 py-1 border rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de visualisation -->
+<div *ngIf="showAttestationDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 w-11/12 max-w-4xl">
+    <div class="flex justify-between items-center mb-4">
+      <div>
+        <h3 class="text-xl font-bold text-sonatel-black">
+          Attestation de Présence - {{selectedAttestation?.reference}}
+        </h3>
+        <p class="text-sm text-gray-600 mt-1">
+          Mois: {{formatMonth(selectedAttestation?.month)}} |
+          Période: {{selectedAttestation?.startDate | date:'dd/MM/yyyy'}} - {{selectedAttestation?.endDate | date:'dd/MM/yyyy'}}
+        </p>
+      </div>
+      <button (click)="closeDialog()" class="text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="h-[70vh]">
+      <iframe
+        [src]="safeUrl"
+        class="w-full h-full"
+        [title]="'Aperçu - ' + selectedAttestation?.reference">
+      </iframe>
+    </div>
+  </div>
+</div>

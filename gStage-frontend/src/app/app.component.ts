@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
-import { BreadcrumbComponent } from './breadcrump/breadcrump.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { BreadcrumbComponent } from './shared/components/breadcrump/breadcrump.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 
 
 @Component({

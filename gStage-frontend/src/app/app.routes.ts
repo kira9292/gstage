@@ -1,13 +1,16 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ApplicationsComponent } from './applications/applications.component';
-import { DocumentsComponent } from './documents/documents.component';
-import { NotificationsComponent } from './notifications/notifications.component';
-import { ContractsComponent } from './contracts/contracts.component';
-import { AttestationsComponent } from './attestations/attestations.component';
-import { PaymentsComponent } from './payments/payments.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
+import { RegisterComponent } from './core/components/auth/register/register.component';
+import { DashboardComponent } from './roles/candidat/stagiaire/components/dashboard/dashboard.component';
+import { ApplicationsComponent } from './roles/candidat/shared-components/applications/applications.component';
+import { DocumentsComponent } from './roles/candidat/stagiaire/components/documents/documents.component';
+import { NotificationsComponent } from './roles/candidat/stagiaire/components/notifications/notifications.component';
+import { ContractsComponent } from './roles/candidat/stagiaire/components/contracts/contracts.component';
+import { AttestationsComponent } from './roles/candidat/stagiaire/components/attestations/attestations.component';
+import { PaymentsComponent } from './roles/candidat/stagiaire/components/payments/payments.component';
+import { LoginComponent } from './core/components/auth/login/login.component';
+import { SuiviDemandeStageComponent } from './roles/candidat/shared-components/my-applications/my-applications.component';
+
+
 
 export const routes: Routes = [
     { 
@@ -24,16 +27,21 @@ export const routes: Routes = [
       component: RegisterComponent
     },
     {
-        path: 'dashboard',
+        path: 'dashboard-stagiaire',
         component: DashboardComponent,
         title: 'Tableau de Bord'
-      },
-      {
+    },
+    {
         path: 'application',
         component: ApplicationsComponent,
         title: 'Renouvellement'
-      },
-      {
+    },
+    {
+      path: 'my-applications',
+      component: SuiviDemandeStageComponent,
+      title: "Mes demandes"
+    },
+    {
         path: 'documents',
         component: DocumentsComponent,
         title: 'Mes Documents'
@@ -42,11 +50,11 @@ export const routes: Routes = [
           path: 'notifications', 
           component: NotificationsComponent
       },
-    { 
-        path: 'documents/contracts', 
+      {
+        path: 'documents/contracts',
         component: ContractsComponent,
         title: 'Mes contrats'
-    },
+      },
 
     { 
       path: 'documents/attestations', 
