@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "changelogDate": "20241106103219"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "desactive",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "expire",
+      "fieldType": "Boolean"
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "Jwt",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "appUser",
+      "otherEntityRelationshipName": "jwt",
+      "relationshipName": "appUser",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

@@ -21,17 +21,13 @@ public class DemandeStageController {
 
     @Autowired
     private CandidatRepository candidatRepository;
+
     @PostMapping("/api/demandeStage")
     public void create(@RequestBody DemandeStage demandeStage) {
-
-        AppUser appUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        demandeStage.setAppUser(appUser);
         this.demandeStageRepository.save(demandeStage);
     }
     @PostMapping("/api/candidater")
     public void postuler(@RequestBody Candidat candidat) {
-
         this.candidatRepository.save(candidat);
-
     }
 }
