@@ -48,7 +48,8 @@ public class JwtAsserts {
         assertThat(expected)
             .as("Verify Jwt relevant properties")
             .satisfies(e -> assertThat(e.getDesactive()).as("check desactive").isEqualTo(actual.getDesactive()))
-            .satisfies(e -> assertThat(e.getExpire()).as("check expire").isEqualTo(actual.getExpire()));
+            .satisfies(e -> assertThat(e.getExpire()).as("check expire").isEqualTo(actual.getExpire()))
+            .satisfies(e -> assertThat(e.getValeur()).as("check valeur").isEqualTo(actual.getValeur()));
     }
 
     /**

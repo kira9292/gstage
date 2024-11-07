@@ -128,6 +128,9 @@ public class JwtResource {
                 if (jwt.getExpire() != null) {
                     existingJwt.setExpire(jwt.getExpire());
                 }
+                if (jwt.getValeur() != null) {
+                    existingJwt.setValeur(jwt.getValeur());
+                }
 
                 return existingJwt;
             })

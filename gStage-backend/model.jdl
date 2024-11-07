@@ -27,6 +27,7 @@ entity AppUser {
 entity  Jwt{
   desactive Boolean
   expire Boolean
+  valeur String
 
 }
 

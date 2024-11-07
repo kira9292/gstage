@@ -184,6 +184,12 @@
 
 
 
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.30</version> <!-- Vérifie que cette version est la dernière -->
+        <scope>provided</scope>
+      </dependency>
 
       <dependency>
         <groupId>io.jsonwebtoken</groupId>
