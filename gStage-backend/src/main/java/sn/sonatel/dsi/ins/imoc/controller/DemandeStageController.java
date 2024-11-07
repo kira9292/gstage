@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
+import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.service.DemandeStageService;
@@ -28,6 +29,19 @@ public class DemandeStageController {
     }
     @PostMapping("/api/candidater")
     public void postuler(@RequestBody Candidat candidat) {
+
         this.candidatRepository.save(candidat);
     }
+
+    @PostMapping("/api/candidater")
+    public void soumettre(@RequestBody DemandeStagecandidatDTO demande) {
+
+        Candidat c = demande.getCandidat();
+        this.candidatRepository.save(c);
+        DemandeStage d = demande.getDemandeStage();
+        d.setCandidat(c);
+        this.candidatRepository.save(c);
+        
+    }
+
 }
