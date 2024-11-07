@@ -59,9 +59,9 @@
               <input type="text" 
                      formControlName="username"
                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                     [ngClass]="{'border-red-500 focus:ring-red-500': firstNameError}">
-              <div *ngIf="firstNameError" class="mt-1 text-sm text-red-500">
-                {{ lastNameError }}
+                     [ngClass]="{'border-red-500 focus:ring-red-500': usernameError}">
+              <div *ngIf="usernameError" class="mt-1 text-sm text-red-500">
+                {{ usernameError }}
               </div>
             </div>
           </div>

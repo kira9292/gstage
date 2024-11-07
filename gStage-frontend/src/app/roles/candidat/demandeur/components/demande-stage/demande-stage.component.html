@@ -1,0 +1,308 @@
+<!-- Step1 -->
+<div *ngIf="currentStep === 1" class="bg-white rounded-lg shadow-md p-8 w-full mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+      <i class="fas fa-file-alt mr-3 text-orange-500"></i>
+      Demande de Stage (1/2)
+    </h2>
+    <form [formGroup]="applicationForm" (ngSubmit)="goToStep2()" class="space-y-8">
+      <div class="space-y-6">
+        <!-- Première ligne : Prénom et Nom -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Prénom -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-user mr-2 text-orange-500"></i>
+              Prénom
+            </label>
+            <input type="text" formControlName="firstName"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="applicationForm.get('firstName')?.touched && applicationForm.get('firstName')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+
+          <!-- Nom -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-user mr-2 text-orange-500"></i>
+              Nom
+            </label>
+            <input type="text" formControlName="lastName"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="applicationForm.get('lastName')?.touched && applicationForm.get('lastName')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+        </div>
+
+        <!-- Deuxième ligne : Email et Numéro de téléphone -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Email -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-envelope mr-2 text-orange-500"></i>
+              Email
+            </label>
+            <input type="email" formControlName="email"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="emailError" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              {{ emailError }}
+            </div>
+          </div>
+
+          <!-- Numéro de téléphone -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-phone mr-2 text-orange-500"></i>
+              Numéro de téléphone
+            </label>
+            <input type="tel" formControlName="phone"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="phoneError" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              {{phoneError}}
+            </div>
+          </div>
+        </div>
+
+        <!-- Troisième ligne : Formation et École -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Formation -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-book mr-2 text-orange-500"></i>
+              Formation
+            </label>
+            <input type="text" formControlName="formation"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="applicationForm.get('formation')?.touched && applicationForm.get('formation')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+
+          <!-- École -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-school mr-2 text-orange-500"></i>
+              École
+            </label>
+            <input type="text" formControlName="school"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="applicationForm.get('school')?.touched && applicationForm.get('school')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bouton de Soumission -->
+      <div class="flex justify-end pt-4">
+        <button type="submit"
+                (click)="goToStep2()"
+                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          <i class="fas fa-arrow-right mr-2"></i>
+          Suivant
+        </button>
+      </div>
+    </form>
+  </div>
+
+  
+
+  <!-- Step2 -->
+
+  <div *ngIf="currentStep === 2" class="bg-white rounded-lg shadow-md p-8 w-full mx-auto"> <!-- Retiré max-w-3xl pour occuper tout l'espace -->
+    <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+      <i class="fas fa-file-alt mr-3 text-orange-500"></i>
+      Demande de Stage (2/2)
+    </h2>
+    <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="space-y-8">
+      <!-- Section Information sur le Stage -->
+      <div class="space-y-6">
+        <!-- Première Ligne: Type et Direction -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Type de Stage -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-graduation-cap mr-2 text-orange-500"></i>
+              Type de Stage
+            </label>
+            <select formControlName="type" 
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+              <option value="">Sélectionnez un type</option>
+              <option value="academic">Stage Académique</option>
+              <option value="professional">Stage Professionnel</option>
+              <option value="pfe">Projet Fin d'Études</option>
+            </select>
+            <div *ngIf="applicationForm.get('type')?.touched && applicationForm.get('type')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+  
+          <!-- Direction -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-building mr-2 text-orange-500"></i>
+              Direction Souhaitée
+            </label>
+            <select formControlName="direction" 
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+              <option value="">Sélectionnez une direction</option>
+              <option value="dsi">Direction des Systèmes d'Information</option>
+              <option value="drh">Direction des Ressources Humaines</option>
+              <option value="dmk">Direction Marketing</option>
+            </select>
+            <div *ngIf="applicationForm.get('direction')?.touched && applicationForm.get('direction')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+        </div>
+  
+        <!-- Deuxième Ligne: Dates de début et fin -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Date de début -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>
+              Date de début souhaitée
+            </label>
+            <input type="date" 
+                   formControlName="startDate"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="applicationForm.get('startDate')?.touched && applicationForm.get('startDate')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+  
+          <!-- Date de fin -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>
+              Date de fin souhaitée
+            </label>
+            <input type="date" 
+                   formControlName="endDate"
+                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+            <div *ngIf="applicationForm.get('endDate')?.touched && applicationForm.get('endDate')?.invalid" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              Ce champ est requis
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Section de Téléchargement de Documents -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Upload CV -->
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <i class="fas fa-file-pdf mr-2 text-orange-500"></i>
+            CV (PDF, DOCX, DOC)
+          </label>
+          <div class="relative">
+            <input type="file"
+                   #cvInput
+                   id="cv-upload"
+                   class="hidden"
+                   (change)="onFileSelected($event, 'cv')"
+                   accept=".pdf,.docx,.doc">
+            <label for="cv-upload" 
+                   class="flex items-center justify-between w-full p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+              <div class="flex items-center truncate">
+                <i class="fas fa-upload mr-2 text-gray-400"></i>
+                <span class="text-gray-500 truncate">
+                  {{ selectedCV?.name || 'Choisir un fichier' }}
+                </span>
+              </div>
+              <span class="bg-gray-100 px-3 py-1 rounded-md text-sm text-gray-600 flex-shrink-0">
+                Parcourir
+              </span>
+            </label>
+            <div *ngIf="cvError" class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              {{ cvError }}
+            </div>
+            <div *ngIf="selectedCV" class="text-green-600 text-sm mt-1 flex items-center">
+              <i class="fas fa-check-circle mr-1"></i>
+              Fichier sélectionné
+            </div>
+          </div>
+        </div>
+  
+        <!-- Upload Lettre de motivation -->
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <i class="fas fa-envelope mr-2 text-orange-500"></i>
+            Lettre de motivation
+          </label>
+          <div class="relative">
+            <input type="file"
+                   #motivationInput
+                   id="motivation-upload"
+                   class="hidden"
+                   (change)="onFileSelected($event, 'motivation')"
+                   accept=".pdf,.docx,.doc">
+            <label for="motivation-upload" 
+                   class="flex items-center justify-between w-full p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+              <div class="flex items-center truncate">
+                <i class="fas fa-upload mr-2 text-gray-400"></i>
+                <span class="text-gray-500 truncate">
+                  {{ selectedMotivationLetter?.name || 'Choisir un fichier' }}
+                </span>
+              </div>
+              <span class="bg-gray-100 px-3 py-1 rounded-md text-sm text-gray-600 flex-shrink-0">
+                Parcourir
+              </span>
+            </label>
+            <div *ngIf="motivationLetterError" class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              {{ motivationLetterError }}
+            </div>
+            <div *ngIf="selectedMotivationLetter" class="text-green-600 text-sm mt-1 flex items-center">
+              <i class="fas fa-check-circle mr-1"></i>
+              Fichier sélectionné
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Bouton de Soumission -->
+      <div class="flex justify-end pt-4">
+        <button type="submit"
+                [disabled]="!applicationForm.valid || !selectedCV || !selectedMotivationLetter"
+                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          <i class="fas fa-paper-plane mr-2"></i>
+          Soumettre ma demande
+        </button>
+      </div>
+      
+      <div class="flex justify-start pt-4">
+        <button type="button"
+                (click)="goToStep1()"
+                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          <i class="fas fa-arrow-left mr-2"></i>
+          Precedent
+        </button>
+      </div>
+
+    </form>
+  </div>
+  

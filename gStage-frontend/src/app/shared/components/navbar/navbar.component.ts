@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NavigationService } from '../../../services/navigation.service';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -26,7 +26,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private navigationService: NavigationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -39,6 +40,15 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+    // Vérifie si on est sur une page d'authentification
+    isAuthPage(): boolean {
+      const currentRoute = this.router.url;
+      return currentRoute.includes('/login') || 
+             currentRoute.includes('/register') ||
+             currentRoute.includes('/inscription') ||
+             currentRoute.includes('/connexion');
+    }
+  
 
   @Output() menuToggle = new EventEmitter<void>(); // Émet un événement pour toggler le menu
 

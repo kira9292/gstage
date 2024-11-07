@@ -1,10 +1,10 @@
  <!-- Navbar et Sidebar uniquement si on n'est pas sur login ou register -->
  <div class="flex flex-col h-screen">
-  <app-navbar (menuToggle)="toggleSidebar()"></app-navbar>
+  <app-navbar *ngIf="!this.isAuthPage()" (menuToggle)="toggleSidebar()"></app-navbar>
 
   <div class="flex flex-1 overflow-hidden">
     <app-sidebar 
-      *ngIf="!isAuthPage()"
+      *ngIf="showSidebar()"
       [isSidebarOpen]="isSidebarOpen"
       (sidebarClose)="closeSidebar()"
       class="h-full">
