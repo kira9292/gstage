@@ -9,58 +9,74 @@ import { AttestationsComponent } from './roles/candidat/stagiaire/components/att
 import { PaymentsComponent } from './roles/candidat/stagiaire/components/payments/payments.component';
 import { LoginComponent } from './core/components/auth/login/login.component';
 import { SuiviDemandeStageComponent } from './roles/candidat/shared-components/my-applications/my-applications.component';
+import { DemandeStageComponent } from './roles/candidat/demandeur/components/demande-stage/demande-stage.component';
 
 
 
 export const routes: Routes = [
+
+    { 
+      path: 'demande-stage',
+      component: DemandeStageComponent
+    },
+
     { 
       path: '', 
       redirectTo: 'login', 
       pathMatch: 'full' 
     },
+
     {
       path: 'login',
       component: LoginComponent
     },
+
     {
       path: 'register',
       component: RegisterComponent
     },
+
     {
         path: 'dashboard-stagiaire',
         component: DashboardComponent,
         title: 'Tableau de Bord'
     },
+
     {
         path: 'application',
         component: ApplicationsComponent,
         title: 'Renouvellement'
     },
+
     {
       path: 'my-applications',
       component: SuiviDemandeStageComponent,
       title: "Mes demandes"
     },
+
     {
-        path: 'documents',
-        component: DocumentsComponent,
-        title: 'Mes Documents'
-      },
-      { 
-          path: 'notifications', 
-          component: NotificationsComponent
-      },
-      {
-        path: 'documents/contracts',
-        component: ContractsComponent,
-        title: 'Mes contrats'
-      },
+      path: 'documents',
+      component: DocumentsComponent,
+      title: 'Mes Documents'
+    },
+
+    { 
+      path: 'notifications', 
+      component: NotificationsComponent
+    },
+
+    {
+      path: 'documents/contracts',
+      component: ContractsComponent,
+      title: 'Mes contrats'
+    },
 
     { 
       path: 'documents/attestations', 
       component: AttestationsComponent,
       title: 'Mes attestations'
     },
+    
     { 
       path: 'payments', 
       component: PaymentsComponent,

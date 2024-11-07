@@ -39,10 +39,7 @@ export class AppComponent {
            currentRoute.includes('/connexion');
   }
 
-    // Affiche la navbar si l'utilisateur est authentifié
-    showNavbar(): boolean {
-      return !this.isAuthPage();
-    }
+
   
     // Affiche le sidebar si l'utilisateur est authentifié et est ROLE_STAGIAIRE
     showSidebar(): boolean {

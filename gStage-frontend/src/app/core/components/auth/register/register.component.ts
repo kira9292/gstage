@@ -56,17 +56,10 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       username: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
 
-      // phone: ['', [
-      //   Validators.required,
-      //   Validators.pattern(/^(70|75|76|77|78)[0-9]{7}$/)
-      // ]],
-      // formation: ['', [Validators.required, Validators.minLength(2)]],
-      // niveau: ['', [Validators.required]],
-
       password: ['', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/)
       ]],
       confirmPassword: ['', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]]
@@ -87,7 +80,7 @@ export class RegisterComponent implements OnInit {
       uppercase: /[A-Z]/.test(password),
       lowercase: /[a-z]/.test(password),
       number: /[0-9]/.test(password),
-      special: /[@$!%*?&]/.test(password)
+      special: /[@$!%*?&#]/.test(password)
     };
   }
 
