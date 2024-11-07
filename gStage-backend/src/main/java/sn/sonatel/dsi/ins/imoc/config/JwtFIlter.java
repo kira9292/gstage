@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
+import sn.sonatel.dsi.ins.imoc.domain.Jwt;
 import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 import sn.sonatel.dsi.ins.imoc.service.JwtService;
 
@@ -31,16 +32,25 @@ public class JwtFIlter extends OncePerRequestFilter {
         String token = null ;
         String header = null ;
         String username = null;
-        boolean isTokenExpired;
+        boolean isTokenExpired = false;
+        Jwt test_jwt = null ;
 
         final String authorization = request.getHeader("Authorization");
-        if(authorization != null && authorization.startsWith("Bearer ")) {
+        if(authorization != null && authorization.startsWith("Bearer")) {
             token = authorization.substring(7);
+
             isTokenExpired =jwtService.isTokenExpired(token) ;
               username =jwtService.extractUsernage(token);
+            test_jwt = this.jwtService.tokenByValue(token);
 
         }
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if( test_jwt != null
+            &&
+            !isTokenExpired
+            && test_jwt.getAppUser().getEmail().equals(username)
+            && SecurityContextHolder.getContext().getAuthentication() == null
+        )
+        {
             UserDetails userDetails = appUserService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

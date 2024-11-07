@@ -38,6 +38,9 @@ class JwtResourceIT {
     private static final Boolean DEFAULT_EXPIRE = false;
     private static final Boolean UPDATED_EXPIRE = true;
 
+    private static final String DEFAULT_VALEUR = "AAAAAAAAAA";
+    private static final String UPDATED_VALEUR = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/jwts";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -67,7 +70,7 @@ class JwtResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Jwt createEntity() {
-        return new Jwt().desactive(DEFAULT_DESACTIVE).expire(DEFAULT_EXPIRE);
+        return new Jwt().desactive(DEFAULT_DESACTIVE).expire(DEFAULT_EXPIRE).valeur(DEFAULT_VALEUR);
     }
 
     /**
@@ -77,7 +80,7 @@ class JwtResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Jwt createUpdatedEntity() {
-        return new Jwt().desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE);
+        return new Jwt().desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
     }
 
     @BeforeEach
@@ -145,7 +148,8 @@ class JwtResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(jwt.getId().intValue())))
             .andExpect(jsonPath("$.[*].desactive").value(hasItem(DEFAULT_DESACTIVE.booleanValue())))
-            .andExpect(jsonPath("$.[*].expire").value(hasItem(DEFAULT_EXPIRE.booleanValue())));
+            .andExpect(jsonPath("$.[*].expire").value(hasItem(DEFAULT_EXPIRE.booleanValue())))
+            .andExpect(jsonPath("$.[*].valeur").value(hasItem(DEFAULT_VALEUR)));
     }
 
     @Test
@@ -161,7 +165,8 @@ class JwtResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(jwt.getId().intValue()))
             .andExpect(jsonPath("$.desactive").value(DEFAULT_DESACTIVE.booleanValue()))
-            .andExpect(jsonPath("$.expire").value(DEFAULT_EXPIRE.booleanValue()));
+            .andExpect(jsonPath("$.expire").value(DEFAULT_EXPIRE.booleanValue()))
+            .andExpect(jsonPath("$.valeur").value(DEFAULT_VALEUR));
     }
 
     @Test
@@ -183,7 +188,7 @@ class JwtResourceIT {
         Jwt updatedJwt = jwtRepository.findById(jwt.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedJwt are not directly saved in db
         em.detach(updatedJwt);
-        updatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE);
+        updatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
 
         restJwtMockMvc
             .perform(
@@ -257,7 +262,7 @@ class JwtResourceIT {
         Jwt partialUpdatedJwt = new Jwt();
         partialUpdatedJwt.setId(jwt.getId());
 
-        partialUpdatedJwt.desactive(UPDATED_DESACTIVE);
+        partialUpdatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
 
         restJwtMockMvc
             .perform(
@@ -285,7 +290,7 @@ class JwtResourceIT {
         Jwt partialUpdatedJwt = new Jwt();
         partialUpdatedJwt.setId(jwt.getId());
 
-        partialUpdatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE);
+        partialUpdatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
 
         restJwtMockMvc
             .perform(
