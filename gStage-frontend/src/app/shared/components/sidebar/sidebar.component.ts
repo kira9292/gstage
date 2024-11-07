@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavigationService } from '../../../services/navigation.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,7 +22,10 @@ import { NavigationService } from '../../../services/navigation.service';
 export class SidebarComponent {
   @Input() userType: 'intern' | 'candidate' = 'intern';
   activeTab: string = 'dashboard';
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.navigationService.activeTab$.subscribe(tab => {
@@ -29,9 +33,9 @@ export class SidebarComponent {
     });
   }
 
-  logout() {
-    // Implement logout logic here
-    console.log('Logout clicked');
+   // Méthode pour déconnecter l'utilisateur
+   logout() {
+    this.authService.logout();
   }
   @Input() isSidebarOpen: boolean = false;
   @Output() sidebarClose = new EventEmitter<void>();

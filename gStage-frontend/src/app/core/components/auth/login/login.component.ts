@@ -19,6 +19,8 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isLoading = false;
+  errorMessage: string | null = null;
+
 
   constructor(
     private fb: FormBuilder,
@@ -34,19 +36,21 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   async onSubmit(): Promise<void> {
-    if (this.loginForm.valid) {
       if(this.loginForm.valid){
-        try {
-          this.isLoading = true;
-          const formData = this.loginForm.value;
+        this.errorMessage = null;
+        this.isLoading = true;
 
+        try {
+          const formData = this.loginForm.value;
           await this.authService.login(formData).toPromise();
           
         } catch (error: any) {
           console.error('Erreur lors de la connexion');
-          
+          this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect.';
+
+        }finally {
+          this.isLoading = false;
         }
       }
-    }
   }
 }
