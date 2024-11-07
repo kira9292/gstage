@@ -23,20 +23,18 @@ public class DemandeStageController {
     @Autowired
     private CandidatRepository candidatRepository;
 
-    @PostMapping("/api/demandeStage")
-    public void create(@RequestBody DemandeStage demandeStage) {
-        this.demandeStageRepository.save(demandeStage);
-    }
-    @PostMapping("/api/candidater")
-    public void postuler(@RequestBody Candidat candidat) {
-        this.candidatRepository.save(candidat);
-    }
+
+
+
     @PostMapping("/api/candidater")
     public void soumettre(@RequestBody DemandeStagecandidatDTO demande) {
+
         Candidat c = demande.getCandidat();
         this.candidatRepository.save(c);
         DemandeStage d = demande.getDemandeStage();
         d.setCandidat(c);
         this.candidatRepository.save(c);
+
     }
+
 }
