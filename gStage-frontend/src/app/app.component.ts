@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
 import { BreadcrumbComponent } from './shared/components/breadcrump/breadcrump.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { AuthService } from './core/services/auth.service';
 
 
 @Component({
@@ -24,7 +25,10 @@ export class AppComponent {
   title = 'gStage-frontend';
   isSidebarOpen = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   // Vérifie si on est sur une page d'authentification
   isAuthPage(): boolean {
@@ -34,6 +38,17 @@ export class AppComponent {
            currentRoute.includes('/inscription') ||
            currentRoute.includes('/connexion');
   }
+
+    // Affiche la navbar si l'utilisateur est authentifié
+    showNavbar(): boolean {
+      return !this.isAuthPage();
+    }
+  
+    // Affiche le sidebar si l'utilisateur est authentifié et est ROLE_STAGIAIRE
+    showSidebar(): boolean {
+      return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_STAGIAIRE');
+    }
+  
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;

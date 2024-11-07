@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthService } from '../../../../core/services/auth.service';
 
 enum InternshipType {
   ACADEMIQUE = 'ACADEMIQUE',
@@ -85,6 +86,8 @@ export class SuiviDemandeStageComponent implements OnInit {
   Math = Math;
 
   // Data
+  userInfo: { firstName: string; name: string } | null = null;
+
   candidat: Candidat | null = null;
   demandes: DemandeStage[] = [];
   filteredDemandes: DemandeStage[] = [];
@@ -106,12 +109,19 @@ export class SuiviDemandeStageComponent implements OnInit {
   showDemandeDialog = false;
   selectedDemande: DemandeStage | null = null;
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     // Simuler le chargement des données
     this.loadMockData();
     this.applyFilters();
+     // S'abonner au BehaviorSubject pour récupérer les infos utilisateur
+     this.authService.userInfo$.subscribe(userInfo => {
+      this.userInfo = userInfo;
+    });
   }
 
   loadMockData() {

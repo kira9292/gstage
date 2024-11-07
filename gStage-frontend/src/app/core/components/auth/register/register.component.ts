@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { matchPasswordValidator } from '../../../validators/password.validator';
+import { noWhitespaceValidator } from '../../../validators/names.validator';
 
 
 interface PasswordCriteria {
@@ -50,10 +51,10 @@ export class RegisterComponent implements OnInit {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      name: ['', [Validators.required, Validators.minLength(2)]],
+      firstName: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
+      name: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
       email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(2)]],
+      username: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
 
       // phone: ['', [
       //   Validators.required,
@@ -61,6 +62,7 @@ export class RegisterComponent implements OnInit {
       // ]],
       // formation: ['', [Validators.required, Validators.minLength(2)]],
       // niveau: ['', [Validators.required]],
+
       password: ['', [
         Validators.required,
         Validators.minLength(8),
@@ -95,6 +97,7 @@ export class RegisterComponent implements OnInit {
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Le prénom est requis';
       if (control.errors['minlength']) return 'Le prénom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le prénom ne doit pas contenir d\'espaces inutiles';
     }
     return '';
   }
@@ -104,6 +107,17 @@ export class RegisterComponent implements OnInit {
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Le nom est requis';
       if (control.errors['minlength']) return 'Le nom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom ne doit pas contenir d\'espaces inutiles';
+    }
+    return '';
+  }
+
+  get usernameError(): string {
+    const control = this.registerForm.get('username');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le nom d\'utilisateur est requis';
+      if (control.errors['minlength']) return 'Le nom d\'utilisateur doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom d\'utilisateur ne doit pas contenir d\'espaces inutiles';
     }
     return '';
   }

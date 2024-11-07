@@ -145,6 +145,14 @@ export class AuthService {
     
   }
 
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem(this.TOKEN_KEY);
+  }
+  
+  hasRole(role: string): boolean {
+    return this.getRole() === role;
+  }
+
   // Déconnexion de l'utilisateur
   logout() {
     localStorage.removeItem(this.TOKEN_KEY);
