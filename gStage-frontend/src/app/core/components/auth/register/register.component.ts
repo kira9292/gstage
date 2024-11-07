@@ -90,7 +90,7 @@ export class RegisterComponent implements OnInit {
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Le prénom est requis';
       if (control.errors['minlength']) return 'Le prénom doit contenir au moins 2 caractères';
-      if (control.errors['whitespace']) return 'Le prénom ne doit pas contenir d\'espaces inutiles';
+      if (control.errors['whitespace']) return 'Le prénom ne doit pas contenir de caractere speciaux inutiles';
     }
     return '';
   }
@@ -100,7 +100,7 @@ export class RegisterComponent implements OnInit {
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Le nom est requis';
       if (control.errors['minlength']) return 'Le nom doit contenir au moins 2 caractères';
-      if (control.errors['whitespace']) return 'Le nom ne doit pas contenir d\'espaces inutiles';
+      if (control.errors['whitespace']) return 'Le nom ne doit pas contenir de caracteres speciaux inutiles';
     }
     return '';
   }
@@ -110,7 +110,7 @@ export class RegisterComponent implements OnInit {
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'Le nom d\'utilisateur est requis';
       if (control.errors['minlength']) return 'Le nom d\'utilisateur doit contenir au moins 2 caractères';
-      if (control.errors['whitespace']) return 'Le nom d\'utilisateur ne doit pas contenir d\'espaces inutiles';
+      if (control.errors['whitespace']) return 'Le nom d\'utilisateur ne doit pas contenir de caracteres speciaux inutiles';
     }
     return '';
   }
