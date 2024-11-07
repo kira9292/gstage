@@ -29,19 +29,14 @@ public class DemandeStageController {
     }
     @PostMapping("/api/candidater")
     public void postuler(@RequestBody Candidat candidat) {
-
         this.candidatRepository.save(candidat);
     }
-
     @PostMapping("/api/candidater")
     public void soumettre(@RequestBody DemandeStagecandidatDTO demande) {
-
         Candidat c = demande.getCandidat();
         this.candidatRepository.save(c);
         DemandeStage d = demande.getDemandeStage();
         d.setCandidat(c);
         this.candidatRepository.save(c);
-        
     }
-
 }
