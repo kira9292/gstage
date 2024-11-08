@@ -29,6 +29,10 @@ management:
       probability: 1.0 # report 100% of traces
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   devtools:
     restart:
       enabled: true
