@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { noWhitespaceValidator } from '../../../../../core/validators/names.validator';
+import { Router } from '@angular/router';
+import { SuccessModalComponent } from '../success-modal/success-modal.component';
 
 @Component({
   selector: 'app-demande-stage-form1',
@@ -9,14 +11,15 @@ import { noWhitespaceValidator } from '../../../../../core/validators/names.vali
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SuccessModalComponent
   ],
   templateUrl: './demande-stage.component.html',
   styleUrl: './demande-stage.component.scss'
 })
 export class DemandeStageComponent {
   currentStep = 1; // Initialise à la première étape
-  
+  showModal = false;
 
   applicationForm: FormGroup;
   selectedCV: File | null = null;
@@ -24,7 +27,7 @@ export class DemandeStageComponent {
   cvError: string = '';
   motivationLetterError: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.applicationForm = this.fb.group({
 
       // Champs de la première étape
@@ -35,8 +38,8 @@ export class DemandeStageComponent {
         Validators.required,
         Validators.pattern(/^(70|75|76|77|78)[0-9]{7}$/)
       ]],
-      formation: ['', Validators.required, Validators.minLength(2), noWhitespaceValidator],
-      school: ['', Validators.required, Validators.minLength(2), noWhitespaceValidator],
+      formation: [Validators.required],
+      school: ['',[Validators.required, Validators.minLength(2), noWhitespaceValidator]],
 
 
       // Champs de la deuxième étape
@@ -45,6 +48,47 @@ export class DemandeStageComponent {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required]
     }, { validator: this.dateRangeValidator });
+  }
+
+  // Getters pour les messages d'erreur
+  get firstNameError(): string {
+    const control = this.applicationForm.get('firstName');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le prénom est requis';
+      if (control.errors['minlength']) return 'Le prénom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le prénom ne doit pas contenir de caracteres speciaux inutiles';
+    }
+    return '';
+  }
+
+  get lastNameError(): string {
+    const control = this.applicationForm.get('lastName');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le nom est requis';
+      if (control.errors['minlength']) return 'Le nom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom ne doit pas contenir de caracteres speciaux inutiles';
+    }
+    return '';
+  }
+
+  
+  get formationError(): string {
+    const control = this.applicationForm.get('formation');
+    if (control?.errors && control.touched) {
+     return 'La formation est requise';
+    }
+    return '';
+  }
+
+  
+  get schoolError(): string {
+    const control = this.applicationForm.get('school');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'L\'ecole est requise';
+      if (control.errors['minlength']) return 'Le nom de l\'ecole doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom de l\'ecole ne doit pas contenir de caracteres speciaux inutiles';
+    }
+    return '';
   }
 
   
@@ -71,7 +115,7 @@ export class DemandeStageComponent {
   if (this.applicationForm.get('firstName')?.valid &&
       this.applicationForm.get('lastName')?.valid &&
       this.applicationForm.get('email')?.valid &&
-      this.applicationForm.get('phoneNumber')?.valid &&
+      this.applicationForm.get('phone')?.valid &&
       this.applicationForm.get('formation')?.valid &&
       this.applicationForm.get('school')?.valid) {
     this.currentStep = 2;
@@ -151,6 +195,13 @@ onSubmit(): void {
 
       // Appel au service pour envoyer les donnees
       console.log('Form Data:', formData);
+      this.showModal = true;
+
     }
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.router.navigate(['/login'])
   }
 }

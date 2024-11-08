@@ -16,10 +16,10 @@
             </label>
             <input type="text" formControlName="firstName"
                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="applicationForm.get('firstName')?.touched && applicationForm.get('firstName')?.invalid" 
+            <div *ngIf="firstNameError" 
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
-              Ce champ est requis
+              {{ firstNameError }}
             </div>
           </div>
 
@@ -31,10 +31,10 @@
             </label>
             <input type="text" formControlName="lastName"
                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="applicationForm.get('lastName')?.touched && applicationForm.get('lastName')?.invalid" 
+            <div *ngIf="lastNameError" 
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
-              Ce champ est requis
+              {{ lastNameError }}
             </div>
           </div>
         </div>
@@ -80,27 +80,40 @@
               <i class="fas fa-book mr-2 text-orange-500"></i>
               Formation
             </label>
-            <input type="text" formControlName="formation"
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="applicationForm.get('formation')?.touched && applicationForm.get('formation')?.invalid" 
+            <select formControlName="formation" 
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+              <option value="">Sélectionnez une formation</option>
+              <option value="computer-science">Informatique et Systèmes d'Information</option>
+              <option value="human-resources">Gestion des Ressources Humaines</option>
+              <option value="marketing-communication">Marketing et Communication</option>
+              <option value="law-administration">Droit et Administration</option>
+              <option value="industrial-engineering">Génie Industriel</option>
+              <option value="finance-accounting">Finance et Comptabilité</option>
+              <option value="operations-management">Management des Opérations</option>
+              <option value="data-science">Data Science et Analyse de Données</option>
+              <option value="networks-telecom">Réseaux et Télécommunications</option>
+              <option value="commerce-sales">Commerce et Ventes</option>
+            </select>
+            <div *ngIf="formationError" 
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
-              Ce champ est requis
+              {{ formationError }}
             </div>
           </div>
+          
 
           <!-- École -->
           <div class="form-group">
             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
               <i class="fas fa-school mr-2 text-orange-500"></i>
-              École
+              École/Universite
             </label>
             <input type="text" formControlName="school"
                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="applicationForm.get('school')?.touched && applicationForm.get('school')?.invalid" 
+            <div *ngIf="schoolError" 
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
-              Ce champ est requis
+              {{ schoolError }}
             </div>
           </div>
         </div>
@@ -284,8 +297,16 @@
         </div>
       </div>
   
-      <!-- Bouton de Soumission -->
-      <div class="flex justify-end pt-4">
+      <div class="flex justify-between pt-4">
+        <!-- Bouton Précédent -->
+        <button type="button"
+                (click)="goToStep1()"
+                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+          <i class="fas fa-arrow-left mr-2"></i>
+          Précédent
+        </button>
+  
+        <!-- Bouton Soumettre ma demande -->
         <button type="submit"
                 [disabled]="!applicationForm.valid || !selectedCV || !selectedMotivationLetter"
                 class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
@@ -293,16 +314,9 @@
           Soumettre ma demande
         </button>
       </div>
-      
-      <div class="flex justify-start pt-4">
-        <button type="button"
-                (click)="goToStep1()"
-                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-          <i class="fas fa-arrow-left mr-2"></i>
-          Precedent
-        </button>
-      </div>
 
     </form>
   </div>
+  <app-success-modal *ngIf="showModal" (close)="closeModal()"></app-success-modal>
+
   
