@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -155,9 +155,37 @@ export class AuthService {
 
   // Déconnexion de l'utilisateur
   logout() {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_INFO_KEY);
-    this.userInfoSubject.next(null);
-    this.router.navigate(['/login']);
-  }
+    const token = localStorage.getItem('jwtToken'); // Récupérer le token stocké
+    
+    // Créer un nouvel objet HttpHeaders et ajouter le token
+    let headers = new HttpHeaders();
+    headers = headers.append('Authorization', `Bearer ${token}`);
+    headers = headers.append('Content-type', 'application/json')
+    
+    console.log(headers.get('Authorization')); // Vérifier que l'en-tête est bien présent
+
+    // Envoyer la requête de déconnexion avec les credentials (cookies ou session)
+    this.http.post<any>(`${this.API_URL}/deconnexion`, null, { 
+        headers, 
+        withCredentials: true // Indique que les cookies et autres informations d'authentification doivent être envoyés
+    }).subscribe(
+        () => {
+
+            // Suppression du token et redirection après la déconnexion réussie
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem(this.USER_INFO_KEY);
+            this.userInfoSubject.next(null);
+            alert("Deconnexion reussie avec succes !")
+            this.router.navigate(['/login']);
+        },
+        error => {
+            console.error("Erreur lors de la déconnexion", error);
+            alert("Échec de la déconnexion, veuillez réessayer.");
+        }
+    );
 }
+
+
+}
+
+
