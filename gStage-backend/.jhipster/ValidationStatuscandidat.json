@@ -1,0 +1,39 @@
+{
+  "annotations": {
+    "changelogDate": "20241107161824"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "creation",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "expire",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "activation",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "ValidationStatuscandidat",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "candidat",
+      "otherEntityRelationshipName": "validationStatuscandidat",
+      "relationshipName": "candidat",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

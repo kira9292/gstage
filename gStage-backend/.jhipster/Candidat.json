@@ -73,6 +73,13 @@
       "relationshipType": "one-to-one"
     },
     {
+      "otherEntityName": "validationStatuscandidat",
+      "otherEntityRelationshipName": "candidat",
+      "relationshipName": "validationStatuscandidat",
+      "relationshipSide": "right",
+      "relationshipType": "one-to-one"
+    },
+    {
       "otherEntityName": "appUser",
       "otherEntityRelationshipName": "candidat",
       "relationshipName": "appUser",

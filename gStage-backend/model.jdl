@@ -90,6 +90,13 @@ entity Candidat {
   school String
 }
 
+entity ValidationStatuscandidat{
+  creation Instant
+  expire Instant
+  activation Instant
+  code String
+}
+
 entity Contrat {
   reference String required unique
   startDate LocalDate required
@@ -214,6 +221,7 @@ relationship OneToOne {
     AppUser to Service
   AppUser{attestationFinStage} to AttestationFinStage{appuser}
   ValidationStatusUser to AppUser
+  ValidationStatuscandidat to Candidat
 }
 
 relationship ManyToOne {

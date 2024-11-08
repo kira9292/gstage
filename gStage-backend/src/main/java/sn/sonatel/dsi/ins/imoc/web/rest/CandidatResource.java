@@ -195,6 +195,16 @@ public class CandidatResource {
                 HttpStatus.OK
             );
         }
+
+        if ("validationstatuscandidat-is-null".equals(filter)) {
+            LOG.debug("REST request to get all Candidats where validationStatuscandidat is null");
+            return new ResponseEntity<>(
+                StreamSupport.stream(candidatRepository.findAll().spliterator(), false)
+                    .filter(candidat -> candidat.getValidationStatuscandidat() == null)
+                    .toList(),
+                HttpStatus.OK
+            );
+        }
         LOG.debug("REST request to get a page of Candidats");
         Page<Candidat> page = candidatRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);

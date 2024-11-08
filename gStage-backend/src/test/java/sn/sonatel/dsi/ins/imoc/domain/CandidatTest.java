@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.DemandeStageTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidatTestSamples.*;
 
 import org.junit.jupiter.api.Test;
 import sn.sonatel.dsi.ins.imoc.web.rest.TestUtil;
@@ -36,6 +37,20 @@ class CandidatTest {
         candidat.demandeStage(null);
         assertThat(candidat.getDemandeStage()).isNull();
         assertThat(demandeStageBack.getCandidat()).isNull();
+    }
+
+    @Test
+    void validationStatuscandidatTest() {
+        Candidat candidat = getCandidatRandomSampleGenerator();
+        ValidationStatuscandidat validationStatuscandidatBack = getValidationStatuscandidatRandomSampleGenerator();
+
+        candidat.setValidationStatuscandidat(validationStatuscandidatBack);
+        assertThat(candidat.getValidationStatuscandidat()).isEqualTo(validationStatuscandidatBack);
+        assertThat(validationStatuscandidatBack.getCandidat()).isEqualTo(candidat);
+
+        candidat.validationStatuscandidat(null);
+        assertThat(candidat.getValidationStatuscandidat()).isNull();
+        assertThat(validationStatuscandidatBack.getCandidat()).isNull();
     }
 
     @Test
