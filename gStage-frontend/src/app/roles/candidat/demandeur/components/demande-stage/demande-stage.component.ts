@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { noWhitespaceValidator } from '../../../../../core/validators/names.validator';
 import { Router } from '@angular/router';
 import { SuccessModalComponent } from '../success-modal/success-modal.component';
+import { DemandeStageService } from '../../serivices/demande-stage.service';
 
 @Component({
   selector: 'app-demande-stage-form1',
@@ -27,7 +28,11 @@ export class DemandeStageComponent {
   cvError: string = '';
   motivationLetterError: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router,
+    private demandeStageService: DemandeStageService
+  ) {
     this.applicationForm = this.fb.group({
 
       // Champs de la première étape
@@ -143,6 +148,15 @@ export class DemandeStageComponent {
     return null;
   }
   
+ // Fonction de conversion d'un fichier en Base64 sans le préfixe
+convertToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
+}
   onFileSelected(event: Event, fileType: 'cv' | 'motivation'): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -174,31 +188,72 @@ export class DemandeStageComponent {
     }
   }
 
+
 // Fonction de soumission du formulaire
 onSubmit(): void {
   if (this.applicationForm.valid && this.selectedCV && this.selectedMotivationLetter) {
-    // Créer un FormData pour envoyer les fichiers et les autres informations
-    const formData = new FormData();
-    formData.append('firstName', this.applicationForm.get('firstName')?.value);
-    formData.append('lastName', this.applicationForm.get('lastName')?.value);
-    formData.append('email', this.applicationForm.get('email')?.value);
-    formData.append('phoneNumber', this.applicationForm.get('phoneNumber')?.value);
-    formData.append('formation', this.applicationForm.get('formation')?.value);
-    formData.append('school', this.applicationForm.get('school')?.value);
-    formData.append('type', this.applicationForm.get('type')?.value);
-    formData.append('direction', this.applicationForm.get('direction')?.value);
-    formData.append('startDate', this.applicationForm.get('startDate')?.value);
-    formData.append('endDate', this.applicationForm.get('endDate')?.value);
-    formData.append('cv', this.selectedCV);
-    formData.append('motivationLetter', this.selectedMotivationLetter);
+    // Créer l'objet demandeStage avec les informations du formulaire
+    const demandeStageData = {
+      demandeStage: {
+        creationDate: new Date().toISOString().split('T')[0], // Date actuelle
+        internshipType: this.applicationForm.get('type')?.value, // Exemple de type de stage
+        startDate: this.applicationForm.get('startDate')?.value,
+        endDate: this.applicationForm.get('endDate')?.value,
+        status: "EN_ATTENTE", // Statut initial
+        validated: false, // Statut de validation
+        // Champs pour le contenu Base64 des fichiers
+        cv: '',
+        cvContentType: this.selectedCV ? this.selectedCV.type : '', // Vérifie si selectedCV est défini
+        coverLetter: '',
+        coverLetterContentType: this.selectedMotivationLetter ? this.selectedMotivationLetter.type : '', // Vérifie si selectedMotivationLetter est défini
+      },
+      candidat: {
+        firstName: this.applicationForm.get('firstName')?.value,
+        lastName: this.applicationForm.get('lastName')?.value,
+        birthDate: '2000-01-01', // Exemple de date de naissance
+        nationality: 'Senegalese', // Exemple de nationalité
+        birthPlace: 'Dakar', // Exemple de lieu de naissance
+        cni: '1234567869', // Exemple de numéro de CNI
+        address: '123 Street, Dakar', // Exemple d'adresse
+        email: this.applicationForm.get('email')?.value,
+        phone: this.applicationForm.get('phone')?.value,
+        educationLevel: 'BAC_PLUS_2', // Exemple de niveau d'éducation
+        school: this.applicationForm.get('school')?.value,
+      }
+    };
 
+    // Vérification si les fichiers existent avant de les convertir en Base64
+    if (this.selectedCV && this.selectedMotivationLetter) {
+      // Convertir le CV en Base64
+      this.convertToBase64(this.selectedCV as File).then((cvBase64) => {
+        // Enlever le préfixe "data:application/pdf;base64," si présent
+        demandeStageData.demandeStage.cv = cvBase64.split(',')[1] || cvBase64;
 
-      // Appel au service pour envoyer les donnees
-      console.log('Form Data:', formData);
-      this.showModal = true;
+        // Convertir la lettre de motivation en Base64
+        this.convertToBase64(this.selectedMotivationLetter as File).then((motivationLetterBase64) => {
+          demandeStageData.demandeStage.coverLetter = motivationLetterBase64.split(',')[1] || motivationLetterBase64;
 
+          // Appel au service pour soumettre les données
+          console.log('Données à envoyer (avant submit):', demandeStageData);
+          this.demandeStageService.submitDemandeStage(demandeStageData).subscribe(response => {
+            this.showModal = true;
+          }, error => {
+            console.error("Erreur lors de l'envoi de la demande :", error);
+          });
+        }).catch((error) => {
+          console.error('Erreur lors de la conversion en Base64 de la lettre de motivation:', error);
+        });
+      }).catch((error) => {
+        console.error('Erreur lors de la conversion en Base64 du CV:', error);
+      });
     }
+  } else {
+    console.warn("Le formulaire n'est pas valide ou les fichiers sont manquants.");
   }
+}
+
+
+
 
   closeModal() {
     this.showModal = false;
