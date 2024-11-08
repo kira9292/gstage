@@ -65,8 +65,12 @@ public class Candidat implements Serializable {
     private String school;
 
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "candidat")
     private DemandeStage demandeStage;
+
+    @JsonIgnoreProperties(value = { "candidat" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
+    private ValidationStatuscandidat validationStatuscandidat;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
@@ -262,6 +266,25 @@ public class Candidat implements Serializable {
 
     public Candidat demandeStage(DemandeStage demandeStage) {
         this.setDemandeStage(demandeStage);
+        return this;
+    }
+
+    public ValidationStatuscandidat getValidationStatuscandidat() {
+        return this.validationStatuscandidat;
+    }
+
+    public void setValidationStatuscandidat(ValidationStatuscandidat validationStatuscandidat) {
+        if (this.validationStatuscandidat != null) {
+            this.validationStatuscandidat.setCandidat(null);
+        }
+        if (validationStatuscandidat != null) {
+            validationStatuscandidat.setCandidat(this);
+        }
+        this.validationStatuscandidat = validationStatuscandidat;
+    }
+
+    public Candidat validationStatuscandidat(ValidationStatuscandidat validationStatuscandidat) {
+        this.setValidationStatuscandidat(validationStatuscandidat);
         return this;
     }
 

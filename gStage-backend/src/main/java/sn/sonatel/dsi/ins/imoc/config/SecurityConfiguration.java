@@ -74,14 +74,16 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authz ->
                 // prettier-ignore
                 authz
+
+                    // Permettre l'accès aux URLs Swagger sans authentification
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/authenticate")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.GET, "/api/authenticate")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/inscription")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/activation")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/connexion")).permitAll()
-                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/demandeStage")).permitAll()
-                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/canditater")).permitAll()
-                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/canditater")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/postuler")).permitAll()
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/validerdemande")).permitAll()
+
 
                     .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers(mvc.pattern("/api/**")).authenticated()

@@ -9,4 +9,6 @@ import sn.sonatel.dsi.ins.imoc.domain.Candidat;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CandidatRepository extends JpaRepository<Candidat, Long> {}
+public interface CandidatRepository extends JpaRepository<Candidat, Long> {
+    Candidat findByValidationStatuscandidatCode(String code);
+}

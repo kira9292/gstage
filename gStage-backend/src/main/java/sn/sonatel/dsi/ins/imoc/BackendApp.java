@@ -20,6 +20,7 @@ import sn.sonatel.dsi.ins.imoc.config.CRLFLogConverter;
 import tech.jhipster.config.DefaultProfileUtil;
 import tech.jhipster.config.JHipsterConstants;
 
+
 @EnableScheduling
 @SpringBootApplication
 @EnableConfigurationProperties({ LiquibaseProperties.class, ApplicationProperties.class })

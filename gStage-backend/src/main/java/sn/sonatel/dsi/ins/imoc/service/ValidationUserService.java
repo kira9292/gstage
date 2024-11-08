@@ -26,6 +26,7 @@ public class ValidationUserService {
         Instant created = Instant.now();
         Instant expiration = created.plus(10, MINUTES);
         validation.setExpire(expiration);
+
         Random random = new Random();
         int randomInt = random.nextInt(999999);
         String code = String.format("%04d", randomInt);
