@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { noWhitespaceValidator } from '../../../../../core/validators/names.validator';
+import { Router } from '@angular/router';
+import { SuccessModalComponent } from '../success-modal/success-modal.component';
 
 @Component({
   selector: 'app-demande-stage-form1',
@@ -9,14 +11,15 @@ import { noWhitespaceValidator } from '../../../../../core/validators/names.vali
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SuccessModalComponent
   ],
   templateUrl: './demande-stage.component.html',
   styleUrl: './demande-stage.component.scss'
 })
 export class DemandeStageComponent {
   currentStep = 1; // Initialise à la première étape
-  
+  showModal = false;
 
   applicationForm: FormGroup;
   selectedCV: File | null = null;
@@ -24,7 +27,7 @@ export class DemandeStageComponent {
   cvError: string = '';
   motivationLetterError: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.applicationForm = this.fb.group({
 
       // Champs de la première étape
@@ -192,6 +195,13 @@ onSubmit(): void {
 
       // Appel au service pour envoyer les donnees
       console.log('Form Data:', formData);
+      this.showModal = true;
+
     }
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.router.navigate(['/login'])
   }
 }
