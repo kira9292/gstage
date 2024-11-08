@@ -27,7 +27,7 @@ public class ValidationCanditatService {
         ValidationStatuscandidat validation = new ValidationStatuscandidat();
         validation.setCandidat(user);
         Instant created = Instant.now();
-        Instant expiration = created.plus(10, SECONDS);
+        Instant expiration = created.plus(10, MINUTES);
         validation.setExpire(expiration);
         validation.setCreation(created);
         Random random = new Random();
