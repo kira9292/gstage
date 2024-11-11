@@ -1,12 +1,10 @@
 package sn.sonatel.dsi.ins.imoc.controller;
 
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
@@ -16,6 +14,7 @@ import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.service.DemandeStageService;
 import sn.sonatel.dsi.ins.imoc.service.ValidationCanditatService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,5 +49,14 @@ public class DemandeStageController {
 
         this.demandeStageService.activation(code);
     }
+
+
+//    @PostMapping("/resendcode")
+//    public void renvoicode( @RequestBody Map<String ,String> mail ) {
+//
+//        this.demandeStageService.resendcode(mail);
+//
+//    }
+
 
 }

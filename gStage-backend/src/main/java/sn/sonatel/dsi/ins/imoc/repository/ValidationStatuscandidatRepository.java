@@ -13,4 +13,6 @@ import java.util.Optional;
 @Repository
 public interface ValidationStatuscandidatRepository extends JpaRepository<ValidationStatuscandidat, Long> {
     Optional<ValidationStatuscandidat> findByCode(String code);
+    ValidationStatuscandidat findTopByCandidatEmailOrderByCreationDesc(String email);
+
 }

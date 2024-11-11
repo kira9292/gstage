@@ -83,7 +83,7 @@ public class SecurityConfiguration {
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/connexion")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/postuler")).permitAll()
                     .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/validerdemande")).permitAll()
-
+                    .requestMatchers(mvc.pattern(HttpMethod.POST, "/api/resendcode")).permitAll()
 
                     .requestMatchers(mvc.pattern("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
                     .requestMatchers(mvc.pattern("/api/**")).authenticated()

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.dto.AuthentificationDTO;
+import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
 import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 import sn.sonatel.dsi.ins.imoc.service.JwtService;
 
@@ -37,11 +38,16 @@ public class UserController {
 
 
 
-    @PostMapping("/api/inscription")
-    public void incription(@RequestBody AppUser appUser) {
-        log.info("Incription of {}", appUser);
-        this.appUserService.inscription(appUser);
-    }
+//    @PostMapping("/api/inscription")
+//    public void incription(@RequestBody AppUser appUser) {
+//        log.info("Incription of {}", appUser);
+//        this.appUserService.inscription(appUser);
+//    }
+@PostMapping("/api/inscription")
+public void incription(@RequestBody UserDTO appUser) {
+    log.info("Incription of {}", appUser);
+    this.appUserService.inscription(appUser);
+}
     @PostMapping("/api/activation")
     public void activation(@RequestBody Map<String ,String> activation) {
 
