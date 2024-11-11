@@ -59,17 +59,19 @@ public class NotificationService {
 
         // Construction du contenu HTML pour le candidat
         String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
-            + "<table width='100%' cellspacing='0' cellpadding='10' style='background-color: #f4f4f4;'>"
+            + "<table width='100%' cellspacing='0' cellpadding='20' style='background-color: #f4f4f4;'>"
             + "<tr><td style='text-align: center;'>"
-            + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getLastName() + ",</h2>"
-            + "<p>Bienvenue chez Sonatel !</p>"
-            + "<p>Votre code d'activation est : <strong style='font-size: 24px; color: #4CAF50;'>" + validation.getCode() + "</strong></p>"
-            + "<p style='font-size: 14px;'>Merci de rejoindre notre équipe. Nous sommes ravis de vous avoir parmi nous.</p>"
-            + "<p style='font-size: 14px;'>À bientôt,</p>"
-            + "<p style='font-size: 14px;'>L'équipe Sonatel</p>"
-            + "<hr style='border: 0; border-top: 1px solid #ddd;'>"
+            + "<img src='https://www.sonatel.sn/wp-content/uploads/2020/06/logo-sonatel.png' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>"
+            + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>"
+            + "<p>Nous sommes ravis que vous souhaitiez rejoindre Sonatel pour un stage !</p>"
+            + "<p style='font-size: 16px;'>Pour confirmer votre adresse email et continuer le processus de candidature, veuillez utiliser le code de validation suivant :</p>"
+            + "<p style='font-size: 24px; font-weight: bold; color: #4CAF50;'>" + validation.getCode() + "</p>"
+            + "<p style='font-size: 16px;'>Ce code est valable pendant les prochaines 10 minutes. Veuillez ne pas le partager avec quiconque.</p>"
+            + "<hr style='border: 0; border-top: 1px solid #ddd; margin: 20px 0;'>"
+            + "<p style='font-size: 14px;'>Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer ce message.</p>"
+            + "<p style='font-size: 14px;'>Cordialement,<br>L'équipe Sonatel</p>"
             + "<footer style='font-size: 12px; color: #aaa; text-align: center;'>"
-            + "<p>Ce message est généré automatiquement, merci de ne pas y répondre.</p>"
+            + "<p>Ce message est généré automatiquement. Merci de ne pas y répondre.</p>"
             + "</footer>"
             + "</td></tr></table></body></html>";
 
