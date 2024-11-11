@@ -45,6 +45,10 @@ export class AppComponent {
     showSidebar(): boolean {
       return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_STAGIAIRE');
     }
+
+    isAuthenticated(): boolean {
+      return this.authService.isAuthenticated();
+    }
   
 
   toggleSidebar() {
