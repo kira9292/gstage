@@ -6,11 +6,16 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 
 export interface RegisterData {
-  firstName: string;
-  name: string;
-  email: string;
-  password: string;
-  username: string;
+  appUser: {
+    username: string;
+    email: string;
+    password: string;
+    name: string;
+    firstName: string;
+  },
+  role: {
+    name: string; // Utiliser le rôle sélectionné dans le formulaire
+  }
 }
 
 export interface LoginData {
