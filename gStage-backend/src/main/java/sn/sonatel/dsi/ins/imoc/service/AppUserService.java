@@ -20,6 +20,7 @@ import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.Role;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatusUser;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
+import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
 
@@ -53,27 +54,27 @@ public class AppUserService implements UserDetailsService {
             orElseThrow(()-> new UsernameNotFoundException("Aucun n'utilisateur ne correspond"));
     }
 
-    public void inscription (AppUser appUser) {
-        if (!appUser.getEmail().contains("@") || !appUser.getEmail().contains(".")){
+    public void inscription (UserDTO appUser) {
+        if (!appUser.getAppUser().getEmail().contains("@") || !appUser.getAppUser().getEmail().contains(".")){
             throw new RuntimeException("Invalid email address");
         }
-        Optional<AppUser> useroptonal = this.appUserRepository.findByEmail(appUser.getEmail());
+        Optional<AppUser> useroptonal = this.appUserRepository.findByEmail(appUser.getAppUser().getEmail());
 
         if (useroptonal.isPresent()) {
             throw new RuntimeException("Email already in use");
 
         }
-        String mdpCrypte = this.passwordEncoder.encode(appUser.getPassword());
-        appUser.setPassword(mdpCrypte);
-        appUser.setStatus(false);
-
-        Role role = new Role();
-        role.setName(ERole.STAGIAIRE);
-        role = roleRepository.save(role);
-        appUser.setRole(role);
+        String mdpCrypte = this.passwordEncoder.encode(appUser.getAppUser().getPassword());
+        appUser.getAppUser().setPassword(mdpCrypte);
+        appUser.getAppUser().setStatus(false);
 
 
-        AppUser utilisateur = this.appUserRepository.save(appUser);
+//        role.setName(ERole.STAGIAIRE);
+        Role role = roleRepository.save(appUser.getRole());
+        appUser.getAppUser().setRole(role);
+
+
+        AppUser utilisateur = this.appUserRepository.save(appUser.getAppUser());
         this.validationUserService.enregistrer(utilisateur);
 
 

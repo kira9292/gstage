@@ -1,6 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.service;
 
 
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sn.sonatel.dsi.ins.imoc.domain.*;
@@ -9,8 +10,10 @@ import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.ValidationStatuscandidatRepository;
 
+import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class DemandeStageService {
@@ -24,6 +27,19 @@ public class DemandeStageService {
 
     @Autowired
     private CandidatRepository candidatRepository;
+
+    @Autowired
+    private NotificationService notificationService;
+
+
+
+
+
+
+
+
+
+
 
     public void activation(Map<String, String> code) {
         ValidationStatuscandidat validation = this.validationCanditatService.getUserByCode(code.get("code"));
@@ -44,5 +60,15 @@ public class DemandeStageService {
         }
 
 
+    }
+
+    public void resendcode(Map<String, String> mail) throws MessagingException, UnsupportedEncodingException {
+        ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(mail.get("mail"));
+        if (validationStatusOptional!=null) {
+            this.notificationService.envoyercandidat(validationStatusOptional);
+
+        } else {
+            throw new RuntimeException("Aucun candidat trouvé avec cet email");
+        }
     }
 }
