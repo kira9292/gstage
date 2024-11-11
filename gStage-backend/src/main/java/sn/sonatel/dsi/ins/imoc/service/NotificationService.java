@@ -61,7 +61,7 @@ public class NotificationService {
         String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
             + "<table width='100%' cellspacing='0' cellpadding='10' style='background-color: #f4f4f4;'>"
             + "<tr><td style='text-align: center;'>"
-            + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getLastName() + ",</h2>"
+            + "<h2 style='color: #4CAF50;'>Bonjour Mr" + validation.getCandidat().getLastName() + ",</h2>"
             + "<p>Bienvenue chez Sonatel !</p>"
             + "<p>Votre code d'activation est : <strong style='font-size: 24px; color: #4CAF50;'>" + validation.getCode() + "</strong></p>"
             + "<p style='font-size: 14px;'>Merci de rejoindre notre équipe. Nous sommes ravis de vous avoir parmi nous.</p>"

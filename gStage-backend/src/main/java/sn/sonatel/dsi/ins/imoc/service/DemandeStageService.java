@@ -29,9 +29,9 @@ public class DemandeStageService {
         ValidationStatuscandidat validation = this.validationCanditatService.getUserByCode(code.get("code"));
         if (Instant.now().isAfter(validation.getExpire())){
             Candidat c = candidatRepository.findByValidationStatuscandidatCode(code.get("code"));
-            this.validationStatuscandidatRepository.delete(validation);
-            this.demandeStageRepository.delete(c.getDemandeStage());
-            this.candidatRepository.delete(c);
+//            this.validationStatuscandidatRepository.delete(validation);
+//            this.demandeStageRepository.delete(c.getDemandeStage());
+//            this.candidatRepository.delete(c);
             throw new RuntimeException("code expired");
 
         }else {
