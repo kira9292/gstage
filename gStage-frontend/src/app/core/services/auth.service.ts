@@ -4,24 +4,8 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { LoginData, RegisterData } from '../interfaces/auth.interface';
 
-export interface RegisterData {
-  appUser: {
-    username: string;
-    email: string;
-    password: string;
-    name: string;
-    firstName: string;
-  },
-  role: {
-    name: string; // Utiliser le rôle sélectionné dans le formulaire
-  }
-}
-
-export interface LoginData {
-  username: string;
-  password: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -128,6 +112,14 @@ export class AuthService {
       
       case 'ROLE_RH':
         this.router.navigate(['/dashboard-rh']);
+        break;
+
+      case 'ROLE_MANAGER':
+        this.router.navigate(['dashboard-manager']);
+        break;
+      
+      case 'ROLE_ASSISTANT_GWTE':
+        this.router.navigate(['dashboard-gwte']);
         break;
       
       case 'ROLE_DFC':

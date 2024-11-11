@@ -1,9 +1,32 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TraineeService {
+
+  private apiUrl = 'http://127.0.0.1:8081/api/stagiaire/documents';
+
+  constructor(private http: HttpClient){}
+
+  getContracts() {
+    return this.http.get(`${this.apiUrl}/contracts`);
+  }
+
+  getPresenceAttestations() {
+    return this.http.get(`${this.apiUrl}/presence-attestations`);
+  }
+
+  getPayments() {
+    return this.http.get(`${this.apiUrl}/payments`);
+  }
+
+  getEndingInternAttestation() {
+    return this.http.get(`${this.apiUrl}/end-attestations`);
+
+  }
+
   getNotifications() {
     return [
       { title: 'Demande de stage acceptée', date: '24/10/2024', type: 'success' },

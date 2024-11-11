@@ -50,7 +50,7 @@ export class AttestationsComponent implements OnInit {
 
   pagination: PaginationInfo = {
     currentPage: 1,
-    pageSize: 10,
+    pageSize: 5,
     totalItems: 0,
     totalPages: 0
   };

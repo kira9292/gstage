@@ -5,15 +5,9 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { matchPasswordValidator } from '../../../validators/password.validator';
 import { noWhitespaceValidator } from '../../../validators/names.validator';
+import { PasswordCriteria } from '../../../interfaces/auth.interface';
 
 
-interface PasswordCriteria {
-  length: boolean;
-  uppercase: boolean;
-  lowercase: boolean;
-  number: boolean;
-  special: boolean;
-}
 
 @Component({
   selector: 'app-register',

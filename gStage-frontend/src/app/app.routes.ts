@@ -10,6 +10,9 @@ import { PaymentsComponent } from './roles/candidat/stagiaire/components/payment
 import { LoginComponent } from './core/components/auth/login/login.component';
 import { SuiviDemandeStageComponent } from './roles/candidat/shared-components/my-applications/my-applications.component';
 import { DemandeStageComponent } from './roles/candidat/demandeur/components/demande-stage/demande-stage.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { RoleGuard } from './core/guards/role.guard';
+import { NonAuthGuard } from './core/guards/non-auth.guard';
 
 
 
@@ -17,69 +20,88 @@ export const routes: Routes = [
 
     { 
       path: 'demande-stage',
-      component: DemandeStageComponent
+      component: DemandeStageComponent,
+      canActivate: [NonAuthGuard]
     },
 
     { 
       path: '', 
-      redirectTo: 'login', 
+      redirectTo: 'demande-stage', 
       pathMatch: 'full' 
     },
 
     {
       path: 'login',
-      component: LoginComponent
+      component: LoginComponent,
+      canActivate: [NonAuthGuard]
     },
 
     {
       path: 'register',
-      component: RegisterComponent
+      component: RegisterComponent,
+      canActivate: [NonAuthGuard]
     },
 
     {
         path: 'dashboard-stagiaire',
         component: DashboardComponent,
-        title: 'Tableau de Bord'
+        title: 'Tableau de Bord',
+        canActivate: [AuthGuard, RoleGuard],
+        data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
 
     {
         path: 'application',
         component: ApplicationsComponent,
-        title: 'Renouvellement'
+        title: 'Renouvellement',
+        canActivate: [AuthGuard, RoleGuard],
+        data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
 
     {
       path: 'my-applications',
       component: SuiviDemandeStageComponent,
-      title: "Mes demandes"
+      title: "Mes demandes",
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
 
     {
       path: 'documents',
       component: DocumentsComponent,
-      title: 'Mes Documents'
+      title: 'Mes Documents',
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
 
     { 
       path: 'notifications', 
-      component: NotificationsComponent
+      component: NotificationsComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
 
     {
       path: 'documents/contracts',
       component: ContractsComponent,
-      title: 'Mes contrats'
+      title: 'Mes contrats',
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
 
     { 
       path: 'documents/attestations', 
       component: AttestationsComponent,
-      title: 'Mes attestations'
+      title: 'Mes attestations',
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
     
     { 
       path: 'payments', 
       component: PaymentsComponent,
-      title: 'Mes renumerations'
+      title: 'Mes renumerations',
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_STAGIAIRE'}
      },
 ];

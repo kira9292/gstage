@@ -3,39 +3,20 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-enum ContractStatus {
-  EN_PREPARATION = 'EN_PREPARATION',
-  EN_SIGNATURE = 'EN_SIGNATURE',
-  SIGNE = 'SIGNE',
-  TERMINE = 'TERMINE',
-  RESILIE = 'RESILIE'
-}
-
-interface Contract {
-  id: number;
-  reference: string;
-  type: string;
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  compensation: number;
-  status: ContractStatus;
-  assignmentSite: string;
-  signatureDate?: Date;
-  comments?: string;
-  url: string;
-}
+import { Contract } from '../../interfaces/trainee.interface';
+import { ContractStatus } from '../../enums/trainee.enum';
 
 
-interface Contract {
-  id: number;
-  type: string;
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  url: string;
-}
+
+
+// interface Contract {
+//   id: number;
+//   type: string;
+//   name: string;
+//   startDate: Date;
+//   endDate: Date;
+//   url: string;
+// }
 
 @Component({
   selector: 'app-contracts',

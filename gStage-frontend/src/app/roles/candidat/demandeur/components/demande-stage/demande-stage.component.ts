@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { noWhitespaceValidator } from '../../../../../core/validators/names.validator';
 import { Router } from '@angular/router';
 import { SuccessModalComponent } from '../success-modal/success-modal.component';
-import { DemandeStageService } from '../../serivices/demande-stage.service';
+import { DemandeStageService } from '../../services/demande-stage.service';
 
 @Component({
   selector: 'app-demande-stage-form1',
