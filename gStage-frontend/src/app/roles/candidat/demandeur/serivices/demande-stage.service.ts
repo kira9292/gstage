@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class DemandeStageService {
 
-  private apiUrl = 'http://127.0.0.1:8081/api/postuler'; // L'URL de ton API
+  private apiUrl = 'http://127.0.0.1:8081/api'; // L'URL de ton API
 
   constructor(private http: HttpClient) { }
 
@@ -18,6 +18,11 @@ export class DemandeStageService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.post('http://127.0.0.1:8081/api/postuler', demandeStageData, { headers });
+    return this.http.post(`${this.apiUrl}/postuler`, demandeStageData, { headers });
+  }
+
+  verifyCode(code: string): Observable<any> {
+    const url = `${this.apiUrl}/validerdemande`;
+    return this.http.post(url, { code });
   }
 }
