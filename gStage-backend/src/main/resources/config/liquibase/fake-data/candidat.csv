@@ -1,11 +1,10 @@
-id;first_name;last_name;birth_date;nationality;birth_place;cni;address;email;phone;education_level;school
-1;Alivia;Stanton;2024-10-29;language ick;till yearly unlike;egg evenly;yahoo taut;"xS@,<b.L*2";"503604507";BAC;jump operating
-2;Raquel;Wiza-Barrows;2024-10-29;eek;phooey helpfully stool;furthermore on readily;bend geez wrong;"+//O8v@h.q{";"335786615";BAC_PLUS_3;bookcase
-3;Vincent;Marvin;2024-10-29;under intrigue pink;shrill unless;though uniform;regarding criminal arcade;"8K[@_t6,\.COg";"336458757";BAC_PLUS_2;whereas than stage
-4;Margaret;Schmidt;2024-10-28;against or;proliferate whimsical moisten;daintily for;polished marvelous onto;"AX$-@-[.!F+gtl";"844451646";BAC_PLUS_4;whereas badly
-5;Marina;Aufderhar;2024-10-29;oof;yawningly;genuine;above limping;"RJ6@Zrst7.[";"790108075";BAC_PLUS_5;scrap majority
-6;Madonna;Kris;2024-10-28;officially over;mealy jaggedly;fork although;quaintly until;"R_YL?@P{&.B(`*f";"238969942";BAC_PLUS_4;delirious pfft as
-7;Abel;Herzog;2024-10-29;pish at;flame once worth;collaborate fill sadly;drat quietly;"$N`#W@)E5&.f(j";"014306210";BAC;aching machine
-8;Juston;Brakus;2024-10-28;intelligent;consequently wherever;plain;suddenly aha atrium;"8-.5Uv@M-!g.EOr!";"107694554";BAC;aw iterate
-9;Nash;Upton;2024-10-29;into including;pish onto;swiftly marksman drum;snuggle incidentally;"e>C@6lp.`aF7c";"435156595";BAC_PLUS_5;mummify closely
-10;Isobel;Price;2024-10-29;limply;fine gosh without;hearten deliberately consistency;crystallize mmm;"1v9@8~`&C.6Ss(";"815646119";BAC;brr er pfft
+id;first_name;last_name;birth_date;nationality;birth_place;cni;address;email;phone;education_level;school;formation
+1;Alivia;Stanton;2024-10-29;language ick;till yearly unlike;egg evenly;yahoo taut;"xS@,<b.L*2";"503604507";BAC;jump operating;DATA_AI
+2;Yadira;Barrows-Watsica;2024-10-28;up phooey;if;amused;sharply attend happy;"2DJm@z.%%";"692945937";BAC_PLUS_5;although mobilise overload;DROIT_ADMINISTRATION
+3;Torrey;Adams;2024-10-29;why under;whose;considerate serene;gee;"}@K.^I";"798768644";BAC;slather;COMMERCE
+4;Rhea;Lebsack;2024-10-29;intend;likewise linear;psst who;dish;"p}@r`.l";"251245730";BAC_PLUS_3;astride provided;RESEAUX_TELECOMS
+5;Vanessa;Nitzsche;2024-10-29;moisten anenst swerve;duh;marvelous onto;quarrelsomely ack;"LKNT2@O_gYO.i";"325864162";BAC_PLUS_2;cleverly;COMMERCE
+7;Karl;Pfannerstill;2024-10-29;quarrelsome next;evenly psst;unit uh-huh in;qua untimely substantial;"ek1f(@f:{.[i";"093300036";BAC_PLUS_4;underneath shear flame;COMMERCE
+8;Justina;Bins;2024-10-29;joyous gosh;debut faithfully object;accredit;oof kettledrum;"(j*/K@#^6.)";"032686590";BAC_PLUS_3;pillow bah translation;GESTION_RH
+9;Harold;Connelly;2024-10-29;ad towards suddenly;institute;how for;account;"&f@zNRTH.Gy";"486415523";BAC_PLUS_4;mountain into;INFORMATIQUE_SI
+10;Dean;Schiller;2024-10-29;pivot;status yesterday;cop-out;drum fondly;")#{qE>@Fe>.D6l";"866632743";BAC_PLUS_3;needy;ANALYSE_DONNE

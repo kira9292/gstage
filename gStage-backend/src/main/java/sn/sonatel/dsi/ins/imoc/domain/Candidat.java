@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.Formation;
 
 /**
  * A Candidat.
@@ -64,8 +65,12 @@ public class Candidat implements Serializable {
     @Column(name = "school")
     private String school;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "formation")
+    private Formation formation;
+
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "candidat")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
     private DemandeStage demandeStage;
 
     @JsonIgnoreProperties(value = { "candidat" }, allowSetters = true)
@@ -250,6 +255,19 @@ public class Candidat implements Serializable {
         this.school = school;
     }
 
+    public Formation getFormation() {
+        return this.formation;
+    }
+
+    public Candidat formation(Formation formation) {
+        this.setFormation(formation);
+        return this;
+    }
+
+    public void setFormation(Formation formation) {
+        this.formation = formation;
+    }
+
     public DemandeStage getDemandeStage() {
         return this.demandeStage;
     }
@@ -336,6 +354,7 @@ public class Candidat implements Serializable {
             ", phone='" + getPhone() + "'" +
             ", educationLevel='" + getEducationLevel() + "'" +
             ", school='" + getSchool() + "'" +
+            ", formation='" + getFormation() + "'" +
             "}";
     }
 }

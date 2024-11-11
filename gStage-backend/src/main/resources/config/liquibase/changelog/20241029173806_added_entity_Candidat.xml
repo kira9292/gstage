@@ -47,6 +47,9 @@
             <column name="school" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="formation" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="app_user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -82,6 +85,7 @@
             <column name="phone" type="string"/>
             <column name="education_level" type="string"/>
             <column name="school" type="string"/>
+            <column name="formation" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

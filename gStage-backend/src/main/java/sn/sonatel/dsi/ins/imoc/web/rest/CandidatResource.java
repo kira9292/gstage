@@ -163,6 +163,9 @@ public class CandidatResource {
                 if (candidat.getSchool() != null) {
                     existingCandidat.setSchool(candidat.getSchool());
                 }
+                if (candidat.getFormation() != null) {
+                    existingCandidat.setFormation(candidat.getFormation());
+                }
 
                 return existingCandidat;
             })

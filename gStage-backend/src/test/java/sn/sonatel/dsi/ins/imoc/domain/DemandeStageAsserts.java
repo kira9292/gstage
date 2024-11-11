@@ -60,8 +60,7 @@ public class DemandeStageAsserts {
                     .isEqualTo(actual.getCoverLetterContentType())
             )
             .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
-            .satisfies(e -> assertThat(e.getValidated()).as("check validated").isEqualTo(actual.getValidated()))
-            .satisfies(e -> assertThat(e.getFormation()).as("check formation").isEqualTo(actual.getFormation()));
+            .satisfies(e -> assertThat(e.getValidated()).as("check validated").isEqualTo(actual.getValidated()));
     }
 
     /**

@@ -55,7 +55,7 @@ entity DemandeStage {
   coverLetter Blob
   status InternshipStatus
   validated Boolean
-  formation Formation
+
 }
 
 entity EtatPaiement {
@@ -89,6 +89,7 @@ entity Candidat {
   phone String required pattern(/^[0-9]{9}$/)
   educationLevel EducationLevel
   school String
+  formation Formation
 }
 
 entity ValidationStatuscandidat{
