@@ -154,9 +154,9 @@
             <select formControlName="type" 
                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
               <option value="">Sélectionnez un type</option>
-              <option value="academic">Stage Académique</option>
-              <option value="professional">Stage Professionnel</option>
-              <option value="pfe">Projet Fin d'Études</option>
+              <option value="ACADEMIQUE">Stage Académique</option>
+              <option value="PROFESSIONNEL">Stage Professionnel</option>
+              <option value="PROJET_FIN_ETUDES">Projet Fin d'Études</option>
             </select>
             <div *ngIf="applicationForm.get('type')?.touched && applicationForm.get('type')?.invalid" 
                  class="text-red-500 text-sm mt-1 flex items-center">
