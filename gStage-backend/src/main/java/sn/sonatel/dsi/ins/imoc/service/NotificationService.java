@@ -61,7 +61,7 @@ public class NotificationService {
         String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
             + "<table width='100%' cellspacing='0' cellpadding='20' style='background-color: #f4f4f4;'>"
             + "<tr><td style='text-align: center;'>"
-            + "<img src='https://www.sonatel.sn/wp-content/uploads/2020/06/logo-sonatel.png' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>"
+            + "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>"
             + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>"
             + "<p>Nous sommes ravis que vous souhaitiez rejoindre Sonatel pour un stage !</p>"
             + "<p style='font-size: 16px;'>Pour confirmer votre adresse email et continuer le processus de candidature, veuillez utiliser le code de validation suivant :</p>"

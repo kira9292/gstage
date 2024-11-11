@@ -180,6 +180,9 @@ export class RegisterComponent implements OnInit {
           }
         };
 
+        console.log(formData);
+        
+
         await this.authService.register(formData).toPromise();
         this.router.navigate(['/login'], {
           queryParams: { registered: 'success' }

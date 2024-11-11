@@ -119,26 +119,19 @@ export class AuthService {
     
     switch (role) {
       case 'ROLE_ADMIN':
-        this.router.navigate(['/dashboard-admin']);
-        console.log("Admin");
-        
+        this.router.navigate(['/dashboard-admin']);        
         break;
       
       case 'ROLE_STAGIAIRE':
         this.router.navigate(['/dashboard-stagiaire']);
-        console.log("Stagiaire");
-
         break;
       
       case 'ROLE_RH':
         this.router.navigate(['/dashboard-rh']);
-        console.log("RH");
-
         break;
       
       case 'ROLE_DFC':
         this.router.navigate(['/dashboard-dfc']);
-        console.log("DFC");
         break;
       
       default:
