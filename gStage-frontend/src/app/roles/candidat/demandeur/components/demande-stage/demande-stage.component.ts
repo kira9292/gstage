@@ -23,10 +23,14 @@ export class DemandeStageComponent {
   showModal = false;
 
   applicationForm: FormGroup;
+  verificationForm: FormGroup;
   selectedCV: File | null = null;
   selectedMotivationLetter: File | null = null;
   cvError: string = '';
   motivationLetterError: string = '';
+
+  verificationError: string = ''; // Message d'erreur pour la vérification du code
+
 
   constructor(
     private fb: FormBuilder, 
@@ -53,6 +57,11 @@ export class DemandeStageComponent {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required]
     }, { validator: this.dateRangeValidator });
+
+    // Initialisation du formulaire de code de vérification
+    this.verificationForm = this.fb.group({
+      verificationCode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]]
+    });
   }
 
   // Getters pour les messages d'erreur
@@ -192,6 +201,8 @@ convertToBase64(file: File): Promise<string> {
 // Fonction de soumission du formulaire
 onSubmit(): void {
   if (this.applicationForm.valid && this.selectedCV && this.selectedMotivationLetter) {
+    console.log("J'ai clique");
+    
     // Créer l'objet demandeStage avec les informations du formulaire
     const demandeStageData = {
       demandeStage: {
@@ -219,40 +230,56 @@ onSubmit(): void {
         phone: this.applicationForm.get('phone')?.value,
         educationLevel: 'BAC_PLUS_2', // Exemple de niveau d'éducation
         school: this.applicationForm.get('school')?.value,
+        formation: this.applicationForm.get('formation')?.value,
       }
     };
 
-    // Vérification si les fichiers existent avant de les convertir en Base64
-    if (this.selectedCV && this.selectedMotivationLetter) {
-      // Convertir le CV en Base64
-      this.convertToBase64(this.selectedCV as File).then((cvBase64) => {
-        // Enlever le préfixe "data:application/pdf;base64," si présent
-        demandeStageData.demandeStage.cv = cvBase64.split(',')[1] || cvBase64;
+    this.convertToBase64(this.selectedCV as File)
+    .then((cvBase64) => {
+      demandeStageData.demandeStage.cv = cvBase64.split(',')[1] || cvBase64;
+      return this.convertToBase64(this.selectedMotivationLetter as File);
+    })
+    .then((motivationLetterBase64) => {
+      demandeStageData.demandeStage.coverLetter = motivationLetterBase64.split(',')[1] || motivationLetterBase64;      
 
-        // Convertir la lettre de motivation en Base64
-        this.convertToBase64(this.selectedMotivationLetter as File).then((motivationLetterBase64) => {
-          demandeStageData.demandeStage.coverLetter = motivationLetterBase64.split(',')[1] || motivationLetterBase64;
+      // Appel au service pour soumettre les données et envoyer le code de vérification
+     return this.demandeStageService.submitDemandeStage(demandeStageData).subscribe((response) => {
+      console.log("DEmande reusie");
+      this.currentStep = 3; // Passe à l'étape de saisie du code de vérification
+     },  (error) => {
+        console.error("Erreur lors de la soumission:", error);
+        
+     })
 
-          // Appel au service pour soumettre les données
-          console.log('Données à envoyer (avant submit):', demandeStageData);
-          this.demandeStageService.submitDemandeStage(demandeStageData).subscribe(response => {
-            this.showModal = true;
-          }, error => {
-            console.error("Erreur lors de l'envoi de la demande :", error);
-          });
-        }).catch((error) => {
-          console.error('Erreur lors de la conversion en Base64 de la lettre de motivation:', error);
-        });
-      }).catch((error) => {
-        console.error('Erreur lors de la conversion en Base64 du CV:', error);
-      });
-    }
-  } else {
-    console.warn("Le formulaire n'est pas valide ou les fichiers sont manquants.");
-  }
+    })
+  
+    .catch(error => {
+      console.error("Erreur lors de la soumission :", error);
+    });
+} else {
+  console.warn("Le formulaire n'est pas valide ou les fichiers sont manquants.");
+}
 }
 
 
+  // Méthode pour vérifier le code de validation
+  verifyCode(): void {
+    const verificationCode = this.verificationForm.get('verificationCode')?.value;
+
+    if (this.verificationForm.valid) {
+      this.demandeStageService.verifyCode(verificationCode).subscribe(
+        response => {
+          this.showModal = true; // Affiche la modal de succès
+        },
+        error => {
+          this.verificationError = 'Code invalide. Veuillez réessayer.';
+          console.error('Erreur de vérification du code:', error);
+        }
+      );
+    } else {
+      this.verificationError = 'Veuillez entrer un code valide.';
+    }
+  }
 
 
   closeModal() {
