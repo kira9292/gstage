@@ -210,11 +210,11 @@ onSubmit(): void {
       candidat: {
         firstName: this.applicationForm.get('firstName')?.value,
         lastName: this.applicationForm.get('lastName')?.value,
-        birthDate: '2000-01-01', // Exemple de date de naissance
+        birthDate: null, // Exemple de date de naissance
         nationality: 'Senegalese', // Exemple de nationalité
-        birthPlace: 'Dakar', // Exemple de lieu de naissance
-        cni: '1234567869', // Exemple de numéro de CNI
-        address: '123 Street, Dakar', // Exemple d'adresse
+        birthPlace: null, // Exemple de lieu de naissance
+        cni: null, // Exemple de numéro de CNI
+        address: '', // Exemple d'adresse
         email: this.applicationForm.get('email')?.value,
         phone: this.applicationForm.get('phone')?.value,
         educationLevel: 'BAC_PLUS_2', // Exemple de niveau d'éducation
