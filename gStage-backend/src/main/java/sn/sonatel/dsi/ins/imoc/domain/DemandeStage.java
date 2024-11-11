@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.Formation;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipType;
 
@@ -56,7 +57,11 @@ public class DemandeStage implements Serializable {
     @Column(name = "validated")
     private Boolean validated;
 
-    @JsonIgnoreProperties(value = { "demandeStage", "appUser" }, allowSetters = true)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "formation")
+    private Formation formation;
+
+    @JsonIgnoreProperties(value = { "demandeStage", "validationStatuscandidat", "appUser" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Candidat candidat;
@@ -234,6 +239,19 @@ public class DemandeStage implements Serializable {
         this.validated = validated;
     }
 
+    public Formation getFormation() {
+        return this.formation;
+    }
+
+    public DemandeStage formation(Formation formation) {
+        this.setFormation(formation);
+        return this;
+    }
+
+    public void setFormation(Formation formation) {
+        this.formation = formation;
+    }
+
     public Candidat getCandidat() {
         return this.candidat;
     }
@@ -320,6 +338,7 @@ public class DemandeStage implements Serializable {
             ", coverLetterContentType='" + getCoverLetterContentType() + "'" +
             ", status='" + getStatus() + "'" +
             ", validated='" + getValidated() + "'" +
+            ", formation='" + getFormation() + "'" +
             "}";
     }
 }

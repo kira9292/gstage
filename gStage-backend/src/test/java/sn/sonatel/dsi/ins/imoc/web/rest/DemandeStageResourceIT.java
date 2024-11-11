@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.IntegrationTest;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.Formation;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipType;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
@@ -65,6 +66,9 @@ class DemandeStageResourceIT {
     private static final Boolean DEFAULT_VALIDATED = false;
     private static final Boolean UPDATED_VALIDATED = true;
 
+    private static final Formation DEFAULT_FORMATION = Formation.INFORMATIQUE_SI;
+    private static final Formation UPDATED_FORMATION = Formation.GESTION_RH;
+
     private static final String ENTITY_API_URL = "/api/demande-stages";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -104,7 +108,8 @@ class DemandeStageResourceIT {
             .coverLetter(DEFAULT_COVER_LETTER)
             .coverLetterContentType(DEFAULT_COVER_LETTER_CONTENT_TYPE)
             .status(DEFAULT_STATUS)
-            .validated(DEFAULT_VALIDATED);
+            .validated(DEFAULT_VALIDATED)
+            .formation(DEFAULT_FORMATION);
     }
 
     /**
@@ -124,7 +129,8 @@ class DemandeStageResourceIT {
             .coverLetter(UPDATED_COVER_LETTER)
             .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
             .status(UPDATED_STATUS)
-            .validated(UPDATED_VALIDATED);
+            .validated(UPDATED_VALIDATED)
+            .formation(UPDATED_FORMATION);
     }
 
     @BeforeEach
@@ -200,7 +206,8 @@ class DemandeStageResourceIT {
             .andExpect(jsonPath("$.[*].coverLetterContentType").value(hasItem(DEFAULT_COVER_LETTER_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].coverLetter").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_COVER_LETTER))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].validated").value(hasItem(DEFAULT_VALIDATED.booleanValue())));
+            .andExpect(jsonPath("$.[*].validated").value(hasItem(DEFAULT_VALIDATED.booleanValue())))
+            .andExpect(jsonPath("$.[*].formation").value(hasItem(DEFAULT_FORMATION.toString())));
     }
 
     @Test
@@ -224,7 +231,8 @@ class DemandeStageResourceIT {
             .andExpect(jsonPath("$.coverLetterContentType").value(DEFAULT_COVER_LETTER_CONTENT_TYPE))
             .andExpect(jsonPath("$.coverLetter").value(Base64.getEncoder().encodeToString(DEFAULT_COVER_LETTER)))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
-            .andExpect(jsonPath("$.validated").value(DEFAULT_VALIDATED.booleanValue()));
+            .andExpect(jsonPath("$.validated").value(DEFAULT_VALIDATED.booleanValue()))
+            .andExpect(jsonPath("$.formation").value(DEFAULT_FORMATION.toString()));
     }
 
     @Test
@@ -256,7 +264,8 @@ class DemandeStageResourceIT {
             .coverLetter(UPDATED_COVER_LETTER)
             .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
             .status(UPDATED_STATUS)
-            .validated(UPDATED_VALIDATED);
+            .validated(UPDATED_VALIDATED)
+            .formation(UPDATED_FORMATION);
 
         restDemandeStageMockMvc
             .perform(
@@ -337,15 +346,10 @@ class DemandeStageResourceIT {
         partialUpdatedDemandeStage.setId(demandeStage.getId());
 
         partialUpdatedDemandeStage
-            .creationDate(UPDATED_CREATION_DATE)
             .internshipType(UPDATED_INTERNSHIP_TYPE)
-            .startDate(UPDATED_START_DATE)
-            .cv(UPDATED_CV)
-            .cvContentType(UPDATED_CV_CONTENT_TYPE)
+            .endDate(UPDATED_END_DATE)
             .coverLetter(UPDATED_COVER_LETTER)
-            .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
-            .status(UPDATED_STATUS)
-            .validated(UPDATED_VALIDATED);
+            .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE);
 
         restDemandeStageMockMvc
             .perform(
@@ -386,7 +390,8 @@ class DemandeStageResourceIT {
             .coverLetter(UPDATED_COVER_LETTER)
             .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE)
             .status(UPDATED_STATUS)
-            .validated(UPDATED_VALIDATED);
+            .validated(UPDATED_VALIDATED)
+            .formation(UPDATED_FORMATION);
 
         restDemandeStageMockMvc
             .perform(

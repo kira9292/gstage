@@ -156,6 +156,9 @@ public class DemandeStageResource {
                 if (demandeStage.getValidated() != null) {
                     existingDemandeStage.setValidated(demandeStage.getValidated());
                 }
+                if (demandeStage.getFormation() != null) {
+                    existingDemandeStage.setFormation(demandeStage.getFormation());
+                }
 
                 return existingDemandeStage;
             })
