@@ -175,22 +175,29 @@ export class RegisterComponent implements OnInit {
         };
 
         console.log(formData);
-        
+
 
         await this.authService.register(formData).toPromise();
         this.router.navigate(['/login'], {
           queryParams: { registered: 'success' }
         });
       } catch (error: any) {
-        console.error('Erreur lors de l\'inscription:', error);
-      } finally {
+        console.log('Erreur complète:',error.error);
+        if (error.error.status === 500 && error.error?.detail === 'Email already in use') {
+          // Vérifiez le code et le message d'erreur pour afficher le message approprié
+          this.registerForm.get('email')?.setErrors({ emailExists: true });
+        } else {
+          console.log(error.status)
+          console.error('Erreur lors de l\'inscription:', error.error);
+        }      }
+        finally {
         this.isSubmitting = false;
-      }
+        }
     } else {
         if (!this.registerForm.get('acceptTerms')?.value) {
           this.termsError = 'Vous devez accepter les conditions générales d\'utilisation';
         }
-      
+
       Object.keys(this.registerForm.controls).forEach(key => {
         const control = this.registerForm.get(key);
         if (control?.invalid) {

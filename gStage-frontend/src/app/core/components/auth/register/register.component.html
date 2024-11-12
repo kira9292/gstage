@@ -3,14 +3,14 @@
   <div class="max-w-2xl w-full space-y-8">
     <!-- Orange Accent Line -->
     <div class="h-1 w-24 bg-gradient-to-r from-sonatel-orange to-orange-400 rounded-full mx-auto"></div>
-    
+
     <!-- Form Container -->
     <div class="bg-white rounded-xl shadow-lg p-8 space-y-6 relative border border-gray-100">
       <!-- Logo Container with subtle orange background -->
       <div class="absolute -top-10 left-1/2 transform -translate-x-1/2">
         <div class="bg-white rounded-full p-3 shadow-md">
-          <img class="h-14 w-auto transition-transform duration-300 hover:scale-110" 
-               src="assets/images/LOGO_SONATEL_HD_FB.JPG" 
+          <img class="h-14 w-auto transition-transform duration-300 hover:scale-110"
+               src="assets/images/LOGO_SONATEL_HD_FB.JPG"
                alt="Sonatel Logo">
         </div>
       </div>
@@ -19,7 +19,7 @@
         <h2 class="text-2xl font-bold text-gray-900">Inscription</h2>
         <p class="text-sm text-gray-500">Créez votre compte pour accéder à la plateforme</p>
       </div>
-  
+
       <!-- Formulaire -->
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-8">
         <!-- Informations personnelles -->
@@ -28,7 +28,7 @@
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Prénom</label>
             <div class="relative">
-              <input type="text" 
+              <input type="text"
                      formControlName="firstName"
                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
                      [ngClass]="{'border-red-500 focus:ring-red-500': firstNameError}">
@@ -38,12 +38,12 @@
             </div>
           </div>
 
-            
+
           <!-- Nom -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Nom</label>
             <div class="relative">
-              <input type="text" 
+              <input type="text"
                      formControlName="name"
                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
                      [ngClass]="{'border-red-500 focus:ring-red-500': lastNameError}">
@@ -78,7 +78,7 @@
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Username</label>
             <div class="relative">
-              <input type="text" 
+              <input type="text"
                      formControlName="username"
                      class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
                      [ngClass]="{'border-red-500 focus:ring-red-500': usernameError}">
@@ -87,13 +87,13 @@
               </div>
             </div>
           </div>
-          
-  
+
+
           <!-- Email -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Email</label>
             <div class="relative">
-              <input type="email" 
+              <input type="email"
                      formControlName="email"
                      class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
                      [ngClass]="{'border-red-500 focus:ring-red-500': emailError}">
@@ -103,13 +103,13 @@
                   <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                 </svg>
               </div>
-              <div *ngIf="emailError" class="mt-1 text-sm text-red-500">
-                {{ emailError }}
+              <div *ngIf="emailError || registerForm.get('email')?.hasError('emailExists')" class="mt-1 text-sm text-red-500">
+                {{ emailError || 'Cet email existe déjà' }}
               </div>
             </div>
           </div>
-  
-  
+
+
           <!-- Mot de passe -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
@@ -123,7 +123,7 @@
                   <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
                 </svg>
               </div>
-              <button type="button" 
+              <button type="button"
                       (click)="togglePasswordVisibility('password')"
                       class="absolute right-0 top-0 mt-3 mr-3 text-gray-400 hover:text-gray-600">
                 <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -140,7 +140,7 @@
               </div>
             </div>
           </div>
-  
+
           <!-- Confirmer le mot de passe -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
@@ -154,7 +154,7 @@
                   <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
                 </svg>
               </div>
-              <button type="button" 
+              <button type="button"
                       (click)="togglePasswordVisibility('confirmPassword')"
                       class="absolute right-0 top-0 mt-3 mr-3 text-gray-400 hover:text-gray-600">
                 <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -176,7 +176,7 @@
       <!-- Checkbox CGU -->
       <div class="space-y-4">
         <div class="flex items-center">
-          <input type="checkbox" 
+          <input type="checkbox"
                  formControlName="acceptTerms"
                  class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded cursor-pointer">
           <label class="ml-2 block text-sm text-gray-700">
@@ -229,7 +229,7 @@
       <div class="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
         <button type="submit"
                 [disabled]="!registerForm.valid || isSubmitting"
-                class="w-full sm:w-1/2 bg-gradient-to-r from-sonatel-orange to-orange-600 text-white py-3 px-6 rounded-lg font-medium 
+                class="w-full sm:w-1/2 bg-gradient-to-r from-sonatel-orange to-orange-600 text-white py-3 px-6 rounded-lg font-medium
                        hover:from-orange-600 hover:to-sonatel-orange focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
                        transform transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed
                        flex justify-center items-center">
@@ -249,4 +249,5 @@
       </div>
     </form>
   </div>
+</div>
 </div>
