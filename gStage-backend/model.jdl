@@ -91,14 +91,12 @@ entity Candidat {
   school String
   formation Formation
 }
-
 entity ValidationStatuscandidat{
   creation Instant
   expire Instant
   activation Instant
   code String
 }
-
 entity Contrat {
   reference String required unique
   startDate LocalDate required
