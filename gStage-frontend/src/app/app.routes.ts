@@ -91,4 +91,11 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
      },
+
+     {
+      path: 'dashboard-gwte',
+      component: DashboardGwteComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+     }
 ];

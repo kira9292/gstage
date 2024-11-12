@@ -43,7 +43,8 @@ export class AppComponent {
   
     // Affiche le sidebar si l'utilisateur est authentifié et est ROLE_STAGIAIRE
     showSidebar(): boolean {
-      return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_STAGIAIRE');
+      return this.authService.isAuthenticated();
+      //  && this.authService.hasRole('ROLE_STAGIAIRE');
     }
 
     isAuthenticated(): boolean {

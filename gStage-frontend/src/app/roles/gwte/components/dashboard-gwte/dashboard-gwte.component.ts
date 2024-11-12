@@ -1,27 +1,13 @@
-// contracts.component.ts
-import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Contract } from '../../../candidat/stagiaire/interfaces/trainee.interface';
-import { TraineeService } from '../../../candidat/stagiaire/services/trainee.service';
-import { ContractStatus } from '../../../candidat/stagiaire/enums/trainee.enum';
-
-
-
-
-
-// interface Contract {
-//   id: number;
-//   type: string;
-//   name: string;
-//   startDate: Date;
-//   endDate: Date;
-//   url: string;
-// }
+import { DemandeStage } from '../../../candidat/stagiaire/interfaces/trainee.interface'; 
+import { EducationLevel, InternshipStatus, InternshipType } from '../../../../enums/gstage.enum';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Formation } from '../../../candidat/stagiaire/enums/trainee.enum';
 
 @Component({
-  selector: 'app-contracts',
+  selector: 'app-dashboard-gwte',
   standalone: true,
   imports: [
     CommonModule,
@@ -31,132 +17,154 @@ import { ContractStatus } from '../../../candidat/stagiaire/enums/trainee.enum';
   styleUrls: ['./dashboard-gwte.component.scss']
 })
 export class DashboardGwteComponent implements OnInit {
-  contracts: Contract[] = [];
-  filteredContracts: Contract[] = [];
-  showContractDialog = false;
-  selectedContract: Contract | null = null;
-  safeUrl: SafeResourceUrl | null = null;
-  
-  statusFilter = '';
-  searchTerm = '';
-  
-  contractStatuses = Object.values(ContractStatus);
+  demandesStage: DemandeStage[] = [
+    {
+      id: 1,
+      reference: 'REF1234',
+      internshipType: InternshipType.ACADEMIQUE,
+      internshipStatus: InternshipStatus.EN_ATTENTE,
+      startDate: new Date('2024-12-01'),
+      endDate: new Date('2025-06-30'),
+      cv: 'https://www.example.com/cv1234.pdf',
+      coverLetter: 'https://www.example.com/coverletter1234.pdf',
+      validated: false,
+      candidat: {
+        id: 1,
+        firstName: 'Lamine',
+        lastName: 'Ndiaye',
+        email: 'lndiaye@gmail.com',
+        formation: Formation.INFORMATIQUE_SI,
+        school: 'Université de Dakar',
+        cni: '1234567890',
+        address: 'Dakar, Sénégal',
+        phone: '774807241',
+        educationalLevel: EducationLevel.BAC_PLUS_3,
+      }
+    },
+    {
+      id: 2,
+      reference: 'REF5678',
+      internshipType: InternshipType.PROFESSIONNEL,
+      internshipStatus: InternshipStatus.ACCEPTE,
+      startDate: new Date('2024-10-01'),
+      endDate: new Date('2025-04-01'),
+      cv: 'https://www.example.com/cv5678.pdf',
+      coverLetter: 'https://www.example.com/coverletter5678.pdf',
+      validated: true,
+      candidat: {
+        id: 2,
+        firstName: 'Alice',
+        lastName: 'Martin',
+        email: 'alice.martin@example.com',
+        formation: Formation.MARKETING_COMMUNICATION,
+        school: 'Université de Paris',
+        cni: '0987654321',
+        address: 'Paris, France',
+        phone: '07654321',
+        educationalLevel: EducationLevel.BAC_PLUS_4,
+      }
+    },
+  ];
+
+  filteredDemandesStage: DemandeStage[] = [];
+  statusFilter: InternshipStatus | null = null;
+  searchTerm: string = '';
+  internshipStatuses = Object.values(InternshipStatus);
+  internshipTypes = Object.values(InternshipType);
 
   constructor(
-    private sanitizer: DomSanitizer,
-    private traineeService: TraineeService
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
-    // Simuler le chargement des données
-    this.loadContracts();
-  }
-
-  loadContracts(): void {
-    // À remplacer par un appel API
-    this.contracts = [
-      {
-        id: 1,
-        reference: 'STAGE-2024-001',
-        type: 'Stage',
-        name: 'Contrat Initial',
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2024-03-31'),
-        compensation: 150000,
-        status: ContractStatus.SIGNE,
-        assignmentSite: 'Sablux',
-        signatureDate: new Date('2023-12-15'),
-        url: '/assets/documents/eCommerce.pdf'
-      },
-      {
-        id: 2,
-        reference: 'STAGE-2024-002',
-        type: 'Stage',
-        name: 'Renouvellement',
-        startDate: new Date('2024-04-01'),
-        endDate: new Date('2024-06-30'),
-        compensation: 150000,
-        status: ContractStatus.EN_SIGNATURE,
-        assignmentSite: 'Siege',
-        url: '/assets/documents/contrat-2.pdf'
-      }
-    ];
-    
     this.applyFilters();
   }
 
-  // loadContracts(): void {
-  //   this.traineeService.getContracts().subscribe({
-  //     next: (data) => {
-  //       this.contracts = data;        
-  //       this.applyFilters();
-  //     },
-  //     error: (err) => {
-  //       console.error('Erreur lors de la récupération des contrats', err);
-  //     }
-  //   });
-  // }
-
   applyFilters(): void {
-    this.filteredContracts = this.contracts.filter(contract => {
-      const matchesStatus = !this.statusFilter || contract.status === this.statusFilter;
-      const searchLower = this.searchTerm.toLowerCase();
-      const matchesSearch = !this.searchTerm || 
-        contract.reference.toLowerCase().includes(searchLower) ||
-        contract.name.toLowerCase().includes(searchLower) ||
-        contract.assignmentSite.toLowerCase().includes(searchLower);
-      
-      return matchesStatus && matchesSearch;
-    });
+    let filtered = this.demandesStage;
+
+    if (this.statusFilter) {
+      filtered = filtered.filter(demande => demande.internshipStatus === this.statusFilter);
+    }
+
+    if (this.searchTerm) {
+      filtered = filtered.filter(demande =>
+        demande.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        (demande.candidat?.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        demande.candidat?.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      );
+    }
+
+    this.filteredDemandesStage = filtered;
   }
 
-  getStatusLabel(status: ContractStatus): string {
-    const labels: Record<ContractStatus, string> = {
-      EN_PREPARATION: 'En préparation',
-      EN_SIGNATURE: 'En signature',
-      SIGNE: 'Signé',
-      TERMINE: 'Terminé',
-      RESILIE: 'Résilié'
-    };
-    return labels[status] || status;
+  canViewCV(demande: DemandeStage): boolean {
+    return !!demande.cv;
   }
 
-  getStatusClass(status: ContractStatus): string {
-    const baseClasses = 'px-2 py-1 text-xs font-medium rounded-full';
-    const statusClasses: Record<ContractStatus, string> = {
-      EN_PREPARATION: `${baseClasses} bg-gray-100 text-gray-800`,
-      EN_SIGNATURE: `${baseClasses} bg-yellow-100 text-yellow-800`,
-      SIGNE: `${baseClasses} bg-green-100 text-green-800`,
-      TERMINE: `${baseClasses} bg-blue-100 text-blue-800`,
-      RESILIE: `${baseClasses} bg-red-100 text-red-800`
-    };
-    return statusClasses[status] || `${baseClasses} bg-gray-100 text-gray-800`;
+  canDownloadCV(demande: DemandeStage): boolean {
+    return !!demande.cv;
   }
 
-  canViewContract(contract: Contract): boolean {
-    return [ContractStatus.SIGNE, ContractStatus.TERMINE].includes(contract.status);
+  canViewCoverLetter(demande: DemandeStage): boolean {
+    return !!demande.coverLetter;
   }
 
-  canDownloadContract(contract: Contract): boolean {
-    return [ContractStatus.SIGNE, ContractStatus.TERMINE].includes(contract.status);
+  canDownloadCoverLetter(demande: DemandeStage): boolean {
+    return !!demande.coverLetter;
   }
 
-  viewContract(contract: Contract): void {
-    if (!this.canViewContract(contract)) return;
-    
-    this.selectedContract = contract;
-    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(contract.url);
-    this.showContractDialog = true;
+  viewCV(demande: DemandeStage): void {
+    window.open(demande.cv, '_blank');
   }
 
-  downloadDocument(contract: Contract): void {
-    if (!this.canDownloadContract(contract)) return;
-    window.open(contract.url, '_blank');
+  downloadCV(demande: DemandeStage): void {
+    window.open(demande.cv, '_blank');
   }
 
-  closeDialog(): void {
-    this.showContractDialog = false;
-    this.selectedContract = null;
-    this.safeUrl = null;
+  viewCoverLetter(demande: DemandeStage): void {
+    window.open(demande.coverLetter, '_blank');
   }
+
+  downloadCoverLetter(demande: DemandeStage): void {
+    window.open(demande.coverLetter, '_blank');
+  }
+
+  proposeToManager(demande: DemandeStage): void {
+    alert(`Demande de stage ${demande.reference} proposée au manager.`);
+  }
+
+  getInternshipStatusLabel(status: InternshipStatus): string {
+    switch (status) {
+      case InternshipStatus.EN_ATTENTE:
+        return 'En attente';
+      case InternshipStatus.ACCEPTE:
+        return 'Accepté';
+      case InternshipStatus.REFUSE:
+        return 'Rejeté';
+      case InternshipStatus.EN_COURS:
+        return 'En cours';
+      case InternshipStatus.TERMINER:
+        return 'Termine'
+      default:
+        return 'Statut inconnu';
+    }
+  }
+  getInternshipStatusClass(status: InternshipStatus): string {
+    switch (status) {
+      case InternshipStatus.EN_ATTENTE:
+        return 'bg-yellow-500 text-white'; // Jaune pour "En attente"
+      case InternshipStatus.ACCEPTE:
+        return 'bg-green-500 text-white';   // Vert pour "Accepté"
+      case InternshipStatus.REFUSE:
+        return 'bg-red-500 text-white';     // Rouge pour "Rejeté"
+      case InternshipStatus.EN_COURS:
+        return 'bg-blue-500 text-white';    // Bleu pour "En cours"
+      case InternshipStatus.TERMINER:
+        return 'bg-gray-500 text-white';    // Gris pour "Terminé"
+      default:
+        return 'bg-gray-200 text-black';    // Gris par défaut pour un statut inconnu
+    }
+  }
+  
 }

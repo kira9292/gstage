@@ -1,4 +1,5 @@
-import { ContractStatus } from "../enums/trainee.enum";
+import { EducationLevel, InternshipStatus, InternshipType } from "../../../../enums/gstage.enum";
+import { ContractStatus, Formation } from "../enums/trainee.enum";
 
 
 export interface DocumentsCard {
@@ -37,12 +38,43 @@ export interface Contract {
     url: string;
   }
   
-  export interface PaginationInfo {
+export interface PaginationInfo {
     currentPage: number;
     pageSize: number;
     totalItems: number;
     totalPages: number;
   }
+
+// interfaces/candidat.interface.ts
+
+export interface Candidat {
+  id: number;
+  firstName: string;
+  lastName: string;
+  birthdate?: string;
+  nationality?: string;
+  birthPlace?: string;
+  cni: string;
+  address: string;
+  email: string;
+  phone: string;
+  educationalLevel: EducationLevel;
+  school: string;
+  formation: Formation
+}
+
+export interface DemandeStage {
+  id: number;
+  reference: string;
+  internshipType: InternshipType;
+  internshipStatus: InternshipStatus;
+  startDate: Date;
+  endDate: Date;
+  cv: string;
+  coverLetter: string;
+  validated: Boolean;
+  candidat: Candidat;  
+}
 
 
   
