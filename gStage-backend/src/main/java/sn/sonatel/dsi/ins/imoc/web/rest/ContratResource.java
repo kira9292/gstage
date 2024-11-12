@@ -152,6 +152,12 @@ public class ContratResource {
                 if (contrat.getComments() != null) {
                     existingContrat.setComments(contrat.getComments());
                 }
+                if (contrat.getDocs() != null) {
+                    existingContrat.setDocs(contrat.getDocs());
+                }
+                if (contrat.getDocsContentType() != null) {
+                    existingContrat.setDocsContentType(contrat.getDocsContentType());
+                }
 
                 return existingContrat;
             })

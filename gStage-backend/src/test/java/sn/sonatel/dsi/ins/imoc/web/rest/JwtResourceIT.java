@@ -9,6 +9,7 @@ import static sn.sonatel.dsi.ins.imoc.web.rest.TestUtil.createUpdateProxyForBean
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
+import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -38,8 +39,10 @@ class JwtResourceIT {
     private static final Boolean DEFAULT_EXPIRE = false;
     private static final Boolean UPDATED_EXPIRE = true;
 
-    private static final String DEFAULT_VALEUR = "AAAAAAAAAA";
-    private static final String UPDATED_VALEUR = "BBBBBBBBBB";
+    private static final byte[] DEFAULT_VALEUR = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_VALEUR = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_VALEUR_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_VALEUR_CONTENT_TYPE = "image/png";
 
     private static final String ENTITY_API_URL = "/api/jwts";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -70,7 +73,11 @@ class JwtResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Jwt createEntity() {
-        return new Jwt().desactive(DEFAULT_DESACTIVE).expire(DEFAULT_EXPIRE).valeur(DEFAULT_VALEUR);
+        return new Jwt()
+            .desactive(DEFAULT_DESACTIVE)
+            .expire(DEFAULT_EXPIRE)
+            .valeur(DEFAULT_VALEUR)
+            .valeurContentType(DEFAULT_VALEUR_CONTENT_TYPE);
     }
 
     /**
@@ -80,7 +87,11 @@ class JwtResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Jwt createUpdatedEntity() {
-        return new Jwt().desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
+        return new Jwt()
+            .desactive(UPDATED_DESACTIVE)
+            .expire(UPDATED_EXPIRE)
+            .valeur(UPDATED_VALEUR)
+            .valeurContentType(UPDATED_VALEUR_CONTENT_TYPE);
     }
 
     @BeforeEach
@@ -149,7 +160,8 @@ class JwtResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(jwt.getId().intValue())))
             .andExpect(jsonPath("$.[*].desactive").value(hasItem(DEFAULT_DESACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].expire").value(hasItem(DEFAULT_EXPIRE.booleanValue())))
-            .andExpect(jsonPath("$.[*].valeur").value(hasItem(DEFAULT_VALEUR)));
+            .andExpect(jsonPath("$.[*].valeurContentType").value(hasItem(DEFAULT_VALEUR_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].valeur").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_VALEUR))));
     }
 
     @Test
@@ -166,7 +178,8 @@ class JwtResourceIT {
             .andExpect(jsonPath("$.id").value(jwt.getId().intValue()))
             .andExpect(jsonPath("$.desactive").value(DEFAULT_DESACTIVE.booleanValue()))
             .andExpect(jsonPath("$.expire").value(DEFAULT_EXPIRE.booleanValue()))
-            .andExpect(jsonPath("$.valeur").value(DEFAULT_VALEUR));
+            .andExpect(jsonPath("$.valeurContentType").value(DEFAULT_VALEUR_CONTENT_TYPE))
+            .andExpect(jsonPath("$.valeur").value(Base64.getEncoder().encodeToString(DEFAULT_VALEUR)));
     }
 
     @Test
@@ -188,7 +201,11 @@ class JwtResourceIT {
         Jwt updatedJwt = jwtRepository.findById(jwt.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedJwt are not directly saved in db
         em.detach(updatedJwt);
-        updatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
+        updatedJwt
+            .desactive(UPDATED_DESACTIVE)
+            .expire(UPDATED_EXPIRE)
+            .valeur(UPDATED_VALEUR)
+            .valeurContentType(UPDATED_VALEUR_CONTENT_TYPE);
 
         restJwtMockMvc
             .perform(
@@ -262,7 +279,11 @@ class JwtResourceIT {
         Jwt partialUpdatedJwt = new Jwt();
         partialUpdatedJwt.setId(jwt.getId());
 
-        partialUpdatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
+        partialUpdatedJwt
+            .desactive(UPDATED_DESACTIVE)
+            .expire(UPDATED_EXPIRE)
+            .valeur(UPDATED_VALEUR)
+            .valeurContentType(UPDATED_VALEUR_CONTENT_TYPE);
 
         restJwtMockMvc
             .perform(
@@ -290,7 +311,11 @@ class JwtResourceIT {
         Jwt partialUpdatedJwt = new Jwt();
         partialUpdatedJwt.setId(jwt.getId());
 
-        partialUpdatedJwt.desactive(UPDATED_DESACTIVE).expire(UPDATED_EXPIRE).valeur(UPDATED_VALEUR);
+        partialUpdatedJwt
+            .desactive(UPDATED_DESACTIVE)
+            .expire(UPDATED_EXPIRE)
+            .valeur(UPDATED_VALEUR)
+            .valeurContentType(UPDATED_VALEUR_CONTENT_TYPE);
 
         restJwtMockMvc
             .perform(

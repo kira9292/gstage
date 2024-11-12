@@ -2,6 +2,7 @@ package sn.sonatel.dsi.ins.imoc.repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.AttestationFinStage;
 
 /**
@@ -9,4 +10,6 @@ import sn.sonatel.dsi.ins.imoc.domain.AttestationFinStage;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface AttestationFinStageRepository extends JpaRepository<AttestationFinStage, Long> {}
+public interface AttestationFinStageRepository extends JpaRepository<AttestationFinStage, Long> {
+    AttestationFinStage getByAppuser(AppUser user);
+}

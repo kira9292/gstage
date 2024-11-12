@@ -57,7 +57,8 @@ public class CandidatAsserts {
             .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
             .satisfies(e -> assertThat(e.getPhone()).as("check phone").isEqualTo(actual.getPhone()))
             .satisfies(e -> assertThat(e.getEducationLevel()).as("check educationLevel").isEqualTo(actual.getEducationLevel()))
-            .satisfies(e -> assertThat(e.getSchool()).as("check school").isEqualTo(actual.getSchool()));
+            .satisfies(e -> assertThat(e.getSchool()).as("check school").isEqualTo(actual.getSchool()))
+            .satisfies(e -> assertThat(e.getFormation()).as("check formation").isEqualTo(actual.getFormation()));
     }
 
     /**

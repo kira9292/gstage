@@ -27,7 +27,7 @@ entity AppUser {
 entity  Jwt{
   desactive Boolean
   expire Boolean
-  valeur String
+  valeur Blob
 
 }
 
@@ -108,6 +108,7 @@ entity Contrat {
   assignmentSite String required
   signatureDate LocalDate
   comments String
+  docs Blob
 }
 
 entity AttestationFinStage {
@@ -115,6 +116,7 @@ entity AttestationFinStage {
   issueDate LocalDate required
   signatureDate LocalDate
   comments String
+  docs Blob
 }
 
 entity Validation {

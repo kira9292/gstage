@@ -45,6 +45,10 @@
     {
       "fieldName": "comments",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "docs",
+      "fieldType": "Blob"
     }
   ],
   "microserviceName": "backend",

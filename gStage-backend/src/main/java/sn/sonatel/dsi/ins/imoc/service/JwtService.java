@@ -101,13 +101,14 @@ public class JwtService {
     }
 
     public Jwt tokenByValue(String token) {
-        return  this.jwtRepository.findByValeur(token).orElseThrow(()->
+        return  this.jwtRepository.findByValeur(token.getBytes()).orElseThrow(()->
             new RuntimeException("user inconue"));
     }
 
     public void deconnexion() {
        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal() ;
-        Jwt jwt =this.jwtRepository.findUserValidToken(user.getEmail()).orElseThrow(
+       String mail = user.getEmail();
+        Jwt jwt =this.jwtRepository.findUserValidToken(mail).orElseThrow(
             ()->new RuntimeException("token invalide")
         );
         jwt.setDesactive(true);
