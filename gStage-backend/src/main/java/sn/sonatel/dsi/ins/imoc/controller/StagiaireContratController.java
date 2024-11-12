@@ -43,7 +43,7 @@ public class StagiaireContratController {
         return this.stagiaireService.getattestationfinstage(user) ;
     }
 
-    @GetMapping("/api/stagiaire/payments")
+    @GetMapping("/api/stagiaire/documents/payments")
     public List<EtatPaiement> etatPaiementList() {
 
         AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
