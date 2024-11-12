@@ -1,11 +1,11 @@
-id;reference;issue_date;signature_date;comments
-1;about sunder;2024-10-29;2024-10-29;flustered dependable
-2;fooey;2024-10-28;2024-10-29;blah obediently reprove
-3;partridge of;2024-10-28;2024-10-29;quizzically chromakey
-4;boohoo;2024-10-29;2024-10-29;now provided inside
-5;respray colorize;2024-10-28;2024-10-29;unless
-6;shiny;2024-10-29;2024-10-29;likewise whenever
-7;bah;2024-10-29;2024-10-29;mummify irk
-8;annual advocate solidly;2024-10-28;2024-10-29;dark foretell
-9;priesthood;2024-10-28;2024-10-28;mid yahoo
-10;rectangular;2024-10-29;2024-10-29;swiftly sometimes indeed
+id;reference;issue_date;signature_date;comments;docs;docs_content_type
+1;about sunder;2024-10-29;2024-10-29;flustered dependable;../fake-data/blob/hipster.png;image/png
+2;fooey;2024-10-28;2024-10-29;blah obediently reprove;../fake-data/blob/hipster.png;image/png
+3;partridge of;2024-10-28;2024-10-29;quizzically chromakey;../fake-data/blob/hipster.png;image/png
+4;boohoo;2024-10-29;2024-10-29;now provided inside;../fake-data/blob/hipster.png;image/png
+5;respray colorize;2024-10-28;2024-10-29;unless;../fake-data/blob/hipster.png;image/png
+6;shiny;2024-10-29;2024-10-29;likewise whenever;../fake-data/blob/hipster.png;image/png
+7;bah;2024-10-29;2024-10-29;mummify irk;../fake-data/blob/hipster.png;image/png
+8;annual advocate solidly;2024-10-28;2024-10-29;dark foretell;../fake-data/blob/hipster.png;image/png
+9;priesthood;2024-10-28;2024-10-28;mid yahoo;../fake-data/blob/hipster.png;image/png
+10;rectangular;2024-10-29;2024-10-29;swiftly sometimes indeed;../fake-data/blob/hipster.png;image/png

@@ -20,7 +20,10 @@
             <column name="expire" type="boolean">
                 <constraints nullable="true" />
             </column>
-            <column name="valeur" type="varchar(255)">
+            <column name="valeur" type="${blobType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="valeur_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="app_user_id" type="bigint">
@@ -49,7 +52,8 @@
             <column name="id" type="numeric"/>
             <column name="desactive" type="boolean"/>
             <column name="expire" type="boolean"/>
-            <column name="valeur" type="string"/>
+            <column name="valeur" type="blob"/>
+            <column name="valeur_content_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

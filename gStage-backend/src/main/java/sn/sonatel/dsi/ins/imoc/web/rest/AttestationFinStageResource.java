@@ -143,6 +143,12 @@ public class AttestationFinStageResource {
                 if (attestationFinStage.getComments() != null) {
                     existingAttestationFinStage.setComments(attestationFinStage.getComments());
                 }
+                if (attestationFinStage.getDocs() != null) {
+                    existingAttestationFinStage.setDocs(attestationFinStage.getDocs());
+                }
+                if (attestationFinStage.getDocsContentType() != null) {
+                    existingAttestationFinStage.setDocsContentType(attestationFinStage.getDocsContentType());
+                }
 
                 return existingAttestationFinStage;
             })

@@ -16,7 +16,7 @@
     },
     {
       "fieldName": "valeur",
-      "fieldType": "String"
+      "fieldType": "Blob"
     }
   ],
   "microserviceName": "backend",

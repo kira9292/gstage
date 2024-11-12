@@ -50,7 +50,9 @@ public class AttestationFinStageAsserts {
             .satisfies(e -> assertThat(e.getReference()).as("check reference").isEqualTo(actual.getReference()))
             .satisfies(e -> assertThat(e.getIssueDate()).as("check issueDate").isEqualTo(actual.getIssueDate()))
             .satisfies(e -> assertThat(e.getSignatureDate()).as("check signatureDate").isEqualTo(actual.getSignatureDate()))
-            .satisfies(e -> assertThat(e.getComments()).as("check comments").isEqualTo(actual.getComments()));
+            .satisfies(e -> assertThat(e.getComments()).as("check comments").isEqualTo(actual.getComments()))
+            .satisfies(e -> assertThat(e.getDocs()).as("check docs").isEqualTo(actual.getDocs()))
+            .satisfies(e -> assertThat(e.getDocsContentType()).as("check docs contenty type").isEqualTo(actual.getDocsContentType()));
     }
 
     /**

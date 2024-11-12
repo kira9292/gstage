@@ -54,7 +54,9 @@ public class ContratAsserts {
             .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
             .satisfies(e -> assertThat(e.getAssignmentSite()).as("check assignmentSite").isEqualTo(actual.getAssignmentSite()))
             .satisfies(e -> assertThat(e.getSignatureDate()).as("check signatureDate").isEqualTo(actual.getSignatureDate()))
-            .satisfies(e -> assertThat(e.getComments()).as("check comments").isEqualTo(actual.getComments()));
+            .satisfies(e -> assertThat(e.getComments()).as("check comments").isEqualTo(actual.getComments()))
+            .satisfies(e -> assertThat(e.getDocs()).as("check docs").isEqualTo(actual.getDocs()))
+            .satisfies(e -> assertThat(e.getDocsContentType()).as("check docs contenty type").isEqualTo(actual.getDocsContentType()));
     }
 
     /**

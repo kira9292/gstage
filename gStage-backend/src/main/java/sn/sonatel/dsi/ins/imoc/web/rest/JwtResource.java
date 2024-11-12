@@ -131,6 +131,9 @@ public class JwtResource {
                 if (jwt.getValeur() != null) {
                     existingJwt.setValeur(jwt.getValeur());
                 }
+                if (jwt.getValeurContentType() != null) {
+                    existingJwt.setValeurContentType(jwt.getValeurContentType());
+                }
 
                 return existingJwt;
             })

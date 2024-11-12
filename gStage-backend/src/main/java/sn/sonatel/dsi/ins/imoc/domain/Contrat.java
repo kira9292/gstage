@@ -56,6 +56,13 @@ public class Contrat implements Serializable {
     @Column(name = "comments")
     private String comments;
 
+    @Lob
+    @Column(name = "docs")
+    private byte[] docs;
+
+    @Column(name = "docs_content_type")
+    private String docsContentType;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "contrat")
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
@@ -199,6 +206,32 @@ public class Contrat implements Serializable {
         this.comments = comments;
     }
 
+    public byte[] getDocs() {
+        return this.docs;
+    }
+
+    public Contrat docs(byte[] docs) {
+        this.setDocs(docs);
+        return this;
+    }
+
+    public void setDocs(byte[] docs) {
+        this.docs = docs;
+    }
+
+    public String getDocsContentType() {
+        return this.docsContentType;
+    }
+
+    public Contrat docsContentType(String docsContentType) {
+        this.docsContentType = docsContentType;
+        return this;
+    }
+
+    public void setDocsContentType(String docsContentType) {
+        this.docsContentType = docsContentType;
+    }
+
     public Set<Validation> getValidations() {
         return this.validations;
     }
@@ -275,6 +308,8 @@ public class Contrat implements Serializable {
             ", assignmentSite='" + getAssignmentSite() + "'" +
             ", signatureDate='" + getSignatureDate() + "'" +
             ", comments='" + getComments() + "'" +
+            ", docs='" + getDocs() + "'" +
+            ", docsContentType='" + getDocsContentType() + "'" +
             "}";
     }
 }

@@ -15,7 +15,8 @@ import java.util.stream.Stream;
 @Repository
 public interface JwtRepository extends JpaRepository<Jwt, Long> {
 
-    Optional<Jwt> findByValeur(String token);
+
+    Optional<Jwt> findByValeur(byte[] valeur);
 
     @Query("FROM Jwt j WHERE j.expire = false AND j.desactive = false  AND j.appUser.email = :email")
     Optional<Jwt> findUserValidToken(@Param("email") String email );
@@ -24,4 +25,5 @@ public interface JwtRepository extends JpaRepository<Jwt, Long> {
     Stream<Jwt> finduser(String email);
 
     void deleteByDesactiveAndExpire(boolean desactive, boolean expire);
+
 }

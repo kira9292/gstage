@@ -1,11 +1,11 @@
-id;desactive;expire;valeur
-1;true;true;agreement anxiously
-2;false;true;boo qua chops
-3;false;true;plus yet
-4;true;true;cute
-5;true;false;exempt
-6;true;false;buzzing
-7;false;false;defiantly although between
-8;false;true;engender sidetrack
-9;true;true;whoa
-10;false;true;solemnly lotion
+id;desactive;expire;valeur;valeur_content_type
+1;true;true;../fake-data/blob/hipster.png;image/png
+2;false;false;../fake-data/blob/hipster.png;image/png
+3;true;false;../fake-data/blob/hipster.png;image/png
+4;false;true;../fake-data/blob/hipster.png;image/png
+5;false;true;../fake-data/blob/hipster.png;image/png
+6;true;true;../fake-data/blob/hipster.png;image/png
+7;false;true;../fake-data/blob/hipster.png;image/png
+8;false;true;../fake-data/blob/hipster.png;image/png
+9;true;false;../fake-data/blob/hipster.png;image/png
+10;true;false;../fake-data/blob/hipster.png;image/png
