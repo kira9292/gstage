@@ -9,7 +9,7 @@
     {
       "fieldName": "name",
       "fieldType": "ERole",
-      "fieldValues": "ADMIN,MANAGER,RH,STAGIAIRE,DFC"
+      "fieldValues": "ADMIN,MANAGER,RH,STAGIAIRE,DFC,ASSISTANT_GWTE"
     }
   ],
   "microserviceName": "backend",

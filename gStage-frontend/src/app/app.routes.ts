@@ -18,15 +18,15 @@ import { DashboardGwteComponent } from './roles/gwte/components/dashboard-gwte/d
 
 
 export const routes: Routes = [
-    { 
+    {
       path: 'demande-stage',
       component: DemandeStageComponent,
       canActivate: [NonAuthGuard]
     },
-    { 
-      path: '', 
-      redirectTo: 'demande-stage', 
-      pathMatch: 'full' 
+    {
+      path: '',
+      redirectTo: 'demande-stage',
+      pathMatch: 'full'
     },
     {
       path: 'login',
@@ -64,8 +64,8 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-    { 
-      path: 'notifications', 
+    {
+      path: 'notifications',
       component: NotificationsComponent,
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
@@ -77,25 +77,18 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-    { 
-      path: 'documents/attestations', 
+    {
+      path: 'documents/attestations',
       component: AttestationsComponent,
       title: 'Mes attestations',
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
-    },    
-    { 
-      path: 'payments', 
+    },
+    {
+      path: 'payments',
       component: PaymentsComponent,
       title: 'Mes renumerations',
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
      },
-
-     {
-      path: 'dashboard-gwte',
-      component: DashboardGwteComponent,
-      // canActivate: [AuthGuard, RoleGuard],
-      // data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
-     }
 ];

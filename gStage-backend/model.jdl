@@ -214,7 +214,8 @@ enum ERole{
   MANAGER,
   RH,
   STAGIAIRE,
-  DFC
+  DFC,
+  ASSISTANT_GWTE
 }
 
 relationship OneToMany {

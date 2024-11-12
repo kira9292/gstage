@@ -9,4 +9,5 @@ public enum ERole {
     RH,
     STAGIAIRE,
     DFC,
+    ASSISTANT_GWTE,
 }
