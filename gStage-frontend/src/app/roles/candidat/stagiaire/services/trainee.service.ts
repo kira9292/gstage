@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AttestationPresence, Contract } from '../interfaces/trainee.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +12,20 @@ export class TraineeService {
 
   constructor(private http: HttpClient){}
 
-  getContracts() {
-    return this.http.get(`${this.apiUrl}/contracts`);
+  getContracts(): Observable<Contract[]> {
+    return this.http.get<Contract[]>(`${this.apiUrl}/contracts`);
   }
 
-  getPresenceAttestations() {
-    return this.http.get(`${this.apiUrl}/presence-attestations`);
+  getPresenceAttestations(): Observable<AttestationPresence[]> {
+    return this.http.get<AttestationPresence[]>(`${this.apiUrl}/presence-attestations`);
   }
 
-  getPayments() {
-    return this.http.get(`${this.apiUrl}/payments`);
+  getPayments(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/payments`);
   }
 
-  getEndingInternAttestation() {
-    return this.http.get(`${this.apiUrl}/end-attestations`);
-
+  getEndingInternAttestation(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/ending-attestation`);
   }
 
   getNotifications() {

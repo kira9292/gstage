@@ -17,31 +17,24 @@ import { NonAuthGuard } from './core/guards/non-auth.guard';
 
 
 export const routes: Routes = [
-
     { 
       path: 'demande-stage',
       component: DemandeStageComponent,
       canActivate: [NonAuthGuard]
     },
-
     { 
       path: '', 
       redirectTo: 'demande-stage', 
       pathMatch: 'full' 
     },
-
     {
       path: 'login',
       component: LoginComponent,
-      canActivate: [NonAuthGuard]
     },
-
     {
       path: 'register',
       component: RegisterComponent,
-      canActivate: [NonAuthGuard]
     },
-
     {
         path: 'dashboard-stagiaire',
         component: DashboardComponent,
@@ -49,7 +42,6 @@ export const routes: Routes = [
         canActivate: [AuthGuard, RoleGuard],
         data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-
     {
         path: 'application',
         component: ApplicationsComponent,
@@ -57,7 +49,6 @@ export const routes: Routes = [
         canActivate: [AuthGuard, RoleGuard],
         data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-
     {
       path: 'my-applications',
       component: SuiviDemandeStageComponent,
@@ -65,7 +56,6 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-
     {
       path: 'documents',
       component: DocumentsComponent,
@@ -73,14 +63,12 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-
     { 
       path: 'notifications', 
       component: NotificationsComponent,
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-
     {
       path: 'documents/contracts',
       component: ContractsComponent,
@@ -88,15 +76,13 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-
     { 
       path: 'documents/attestations', 
       component: AttestationsComponent,
       title: 'Mes attestations',
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
-    },
-    
+    },    
     { 
       path: 'payments', 
       component: PaymentsComponent,

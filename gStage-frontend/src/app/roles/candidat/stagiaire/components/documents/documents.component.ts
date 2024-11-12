@@ -2,16 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NavigationService } from '../../../../../services/navigation.service';
+import { DocumentsCard } from '../../interfaces/trainee.interface';
 
 
-export interface DocumentsCard {
-  title: string;
-  description: string;
-  icon: string;
-  count?: number;
-  route: string;
-  type: string;
-}
+
 
 export interface Document {
   id: number;
@@ -23,14 +17,17 @@ export interface Document {
 @Component({
   selector: 'app-documents',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [
+    RouterLink, 
+    CommonModule
+  ],
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss'
 })
 export class DocumentsComponent {
   constructor(
     private router: Router,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
   ) {}
   cards: DocumentsCard[] = [
     {
@@ -51,8 +48,7 @@ export class DocumentsComponent {
     },
   ];
 
-  onCardClick(card: any) {
-    
+  onCardClick(card: any) {  
     // Mettre à jour l'onglet actif
     this.navigationService.setActiveTab('documents');
     // Naviguer vers la page des documents

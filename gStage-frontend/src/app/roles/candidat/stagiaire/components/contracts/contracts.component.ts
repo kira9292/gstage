@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Contract } from '../../interfaces/trainee.interface';
 import { ContractStatus } from '../../enums/trainee.enum';
+import { TraineeService } from '../../services/trainee.service';
 
 
 
@@ -42,6 +43,7 @@ export class ContractsComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
+    private traineeService: TraineeService
   ) {}
 
   ngOnInit(): void {
@@ -81,6 +83,18 @@ export class ContractsComponent implements OnInit {
     
     this.applyFilters();
   }
+
+  // loadContracts(): void {
+  //   this.traineeService.getContracts().subscribe({
+  //     next: (data) => {
+  //       this.contracts = data;
+  //       this.applyFilters();
+  //     },
+  //     error: (err) => {
+  //       console.error('Erreur lors de la récupération des contrats', err);
+  //     }
+  //   });
+  // }
 
   applyFilters(): void {
     this.filteredContracts = this.contracts.filter(contract => {
