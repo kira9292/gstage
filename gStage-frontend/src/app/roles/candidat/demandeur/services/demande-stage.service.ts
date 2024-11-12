@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class DemandeStageService {
 
-  private apiUrl = 'http://127.0.0.1:8081/api'; // L'URL de ton API
+  private apiUrl = 'http://127.0.0.1:8081/api';
 
   constructor(private http: HttpClient) { }
 

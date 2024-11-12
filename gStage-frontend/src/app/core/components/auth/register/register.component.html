@@ -37,7 +37,8 @@
               </div>
             </div>
           </div>
-  
+
+            
           <!-- Nom -->
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-700">Nom</label>
@@ -49,6 +50,27 @@
               <div *ngIf="lastNameError" class="mt-1 text-sm text-red-500">
                 {{ lastNameError }}
               </div>
+            </div>
+          </div>
+
+
+          <!-- Sélection du rôle -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Rôle</label>
+            <select formControlName="role"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                    [ngClass]="{'border-red-500 focus:ring-red-500': roleError}">
+              <option value="" disabled selected>Choisissez un rôle</option>
+              <option value="STAGIAIRE">Stagiaire</option>
+              <option value="RH">RH</option>
+              <option value="ASSISTANT_GWTE">Assistant GWTE</option>
+              <option value="DFC">DFC</option>
+              <option value="ADMIN">Admin</option>
+              <option value="MANGER">Manager</option>
+
+            </select>
+            <div *ngIf="roleError" class="mt-1 text-sm text-red-500">
+              {{ roleError }}
             </div>
           </div>
 
@@ -87,47 +109,6 @@
             </div>
           </div>
   
-          <!-- Téléphone -->
-          <!-- <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Téléphone</label>
-            <div class="relative">
-              <input type="tel" 
-                     formControlName="phone"
-                     placeholder="7X XXX XX XX"
-                     class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                     [ngClass]="{'border-red-500 focus:ring-red-500': phoneError}">
-              <div class="absolute left-0 top-0 mt-3 ml-3 text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                </svg>
-              </div>
-              <div *ngIf="phoneError" class="mt-1 text-sm text-red-500">
-                {{ phoneError }}
-              </div>
-            </div>
-          </div> -->
-  
-          <!-- Formation -->
-          <!-- <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Formation</label>
-            <input type="text" 
-                   formControlName="formation"
-                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300">
-          </div> -->
-  
-          <!-- Niveau -->
-          <!-- <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Niveau d'études</label>
-            <select formControlName="niveau"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300 bg-white">
-              <option value="">Sélectionner un niveau</option>
-              <option value="bac">BAC</option>
-              <option value="bac+2">BAC+2</option>
-              <option value="bac+3">BAC+3</option>
-              <option value="bac+4">BAC+4</option>
-              <option value="bac+5">BAC+5</option>
-            </select>
-          </div> -->
   
           <!-- Mot de passe -->
           <div class="space-y-2">

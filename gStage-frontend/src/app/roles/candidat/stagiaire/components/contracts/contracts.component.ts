@@ -3,39 +3,21 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-enum ContractStatus {
-  EN_PREPARATION = 'EN_PREPARATION',
-  EN_SIGNATURE = 'EN_SIGNATURE',
-  SIGNE = 'SIGNE',
-  TERMINE = 'TERMINE',
-  RESILIE = 'RESILIE'
-}
-
-interface Contract {
-  id: number;
-  reference: string;
-  type: string;
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  compensation: number;
-  status: ContractStatus;
-  assignmentSite: string;
-  signatureDate?: Date;
-  comments?: string;
-  url: string;
-}
+import { Contract } from '../../interfaces/trainee.interface';
+import { ContractStatus } from '../../enums/trainee.enum';
+import { TraineeService } from '../../services/trainee.service';
 
 
-interface Contract {
-  id: number;
-  type: string;
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  url: string;
-}
+
+
+// interface Contract {
+//   id: number;
+//   type: string;
+//   name: string;
+//   startDate: Date;
+//   endDate: Date;
+//   url: string;
+// }
 
 @Component({
   selector: 'app-contracts',
@@ -61,6 +43,7 @@ export class ContractsComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
+    private traineeService: TraineeService
   ) {}
 
   ngOnInit(): void {
@@ -100,6 +83,18 @@ export class ContractsComponent implements OnInit {
     
     this.applyFilters();
   }
+
+  // loadContracts(): void {
+  //   this.traineeService.getContracts().subscribe({
+  //     next: (data) => {
+  //       this.contracts = data;
+  //       this.applyFilters();
+  //     },
+  //     error: (err) => {
+  //       console.error('Erreur lors de la récupération des contrats', err);
+  //     }
+  //   });
+  // }
 
   applyFilters(): void {
     this.filteredContracts = this.contracts.filter(contract => {

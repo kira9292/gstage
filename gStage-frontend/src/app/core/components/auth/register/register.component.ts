@@ -5,15 +5,9 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { matchPasswordValidator } from '../../../validators/password.validator';
 import { noWhitespaceValidator } from '../../../validators/names.validator';
+import { PasswordCriteria } from '../../../interfaces/auth.interface';
 
 
-interface PasswordCriteria {
-  length: boolean;
-  uppercase: boolean;
-  lowercase: boolean;
-  number: boolean;
-  special: boolean;
-}
 
 @Component({
   selector: 'app-register',
@@ -37,6 +31,7 @@ export class RegisterComponent implements OnInit {
   showPassword = false;
   showConfirmPassword = false;
   termsError = '';
+
   passwordCriteria: PasswordCriteria = {
     length: false,
     uppercase: false,
@@ -62,6 +57,7 @@ export class RegisterComponent implements OnInit {
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/)
       ]],
       confirmPassword: ['', [Validators.required]],
+      role: ['', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]]
     }, {
       validators: matchPasswordValidator('password', 'confirmPassword')
@@ -105,6 +101,14 @@ export class RegisterComponent implements OnInit {
     return '';
   }
 
+  get roleError():string {
+    const control = this.registerForm.get('role');
+      if (control?.errors && control.touched) {
+        if (control.errors['required']) return 'Le role de l\'utilisateur est requis';
+      }
+    return '';
+  }
+
   get usernameError(): string {
     const control = this.registerForm.get('username');
     if (control?.errors && control.touched) {
@@ -120,15 +124,6 @@ export class RegisterComponent implements OnInit {
     if (control?.errors && control.touched) {
       if (control.errors['required']) return 'L\'email est requis';
       if (control.errors['email']) return 'Format d\'email invalide';
-    }
-    return '';
-  }
-
-  get phoneError(): string {
-    const control = this.registerForm.get('phone');
-    if (control?.errors && control.touched) {
-      if (control.errors['required']) return 'Le numéro de téléphone est requis';
-      if (control.errors['pattern']) return 'Format invalide (70|75|76|77|78 + 7 chiffres)';
     }
     return '';
   }
@@ -162,24 +157,36 @@ export class RegisterComponent implements OnInit {
 
   async onSubmit(): Promise<void> {
     if (this.registerForm.valid) {
+      this.isSubmitting = true;
+
       try {
-        this.isSubmitting = true;
-        const formData = this.registerForm.value;
-        delete formData.confirmPassword;
-        delete formData.acceptTerms;
+        // Structurer les données comme attendu par l'API
+        const formData = {
+          appUser: {
+            username: this.registerForm.value.username,
+            email: this.registerForm.value.email,
+            password: this.registerForm.value.password,
+            name: this.registerForm.value.name,
+            firstName: this.registerForm.value.firstName
+          },
+          role: {
+            name: this.registerForm.value.role
+          }
+        };
+
+        console.log(formData);
         
+
         await this.authService.register(formData).toPromise();
         this.router.navigate(['/login'], {
           queryParams: { registered: 'success' }
         });
       } catch (error: any) {
         console.error('Erreur lors de l\'inscription:', error);
-        // Gérer les erreurs spécifiques ici
       } finally {
         this.isSubmitting = false;
       }
     } else {
-
         if (!this.registerForm.get('acceptTerms')?.value) {
           this.termsError = 'Vous devez accepter les conditions générales d\'utilisation';
         }

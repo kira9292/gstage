@@ -3,25 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AttestationPresence, PaginationInfo } from '../../interfaces/trainee.interface';
 
-interface AttestationPresence {
-  id: number;
-  reference: string;
-  month: string;
-  startDate: Date;
-  endDate: Date;
-  signatureDate: Date;
-  status: boolean;
-  comments?: string;
-  url: string;
-}
-
-interface PaginationInfo {
-  currentPage: number;
-  pageSize: number;
-  totalItems: number;
-  totalPages: number;
-}
 
 @Component({
   selector: 'app-attestation-presence',
@@ -50,7 +33,7 @@ export class AttestationsComponent implements OnInit {
 
   pagination: PaginationInfo = {
     currentPage: 1,
-    pageSize: 10,
+    pageSize: 5,
     totalItems: 0,
     totalPages: 0
   };
