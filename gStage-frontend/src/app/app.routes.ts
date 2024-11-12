@@ -15,15 +15,15 @@ import { DemandeStageComponent } from './roles/candidat/demandeur/components/dem
 
 export const routes: Routes = [
 
-    { 
+    {
       path: 'demande-stage',
       component: DemandeStageComponent
     },
 
-    { 
-      path: '', 
-      redirectTo: 'login', 
-      pathMatch: 'full' 
+    {
+      path: '',
+      redirectTo: 'login',
+      pathMatch: 'full'
     },
 
     {
@@ -55,13 +55,13 @@ export const routes: Routes = [
     },
 
     {
-      path: 'documents',
+      path: 'h',
       component: DocumentsComponent,
       title: 'Mes Documents'
     },
 
-    { 
-      path: 'notifications', 
+    {
+      path: 'notifications',
       component: NotificationsComponent
     },
 
@@ -71,14 +71,14 @@ export const routes: Routes = [
       title: 'Mes contrats'
     },
 
-    { 
-      path: 'documents/attestations', 
+    {
+      path: 'documents/attestations',
       component: AttestationsComponent,
       title: 'Mes attestations'
     },
-    
-    { 
-      path: 'payments', 
+
+    {
+      path: 'payments',
       component: PaymentsComponent,
       title: 'Mes renumerations'
      },
