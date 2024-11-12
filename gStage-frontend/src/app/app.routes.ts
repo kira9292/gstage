@@ -13,6 +13,7 @@ import { DemandeStageComponent } from './roles/candidat/demandeur/components/dem
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { NonAuthGuard } from './core/guards/non-auth.guard';
+import { DashboardGwteComponent } from './roles/gwte/components/dashboard-gwte/dashboard-gwte.component';
 
 
 
@@ -90,4 +91,11 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
      },
+
+     {
+      path: 'dashboard-gwte',
+      component: DashboardGwteComponent,
+      // canActivate: [AuthGuard, RoleGuard],
+      // data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+     }
 ];
