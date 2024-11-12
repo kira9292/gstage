@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AttestationPresence, PaginationInfo } from '../../interfaces/trainee.interface';
+import { TraineeService } from '../../services/trainee.service';
 
 
 @Component({
@@ -38,7 +39,10 @@ export class AttestationsComponent implements OnInit {
     totalPages: 0
   };
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private traineeService: TraineeService
+  ) {}
 
   ngOnInit(): void {
     // Simuler le chargement des données
@@ -177,6 +181,18 @@ export class AttestationsComponent implements OnInit {
           
       this.applyFilters();
   }
+
+  // loadAttestations(): void {
+  //   this.traineeService.getPresenceAttestations().subscribe({
+  //     next: (data) => {
+  //       this.attestations = data;
+  //       this.applyFilters();
+  //     },
+  //     error: (err) => {
+  //       console.error('Erreur lors de la récupération des contrats', err);
+  //     }
+  //   });
+  // }
 
   formatMonth(monthStr?: string): string {
     if (!monthStr) return '';

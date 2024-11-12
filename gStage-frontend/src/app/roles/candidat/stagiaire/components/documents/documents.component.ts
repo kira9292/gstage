@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NavigationService } from '../../../../../services/navigation.service';
 import { DocumentsCard } from '../../interfaces/trainee.interface';
+import { TraineeService } from '../../services/trainee.service';
 
 
 
@@ -24,11 +25,18 @@ export interface Document {
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.scss'
 })
-export class DocumentsComponent {
+export class DocumentsComponent implements OnInit {
   constructor(
     private router: Router,
     private navigationService: NavigationService,
+    private traineeService: TraineeService
   ) {}
+
+
+  ngOnInit(): void {
+    // this.loadDocumentCounts();
+  }
+
   cards: DocumentsCard[] = [
     {
       title: 'Mon Contrat',
@@ -47,6 +55,28 @@ export class DocumentsComponent {
       type: 'attestation'
     },
   ];
+
+  // loadDocumentCounts(): void {
+  //   // Charger le nombre de contrats
+  //   this.traineeService.getContracts().subscribe({
+  //     next: (contracts) => {
+  //       this.cards.find(card => card.type === 'contrat')!.count = contracts.length;
+  //     },
+  //     error: (err) => {
+  //       console.error('Erreur lors de la récupération des contrats', err);
+  //     }
+  //   });
+
+  //   // Charger le nombre d'attestations
+  //   this.traineeService.getPresenceAttestations().subscribe({
+  //     next: (attestations) => {
+  //       this.cards.find(card => card.type === 'attestation')!.count = attestations.length;
+  //     },
+  //     error: (err) => {
+  //       console.error('Erreur lors de la récupération des attestations', err);
+  //     }
+  //   });
+  // }
 
   onCardClick(card: any) {  
     // Mettre à jour l'onglet actif
