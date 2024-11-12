@@ -15,13 +15,12 @@ export class AuthService {
   private readonly TOKEN_KEY = 'jwtToken';
   private readonly USER_INFO_KEY = 'userInfo';
 
-
-   // BehaviorSubject pour stocker les infos utilisateur
-   private userInfoSubject = new BehaviorSubject<{ firstName: string; name: string } | null>(this.getUserInfoFromStorage());
-   userInfo$ = this.userInfoSubject.asObservable();
+  // BehaviorSubject pour stocker les infos utilisateur
+  private userInfoSubject = new BehaviorSubject<{ firstName: string; name: string } | null>(this.getUserInfoFromStorage());
+  userInfo$ = this.userInfoSubject.asObservable();
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private router: Router
   ) {}
 
@@ -50,12 +49,11 @@ export class AuthService {
           localStorage.setItem(this.TOKEN_KEY, token);
 
            // Extraire les informations nom et prénom
-           const userInfo = this.extractUserInfo(token);
-           localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
+          const userInfo = this.extractUserInfo(token);
+          localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
  
-           // Mettre à jour le BehaviorSubject
-           this.userInfoSubject.next(userInfo);
-
+          // Mettre à jour le BehaviorSubject
+          this.userInfoSubject.next(userInfo);
           // Rediriger en fonction du rôle
           this.redirectUserBasedOnRole();
         },
@@ -84,6 +82,28 @@ export class AuthService {
     private getUserInfoFromStorage(): { firstName: string; name: string } | null {
       const userInfoString = localStorage.getItem(this.USER_INFO_KEY);
       return userInfoString ? JSON.parse(userInfoString) : null;
+    }
+
+    // Vérifier si le token est expiré
+    private isTokenExpired(token: string): boolean {
+      try {
+        const decodedToken: any = jwtDecode(token);
+        const expirationDate = decodedToken.exp * 1000; // L'expiration est en secondes, il faut la multiplier par 1000
+        return Date.now() >= expirationDate;
+      } catch (error) {
+        console.error('Erreur lors du décodage du token pour vérifier son expiration:', error);
+        return true;
+      }
+    }
+
+    // Vérifier si l'utilisateur est authentifié et si le token est expiré
+    private checkTokenAndRedirect(): boolean {
+      const token = localStorage.getItem(this.TOKEN_KEY);
+      if (!token || this.isTokenExpired(token)) {
+        this.logout();
+        return false;
+      }
+      return true;
     }
 
   // Méthode pour décoder le token JWT et récupérer le rôle
@@ -135,8 +155,10 @@ export class AuthService {
     
   }
 
+  // Méthode pour vérifier si l'utilisateur est authentifié
   isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.TOKEN_KEY);
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    return Boolean(token && !this.isTokenExpired(token));
   }
   
   hasRole(role: string): boolean {
@@ -145,13 +167,14 @@ export class AuthService {
 
   // Déconnexion de l'utilisateur
   logout() {
-    const token = localStorage.getItem('jwtToken'); // Récupérer le token stocké
+    const token = localStorage.getItem(this.TOKEN_KEY); // Récupérer le token stocké
     
     // Créer un nouvel objet HttpHeaders et ajouter le token
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', `Bearer ${token}`);
-    headers = headers.append('Content-type', 'application/json')
-    
+    headers = headers.append('Content-type', 'application/json');
+    localStorage.removeItem(this.TOKEN_KEY);
+
     console.log(headers.get('Authorization')); // Vérifier que l'en-tête est bien présent
 
     // Envoyer la requête de déconnexion avec les credentials (cookies ou session)
@@ -160,12 +183,10 @@ export class AuthService {
         withCredentials: true // Indique que les cookies et autres informations d'authentification doivent être envoyés
     }).subscribe(
         () => {
-
             // Suppression du token et redirection après la déconnexion réussie
-            localStorage.removeItem('jwtToken');
             localStorage.removeItem(this.USER_INFO_KEY);
             this.userInfoSubject.next(null);
-            alert("Deconnexion reussie avec succes !")
+            alert("Deconnexion reussie avec succes !");
             this.router.navigate(['/login']);
         },
         error => {
@@ -173,9 +194,7 @@ export class AuthService {
             alert("Échec de la déconnexion, veuillez réessayer.");
         }
     );
-}
-
-
+  }
 }
 
 

@@ -87,7 +87,7 @@ export class ContractsComponent implements OnInit {
   // loadContracts(): void {
   //   this.traineeService.getContracts().subscribe({
   //     next: (data) => {
-  //       this.contracts = data;
+  //       this.contracts = data;        
   //       this.applyFilters();
   //     },
   //     error: (err) => {

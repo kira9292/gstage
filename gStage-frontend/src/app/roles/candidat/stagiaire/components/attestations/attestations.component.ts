@@ -185,11 +185,11 @@ export class AttestationsComponent implements OnInit {
   // loadAttestations(): void {
   //   this.traineeService.getPresenceAttestations().subscribe({
   //     next: (data) => {
-  //       this.attestations = data;
+  //       this.attestations = data;        
   //       this.applyFilters();
   //     },
   //     error: (err) => {
-  //       console.error('Erreur lors de la récupération des contrats', err);
+  //       console.error('Erreur lors de la récupération des attestations de presence', err);
   //     }
   //   });
   // }

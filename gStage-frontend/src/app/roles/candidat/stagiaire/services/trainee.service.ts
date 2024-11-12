@@ -13,7 +13,7 @@ export class TraineeService {
   constructor(private http: HttpClient){}
 
   getContracts(): Observable<Contract[]> {
-    return this.http.get<Contract[]>(`${this.apiUrl}/contracts`);
+    return this.http.get<Contract[]>(`${this.apiUrl}/contrats`);
   }
 
   getPresenceAttestations(): Observable<AttestationPresence[]> {
