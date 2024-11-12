@@ -73,7 +73,6 @@ public class AppUserService implements UserDetailsService {
         Role role = roleRepository.save(appUser.getRole());
         appUser.getAppUser().setRole(role);
 
-
         AppUser utilisateur = this.appUserRepository.save(appUser.getAppUser());
         this.validationUserService.enregistrer(utilisateur);
 

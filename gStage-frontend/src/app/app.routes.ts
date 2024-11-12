@@ -17,15 +17,15 @@ import { NonAuthGuard } from './core/guards/non-auth.guard';
 
 
 export const routes: Routes = [
-    { 
+    {
       path: 'demande-stage',
       component: DemandeStageComponent,
       canActivate: [NonAuthGuard]
     },
-    { 
-      path: '', 
-      redirectTo: 'demande-stage', 
-      pathMatch: 'full' 
+    {
+      path: '',
+      redirectTo: 'demande-stage',
+      pathMatch: 'full'
     },
     {
       path: 'login',
@@ -63,8 +63,8 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-    { 
-      path: 'notifications', 
+    {
+      path: 'notifications',
       component: NotificationsComponent,
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
@@ -76,18 +76,19 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-    { 
-      path: 'documents/attestations', 
+    {
+      path: 'documents/attestations',
       component: AttestationsComponent,
       title: 'Mes attestations',
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
-    },    
-    { 
-      path: 'payments', 
+    },
+    {
+      path: 'payments',
       component: PaymentsComponent,
       title: 'Mes renumerations',
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
      },
+   
 ];
