@@ -16,6 +16,7 @@ import sn.sonatel.dsi.ins.imoc.service.ValidationCanditatService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,6 +51,19 @@ public class DemandeStageController {
         this.demandeStageService.activation(code);
     }
 
+    @GetMapping("/api/demandes")
+    public List<DemandeStagecandidatDTO> getAllDemandes() {
+        // Récupérer toutes les demandes de stage avec leurs candidats associés
+        List<DemandeStage> demandes = demandeStageRepository.findAll();
+
+        // Transformer chaque demande en un DemandeStagecandidatDTO avec le candidat associé
+        return demandes.stream()
+            .map(demande -> new DemandeStagecandidatDTO(
+                demande,
+                demande.getCandidat()
+            ))
+            .collect(Collectors.toList());
+    }
 
 //    @PostMapping("/resendcode")
 //    public void renvoicode( @RequestBody Map<String ,String> mail ) {

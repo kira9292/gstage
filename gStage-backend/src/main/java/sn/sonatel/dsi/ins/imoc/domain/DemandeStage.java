@@ -1,6 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -57,8 +58,9 @@ public class DemandeStage implements Serializable {
     private Boolean validated;
 
     @JsonIgnoreProperties(value = { "demandeStage", "validationStatuscandidat", "appUser" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
+    @JsonManagedReference
     private Candidat candidat;
 
     @ManyToOne(fetch = FetchType.LAZY)
