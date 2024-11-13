@@ -4,11 +4,17 @@
 
   <div class="flex flex-1 overflow-hidden">
     <app-sidebar 
-      *ngIf="showSidebar()"
+      *ngIf="showSidebarStagiaire()"
       [isSidebarOpen]="isSidebarOpen"
       (sidebarClose)="closeSidebar()"
       class="h-full">
     </app-sidebar>
+    <app-sidebar-gwte 
+      *ngIf="showSidebarGwte()"
+      [isSidebarOpen]="isSidebarOpen"
+      (sidebarClose)="closeSidebar()"
+      class="h-full">
+    </app-sidebar-gwte>
 
     <!-- Le contenu principal -->
     <div class="flex-1 overflow-auto bg-gray-50" [ngClass]="{'p-4 md:p-8': !isAuthPage()}">

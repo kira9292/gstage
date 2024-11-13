@@ -6,6 +6,7 @@ import { SidebarComponent } from './shared/components/sidebar/sidebar.component'
 import { BreadcrumbComponent } from './shared/components/breadcrump/breadcrump.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { AuthService } from './core/services/auth.service';
+import { SidebarGwteComponent } from './shared/components/sidebar-gwte/sidebar-gwte.component';
 
 
 @Component({
@@ -16,8 +17,9 @@ import { AuthService } from './core/services/auth.service';
     SidebarComponent,
     BreadcrumbComponent,
     NavbarComponent,
-    CommonModule
-],
+    CommonModule,
+    SidebarGwteComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -42,9 +44,12 @@ export class AppComponent {
 
   
     // Affiche le sidebar si l'utilisateur est authentifié et est ROLE_STAGIAIRE
-    showSidebar(): boolean {
-      return this.authService.isAuthenticated();
-      //  && this.authService.hasRole('ROLE_STAGIAIRE');
+    showSidebarStagiaire(): boolean {
+      return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_STAGIAIRE');
+    }
+
+    showSidebarGwte(): boolean {
+      return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_ASSISTANT_GWTE');
     }
 
     isAuthenticated(): boolean {
