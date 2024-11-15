@@ -1,11 +1,11 @@
-id;creation_date;internship_type;start_date;end_date;cv;cv_content_type;cover_letter;cover_letter_content_type;status;validated
-1;2024-10-28;PROJET_FIN_ETUDES;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_COURS;false
-2;2024-10-28;PROFESSIONNEL;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;REFUSE;false
-3;2024-10-28;ACADEMIQUE;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_COURS;false
-4;2024-10-29;PROFESSIONNEL;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;REFUSE;false
-5;2024-10-28;PROFESSIONNEL;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;TERMINER;true
-6;2024-10-29;ACADEMIQUE;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;TERMINER;false
-7;2024-10-29;PROFESSIONNEL;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_COURS;false
-8;2024-10-29;ACADEMIQUE;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;REFUSE;false
-9;2024-10-29;PROJET_FIN_ETUDES;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;ACCEPTE;true
-10;2024-10-29;PROJET_FIN_ETUDES;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;REFUSE;true
+id;reference;creation_date;internship_type;start_date;end_date;cv;cv_content_type;cover_letter;cover_letter_content_type;status;validated
+1;provided;2024-10-29;PROJET_FIN_ETUDES;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;ACCEPTE;true
+2;sizzling that wash;2024-10-29;PROFESSIONNEL;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_COURS;false
+3;outside leading;2024-10-29;PROFESSIONNEL;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_COURS;false
+4;taro because kooky;2024-10-29;ACADEMIQUE;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;REFUSE;false
+5;indeed dearly;2024-10-29;PROFESSIONNEL;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;REFUSE;true
+6;blah;2024-10-29;PROJET_FIN_ETUDES;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_ATTENTE;false
+7;intermix solemnly beep;2024-10-29;ACADEMIQUE;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_ATTENTE;true
+8;ugh;2024-10-29;PROJET_FIN_ETUDES;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;ACCEPTE;true
+9;ample duh;2024-10-28;ACADEMIQUE;2024-10-29;2024-10-28;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;ACCEPTE;true
+10;gah yesterday;2024-10-29;ACADEMIQUE;2024-10-29;2024-10-29;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;EN_ATTENTE;true

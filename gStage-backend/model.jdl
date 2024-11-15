@@ -47,6 +47,7 @@ entity Departement {
 
 
 entity DemandeStage {
+  reference String
   creationDate LocalDate
   internshipType InternshipType
   startDate LocalDate

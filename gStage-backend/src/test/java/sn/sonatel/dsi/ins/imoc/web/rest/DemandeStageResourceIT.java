@@ -37,6 +37,9 @@ import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 @WithMockUser
 class DemandeStageResourceIT {
 
+    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
+    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
+
     private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
 
@@ -95,6 +98,7 @@ class DemandeStageResourceIT {
      */
     public static DemandeStage createEntity() {
         return new DemandeStage()
+            .reference(DEFAULT_REFERENCE)
             .creationDate(DEFAULT_CREATION_DATE)
             .internshipType(DEFAULT_INTERNSHIP_TYPE)
             .startDate(DEFAULT_START_DATE)
@@ -115,6 +119,7 @@ class DemandeStageResourceIT {
      */
     public static DemandeStage createUpdatedEntity() {
         return new DemandeStage()
+            .reference(UPDATED_REFERENCE)
             .creationDate(UPDATED_CREATION_DATE)
             .internshipType(UPDATED_INTERNSHIP_TYPE)
             .startDate(UPDATED_START_DATE)
@@ -191,6 +196,7 @@ class DemandeStageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(demandeStage.getId().intValue())))
+            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].internshipType").value(hasItem(DEFAULT_INTERNSHIP_TYPE.toString())))
             .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
@@ -215,6 +221,7 @@ class DemandeStageResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(demandeStage.getId().intValue()))
+            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
             .andExpect(jsonPath("$.internshipType").value(DEFAULT_INTERNSHIP_TYPE.toString()))
             .andExpect(jsonPath("$.startDate").value(DEFAULT_START_DATE.toString()))
@@ -247,6 +254,7 @@ class DemandeStageResourceIT {
         // Disconnect from session so that the updates on updatedDemandeStage are not directly saved in db
         em.detach(updatedDemandeStage);
         updatedDemandeStage
+            .reference(UPDATED_REFERENCE)
             .creationDate(UPDATED_CREATION_DATE)
             .internshipType(UPDATED_INTERNSHIP_TYPE)
             .startDate(UPDATED_START_DATE)
@@ -337,10 +345,10 @@ class DemandeStageResourceIT {
         partialUpdatedDemandeStage.setId(demandeStage.getId());
 
         partialUpdatedDemandeStage
-            .internshipType(UPDATED_INTERNSHIP_TYPE)
-            .endDate(UPDATED_END_DATE)
-            .coverLetter(UPDATED_COVER_LETTER)
-            .coverLetterContentType(UPDATED_COVER_LETTER_CONTENT_TYPE);
+            .creationDate(UPDATED_CREATION_DATE)
+            .startDate(UPDATED_START_DATE)
+            .cv(UPDATED_CV)
+            .cvContentType(UPDATED_CV_CONTENT_TYPE);
 
         restDemandeStageMockMvc
             .perform(
@@ -372,6 +380,7 @@ class DemandeStageResourceIT {
         partialUpdatedDemandeStage.setId(demandeStage.getId());
 
         partialUpdatedDemandeStage
+            .reference(UPDATED_REFERENCE)
             .creationDate(UPDATED_CREATION_DATE)
             .internshipType(UPDATED_INTERNSHIP_TYPE)
             .startDate(UPDATED_START_DATE)

@@ -1,7 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -22,6 +22,9 @@ public class DemandeStage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "reference")
+    private String reference;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;
@@ -60,7 +63,7 @@ public class DemandeStage implements Serializable {
     @JsonIgnoreProperties(value = { "demandeStage", "validationStatuscandidat", "appUser" }, allowSetters = true)
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
-    @JsonManagedReference
+    @JsonBackReference
     private Candidat candidat;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -104,6 +107,19 @@ public class DemandeStage implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getReference() {
+        return this.reference;
+    }
+
+    public DemandeStage reference(String reference) {
+        this.setReference(reference);
+        return this;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public LocalDate getCreationDate() {
@@ -312,6 +328,7 @@ public class DemandeStage implements Serializable {
     public String toString() {
         return "DemandeStage{" +
             "id=" + getId() +
+            ", reference='" + getReference() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
             ", internshipType='" + getInternshipType() + "'" +
             ", startDate='" + getStartDate() + "'" +

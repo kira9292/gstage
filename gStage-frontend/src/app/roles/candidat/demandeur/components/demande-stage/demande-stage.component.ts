@@ -201,11 +201,11 @@ convertToBase64(file: File): Promise<string> {
 // Fonction de soumission du formulaire
 onSubmit(): void {
   if (this.applicationForm.valid && this.selectedCV && this.selectedMotivationLetter) {
-    console.log("J'ai clique");
     
     // Créer l'objet demandeStage avec les informations du formulaire
     const demandeStageData = {
       demandeStage: {
+        reference: '',
         creationDate: new Date().toISOString().split('T')[0], // Date actuelle
         internshipType: this.applicationForm.get('type')?.value, // Exemple de type de stage
         startDate: this.applicationForm.get('startDate')?.value,

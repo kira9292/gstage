@@ -308,7 +308,6 @@
   
         <!-- Bouton Soumettre ma demande -->
         <button type="submit"
-                (click)="onSubmit()"
                 [disabled]="!applicationForm.valid || !selectedCV || !selectedMotivationLetter"
                 class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
           <i class="fas fa-paper-plane mr-2"></i>

@@ -63,18 +63,6 @@ export interface Candidat {
   formation: Formation
 }
 
-export interface DemandeStage {
-  id: number;
-  reference: string;
-  internshipType: InternshipType;
-  internshipStatus: InternshipStatus;
-  startDate: Date;
-  endDate: Date;
-  cv: string;
-  coverLetter: string;
-  validated: Boolean;
-  candidat: Candidat;  
-}
 
 
   
