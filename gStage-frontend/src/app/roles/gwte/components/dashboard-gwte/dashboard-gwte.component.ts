@@ -19,15 +19,50 @@ import {Router} from "@angular/router";
   styleUrls: ['./dashboard-gwte.component.scss']
 })
 export class DashboardGwteComponent implements OnInit {
-
+  InternshipStatus = InternshipStatus; // Pour l'utiliser dans le template
   demandesStage: any[] = [];
 
   filteredDemandesStage: any[] = [];
   statusFilter: InternshipStatus | null = null;
   searchTerm: string = '';
   internshipStatuses = Object.values(InternshipStatus);
-  internshipTypes = Object.values(InternshipType);
-
+  
+    // Stats data
+    statsData = [
+      {
+        label: 'Total Demandes',
+        value: 0,
+        icon: 'fa-file-alt',
+        borderColor: 'border-blue-500',
+        bgColor: 'bg-blue-100',
+        iconColor: 'text-blue-500'
+      },
+      {
+        label: 'En Attente',
+        value: 0,
+        icon: 'fa-clock',
+        borderColor: 'border-yellow-500',
+        bgColor: 'bg-yellow-100',
+        iconColor: 'text-yellow-500'
+      },
+      {
+        label: 'Acceptées',
+        value: 0,
+        icon: 'fa-check-circle',
+        borderColor: 'border-green-500',
+        bgColor: 'bg-green-100',
+        iconColor: 'text-green-500'
+      },
+      {
+        label: 'En Cours',
+        value: 0,
+        icon: 'fa-spinner',
+        borderColor: 'border-purple-500',
+        bgColor: 'bg-purple-100',
+        iconColor: 'text-purple-500'
+      }
+    ];
+    
   constructor(
     private sanitizer: DomSanitizer,
     private gwteService: GwteService,
@@ -43,12 +78,22 @@ export class DashboardGwteComponent implements OnInit {
         (data) => {
           this.demandesStage = data; // Stocke les demandes récupérées
           this.applyFilters(); // Applique les filtres après avoir chargé les données
+          this.updateStats();
         },
         (error) => {
           console.error('Erreur lors de la récupération des demandes de stage', error);
         }
       );
-    }
+  }
+
+  
+  updateStats(): void {
+    this.statsData[0].value = this.demandesStage.length;
+    this.statsData[1].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_ATTENTE).length;
+    this.statsData[2].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.ACCEPTE).length;
+    this.statsData[3].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_COURS).length;
+  }
+
 
   applyFilters(): void {
     let filtered = this.demandesStage;
@@ -67,6 +112,27 @@ export class DashboardGwteComponent implements OnInit {
 
     this.filteredDemandesStage = filtered;
   }
+
+    // Nouvelles méthodes pour les actions contextuelles
+    sendWelcomeEmail(demande: any): void {
+      // Implémentation de l'envoi d'email d'accueil
+      console.log('Envoi email d\'accueil pour:', demande.demandeStage.reference);
+    }
+    scheduleEvaluation(demande: any): void {
+      // Implémentation de la planification d'évaluation
+      console.log('Planification évaluation pour:', demande.demandeStage.reference);
+    }
+
+    generateCertificate(demande: any): void {
+      // Implémentation de la génération d'attestation
+      console.log('Génération attestation pour:', demande.demandeStage.reference);
+    }
+  
+    archiveApplication(demande: any): void {
+      // Implémentation de l'archivage
+      console.log('Archivage de la demande:', demande.demandeStage.reference);
+    }
+  
 
   canViewCV(demande: any): boolean {
     return !!demande.demandeStage.cv;
@@ -174,9 +240,7 @@ downloadCoverLetter(demande: any): void {
 
   proposeToManager(demande: any): void {
     this.gwteService.setDemande(demande);
-    this.router.navigate(['/proposer-to-manager']);  // Redirection après la soumission
-
-    alert(`Demande de stage ${demande.demandeStage.reference} proposée au manager.`);
+    this.router.navigate(['/propose-to-manager']);  // Redirection après la soumission
   }
 
   getInternshipStatusLabel(status: InternshipStatus): string {
@@ -198,17 +262,17 @@ downloadCoverLetter(demande: any): void {
   getInternshipStatusClass(status: InternshipStatus): string {
     switch (status) {
       case InternshipStatus.EN_ATTENTE:
-        return 'bg-yellow-500 text-white'; // Jaune pour "En attente"
+        return 'bg-yellow-100 text-yellow-800';
       case InternshipStatus.ACCEPTE:
-        return 'bg-green-500 text-white';   // Vert pour "Accepté"
+        return 'bg-green-100 text-green-800';
       case InternshipStatus.REFUSE:
-        return 'bg-red-500 text-white';     // Rouge pour "Rejeté"
+        return 'bg-red-100 text-red-800';
       case InternshipStatus.EN_COURS:
-        return 'bg-blue-500 text-white';    // Bleu pour "En cours"
+        return 'bg-blue-100 text-blue-800';
       case InternshipStatus.TERMINER:
-        return 'bg-gray-500 text-white';    // Gris pour "Terminé"
+        return 'bg-gray-100 text-gray-800';
       default:
-        return 'bg-gray-200 text-black';    // Gris par défaut pour un statut inconnu
+        return 'bg-gray-100 text-gray-800';
     }
   }
 
