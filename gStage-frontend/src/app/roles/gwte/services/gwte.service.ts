@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,4 +16,13 @@ export class GwteService {
     headers = headers.append('Content-type', 'application/json');
     return this.http.get<any[]>(`${this.apiUrl}/demandes`, {headers});
   }
+
+
+  private demandeSource = new BehaviorSubject<any>(null);
+  currentDemande = this.demandeSource.asObservable();
+
+  setDemande(demande: any): void {
+    this.demandeSource.next(demande);
+  }
+
 }
