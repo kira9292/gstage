@@ -1,0 +1,17 @@
+// dashboard-gwte.component.scss
+
+:root {
+  --sonatel-orange: #ff8c00;
+}
+
+.bg-sonatel-orange {
+  background-color: var(--sonatel-orange);
+}
+
+.text-sonatel-orange {
+  color: var(--sonatel-orange);
+}
+
+.focus\:ring-sonatel-orange:focus {
+  ring-color: var(--sonatel-orange);
+}

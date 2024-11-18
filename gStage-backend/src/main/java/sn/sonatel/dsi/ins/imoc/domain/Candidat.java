@@ -1,5 +1,6 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -71,6 +72,7 @@ public class Candidat implements Serializable {
 
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @JsonBackReference
     private DemandeStage demandeStage;
 
     @JsonIgnoreProperties(value = { "candidat" }, allowSetters = true)

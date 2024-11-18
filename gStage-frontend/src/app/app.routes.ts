@@ -13,7 +13,7 @@ import { DemandeStageComponent } from './roles/candidat/demandeur/components/dem
 import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { NonAuthGuard } from './core/guards/non-auth.guard';
-import {PoposerManagerComponent} from "./roles/gwte/components/poposer-manager/poposer-manager.component";
+import { DashboardGwteComponent } from './roles/gwte/components/dashboard-gwte/dashboard-gwte.component';
 
 
 
@@ -85,11 +85,17 @@ export const routes: Routes = [
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
     {
-      path: 'poposer-manager',
-      component: PoposerManagerComponent,
-      title: 'poposer manager',
-      // canActivate: [AuthGuard, RoleGuard],
-      // data: {expectedRole: 'ROLE_STAGIAIRE'}
+      path: 'payments',
+      component: PaymentsComponent,
+      title: 'Mes renumerations',
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_STAGIAIRE'}
      },
 
+     {
+      path: 'dashboard-gwte',
+      component: DashboardGwteComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+     }
 ];

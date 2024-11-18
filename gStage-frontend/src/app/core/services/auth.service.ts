@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {BehaviorSubject, catchError, Observable, throwError} from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -22,18 +22,22 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) {
+    this.startTokenExpirationCheck();
+  }
 
   // Méthode pour l'inscription
   register(userData: RegisterData): Observable<any> {
     return this.http.post<any>(`${this.API_URL}/inscription`, userData).pipe(
-      tap((response) => {
-        console.log('Inscription réussie:', response);
-      }),
-      catchError((error) => {
-        console.error('Erreur d\'inscription:', error.error);
-        return throwError(() => error);
-      })
+      tap(
+        (response) => {
+          console.log('Inscription réussie:', response);
+        },
+        (error) => {
+          console.error('Erreur d\'inscription:', error);
+          throw error;
+        }
+      )
     );
   }
 
@@ -41,18 +45,17 @@ export class AuthService {
   login(userData: LoginData): Observable<any> {
     return this.http.post<any>(`${this.API_URL}/connexion`, userData).pipe(
       tap(
-        (response) => {
+        (response) => {          
           // Stocker le token JWT du champ "bearer"
           const token = response.bearer;
           localStorage.setItem(this.TOKEN_KEY, token);
 
            // Extraire les informations nom et prénom
-           const userInfo = this.extractUserInfo(token);
-           localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
+          const userInfo = this.extractUserInfo(token);
+          localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
  
-           // Mettre à jour le BehaviorSubject
-           this.userInfoSubject.next(userInfo);
-
+          // Mettre à jour le BehaviorSubject
+          this.userInfoSubject.next(userInfo);
           // Rediriger en fonction du rôle
           this.redirectUserBasedOnRole();
         },
@@ -76,7 +79,7 @@ export class AuthService {
         return null;
       }
     }
-
+  
     // Récupérer les informations utilisateur du stockage local
     private getUserInfoFromStorage(): { firstName: string; name: string } | null {
       const userInfoString = localStorage.getItem(this.USER_INFO_KEY);
@@ -119,16 +122,16 @@ export class AuthService {
   // Redirection en fonction du rôle
   redirectUserBasedOnRole() {
     const role = this.getRole();
-
+    
     switch (role) {
       case 'ROLE_ADMIN':
-        this.router.navigate(['/dashboard-admin']);
+        this.router.navigate(['/dashboard-admin']);        
         break;
-
+      
       case 'ROLE_STAGIAIRE':
         this.router.navigate(['/dashboard-stagiaire']);
         break;
-
+      
       case 'ROLE_RH':
         this.router.navigate(['/dashboard-rh']);
         break;
@@ -136,22 +139,22 @@ export class AuthService {
       case 'ROLE_MANAGER':
         this.router.navigate(['dashboard-manager']);
         break;
-
+      
       case 'ROLE_ASSISTANT_GWTE':
         this.router.navigate(['dashboard-gwte']);
         break;
-
+      
       case 'ROLE_DFC':
         this.router.navigate(['/dashboard-dfc']);
         break;
-
+      
       default:
         console.log("Nothing");
-
+        
         this.router.navigate(['/login']);
         break;
     }
-
+    
   }
 
   // Méthode pour vérifier si l'utilisateur est authentifié
@@ -159,29 +162,30 @@ export class AuthService {
     const token = localStorage.getItem(this.TOKEN_KEY);
     return Boolean(token && !this.isTokenExpired(token));
   }
-
+  
   hasRole(role: string): boolean {
     return this.getRole() === role;
   }
 
   // Déconnexion de l'utilisateur
   logout() {
-    const token = localStorage.getItem('jwtToken'); // Récupérer le token stocké
+    const token = localStorage.getItem(this.TOKEN_KEY); // Récupérer le token stocké
     
     // Créer un nouvel objet HttpHeaders et ajouter le token
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', `Bearer ${token}`);
-    headers = headers.append('Content-type', 'application/json')
+    headers = headers.append('Content-type', 'application/json');
     
     console.log(headers.get('Authorization')); // Vérifier que l'en-tête est bien présent
 
     // Envoyer la requête de déconnexion avec les credentials (cookies ou session)
-    this.http.post<any>(`${this.API_URL}/deconnexion`, null, {
-        headers,
+    this.http.post<any>(`${this.API_URL}/deconnexion`, null, { 
+        headers, 
         withCredentials: true // Indique que les cookies et autres informations d'authentification doivent être envoyés
     }).subscribe(
         () => {
             // Suppression du token et redirection après la déconnexion réussie
+            localStorage.removeItem(this.TOKEN_KEY);
             localStorage.removeItem(this.USER_INFO_KEY);
             this.userInfoSubject.next(null);
             alert("Deconnexion reussie avec succes !");
@@ -193,6 +197,17 @@ export class AuthService {
         }
     );
   }
+
+  startTokenExpirationCheck(): void {
+    setInterval(() => {
+      const token = localStorage.getItem(this.TOKEN_KEY);
+      if (token && this.isTokenExpired(token)) {
+        this.logout();
+        console.warn('Token expiré, déconnexion automatique effectuée.');
+      }
+    }, 10000); // Vérification toutes les 10 secondes (ajustez selon vos besoins)
+  }
+  
 }
 
 

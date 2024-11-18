@@ -7,6 +7,10 @@
   "databaseType": "sql",
   "fields": [
     {
+      "fieldName": "reference",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "creationDate",
       "fieldType": "LocalDate"
     },

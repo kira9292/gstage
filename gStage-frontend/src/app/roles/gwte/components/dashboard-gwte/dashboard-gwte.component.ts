@@ -1,0 +1,209 @@
+import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { EducationLevel, InternshipStatus, InternshipType } from '../../../../enums/gstage.enum';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Formation } from '../../../candidat/stagiaire/enums/trainee.enum';
+import { GwteService } from '../../services/gwte.service';
+
+@Component({
+  selector: 'app-dashboard-gwte',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
+  templateUrl: './dashboard-gwte.component.html',
+  styleUrls: ['./dashboard-gwte.component.scss']
+})
+export class DashboardGwteComponent implements OnInit {
+
+  demandesStage: any[] = [];
+
+  filteredDemandesStage: any[] = [];
+  statusFilter: InternshipStatus | null = null;
+  searchTerm: string = '';
+  internshipStatuses = Object.values(InternshipStatus);
+  internshipTypes = Object.values(InternshipType);
+
+  constructor(
+    private sanitizer: DomSanitizer,
+    private gwteService: GwteService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadDemandesStage();
+  }
+
+  loadDemandesStage(): void {
+      this.gwteService.getDemandesStages().subscribe(
+        (data) => {
+          this.demandesStage = data; // Stocke les demandes récupérées
+          this.applyFilters(); // Applique les filtres après avoir chargé les données
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des demandes de stage', error);
+        }
+      );
+    }
+
+  applyFilters(): void {
+    let filtered = this.demandesStage;
+
+    if (this.statusFilter) {
+      filtered = filtered.filter(demande => demande.demandeStage.status === this.statusFilter);
+    }
+
+    if (this.searchTerm) {
+      filtered = filtered.filter(demande =>
+        demande.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        (demande.candidat?.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        demande.candidat?.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      );
+    }
+
+    this.filteredDemandesStage = filtered;
+  }
+
+  canViewCV(demande: any): boolean {
+    return !!demande.demandeStage.cv;
+  }
+
+  canDownloadCV(demande: any): boolean {
+    return !!demande.demandeStage.cv;
+  }
+
+  canViewCoverLetter(demande: any): boolean {
+    return !!demande.demandeStage.coverLetter;
+  }
+
+  canDownloadCoverLetter(demande: any): boolean {
+    return !!demande.demandeStage.coverLetter;
+  }
+
+// Méthode pour afficher le CV
+viewCV(demande: any): void {
+  const fileData = demande.demandeStage.cv; // Base64 du CV
+  if (fileData) {
+    const byteCharacters = atob(fileData); // Décodage du base64
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+      const slice = byteCharacters.slice(offset, offset + 1024);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      byteArrays.push(new Uint8Array(byteNumbers));
+    }
+    const blob = new Blob(byteArrays, { type: demande.demandeStage.cvContentType });
+    const url = URL.createObjectURL(blob); // Crée une URL pour le fichier
+    window.open(url, '_blank'); // Ouvre dans un nouvel onglet
+  }
+}
+
+// Méthode pour télécharger le CV
+downloadCV(demande: any): void {
+  const fileData = demande.demandeStage.cv; // Base64 du CV
+  if (fileData) {
+    const byteCharacters = atob(fileData); // Décodage du base64
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+      const slice = byteCharacters.slice(offset, offset + 1024);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      byteArrays.push(new Uint8Array(byteNumbers));
+    }
+    const blob = new Blob(byteArrays, { type: demande.demandeStage.cvContentType });
+    const url = URL.createObjectURL(blob); // Crée une URL pour le fichier
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'cv.pdf'; // Vous pouvez ajuster l'extension en fonction du type de fichier
+    a.click();
+    URL.revokeObjectURL(url); // Libérer l'URL après le téléchargement
+  }
+}
+
+// Méthode pour afficher la lettre de motivation
+viewCoverLetter(demande: any): void {
+  const fileData = demande.demandeStage.coverLetter; // Base64 de la lettre de motivation
+  if (fileData) {
+    const byteCharacters = atob(fileData); // Décodage du base64
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+      const slice = byteCharacters.slice(offset, offset + 1024);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      byteArrays.push(new Uint8Array(byteNumbers));
+    }
+    const blob = new Blob(byteArrays, { type: demande.demandeStage.coverLetterContentType });
+    const url = URL.createObjectURL(blob); // Crée une URL pour le fichier
+    window.open(url, '_blank'); // Ouvre dans un nouvel onglet
+  }
+}
+
+// Méthode pour télécharger la lettre de motivation
+downloadCoverLetter(demande: any): void {
+  const fileData = demande.demandeStage.coverLetter; // Base64 de la lettre de motivation
+  if (fileData) {
+    const byteCharacters = atob(fileData); // Décodage du base64
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+      const slice = byteCharacters.slice(offset, offset + 1024);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      byteArrays.push(new Uint8Array(byteNumbers));
+    }
+    const blob = new Blob(byteArrays, { type: demande.demandeStage.coverLetterContentType });
+    const url = URL.createObjectURL(blob); // Crée une URL pour le fichier
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'coverLetter.pdf'; // Vous pouvez ajuster l'extension en fonction du type de fichier
+    a.click();
+    URL.revokeObjectURL(url); // Libérer l'URL après le téléchargement
+  }
+}
+
+  proposeToManager(demande: any): void {
+    alert(`Demande de stage ${demande.demandeStage.reference} proposée au manager.`);
+  }
+
+  getInternshipStatusLabel(status: InternshipStatus): string {
+    switch (status) {
+      case InternshipStatus.EN_ATTENTE:
+        return 'En attente';
+      case InternshipStatus.ACCEPTE:
+        return 'Accepté';
+      case InternshipStatus.REFUSE:
+        return 'Rejeté';
+      case InternshipStatus.EN_COURS:
+        return 'En cours';
+      case InternshipStatus.TERMINER:
+        return 'Termine'
+      default:
+        return 'Statut inconnu';
+    }
+  }
+  getInternshipStatusClass(status: InternshipStatus): string {
+    switch (status) {
+      case InternshipStatus.EN_ATTENTE:
+        return 'bg-yellow-500 text-white'; // Jaune pour "En attente"
+      case InternshipStatus.ACCEPTE:
+        return 'bg-green-500 text-white';   // Vert pour "Accepté"
+      case InternshipStatus.REFUSE:
+        return 'bg-red-500 text-white';     // Rouge pour "Rejeté"
+      case InternshipStatus.EN_COURS:
+        return 'bg-blue-500 text-white';    // Bleu pour "En cours"
+      case InternshipStatus.TERMINER:
+        return 'bg-gray-500 text-white';    // Gris pour "Terminé"
+      default:
+        return 'bg-gray-200 text-black';    // Gris par défaut pour un statut inconnu
+    }
+  }
+  
+}

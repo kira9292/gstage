@@ -28,6 +28,7 @@ export class TraineeService {
     return this.http.get(`${this.apiUrl}/ending-attestation`);
   }
 
+
   getNotifications() {
     return [
       { title: 'Demande de stage acceptée', date: '24/10/2024', type: 'success' },

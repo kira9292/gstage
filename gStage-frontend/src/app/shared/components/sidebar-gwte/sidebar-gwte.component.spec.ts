@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardComponent } from './dashboard.component';
+import { SidebarGwteComponent } from './sidebar-gwte.component';
 
-describe('DashboardComponent', () => {
-  let component: DashboardComponent;
-  let fixture: ComponentFixture<DashboardComponent>;
+describe('SidebarGwteComponent', () => {
+  let component: SidebarGwteComponent;
+  let fixture: ComponentFixture<SidebarGwteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DashboardComponent]
+      imports: [SidebarGwteComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DashboardComponent);
+    fixture = TestBed.createComponent(SidebarGwteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

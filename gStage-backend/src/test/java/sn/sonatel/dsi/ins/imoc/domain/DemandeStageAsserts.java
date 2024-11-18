@@ -47,6 +47,7 @@ public class DemandeStageAsserts {
     public static void assertDemandeStageUpdatableFieldsEquals(DemandeStage expected, DemandeStage actual) {
         assertThat(expected)
             .as("Verify DemandeStage relevant properties")
+            .satisfies(e -> assertThat(e.getReference()).as("check reference").isEqualTo(actual.getReference()))
             .satisfies(e -> assertThat(e.getCreationDate()).as("check creationDate").isEqualTo(actual.getCreationDate()))
             .satisfies(e -> assertThat(e.getInternshipType()).as("check internshipType").isEqualTo(actual.getInternshipType()))
             .satisfies(e -> assertThat(e.getStartDate()).as("check startDate").isEqualTo(actual.getStartDate()))

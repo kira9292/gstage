@@ -58,6 +58,7 @@ entity StagiairesProposer{
 }
 
 entity DemandeStage {
+  reference String
   creationDate LocalDate
   internshipType InternshipType
   startDate LocalDate
@@ -66,7 +67,6 @@ entity DemandeStage {
   coverLetter Blob
   status InternshipStatus
   validated Boolean
-
 }
 
 entity EtatPaiement {
@@ -94,7 +94,7 @@ entity Candidat {
   birthDate LocalDate
   nationality String
   birthPlace String
-  cni String  unique
+  cni String unique
   address String
   email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
   phone String required pattern(/^[0-9]{9}$/)
