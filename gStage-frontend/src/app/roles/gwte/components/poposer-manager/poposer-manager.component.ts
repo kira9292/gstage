@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {Router} from "@angular/router";
-import {AssistantgwteService} from "../../services/assistantgwte.service";
+import { Router } from "@angular/router";
+import { AssistantgwteService } from "../../services/assistantgwte.service";
+import { GwteService } from "../../services/gwte.service";
 
 @Component({
   selector: 'app-poposer-manager',
@@ -10,50 +11,66 @@ import {AssistantgwteService} from "../../services/assistantgwte.service";
   templateUrl: './poposer-manager.component.html',
   styleUrls: ['./poposer-manager.component.scss']
 })
-export class PoposerManagerComponent {
+export class PoposerManagerComponent implements OnInit {
   demandeForm: FormGroup;
+  demande: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private GwteService: GwteService,
     private assistantService: AssistantgwteService
   ) {
-
-
+    // Initialisation du formulaire sans 'nbreStagiaire'
     this.demandeForm = this.fb.group({
       demandeur: [
         '',
-        [Validators.required] // Only alphabets and spaces
+        [Validators.required]
       ],
       direction: [
         '',
-        [Validators.required] // Only alphabets and spaces
-      ],
-      nbreStagiaire: [
-        1,
-        [Validators.required, Validators.min(1)] // Positive integer
+        [Validators.required]
       ],
       profilFormation: [
         '',
-        [Validators.required] // Only alphabets and spaces
+        [Validators.required]
       ],
       stagiaieSousRecomandation: [
         '',
-        [Validators.maxLength(255)] // Optional, max length validation
+        [Validators.maxLength(255)]
       ],
       commentaire: [
         '',
-        [Validators.maxLength(500)] // Optional, max length validation
+        [Validators.maxLength(500)]
       ],
       motif: [
         '',
-        [Validators.maxLength(500)] // Optional, max length validation
+        [Validators.maxLength(500)]
       ],
       traitement: [
         '',
-        [Validators.maxLength(500)] // Optional, max length validation
+        [Validators.maxLength(500)]
       ]
     });
+  }
+
+  ngOnInit() {
+    // Récupération de la demande et pré-remplissage du formulaire
+    this.GwteService.currentDemande.subscribe(
+      (demande) => {
+        if (demande) {
+          this.demande = demande;
+          console.log('Demande récupérée :', this.demande);
+
+          // Pré-remplir les champs avec les données du candidat
+          const candidat = this.demande?.candidat;
+          this.demandeForm.patchValue({
+            profilFormation: candidat?.formation || '',
+            stagiaieSousRecomandation: `${candidat?.firstName || ''} ${candidat?.lastName || ''}`
+          });
+        }
+      }
+    );
   }
 
   onSubmit() {
@@ -76,5 +93,4 @@ export class PoposerManagerComponent {
       console.log('Formulaire invalide');
     }
   }
-
 }

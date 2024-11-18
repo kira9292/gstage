@@ -23,7 +23,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router
   ) {
-    this.startTokenExpirationCheck();
+    // this.startTokenExpirationCheck();
   }
 
   // Méthode pour l'inscription
@@ -45,7 +45,7 @@ export class AuthService {
   login(userData: LoginData): Observable<any> {
     return this.http.post<any>(`${this.API_URL}/connexion`, userData).pipe(
       tap(
-        (response) => {          
+        (response) => {
           // Stocker le token JWT du champ "bearer"
           const token = response.bearer;
           localStorage.setItem(this.TOKEN_KEY, token);
@@ -53,7 +53,7 @@ export class AuthService {
            // Extraire les informations nom et prénom
           const userInfo = this.extractUserInfo(token);
           localStorage.setItem(this.USER_INFO_KEY, JSON.stringify(userInfo));
- 
+
           // Mettre à jour le BehaviorSubject
           this.userInfoSubject.next(userInfo);
           // Rediriger en fonction du rôle
@@ -79,7 +79,7 @@ export class AuthService {
         return null;
       }
     }
-  
+
     // Récupérer les informations utilisateur du stockage local
     private getUserInfoFromStorage(): { firstName: string; name: string } | null {
       const userInfoString = localStorage.getItem(this.USER_INFO_KEY);
@@ -122,16 +122,16 @@ export class AuthService {
   // Redirection en fonction du rôle
   redirectUserBasedOnRole() {
     const role = this.getRole();
-    
+
     switch (role) {
       case 'ROLE_ADMIN':
-        this.router.navigate(['/dashboard-admin']);        
+        this.router.navigate(['/dashboard-admin']);
         break;
-      
+
       case 'ROLE_STAGIAIRE':
         this.router.navigate(['/dashboard-stagiaire']);
         break;
-      
+
       case 'ROLE_RH':
         this.router.navigate(['/dashboard-rh']);
         break;
@@ -139,22 +139,22 @@ export class AuthService {
       case 'ROLE_MANAGER':
         this.router.navigate(['dashboard-manager']);
         break;
-      
+
       case 'ROLE_ASSISTANT_GWTE':
         this.router.navigate(['dashboard-gwte']);
         break;
-      
+
       case 'ROLE_DFC':
         this.router.navigate(['/dashboard-dfc']);
         break;
-      
+
       default:
         console.log("Nothing");
-        
+
         this.router.navigate(['/login']);
         break;
     }
-    
+
   }
 
   // Méthode pour vérifier si l'utilisateur est authentifié
@@ -162,7 +162,7 @@ export class AuthService {
     const token = localStorage.getItem(this.TOKEN_KEY);
     return Boolean(token && !this.isTokenExpired(token));
   }
-  
+
   hasRole(role: string): boolean {
     return this.getRole() === role;
   }
@@ -170,17 +170,17 @@ export class AuthService {
   // Déconnexion de l'utilisateur
   logout() {
     const token = localStorage.getItem(this.TOKEN_KEY); // Récupérer le token stocké
-    
+
     // Créer un nouvel objet HttpHeaders et ajouter le token
     let headers = new HttpHeaders();
     headers = headers.append('Authorization', `Bearer ${token}`);
     headers = headers.append('Content-type', 'application/json');
-    
+
     console.log(headers.get('Authorization')); // Vérifier que l'en-tête est bien présent
 
     // Envoyer la requête de déconnexion avec les credentials (cookies ou session)
-    this.http.post<any>(`${this.API_URL}/deconnexion`, null, { 
-        headers, 
+    this.http.post<any>(`${this.API_URL}/deconnexion`, null, {
+        headers,
         withCredentials: true // Indique que les cookies et autres informations d'authentification doivent être envoyés
     }).subscribe(
         () => {
@@ -197,17 +197,17 @@ export class AuthService {
         }
     );
   }
+  //
+  // startTokenExpirationCheck(): void {
+  //   setInterval(() => {
+  //     const token = localStorage.getItem(this.TOKEN_KEY);
+  //     if (token && this.isTokenExpired(token)) {
+  //       this.logout();
+  //       console.warn('Token expiré, déconnexion automatique effectuée.');
+  //     }
+  //   }, 10000); // Vérification toutes les 10 secondes (ajustez selon vos besoins)
+  // }
 
-  startTokenExpirationCheck(): void {
-    setInterval(() => {
-      const token = localStorage.getItem(this.TOKEN_KEY);
-      if (token && this.isTokenExpired(token)) {
-        this.logout();
-        console.warn('Token expiré, déconnexion automatique effectuée.');
-      }
-    }, 10000); // Vérification toutes les 10 secondes (ajustez selon vos besoins)
-  }
-  
 }
 
 

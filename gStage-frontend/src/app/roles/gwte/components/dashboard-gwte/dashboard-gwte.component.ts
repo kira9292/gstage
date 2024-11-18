@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Formation } from '../../../candidat/stagiaire/enums/trainee.enum';
 import { GwteService } from '../../services/gwte.service';
+import {AssistantgwteService} from "../../services/assistantgwte.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard-gwte',
@@ -28,7 +30,8 @@ export class DashboardGwteComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private gwteService: GwteService
+    private gwteService: GwteService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -170,6 +173,9 @@ downloadCoverLetter(demande: any): void {
 }
 
   proposeToManager(demande: any): void {
+    this.gwteService.setDemande(demande);
+    this.router.navigate(['/proposer-to-manager']);  // Redirection après la soumission
+
     alert(`Demande de stage ${demande.demandeStage.reference} proposée au manager.`);
   }
 
@@ -205,5 +211,5 @@ downloadCoverLetter(demande: any): void {
         return 'bg-gray-200 text-black';    // Gris par défaut pour un statut inconnu
     }
   }
-  
+
 }
