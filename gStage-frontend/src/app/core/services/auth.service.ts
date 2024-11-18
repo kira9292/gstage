@@ -22,7 +22,9 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router
-  ) {}
+  ) {
+    this.startTokenExpirationCheck();
+  }
 
   // Méthode pour l'inscription
   register(userData: RegisterData): Observable<any> {
@@ -195,6 +197,17 @@ export class AuthService {
         }
     );
   }
+
+  startTokenExpirationCheck(): void {
+    setInterval(() => {
+      const token = localStorage.getItem(this.TOKEN_KEY);
+      if (token && this.isTokenExpired(token)) {
+        this.logout();
+        console.warn('Token expiré, déconnexion automatique effectuée.');
+      }
+    }, 10000); // Vérification toutes les 10 secondes (ajustez selon vos besoins)
+  }
+  
 }
 
 
