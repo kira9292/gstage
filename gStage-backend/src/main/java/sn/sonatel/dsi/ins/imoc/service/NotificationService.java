@@ -3,6 +3,7 @@ package sn.sonatel.dsi.ins.imoc.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -79,4 +80,39 @@ public class NotificationService {
 
         mailSender.send(message);
     }
+
+    public void envoyerDocument(ValidationStatuscandidat validation) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("abdoulkarimly008@gmail.com", "Sonatel Stage");  // Email de l'expéditeur
+        helper.setTo(validation.getCandidat().getEmail());
+        helper.setSubject("Action requise : Remplissez le document pour votre stage");
+
+        // Construction du contenu HTML pour le stagiaire
+        String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
+            + "<table width='100%' cellspacing='0' cellpadding='20' style='background-color: #f4f4f4;'>"
+            + "<tr><td style='text-align: center;'>"
+            + "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>"
+            + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>"b
+            + "<p>Nous sommes ravis de vous accueillir pour un stage chez Sonatel !</p>"
+            + "<p style='font-size: 16px;'>Pour finaliser votre dossier, nous vous prions de bien vouloir remplir le document en piece jointe </p>"
+            + "<p style='font-size: 16px;'>Veuillez compléter et soumettre le document avant la date limite indiquée. Si vous avez des questions, n'hésitez pas à nous contacter.</p>"
+            + "<hr style='border: 0; border-top: 1px solid #ddd; margin: 20px 0;'>"
+            + "<p style='font-size: 14px;'>Cordialement,<br>L'équipe Sonatel</p>"
+            + "<footer style='font-size: 12px; color: #aaa; text-align: center;'>"
+            + "<p>Ce message est généré automatiquement. Merci de ne pas y répondre.</p>"
+            + "</footer>"
+            + "</td></tr></table></body></html>";
+
+        helper.setText(htmlContent, true);  // true indique que le contenu est en HTML
+        FileSystemResource file = new FileSystemResource("src/main/resources/Nom.docx");
+        System.out.println(file);
+        helper.addAttachment(file.getFilename(), file);
+        mailSender.send(message);
+    }
+
+
+
+
+
 }
