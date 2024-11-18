@@ -23,7 +23,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router
   ) {
-    this.startTokenExpirationCheck();
+    // this.startTokenExpirationCheck();
   }
 
   // Méthode pour l'inscription
@@ -198,15 +198,15 @@ export class AuthService {
     );
   }
 
-  startTokenExpirationCheck(): void {
-    setInterval(() => {
-      const token = localStorage.getItem(this.TOKEN_KEY);
-      if (token && this.isTokenExpired(token)) {
-        this.logout();
-        console.warn('Token expiré, déconnexion automatique effectuée.');
-      }
-    }, 10000); // Vérification toutes les 10 secondes (ajustez selon vos besoins)
-  }
+  // startTokenExpirationCheck(): void {
+  //   setInterval(() => {
+  //     const token = localStorage.getItem(this.TOKEN_KEY);
+  //     if (token && this.isTokenExpired(token)) {
+  //       localStorage.removeItem(token);
+  //       console.warn('Token expiré, déconnexion automatique effectuée.');
+  //     }
+  //   }, 10000); // Vérification toutes les 10 secondes (ajustez selon vos besoins)
+  // }
   
 }
 

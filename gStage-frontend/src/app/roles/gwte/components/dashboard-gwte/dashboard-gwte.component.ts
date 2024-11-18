@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Formation } from '../../../candidat/stagiaire/enums/trainee.enum';
 import { GwteService } from '../../services/gwte.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-gwte',
@@ -28,7 +29,8 @@ export class DashboardGwteComponent implements OnInit {
 
   constructor(
     private sanitizer: DomSanitizer,
-    private gwteService: GwteService
+    private gwteService: GwteService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -170,7 +172,10 @@ downloadCoverLetter(demande: any): void {
 }
 
   proposeToManager(demande: any): void {
-    alert(`Demande de stage ${demande.demandeStage.reference} proposée au manager.`);
+    this.router.navigate(['/propose-to-manager']);
+    console.log(demande);
+    
+    // alert(`Demande de stage ${demande.demandeStage.reference} proposée au manager.`);
   }
 
   getInternshipStatusLabel(status: InternshipStatus): string {
@@ -194,15 +199,15 @@ downloadCoverLetter(demande: any): void {
       case InternshipStatus.EN_ATTENTE:
         return 'bg-yellow-500 text-white'; // Jaune pour "En attente"
       case InternshipStatus.ACCEPTE:
-        return 'bg-green-500 text-white';   // Vert pour "Accepté"
+        return 'bg-green-500 text-white';  // Vert pour "Accepté"
       case InternshipStatus.REFUSE:
-        return 'bg-red-500 text-white';     // Rouge pour "Rejeté"
+        return 'bg-red-500 text-white';    // Rouge pour "Rejeté"
       case InternshipStatus.EN_COURS:
-        return 'bg-blue-500 text-white';    // Bleu pour "En cours"
+        return 'bg-blue-500 text-white';   // Bleu pour "En cours"
       case InternshipStatus.TERMINER:
-        return 'bg-gray-500 text-white';    // Gris pour "Terminé"
+        return 'bg-gray-500 text-white';   // Gris pour "Terminé"
       default:
-        return 'bg-gray-200 text-black';    // Gris par défaut pour un statut inconnu
+        return 'bg-gray-200 text-black';   // Gris par défaut pour un statut inconnu
     }
   }
   

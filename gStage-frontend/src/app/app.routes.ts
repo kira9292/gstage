@@ -14,6 +14,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 import { NonAuthGuard } from './core/guards/non-auth.guard';
 import { DashboardGwteComponent } from './roles/gwte/components/dashboard-gwte/dashboard-gwte.component';
+import { PoposerManagerComponent } from './roles/gwte/components/poposer-manager/poposer-manager.component';
 
 
 
@@ -97,5 +98,10 @@ export const routes: Routes = [
       component: DashboardGwteComponent,
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+     },
+
+     {
+      path: 'propose-to-manager',
+      component: PoposerManagerComponent
      }
 ];
