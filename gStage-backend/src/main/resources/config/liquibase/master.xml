@@ -27,6 +27,7 @@
     <include file="config/liquibase/changelog/20241029183941_added_entity_ValidationStatusUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241106103219_added_entity_Jwt.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241107161824_added_entity_ValidationStatuscandidat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20241113093219_added_entity_StagiairesProposer.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20241029173802_added_entity_constraints_AppUser.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20241029173804_added_entity_constraints_AttestationPresence.xml" relativeToChangelogFile="false"/>

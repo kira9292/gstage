@@ -1,0 +1,47 @@
+{
+  "annotations": {
+    "changelogDate": "20241113093219"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "demandeur",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "direction",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nbreStagiaire",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "profilFormation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "stagiaieSousRecomandation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "commentaire",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "motif",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "traitement",
+      "fieldType": "String"
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "StagiairesProposer",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no"
+}

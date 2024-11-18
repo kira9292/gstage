@@ -45,6 +45,17 @@ entity Departement {
   description String
 }
 
+entity StagiairesProposer{
+  demandeur String
+  direction String
+  nbreStagiaire Integer
+  profilFormation String
+  stagiaieSousRecomandation String
+  commentaire String
+  motif String
+  traitement String
+
+}
 
 entity DemandeStage {
   creationDate LocalDate
