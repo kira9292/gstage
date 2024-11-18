@@ -36,7 +36,7 @@ export class PoposerManagerComponent implements OnInit {
         { value: '', disabled: true },
         [Validators.required]
       ],
-      stagiaieSousRecomandation: [
+      stagiaireSousRecomandation: [
         { value: '', disabled: true },
         [Validators.maxLength(255)]
       ],
@@ -67,7 +67,7 @@ export class PoposerManagerComponent implements OnInit {
           const candidat = this.demande?.candidat;
           this.demandeForm.patchValue({
             profilFormation: candidat?.formation || '',
-            stagiaieSousRecomandation: `${candidat?.firstName || ''} ${candidat?.lastName || ''}`
+            stagiaireSousRecomandation: `${candidat?.firstName || ''} ${candidat?.lastName || ''}`
           });
         }
       }

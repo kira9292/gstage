@@ -25,4 +25,9 @@ export class GwteService {
     this.demandeSource.next(demande);
   }
 
+  sendWelcomeEmail(demande: any): string {
+    this.http.post(`${this.apiUrl}/sendWelcomeEmail`, demande)
+    return "Email envoye !";
+  }
+
 }

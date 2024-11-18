@@ -115,7 +115,7 @@ export class DashboardGwteComponent implements OnInit {
 
     // Nouvelles méthodes pour les actions contextuelles
     sendWelcomeEmail(demande: any): void {
-      // Implémentation de l'envoi d'email d'accueil
+      this.gwteService.sendWelcomeEmail(demande);
       console.log('Envoi email d\'accueil pour:', demande.demandeStage.reference);
     }
     scheduleEvaluation(demande: any): void {
