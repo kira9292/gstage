@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class DemandeStageService {
+public class  DemandeStageService {
 
     @Autowired
     private DemandeStageRepository demandeStageRepository;
@@ -66,6 +66,16 @@ public class DemandeStageService {
         ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(mail.get("mail"));
         if (validationStatusOptional!=null) {
             this.notificationService.envoyercandidat(validationStatusOptional);
+
+        } else {
+            throw new RuntimeException("Aucun candidat trouvé avec cet email");
+        }
+    }
+
+    public void accepterstagiaire(Map<String, String> mail) throws MessagingException, UnsupportedEncodingException {
+        ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(mail.get("mail"));
+        if (validationStatusOptional!=null) {
+            this.notificationService.envoyerDocument(validationStatusOptional);
 
         } else {
             throw new RuntimeException("Aucun candidat trouvé avec cet email");

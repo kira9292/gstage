@@ -1,0 +1,35 @@
+/* internship-form.component.scss */
+:host {
+  display: block;
+}
+
+/* Styles spécifiques pour les états de validation */
+.ng-touched.ng-invalid {
+  @apply border-red-500;
+}
+
+/* Animation pour le logo */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Style pour le gradient de texte (pour la compatibilité) */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}

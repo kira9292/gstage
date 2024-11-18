@@ -1,6 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.controller;
 
 
+import jakarta.mail.MessagingException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.service.DemandeStageService;
 import sn.sonatel.dsi.ins.imoc.service.ValidationCanditatService;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -71,6 +73,12 @@ public class DemandeStageController {
 //        this.demandeStageService.resendcode(mail);
 //
 //    }
+        @PostMapping("/api/aceptercadidat")
+    public void contactercadidat( @RequestBody Map<String ,String> mail ) throws MessagingException, UnsupportedEncodingException {
+
+        this.demandeStageService.accepterstagiaire(mail);
+
+    }
 
 
 }

@@ -71,12 +71,12 @@ public class Candidat implements Serializable {
     private Formation formation;
 
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "candidat")
     @JsonBackReference
     private DemandeStage demandeStage;
 
     @JsonIgnoreProperties(value = { "candidat" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "candidat")
     private ValidationStatuscandidat validationStatuscandidat;
 
     @ManyToOne(fetch = FetchType.LAZY)

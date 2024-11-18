@@ -33,7 +33,7 @@ public class ValidationStatuscandidat implements Serializable {
     private String code;
 
     @JsonIgnoreProperties(value = { "demandeStage", "validationStatuscandidat", "appUser" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Candidat candidat;
 
