@@ -3,11 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from "@angular/router";
 import { AssistantgwteService } from "../../services/assistantgwte.service";
 import { GwteService } from "../../services/gwte.service";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-poposer-manager',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './poposer-manager.component.html',
   styleUrls: ['./poposer-manager.component.scss']
 })
@@ -32,11 +33,11 @@ export class PoposerManagerComponent implements OnInit {
         [Validators.required]
       ],
       profilFormation: [
-        '',
+        { value: '', disabled: true },
         [Validators.required]
       ],
       stagiaieSousRecomandation: [
-        '',
+        { value: '', disabled: true },
         [Validators.maxLength(255)]
       ],
       commentaire: [

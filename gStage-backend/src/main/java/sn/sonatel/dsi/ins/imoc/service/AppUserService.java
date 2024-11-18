@@ -74,7 +74,7 @@ public class AppUserService implements UserDetailsService {
         appUser.getAppUser().setRole(role);
 
         AppUser utilisateur = this.appUserRepository.save(appUser.getAppUser());
-        this.validationUserService.enregistrer(utilisateur);
+//        this.validationUserService.enregistrer(utilisateur);
 
 
     }
