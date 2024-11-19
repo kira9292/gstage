@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { EducationLevel, InternshipStatus, InternshipType } from '../../../../enums/gstage.enum';
+import { DomSanitizer } from '@angular/platform-browser';
+import { InternshipStatus } from '../../../../enums/gstage.enum';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Formation } from '../../../candidat/stagiaire/enums/trainee.enum';
 import { GwteService } from '../../services/gwte.service';
-import {AssistantgwteService} from "../../services/assistantgwte.service";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard-gwte',
@@ -18,12 +17,13 @@ import {Router} from "@angular/router";
   templateUrl: './dashboard-gwte.component.html',
   styleUrls: ['./dashboard-gwte.component.scss']
 })
+
 export class DashboardGwteComponent implements OnInit {
   InternshipStatus = InternshipStatus; // Pour l'utiliser dans le template
   demandesStage: any[] = [];
 
   filteredDemandesStage: any[] = [];
-  statusFilter: InternshipStatus | null = null;
+  statusFilter: InternshipStatus | '' = '';
   searchTerm: string = '';
   internshipStatuses = Object.values(InternshipStatus);
   
@@ -103,8 +103,9 @@ export class DashboardGwteComponent implements OnInit {
     }
 
     if (this.searchTerm) {
+      
       filtered = filtered.filter(demande =>
-        demande.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        demande.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         (demande.candidat?.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         demande.candidat?.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()))
       );
@@ -113,25 +114,70 @@ export class DashboardGwteComponent implements OnInit {
     this.filteredDemandesStage = filtered;
   }
 
-    // Nouvelles méthodes pour les actions contextuelles
-    sendWelcomeEmail(demande: any): void {
-      this.gwteService.sendWelcomeEmail(demande);
-      console.log('Envoi email d\'accueil pour:', demande.demandeStage.reference);
-    }
-    scheduleEvaluation(demande: any): void {
-      // Implémentation de la planification d'évaluation
-      console.log('Planification évaluation pour:', demande.demandeStage.reference);
-    }
-
-    generateCertificate(demande: any): void {
-      // Implémentation de la génération d'attestation
-      console.log('Génération attestation pour:', demande.demandeStage.reference);
+  // Nouvelles méthodes pour les actions contextuelles
+  sendWelcomeEmail(demande: any) {
+    // Montrer une notification de chargement
+    Swal.fire({
+      title: 'Envoi en cours...',
+      text: 'Envoi du mail de bienvenue',
+      icon: 'info',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  
+    if (!demande.candidat?.email) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Email du candidat non trouvé',
+      });
+      return;
     }
   
-    archiveApplication(demande: any): void {
-      // Implémentation de l'archivage
-      console.log('Archivage de la demande:', demande.demandeStage.reference);
-    }
+    this.gwteService.sendWelcomeEmail(demande.candidat.email)
+      .subscribe({
+        next: () => {
+        // Notification de succès
+        Swal.fire({
+          icon: 'success',
+          title: 'Mail envoyé !',
+          text: `Le mail de bienvenue a été envoyé à ${demande.candidat.email}`,
+          showConfirmButton: true,
+          timer: 3000,
+          position: 'top-end',
+          toast: true
+        });
+      },
+      error: (error) => {
+        // Notification d'erreur
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Une erreur est survenue lors de l\'envoi du mail',
+          footer: error.message
+        });
+      }
+    });
+  }
+
+
+  scheduleEvaluation(demande: any): void {
+    // Implémentation de la planification d'évaluation
+    console.log('Planification évaluation pour:', demande.demandeStage.reference);
+  }
+
+  generateCertificate(demande: any): void {
+    // Implémentation de la génération d'attestation
+    console.log('Génération attestation pour:', demande.demandeStage.reference);
+  }
+  
+  archiveApplication(demande: any): void {
+    // Implémentation de l'archivage
+    console.log('Archivage de la demande:', demande.demandeStage.reference);
+  }
   
 
   canViewCV(demande: any): boolean {

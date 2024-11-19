@@ -1,0 +1,145 @@
+<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+    <div class="max-w-2xl w-full bg-white shadow-xl rounded-2xl overflow-hidden">
+      <div class="p-8">
+        <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">
+          Création de Compte Utilisateur
+        </h2>
+  
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- First Name -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Prénom</label>
+              <input type="text" formControlName="firstName"
+                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                     [ngClass]="{'border-red-500': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}">
+              <p *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Prénom invalide (minimum 2 caractères)
+              </p>
+            </div>
+  
+            <!-- Last Name -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nom</label>
+              <input type="text" formControlName="lastName"
+                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                     [ngClass]="{'border-red-500': registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched}">
+              <p *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Nom invalide (minimum 2 caractères)
+              </p>
+            </div>
+  
+            <!-- Email -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+              <input type="email" formControlName="email"
+                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                     [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
+              <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Email invalide
+              </p>
+            </div>
+  
+            <!-- Username -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nom d'utilisateur</label>
+              <input type="text" formControlName="username"
+                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                     [ngClass]="{'border-red-500': registerForm.get('username')?.invalid && registerForm.get('username')?.touched}">
+              <p *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Nom d'utilisateur invalide
+              </p>
+            </div>
+  
+            <!-- Role -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Rôle</label>
+              <select formControlName="role"
+                      class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      [ngClass]="{'border-red-500': registerForm.get('role')?.invalid && registerForm.get('role')?.touched}">
+                <option value="" disabled>Sélectionner un rôle</option>
+                <option value="STAGIAIRE">Stagiaire</option>
+                <option value="RH">RH</option>
+                <option value="ASSISTANT_GWTE">Assistant GWTE</option>
+                <option value="DFC">DFC</option>
+                <option value="ADMIN">Admin</option>
+                <option value="MANAGER">Manager</option>
+              </select>
+              <p *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Rôle requis
+              </p>
+            </div>
+  
+            <!-- Service (for Managers) -->
+            <div *ngIf="registerForm.get('role')?.value === 'MANAGER'">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Service</label>
+              <select formControlName="service"
+                      class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      [ngClass]="{'border-red-500': registerForm.get('service')?.invalid && registerForm.get('service')?.touched}">
+                <option value="" disabled>Sélectionner un service</option>
+                <option *ngFor="let service of services" [value]="service">
+                  {{service}}
+                </option>
+              </select>
+              <p *ngIf="registerForm.get('service')?.invalid && registerForm.get('service')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Service requis pour les managers
+              </p>
+            </div>
+  
+            <!-- Password -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
+              <div class="relative">
+                <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                       class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                       [ngClass]="{'border-red-500': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}">
+                <button type="button" (click)="togglePasswordVisibility('password')"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  {{ showPassword ? 'Masquer' : 'Afficher' }}
+                </button>
+              </div>
+              <p *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Mot de passe invalide (8 caractères, majuscule, minuscule, chiffre, caractère spécial)
+              </p>
+            </div>
+  
+            <!-- Confirm Password -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Confirmer le mot de passe</label>
+              <div class="relative">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                       class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                       [ngClass]="{'border-red-500': registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched}">
+                <button type="button" (click)="togglePasswordVisibility('confirmPassword')"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  {{ showConfirmPassword ? 'Masquer' : 'Afficher' }}
+                </button>
+              </div>
+              <p *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" 
+                 class="text-red-500 text-xs mt-1">
+                 Les mots de passe ne correspondent pas
+              </p>
+            </div>
+          </div>
+  
+          <!-- Submit Button -->
+          <div class="mt-6">
+            <button type="submit" 
+                    [disabled]="registerForm.invalid || isSubmitting"
+                    class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 
+                           disabled:opacity-50 disabled:cursor-not-allowed">
+              {{ isSubmitting ? 'Création en cours...' : 'Créer un utilisateur' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

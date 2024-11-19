@@ -1,0 +1,8 @@
+.peer:placeholder-shown + label {
+    transform: translateY(0);
+    font-size: 1rem;
+  }
+  .peer:focus + label, .peer:invalid + label {
+    transform: translateY(-1.5rem);
+    font-size: 0.75rem;
+  }

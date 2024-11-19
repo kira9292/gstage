@@ -93,7 +93,7 @@ public class NotificationService {
             + "<table width='100%' cellspacing='0' cellpadding='20' style='background-color: #f4f4f4;'>"
             + "<tr><td style='text-align: center;'>"
             + "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>"
-            + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>"b
+            + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>"
             + "<p>Nous sommes ravis de vous accueillir pour un stage chez Sonatel !</p>"
             + "<p style='font-size: 16px;'>Pour finaliser votre dossier, nous vous prions de bien vouloir remplir le document en piece jointe </p>"
             + "<p style='font-size: 16px;'>Veuillez compléter et soumettre le document avant la date limite indiquée. Si vous avez des questions, n'hésitez pas à nous contacter.</p>"

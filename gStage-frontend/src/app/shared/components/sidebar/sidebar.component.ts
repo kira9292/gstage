@@ -18,7 +18,6 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './sidebar.component.scss'
 })
 
-
 export class SidebarComponent {
   @Input() userType: 'intern' | 'candidate' = 'intern';
   activeTab: string = 'dashboard';
@@ -28,9 +27,9 @@ export class SidebarComponent {
   ) {}
 
   ngOnInit() {
-    this.navigationService.activeTab$.subscribe(tab => {
-      this.activeTab = tab;
-    });
+      this.navigationService.activeTab$.subscribe(tab => {
+        this.activeTab = tab;
+      });
   }
 
    // Méthode pour déconnecter l'utilisateur

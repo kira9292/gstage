@@ -9,7 +9,8 @@ export enum InternshipType {
     ACCEPTE = 'ACCEPTE',             // Accepté
     EN_COURS = 'EN_COURS',           // En cours de réalisation
     TERMINER = 'TERMINER',             // Terminé
-    REFUSE = 'REFUSE'                // Refusé
+    REFUSE = 'REFUSE',                // Refusé
+    PROPOSE = 'PROPOSE'
   }
   // Niveau d'éducation
   export enum EducationLevel {

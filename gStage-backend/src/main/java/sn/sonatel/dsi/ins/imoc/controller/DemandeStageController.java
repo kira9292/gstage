@@ -26,7 +26,6 @@ public class DemandeStageController {
 
     @Autowired
     DemandeStageRepository demandeStageRepository;
-
     @Autowired
     private CandidatRepository candidatRepository;
     @Autowired
@@ -43,13 +42,10 @@ public class DemandeStageController {
         d.setCandidat(c);
         this.demandeStageRepository.save(d);
         this.validationCanditatService.enregistrer(c);
-
-
     }
 
     @PostMapping("/api/validerdemande")
     public void activation(@RequestBody Map<String ,String> code) {
-
         this.demandeStageService.activation(code);
     }
 
@@ -66,19 +62,14 @@ public class DemandeStageController {
             ))
             .collect(Collectors.toList());
     }
-
 //    @PostMapping("/resendcode")
 //    public void renvoicode( @RequestBody Map<String ,String> mail ) {
 //
 //        this.demandeStageService.resendcode(mail);
 //
 //    }
-        @PostMapping("/api/aceptercadidat")
+        @PostMapping("/api/sendWelcomeEmail")
     public void contactercadidat( @RequestBody Map<String ,String> mail ) throws MessagingException, UnsupportedEncodingException {
-
         this.demandeStageService.accepterstagiaire(mail);
-
     }
-
-
 }

@@ -17,7 +17,6 @@ export class GwteService {
     return this.http.get<any[]>(`${this.apiUrl}/demandes`, {headers});
   }
 
-
   private demandeSource = new BehaviorSubject<any>(null);
   currentDemande = this.demandeSource.asObservable();
 
@@ -25,9 +24,8 @@ export class GwteService {
     this.demandeSource.next(demande);
   }
 
-  sendWelcomeEmail(demande: any): string {
-    this.http.post(`${this.apiUrl}/sendWelcomeEmail`, demande)
-    return "Email envoye !";
+  sendWelcomeEmail(email: string) {
+    return this.http.post(`${this.apiUrl}/sendWelcomeEmail`, { mail: email });
   }
 
 }
