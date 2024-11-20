@@ -10,4 +10,5 @@ public enum ERole {
     STAGIAIRE,
     DFC,
     ASSISTANT_GWTE,
+
 }

@@ -25,4 +25,11 @@ export class GwteService {
     this.demandeSource.next(demande);
   }
 
+  getManagers(): Observable<any[]> {
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-Type', 'application/json');
+    return this.http.get<any[]>(`${this.apiUrl}/managers`, { headers });
+  }
+
+
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
 
 /**
  * Spring Data JPA repository for the AppUser entity.
@@ -33,4 +34,7 @@ public interface AppUserRepository extends AppUserRepositoryWithBagRelationships
 
     @Query("SELECT u FROM AppUser u JOIN FETCH u.role WHERE u.email = :email")
     Optional<AppUser> findByEmailWithRoles(@Param("email") String email);
+
+
+    List<AppUser> findByRoleName(ERole eRole);
 }
