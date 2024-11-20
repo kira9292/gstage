@@ -1,31 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { EducationLevel, InternshipStatus, InternshipType } from '../../../../enums/gstage.enum';
+import { DomSanitizer } from '@angular/platform-browser';
+import { InternshipStatus } from '../../../../enums/gstage.enum';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Formation } from '../../../candidat/stagiaire/enums/trainee.enum';
 import { GwteService } from '../../services/gwte.service';
-import {AssistantgwteService} from "../../services/assistantgwte.service";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import Swal from 'sweetalert2';
+import { InternshipDetailModalComponent } from '../detail-demande/detail-demande.component';
 
 @Component({
   selector: 'app-dashboard-gwte',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    InternshipDetailModalComponent
   ],
   templateUrl: './dashboard-gwte.component.html',
   styleUrls: ['./dashboard-gwte.component.scss']
 })
+
 export class DashboardGwteComponent implements OnInit {
   InternshipStatus = InternshipStatus; // Pour l'utiliser dans le template
   demandesStage: any[] = [];
 
   filteredDemandesStage: any[] = [];
-  statusFilter: InternshipStatus | null = null;
+  statusFilter: InternshipStatus | '' = '';
   searchTerm: string = '';
-  internshipStatuses = Object.values(InternshipStatus);
+  internshipStatuses = [
+    InternshipStatus.EN_ATTENTE,
+    InternshipStatus.ACCEPTE,
+    InternshipStatus.REFUSE,
+    InternshipStatus.EN_COURS,
+    InternshipStatus.TERMINER
+  ];
+
+  selectedStatus: InternshipStatus | null = null;
+  selectedDetailsModal: any = null;
   
     // Stats data
     statsData = [
@@ -70,6 +81,8 @@ export class DashboardGwteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.selectedStatus = InternshipStatus.EN_ATTENTE;
+
     this.loadDemandesStage();
   }
 
@@ -97,41 +110,88 @@ export class DashboardGwteComponent implements OnInit {
 
   applyFilters(): void {
     let filtered = this.demandesStage;
-
-    if (this.statusFilter) {
-      filtered = filtered.filter(demande => demande.demandeStage.status === this.statusFilter);
+  
+    // Filtrer par statut sélectionné
+    if (this.selectedStatus) {
+      filtered = filtered.filter(demande => demande.demandeStage.status === this.selectedStatus);
     }
-
+  
+    // Filtrer par terme de recherche (si présent)
     if (this.searchTerm) {
       filtered = filtered.filter(demande =>
-        demande.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        demande.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         (demande.candidat?.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         demande.candidat?.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()))
       );
     }
-
+  
     this.filteredDemandesStage = filtered;
   }
 
-    // Nouvelles méthodes pour les actions contextuelles
-    sendWelcomeEmail(demande: any): void {
-      // Implémentation de l'envoi d'email d'accueil
-      console.log('Envoi email d\'accueil pour:', demande.demandeStage.reference);
-    }
-    scheduleEvaluation(demande: any): void {
-      // Implémentation de la planification d'évaluation
-      console.log('Planification évaluation pour:', demande.demandeStage.reference);
-    }
-
-    generateCertificate(demande: any): void {
-      // Implémentation de la génération d'attestation
-      console.log('Génération attestation pour:', demande.demandeStage.reference);
+  // Nouvelles méthodes pour les actions contextuelles
+  sendWelcomeEmail(demande: any) {
+    // Montrer une notification de chargement
+    Swal.fire({
+      title: 'Envoi en cours...',
+      text: 'Envoi du mail de bienvenue',
+      icon: 'info',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+  
+    if (!demande.candidat?.email) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Email du candidat non trouvé',
+      });
+      return;
     }
   
-    archiveApplication(demande: any): void {
-      // Implémentation de l'archivage
-      console.log('Archivage de la demande:', demande.demandeStage.reference);
-    }
+    this.gwteService.sendWelcomeEmail(demande.candidat.email)
+      .subscribe({
+        next: () => {
+        // Notification de succès
+        Swal.fire({
+          icon: 'success',
+          title: 'Mail envoyé !',
+          text: `Le mail de bienvenue a été envoyé à ${demande.candidat.email}`,
+          showConfirmButton: true,
+          timer: 3000,
+          position: 'top-end',
+          toast: true
+        });
+      },
+      error: (error) => {
+        // Notification d'erreur
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Une erreur est survenue lors de l\'envoi du mail',
+          footer: error.message
+        });
+      }
+    });
+  }
+
+
+  scheduleEvaluation(demande: any): void {
+    // Implémentation de la planification d'évaluation
+    console.log('Planification évaluation pour:', demande.demandeStage.reference);
+  }
+
+  generateCertificate(demande: any): void {
+    // Implémentation de la génération d'attestation
+    console.log('Génération attestation pour:', demande.demandeStage.reference);
+  }
+  
+  archiveApplication(demande: any): void {
+    // Implémentation de l'archivage
+    console.log('Archivage de la demande:', demande.demandeStage.reference);
+  }
   
 
   canViewCV(demande: any): boolean {
@@ -244,20 +304,15 @@ downloadCoverLetter(demande: any): void {
   }
 
   getInternshipStatusLabel(status: InternshipStatus): string {
-    switch (status) {
-      case InternshipStatus.EN_ATTENTE:
-        return 'En attente';
-      case InternshipStatus.ACCEPTE:
-        return 'Accepté';
-      case InternshipStatus.REFUSE:
-        return 'Rejeté';
-      case InternshipStatus.EN_COURS:
-        return 'En cours';
-      case InternshipStatus.TERMINER:
-        return 'Termine'
-      default:
-        return 'Statut inconnu';
-    }
+    const statusLabels = {
+      [InternshipStatus.EN_ATTENTE]: 'En attente',
+      [InternshipStatus.ACCEPTE]: 'Accepté',
+      [InternshipStatus.REFUSE]: 'Rejeté',
+      [InternshipStatus.EN_COURS]: 'En cours',
+      [InternshipStatus.TERMINER]: 'Terminé'
+    };
+
+    return statusLabels[status as keyof typeof statusLabels] || '';
   }
   getInternshipStatusClass(status: InternshipStatus): string {
     switch (status) {
@@ -276,4 +331,32 @@ downloadCoverLetter(demande: any): void {
     }
   }
 
+
+  selectStatus(status: InternshipStatus) {
+    this.selectedStatus = status;
+    this.applyFilters();
+  }
+
+  getStatusCount(status: InternshipStatus): number {
+    return this.demandesStage.filter(d => d.demandeStage.status === status).length;
+  }
+
+  openDetailsModal(demande: any) {
+    this.selectedDetailsModal = demande;
+  }
+
+  closeDetailsModal() {
+    this.selectedDetailsModal = null;
+  }
+
+  toggleDropdown(demande: any): void {
+    demande.showDropdown = !demande.showDropdown;
+    
+    // Fermer les autres dropdowns
+    this.filteredDemandesStage.forEach(d => {
+      if (d !== demande) {
+        d.showDropdown = false;
+      }
+    });
+  }
 }

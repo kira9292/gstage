@@ -9,4 +9,5 @@ public enum InternshipStatus {
     REFUSE,
     TERMINER,
     EN_COURS,
+    ARCHIVE,
 }

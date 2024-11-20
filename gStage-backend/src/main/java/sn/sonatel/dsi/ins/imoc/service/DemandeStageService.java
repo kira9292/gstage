@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sn.sonatel.dsi.ins.imoc.domain.*;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
+import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.ValidationStatuscandidatRepository;
+import sn.sonatel.dsi.ins.imoc.web.rest.errors.BadRequestAlertException;
 
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,8 +61,6 @@ public class  DemandeStageService {
             c.getDemandeStage().setStatus(InternshipStatus.EN_ATTENTE);
 
         }
-
-
     }
 
     public void resendcode(Map<String, String> mail) throws MessagingException, UnsupportedEncodingException {
@@ -81,4 +82,53 @@ public class  DemandeStageService {
             throw new RuntimeException("Aucun candidat trouvé avec cet email");
         }
     }
+
+    public Optional<String> rejectInternship(Long id) {
+        return demandeStageRepository
+            .findById(id)
+            .map(demandeStage -> {
+                // Vérifier que la demande est en attente
+                if (demandeStage.getStatus() != InternshipStatus.EN_ATTENTE) {
+                    throw new BadRequestAlertException(
+                        "La demande ne peut être rejetée que si elle est en attente",
+                        "demandeStage",
+                        "statusError"
+                    );
+                }
+
+                // Mettre à jour le statut
+                demandeStage.setStatus(InternshipStatus.REFUSE);
+
+                // Sauvegarder la demande
+                demandeStageRepository.save(demandeStage);
+                return "Demande Stage " + id.toString() + " rejected";
+            });
+    }
+
+    public Optional<String> archiveInternship(Long id) {
+        return demandeStageRepository
+            .findById(id)
+            .map(demandeStage -> {
+                // Vérifier que la demande est refusée
+                if (demandeStage.getStatus() != InternshipStatus.REFUSE) {
+                    throw new BadRequestAlertException(
+                        "La demande ne peut être archivée que si elle est refusée",
+                        "demandeStage",
+                        "statusError"
+                    );
+                }
+
+                // Mettre à jour le statut et la date d'archivage
+                demandeStage.setStatus(InternshipStatus.ARCHIVE);
+
+                // Sauvegarder la demande
+                demandeStageRepository.save(demandeStage);
+                return "Demande Stage " + id.toString() + " archived";
+            });
+    }
+
+    public List<DemandeStage> findAllArchived() {
+        return demandeStageRepository.findByStatus(InternshipStatus.ARCHIVE);
+    }
+
 }

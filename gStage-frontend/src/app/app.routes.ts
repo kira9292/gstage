@@ -15,6 +15,8 @@ import { RoleGuard } from './core/guards/role.guard';
 import { NonAuthGuard } from './core/guards/non-auth.guard';
 import { DashboardGwteComponent } from './roles/gwte/components/dashboard-gwte/dashboard-gwte.component';
 import { PoposerManagerComponent } from './roles/gwte/components/poposer-manager/poposer-manager.component';
+import { DashboardManagerComponent } from './roles/manager/components/dashboard-manager/dashboard-manager.component';
+import { AdminRegisterComponent } from './roles/admin/components/admin-register/admin-register.component';
 
 
 
@@ -32,10 +34,15 @@ export const routes: Routes = [
     {
       path: 'login',
       component: LoginComponent,
+      canActivate: [NonAuthGuard]
     },
     {
       path: 'register',
       component: RegisterComponent,
+    },
+    {
+      path: 'admin-register',
+      component: AdminRegisterComponent
     },
     {
         path: 'dashboard-stagiaire',
@@ -65,12 +72,14 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
+
     {
       path: 'notifications',
       component: NotificationsComponent,
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
+
     {
       path: 'documents/contracts',
       component: ContractsComponent,
@@ -78,6 +87,7 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
+
     {
       path: 'documents/attestations',
       component: AttestationsComponent,
@@ -85,6 +95,7 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
+
     {
       path: 'payments',
       component: PaymentsComponent,
@@ -102,6 +113,15 @@ export const routes: Routes = [
 
      {
       path: 'propose-to-manager',
-      component: PoposerManagerComponent
+      component: PoposerManagerComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+     },
+
+     {
+      path: 'dashboard-manager',
+      component: DashboardManagerComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_MANAGER'}
      }
 ];

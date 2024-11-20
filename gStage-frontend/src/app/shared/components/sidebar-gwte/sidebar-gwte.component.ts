@@ -21,6 +21,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
 export class SidebarGwteComponent {
   activeTab: string = 'dashboard';
+  userInfo: { firstName: string; name: string } | null = null;
   constructor(
     private navigationService: NavigationService,
     private authService: AuthService
@@ -29,6 +30,10 @@ export class SidebarGwteComponent {
   ngOnInit() {
     this.navigationService.activeTab$.subscribe(tab => {
       this.activeTab = tab;
+    });
+
+    this.authService.userInfo$.subscribe(userInfo => {
+      this.userInfo = userInfo;
     });
   }
 

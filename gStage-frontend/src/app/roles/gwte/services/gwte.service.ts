@@ -17,7 +17,6 @@ export class GwteService {
     return this.http.get<any[]>(`${this.apiUrl}/demandes`, {headers});
   }
 
-
   private demandeSource = new BehaviorSubject<any>(null);
   currentDemande = this.demandeSource.asObservable();
 
@@ -25,11 +24,16 @@ export class GwteService {
     this.demandeSource.next(demande);
   }
 
-  getManagers(): Observable<any[]> {
-    let headers = new HttpHeaders();
-    headers = headers.append('Content-Type', 'application/json');
-    return this.http.get<any[]>(`${this.apiUrl}/managers`, { headers });
+  sendWelcomeEmail(email: string) {
+    return this.http.post(`${this.apiUrl}/sendWelcomeEmail`, { mail: email });
   }
 
+  rejectInternshipApplication(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/internships/${id}/reject`, {});
+  }
+
+  archiveInternshipApplication(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/internships/${id}/archive`, {});
+  }
 
 }
