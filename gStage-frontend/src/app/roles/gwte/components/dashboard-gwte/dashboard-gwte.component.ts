@@ -6,13 +6,15 @@ import { FormsModule } from '@angular/forms';
 import { GwteService } from '../../services/gwte.service';
 import { Router } from "@angular/router";
 import Swal from 'sweetalert2';
+import { InternshipDetailModalComponent } from '../detail-demande/detail-demande.component';
 
 @Component({
   selector: 'app-dashboard-gwte',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    InternshipDetailModalComponent
   ],
   templateUrl: './dashboard-gwte.component.html',
   styleUrls: ['./dashboard-gwte.component.scss']
@@ -26,6 +28,9 @@ export class DashboardGwteComponent implements OnInit {
   statusFilter: InternshipStatus | '' = '';
   searchTerm: string = '';
   internshipStatuses = Object.values(InternshipStatus);
+
+  selectedStatus: InternshipStatus | null = null;
+  selectedDetailsModal: any = null;
   
     // Stats data
     statsData = [
@@ -70,6 +75,8 @@ export class DashboardGwteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.selectedStatus = InternshipStatus.EN_ATTENTE;
+
     this.loadDemandesStage();
   }
 
@@ -97,20 +104,21 @@ export class DashboardGwteComponent implements OnInit {
 
   applyFilters(): void {
     let filtered = this.demandesStage;
-
-    if (this.statusFilter) {
-      filtered = filtered.filter(demande => demande.demandeStage.status === this.statusFilter);
+  
+    // Filtrer par statut sélectionné
+    if (this.selectedStatus) {
+      filtered = filtered.filter(demande => demande.demandeStage.status === this.selectedStatus);
     }
-
+  
+    // Filtrer par terme de recherche (si présent)
     if (this.searchTerm) {
-      
       filtered = filtered.filter(demande =>
         demande.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         (demande.candidat?.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         demande.candidat?.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()))
       );
     }
-
+  
     this.filteredDemandesStage = filtered;
   }
 
@@ -322,4 +330,32 @@ downloadCoverLetter(demande: any): void {
     }
   }
 
+
+  selectStatus(status: InternshipStatus) {
+    this.selectedStatus = status;
+    this.applyFilters();
+  }
+
+  getStatusCount(status: InternshipStatus): number {
+    return this.demandesStage.filter(d => d.demandeStage.status === status).length;
+  }
+
+  openDetailsModal(demande: any) {
+    this.selectedDetailsModal = demande;
+  }
+
+  closeDetailsModal() {
+    this.selectedDetailsModal = null;
+  }
+
+  toggleDropdown(demande: any): void {
+    demande.showDropdown = !demande.showDropdown;
+    
+    // Fermer les autres dropdowns
+    this.filteredDemandesStage.forEach(d => {
+      if (d !== demande) {
+        d.showDropdown = false;
+      }
+    });
+  }
 }

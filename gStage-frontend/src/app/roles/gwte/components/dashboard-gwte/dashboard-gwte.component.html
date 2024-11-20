@@ -1,173 +1,157 @@
-<div class="min-h-screen bg-gray-50 py-8">
-    <!-- Header Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Gestion des Demandes de Stage</h1>
-        <p class="mt-2 text-sm text-gray-600">
-          {{ filteredDemandesStage.length }} demande(s) de stage
-        </p>
-      </div>
-
-      <!-- Stats Cards -->
-      <div class="grid grid-cols-1 gap-5 sm:grid-cols-4 mb-8">
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Gestion des Demandes de Stage</h1>
+    
+    <!-- Statistiques -->
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div 
+        *ngFor="let stat of statsData" 
+        class="bg-white rounded-xl shadow-sm p-4 border-l-4 flex items-center"
+        [ngClass]="stat.borderColor"
+      >
         <div 
-          *ngFor="let stat of statsData" 
-          [class]="'p-6 bg-white rounded-lg shadow-sm border-l-4 ' + stat.borderColor">
-          <div class="flex items-center">
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-600">{{ stat.label }}</p>
-              <p class="mt-2 text-3xl font-semibold text-gray-900">{{ stat.value }}</p>
-            </div>
-            <div [class]="'p-3 rounded-full ' + stat.bgColor">
-              <i [class]="'fas ' + stat.icon + ' text-xl ' + stat.iconColor"></i>
-            </div>
-          </div>
+          class="rounded-full p-3 mr-4 flex items-center justify-center"
+          [ngClass]="[stat.bgColor, stat.iconColor]"
+        >
+          <i [class]="'fas ' + stat.icon"></i>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">{{ stat.label }}</p>
+          <p class="text-2xl font-bold text-gray-800">{{ stat.value }}</p>
         </div>
       </div>
-
-      <!-- Filters Section -->
-      <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-        <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div class="w-full md:w-1/3">
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                <i class="fas fa-search text-gray-400"></i>
-              </span>
-              <input 
-                type="text"
-                [(ngModel)]="searchTerm"
-                (input)="applyFilters()"
-                placeholder="Rechercher par nom, référence..."
-                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-            </div>
-          </div>
-          
-          <div class="w-full md:w-1/4">
-            <select 
-              [(ngModel)]="statusFilter"
-              (change)="applyFilters()"
-              class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="">Tous les statuts</option>
-              <option *ngFor="let status of internshipStatuses" [value]="status">
-                {{ getInternshipStatusLabel(status) }}
-              </option>
-            </select>
-          </div>
-        </div>
-
+    </div>
+    
+    <!-- Search and Filters -->
+    <div class="mb-6 flex justify-between items-center">
+      <!-- Status Tabs -->
+      <div class="flex gap-1">
+        <button 
+          *ngFor="let status of internshipStatuses" 
+          (click)="selectStatus(status)"
+          class="px-3 py-2 text-sm font-medium transition-colors border-b-2"
+          [ngClass]="selectedStatus === status ? 'text-blue-600 border-blue-500' : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-200'"
+        >
+          {{ getInternshipStatusLabel(status) }}
+          <span class="ml-1.5 text-xs bg-gray-100 text-gray-600 rounded-full px-2 py-0.5">
+            {{ getStatusCount(status) }}
+          </span>
+        </button>
       </div>
 
-      <!-- Applications Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div 
-          *ngFor="let demande of filteredDemandesStage" 
-          class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-          <!-- Card Header -->
-          <div class="p-6 border-b border-gray-100">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="text-lg font-semibold text-gray-900">
-                  {{ demande.candidat?.firstName }} {{ demande.candidat?.lastName }}
-                </h3>
-                <p class="text-sm text-gray-600 mt-1">{{ demande.demandeStage.reference }}</p>
+      <!-- Search -->
+      <div class="w-1/3 relative">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+          placeholder="Rechercher par nom, référence..."
+          class="w-full px-4 py-2 pl-10 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+        >
+        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+      </div>
+    </div>
+
+    <!-- Internship Requests Table -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Référence</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Candidat</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Formation</th>
+            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let demande of filteredDemandesStage"
+            class="border-b last:border-b-0 hover:bg-gray-50 transition-colors"
+          >
+            <td class="px-4 py-3 text-sm text-gray-700">
+              {{ demande.demandeStage.reference }}
+            </td>
+            <td class="px-4 py-3">
+              <div class="text-sm font-medium text-gray-900">
+                {{ demande.candidat?.firstName }} {{ demande.candidat?.lastName }}
               </div>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-600">
+              {{ demande.candidat?.formation }}
+            </td>
+            <td class="px-4 py-3">
               <span 
                 [ngClass]="getInternshipStatusClass(demande.demandeStage.status)"
-                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
+                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              >
                 {{ getInternshipStatusLabel(demande.demandeStage.status) }}
               </span>
-            </div>
-          </div>
-
-          <!-- Card Body -->
-          <div class="p-6">
-            <div class="space-y-4">
-              <div class="flex items-center">
-                <i class="fas fa-graduation-cap text-gray-400 w-5"></i>
-                <span class="ml-2 text-sm text-gray-600">{{ demande.candidat?.formation }}</span>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <div class="flex justify-end space-x-2">
+                <button 
+                  (click)="openDetailsModal(demande)"
+                  class="text-blue-600 hover:text-blue-800 transition-colors font-semibold mr-2"
+                >
+                  Détails <i class="fas fa-chevron-right ml-1"></i>
+                </button>
+                <div class="relative">
+                  <button 
+                    class="text-gray-500 hover:text-gray-700 transition-colors"
+                    (click)="toggleDropdown(demande)"
+                  >
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <div 
+                    *ngIf="demande.showDropdown" 
+                    class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+                  >
+                    <div class="py-1" role="menu">
+                      <button 
+                        (click)="sendWelcomeEmail(demande)"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        role="menuitem"
+                      >
+                        Envoyer mail de bienvenue
+                      </button>
+                      <button 
+                        *ngIf="canViewCV(demande)"
+                        (click)="viewCV(demande)"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        role="menuitem"
+                      >
+                        Voir CV
+                      </button>
+                      <button 
+                        *ngIf="canDownloadCV(demande)"
+                        (click)="downloadCV(demande)"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        role="menuitem"
+                      >
+                        Télécharger CV
+                      </button>
+                      <button 
+                        (click)="proposeToManager(demande)"
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                        role="menuitem"
+                      >
+                        Proposer au manager
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="flex items-center">
-                <i class="fas fa-school text-gray-400 w-5"></i>
-                <span class="ml-2 text-sm text-gray-600">{{ demande.candidat?.school }}</span>
-              </div>
-            </div>
-
-            <!-- Documents -->
-            <div class="mt-6 flex space-x-4">
-              <button 
-                *ngIf="canViewCV(demande)"
-                (click)="viewCV(demande)"
-                class="flex items-center text-sm text-blue-600 hover:text-blue-800">
-                <i class="fas fa-file-pdf mr-2"></i>
-                Voir CV
-              </button>
-              <button 
-                *ngIf="canViewCoverLetter(demande)"
-                (click)="viewCoverLetter(demande)"
-                class="flex items-center text-sm text-blue-600 hover:text-blue-800">
-                <i class="fas fa-envelope mr-2"></i>
-                Voir LM
-              </button>
-            </div>
-          </div>
-
-          <!-- Card Footer with Dynamic Actions -->
-          <div class="px-6 py-4 bg-gray-50 rounded-b-lg">
-            <div [ngSwitch]="demande.demandeStage.status">
-              <!-- Actions pour les demandes en attente -->
-              <button 
-                *ngSwitchCase="InternshipStatus.EN_ATTENTE"
-                (click)="proposeToManager(demande)"
-                class="w-full flex justify-center items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                <i class="fas fa-user-tie mr-2"></i>
-                Proposer au manager
-              </button>
-
-              <!-- Actions pour les demandes acceptées -->
-              <button 
-                *ngSwitchCase="InternshipStatus.ACCEPTE"
-                (click)="sendWelcomeEmail(demande)"
-                class="w-full flex justify-center items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                <i class="fas fa-envelope mr-2"></i>
-                Envoyer email d'accueil
-              </button>
-
-              <!-- Actions pour les demandes en cours -->
-              <button 
-                *ngSwitchCase="InternshipStatus.EN_COURS"
-                (click)="scheduleEvaluation(demande)"
-                class="w-full flex justify-center items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                <i class="fas fa-calendar-check mr-2"></i>
-                Planifier évaluation
-              </button>
-
-              <!-- Actions pour les demandes terminées -->
-              <button 
-                *ngSwitchCase="InternshipStatus.TERMINER"
-                (click)="generateCertificate(demande)"
-                class="w-full flex justify-center items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                <i class="fas fa-certificate mr-2"></i>
-                Générer attestation
-              </button>
-
-              <!-- Actions pour les demandes refusées -->
-              <button 
-                *ngSwitchCase="InternshipStatus.REFUSE"
-                (click)="archiveApplication(demande)"
-                class="w-full flex justify-center items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                <i class="fas fa-archive mr-2"></i>
-                Archiver la demande
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
       <!-- Empty State -->
       <div 
         *ngIf="filteredDemandesStage.length === 0" 
-        class="text-center py-12">
+        class="text-center py-12"
+      >
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
           <i class="fas fa-folder-open text-gray-400 text-xl"></i>
         </div>
@@ -176,3 +160,12 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Placeholder -->
+  <ng-container *ngIf="selectedDetailsModal">
+    <app-internship-details-modal 
+      [demande]="selectedDetailsModal"
+      (close)="closeDetailsModal()"
+    ></app-internship-details-modal>
+  </ng-container>
+</div>
