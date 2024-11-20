@@ -28,4 +28,12 @@ export class GwteService {
     return this.http.post(`${this.apiUrl}/sendWelcomeEmail`, { mail: email });
   }
 
+  rejectInternshipApplication(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/internships/${id}/reject`, {});
+  }
+
+  archiveInternshipApplication(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/internships/${id}/archive`, {});
+  }
+
 }

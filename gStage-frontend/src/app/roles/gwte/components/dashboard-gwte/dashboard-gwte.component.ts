@@ -27,7 +27,13 @@ export class DashboardGwteComponent implements OnInit {
   filteredDemandesStage: any[] = [];
   statusFilter: InternshipStatus | '' = '';
   searchTerm: string = '';
-  internshipStatuses = Object.values(InternshipStatus);
+  internshipStatuses = [
+    InternshipStatus.EN_ATTENTE,
+    InternshipStatus.ACCEPTE,
+    InternshipStatus.REFUSE,
+    InternshipStatus.EN_COURS,
+    InternshipStatus.TERMINER
+  ];
 
   selectedStatus: InternshipStatus | null = null;
   selectedDetailsModal: any = null;
@@ -298,20 +304,15 @@ downloadCoverLetter(demande: any): void {
   }
 
   getInternshipStatusLabel(status: InternshipStatus): string {
-    switch (status) {
-      case InternshipStatus.EN_ATTENTE:
-        return 'En attente';
-      case InternshipStatus.ACCEPTE:
-        return 'Accepté';
-      case InternshipStatus.REFUSE:
-        return 'Rejeté';
-      case InternshipStatus.EN_COURS:
-        return 'En cours';
-      case InternshipStatus.TERMINER:
-        return 'Termine'
-      default:
-        return 'Statut inconnu';
-    }
+    const statusLabels = {
+      [InternshipStatus.EN_ATTENTE]: 'En attente',
+      [InternshipStatus.ACCEPTE]: 'Accepté',
+      [InternshipStatus.REFUSE]: 'Rejeté',
+      [InternshipStatus.EN_COURS]: 'En cours',
+      [InternshipStatus.TERMINER]: 'Terminé'
+    };
+
+    return statusLabels[status as keyof typeof statusLabels] || '';
   }
   getInternshipStatusClass(status: InternshipStatus): string {
     switch (status) {

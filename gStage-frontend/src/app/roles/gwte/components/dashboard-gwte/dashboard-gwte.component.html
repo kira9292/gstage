@@ -166,6 +166,7 @@
     <app-internship-details-modal 
       [demande]="selectedDetailsModal"
       (close)="closeDetailsModal()"
+      (statusUpdated)="loadDemandesStage()"
     ></app-internship-details-modal>
   </ng-container>
 </div>

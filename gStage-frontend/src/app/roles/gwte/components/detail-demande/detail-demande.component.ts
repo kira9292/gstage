@@ -15,6 +15,8 @@ import { InternshipStatus } from '../../../../enums/gstage.enum';
 export class InternshipDetailModalComponent {
   @Input() demande: any;
   @Output() close = new EventEmitter<void>();
+  @Output() statusUpdated = new EventEmitter<void>();  // Nouvel EventEmitter
+
 
   InternshipStatus = InternshipStatus
 
@@ -85,10 +87,115 @@ generateCertificate(): void {
 }
 
 archiveApplication(): void {
-  // Implémentation de l'archivage
-  console.log('Archivage de la demande:', this.demande.demandeStage.reference);
+  Swal.fire({
+    title: 'Confirmer l\'archivage',
+    text: 'Êtes-vous sûr de vouloir archiver cette demande de stage ? Cette action est irréversible.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, archiver',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Afficher le loader
+      Swal.fire({
+        title: 'Archivage en cours...',
+        text: 'Veuillez patienter pendant l\'archivage de la demande',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      this.gwteService.archiveInternshipApplication(this.demande.demandeStage.id)
+        .subscribe({
+          next: () => {
+            // Notification de succès
+            Swal.fire({
+              icon: 'success',
+              title: 'Demande archivée',
+              text: 'La demande de stage a été archivée avec succès',
+              showConfirmButton: true,
+              timer: 3000,
+              position: 'top-end',
+              toast: true
+            });
+            
+            // Émettre l'événement pour mettre à jour la liste
+            this.statusUpdated.emit();
+            
+            // Fermer le modal
+            this.closeModal();
+          },
+          error: (error) => {
+            // Notification d'erreur
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'archivage de la demande',
+              footer: error.message
+            });
+          }
+        });
+    }
+  });
 }
 
+rejectApplication(): void {
+  Swal.fire({
+    title: 'Confirmer le rejet',
+    text: 'Êtes-vous sûr de vouloir rejeter cette demande de stage ?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, rejeter',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Montrer une notification de chargement
+      Swal.fire({
+        title: 'Traitement en cours...',
+        text: 'Rejet de la demande de stage',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      this.gwteService.rejectInternshipApplication(this.demande.demandeStage.id)
+        .subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Demande rejetée',
+              text: 'La demande de stage a été rejetée avec succès',
+              showConfirmButton: true,
+              timer: 3000,
+              position: 'top-end',
+              toast: true
+            });
+            this.statusUpdated.emit();  // Émettre l'événement de mise à jour
+            this.closeModal();            
+            
+          },
+          error: (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors du rejet de la demande',
+              footer: error.message
+            });
+          }
+        });
+    }
+  });
+}
 
 canViewCV(): boolean {
   return !!this.demande?.demandeStage?.cv;

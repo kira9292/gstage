@@ -67,12 +67,18 @@
     
     <div class="p-6 border-t border-gray-200">
       <div [ngSwitch]="demande?.demandeStage?.status">
-        <button 
-          *ngSwitchCase="InternshipStatus.EN_ATTENTE"
-          (click)="proposeToManager()"
-          class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
-          <i class="fas fa-user-tie mr-2"></i> Proposer au manager
-        </button>
+        <div *ngSwitchCase="InternshipStatus.EN_ATTENTE" class="flex space-x-4">
+          <button 
+            (click)="proposeToManager()"
+            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-user-tie mr-2"></i> Proposer au manager
+          </button>
+          <button 
+            (click)="rejectApplication()"
+            class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
+            <i class="fas fa-times-circle mr-2"></i> Rejeter
+          </button>
+        </div>
         
         <button 
           *ngSwitchCase="InternshipStatus.ACCEPTE"

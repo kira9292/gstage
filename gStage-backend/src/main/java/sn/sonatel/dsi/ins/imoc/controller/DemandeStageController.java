@@ -4,7 +4,9 @@ package sn.sonatel.dsi.ins.imoc.controller;
 import jakarta.mail.MessagingException;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
@@ -14,10 +16,13 @@ import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.service.DemandeStageService;
 import sn.sonatel.dsi.ins.imoc.service.ValidationCanditatService;
+import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.ResponseUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -68,8 +73,26 @@ public class DemandeStageController {
 //        this.demandeStageService.resendcode(mail);
 //
 //    }
-        @PostMapping("/api/sendWelcomeEmail")
+
+    @PostMapping("/api/sendWelcomeEmail")
     public void contactercadidat( @RequestBody Map<String ,String> mail ) throws MessagingException, UnsupportedEncodingException {
         this.demandeStageService.accepterstagiaire(mail);
+    }
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
+    @PutMapping("/api/internships/{id}/reject")
+    public Optional<String> rejectInternship(@PathVariable Long id) {
+        return demandeStageService.rejectInternship(id);
+    }
+
+    @PutMapping("/api/internships/{id}/archive")
+    public Optional<String> archiveInternship(@PathVariable Long id) {
+        return demandeStageService.archiveInternship(id);
+    }
+
+    @GetMapping("/api/internships/archived")
+    public List<DemandeStage> getArchivedInternships() {
+        return demandeStageService.findAllArchived();
     }
 }

@@ -10,7 +10,9 @@ export enum InternshipType {
     EN_COURS = 'EN_COURS',           // En cours de réalisation
     TERMINER = 'TERMINER',             // Terminé
     REFUSE = 'REFUSE',                // Refusé
-    PROPOSE = 'PROPOSE'
+    PROPOSE = 'PROPOSE',
+    ARCHIVE = 'ARCHIVE',
+
   }
   // Niveau d'éducation
   export enum EducationLevel {
