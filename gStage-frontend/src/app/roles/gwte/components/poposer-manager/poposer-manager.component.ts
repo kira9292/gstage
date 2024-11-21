@@ -16,7 +16,7 @@ export class PoposerManagerComponent implements OnInit {
   demandeForm: FormGroup;
   demandeurs: any[] = []; // Tableau pour stocker les demandeurs récupérés
   demande: any;
-
+  selectedDemandeur: any = null;
 
 
 
@@ -39,8 +39,8 @@ export class PoposerManagerComponent implements OnInit {
         [Validators.required]
       ],
       direction: [
-        '',
-        [Validators.required]
+        { value: '1', disabled: true },
+        [Validators.maxLength(255)]
       ],
       profilFormation: [
         { value: '', disabled: true },
@@ -137,7 +137,7 @@ export class PoposerManagerComponent implements OnInit {
 
       const payload1 = {
         "appUser": {
-          "email": formData.demandeur
+          "email": demandeur
         },
         "demandeStage": {
           "id": demandeStageId
@@ -180,36 +180,13 @@ export class PoposerManagerComponent implements OnInit {
 
 
 
-  // onDemandeurChange(event: any) {
-  //   const selectedDemandeur = event.target.value; // L'élément sélectionné
-  //   const emailDemandeur = selectedDemandeur.email; // Récupérer l'email
-  //   console.log('Email du demandeur sélectionné:', emailDemandeur);
-  //
-  //   // Vous pouvez aussi récupérer l'ID de la demande de stage
-  //   this.GwteService.currentDemande.subscribe(
-  //     (demande) => {
-  //
-  //         const demandeStageId = demande.demandeStage.id;
-  //         console.log('ID de la demande de stage:', demandeStageId);
-  //
-  //     }
-  //
-  //   );
-  //     console.log('Demande récupérée :', this.demande);
-  //
-  //   console.log('ID de la demande de stage:', demandeStageId);
-  //
-  //   // Appeler l'API avec ces informations
-  //   this.envoyerDonneesAAPI(emailDemandeur, demandeStageId);
-  // }
-  //
-  // envoyerDonneesAAPI(email: string, demandeStageId: number) {
-  //   // Exemple de code pour envoyer les données à votre API
-  //   const body = { email: email, demandeStageId: demandeStageId };
-  //   this.apiService.sendDemandeData(body).subscribe(response => {
-  //     console.log('Réponse de l\'API:', response);
-  //   });
-  // }
-
-
+  onDemandeurChange(demandeurEmail: string) {
+    this.selectedDemandeur = this.demandeurs.find(d => d.email === demandeurEmail);
+    // Mettre à jour le champ direction avec le serviceName du demandeur
+    if (this.selectedDemandeur) {
+      this.demandeForm.patchValue({
+        direction: this.selectedDemandeur.serviceName
+      });
+    }
+  }
 }

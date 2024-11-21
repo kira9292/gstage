@@ -49,7 +49,7 @@ public class Service implements Serializable {
         },
         allowSetters = true
     )
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "service")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "service")
     private AppUser appUser;
 
     @ManyToOne(fetch = FetchType.LAZY)

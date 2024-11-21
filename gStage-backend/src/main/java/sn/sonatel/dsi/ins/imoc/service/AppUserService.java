@@ -23,6 +23,7 @@ import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
 import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
+import sn.sonatel.dsi.ins.imoc.repository.ServiceRepository;
 
 /**
  * Service Implementation for managing {@link sn.sonatel.dsi.ins.imoc.domain.AppUser}.
@@ -42,6 +43,8 @@ public class AppUserService implements UserDetailsService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     public AppUserService() {
     }
@@ -68,6 +71,16 @@ public class AppUserService implements UserDetailsService {
         appUser.getAppUser().setPassword(mdpCrypte);
         appUser.getAppUser().setStatus(false);
 
+        if (appUser.getRole().getName() == ERole.MANAGER) {
+            if (appUser.getService() == null) {
+                throw new RuntimeException("Service must be specified for Manager role");
+            }
+            sn.sonatel.dsi.ins.imoc.domain.Service service = appUser.getService();
+            if (service.getId() == null) {
+                service = serviceRepository.save(service); // Save the service if it's new
+            }
+            appUser.getAppUser().setService(service);
+        }
 
 //        role.setName(ERole.STAGIAIRE);
         Role role = roleRepository.save(appUser.getRole());
