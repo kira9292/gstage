@@ -10,4 +10,5 @@ public record UserForAdminDTO(
     String roleName,
     String serviceName
 ) {
+
 }
