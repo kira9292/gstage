@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.StagiairesProposer;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeManagerDto;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
@@ -59,6 +60,7 @@ public class AssistantGWTEController {
             .orElseThrow(() -> new RuntimeException("Demande de stage non trouvée avec l'ID : " + demandeManagerDto.demandeStage().getId()));
 
         // Ajouter la demande de stage à l'utilisateur
+        demandeStage.setStatus(InternshipStatus.PROPOSE);
         demandeStage.setAppUser(appUser);
         demandeStageRepository.save(demandeStage);
         System.out.println();

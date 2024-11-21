@@ -115,8 +115,8 @@ export const routes: Routes = [
      {
       path: 'propose-to-manager',
       component: PoposerManagerComponent,
-      canActivate: [AuthGuard, RoleGuard],
-      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+      // canActivate: [AuthGuard, RoleGuard],
+      // data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
      },
 
      {
@@ -135,7 +135,7 @@ export const routes: Routes = [
   {
     path:'admin-dashboard',
     component:DashboardAdminComponent,
-    // canActivate: [AuthGuard, RoleGuard],
-    // data: {expectedRole: 'ROLE_ADMIN'}
+    canActivate: [AuthGuard, RoleGuard],
+    data: {expectedRole: 'ROLE_ADMIN'}
   }
 ];

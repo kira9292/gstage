@@ -38,16 +38,12 @@ public class UserController {
 
 
 
-//    @PostMapping("/api/inscription")
-//    public void incription(@RequestBody AppUser appUser) {
-//        log.info("Incription of {}", appUser);
-//        this.appUserService.inscription(appUser);
-//    }
-@PostMapping("/api/inscription")
-public void incription(@RequestBody UserDTO appUser) {
-    log.info("Incription of {}", appUser);
-    this.appUserService.inscription(appUser);
-}
+
+//@PostMapping("/api/inscription")
+//public void incription(@RequestBody UserDTO appUser) {
+//    log.info("Incription of {}", appUser);
+//    this.appUserService.inscription(appUser);
+//}
     @PostMapping("/api/activation")
     public void activation(@RequestBody Map<String ,String> activation) {
 
