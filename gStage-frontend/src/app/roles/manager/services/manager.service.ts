@@ -15,9 +15,10 @@ export class ManagerService {
     return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
-  validateInternshipRequest(requestId: string, validate: boolean): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${requestId}/validate`, { 
-      validated: validate 
-    });
+  validateInternshipRequest(requestId: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${requestId}/validate`, {});
+  }
+  rejectInternshipRequest(requestId: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${requestId}/reject`, {});
   }
 }

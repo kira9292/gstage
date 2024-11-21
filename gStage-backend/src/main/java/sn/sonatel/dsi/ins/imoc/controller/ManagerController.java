@@ -3,6 +3,8 @@ package sn.sonatel.dsi.ins.imoc.controller;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
@@ -12,8 +14,10 @@ import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
+import sn.sonatel.dsi.ins.imoc.service.ManagerService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,15 +26,17 @@ public class ManagerController {
     private final AppUserRepository appUserRepository;
     private final RoleRepository roleRepository;
     private final DemandeStageRepository demandeStageRepository;
+    private final ManagerService managerService;
     public ManagerController(
         AppUserRepository appUserRepository,
         RoleRepository roleRepository,
-        DemandeStageRepository demandeStageRepository
+        DemandeStageRepository demandeStageRepository, ManagerService managerService
     ) {
         this.demandeStageRepository = demandeStageRepository;
         this.roleRepository = roleRepository;
         this.appUserRepository = appUserRepository;
 
+        this.managerService = managerService;
     }
     @GetMapping("api/managers")
     public List<ManagerDTO> getAppUsers() {
@@ -49,7 +55,7 @@ public class ManagerController {
         return managerDTOs;
     }
 
-    @GetMapping("/api/demande-proposer-manager")
+    @GetMapping("/api/manager-internships")
     public List<DemandeStagecandidatDTO> managertodemande() {
         // Récupérer l'utilisateur actuellement connecté
         AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -67,5 +73,14 @@ public class ManagerController {
     }
 
 
+    @PutMapping("/api/manager-internships/{internshipId}/validate")
+    public Optional<String> validateInternship(@PathVariable Long internshipId) {
+        return managerService.validateInternshipRequest(internshipId);
+    }
+
+    @PutMapping("/api/manager-internships/{internshipId}/reject")
+    public Optional<String> rejectInternship(@PathVariable Long internshipId) {
+        return managerService.rejectInternshipRequest(internshipId);
+    }
 
 }

@@ -4,162 +4,175 @@ import { InternshipStatus } from '../../../../enums/gstage.enum';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ManagerService } from '../../services/manager.service';
+import { InternshipDetailModalComponent } from '../../../gwte/components/detail-demande/detail-demande.component';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 
 @Component({
   selector: 'app-dashboard-manager',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, InternshipDetailModalComponent],
   templateUrl: './dashboard-manager.component.html',
   styleUrl: './dashboard-manager.component.scss'
 })
 export class DashboardManagerComponent implements OnInit {
-  currentManagerID: string = '1';
-
-
-  internshipRequests: any[] = [];
-  filteredRequests: any[] = [];
+  InternshipStatus = InternshipStatus;
+  proposedInternships: any[] = [];
+  filteredInternships: any[] = [];
   searchTerm: string = '';
-  statusFilter: string = '';
-  isLoading: boolean = false;
-  errorMessage: string = '';
+  selectedDetailsModal: any = null;
 
+  statsData = [
+    {
+      label: 'Total Propositions',
+      value: 0,
+      icon: 'fa-file-alt',
+      borderColor: 'border-blue-500',  
+      bgColor: 'bg-blue-100',
+      iconColor: 'text-blue-500'
+    },
+    {
+      label: 'Nouvelles Propositions',
+      value: 0,
+      icon: 'fa-paper-plane',
+      borderColor: 'border-yellow-500',
+      bgColor: 'bg-yellow-100',
+      iconColor: 'text-yellow-500'
+    }
+  ];
 
-  constructor(private managerService: ManagerService) {}
+  constructor(
+    private managerService: ManagerService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-    // Simuler le chargement des données
-    this.loadInternshipRequests();
+  ngOnInit(): void {
+    this.loadProposedInternships();
   }
 
-  loadInternshipRequests() {
-    this.isLoading = true;
-    this.errorMessage = '';
-
-    this.managerService.getManagerInternshipRequests().subscribe({
-      next: (requests) => {
-        this.internshipRequests = requests;
-        console.log("Demandes: ", this.internshipRequests);
-        
+  loadProposedInternships(): void {
+    this.managerService.getManagerInternshipRequests().subscribe(
+      (data) => {
+        this.proposedInternships = data;
         this.applyFilters();
-        this.isLoading = false;
+        this.updateStats();
       },
-      error: (error) => {
-        console.error('Erreur de chargement:', error);
-        this.errorMessage = 'Impossible de charger les demandes de stage';
-        this.isLoading = false;
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Impossible de charger les propositions de stage'
+        });
+      }
+    );
+  }
+
+  applyFilters(): void {
+    this.filteredInternships = this.proposedInternships.filter(internship => 
+      !this.searchTerm || 
+      internship.candidat.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      internship.candidat.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      internship.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  updateStats(): void {
+    this.statsData[0].value = this.proposedInternships.length;
+    this.statsData[1].value = this.proposedInternships.filter(
+      p => p.demandeStage.status === InternshipStatus.PROPOSE
+    ).length;
+  }
+
+  acceptInternship(internship: any): void {
+    Swal.fire({
+      title: 'Confirmer l\'acceptation',
+      text: `Voulez-vous accepter le stage de ${internship.candidat.firstName} ${internship.candidat.lastName} ?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Accepter',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.managerService.validateInternshipRequest(internship.demandeStage.id)
+        .subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Stage accepté !',
+              text: `Le stage de ${internship.candidat.firstName} a été accepté`
+            });
+            this.loadProposedInternships();
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Impossible d\'accepter le stage'
+            });
+          }
+        });
       }
     });
   }
 
-  applyFilters() {
-    this.filteredRequests = this.internshipRequests.filter(request => {
-      const matchesSearch = !this.searchTerm || 
-        request.candidat.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        request.candidat.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        request.candidat.formation.toLowerCase().includes(this.searchTerm.toLowerCase());
-
-      const matchesStatus = !this.statusFilter || 
-        request.demandeStage.status === this.statusFilter;
-
-      return matchesSearch && matchesStatus;
-    });
-  }
-
-  validateRequest(request: any, validate: boolean) {
-    this.managerService.validateInternshipRequest(request.demandeStage.id, validate).subscribe({
-      next: (updatedRequest) => {
-        // Mettre à jour la liste des demandes
-        const index = this.internshipRequests.findIndex(
-          r => r.demandeStage.id === request.demandeStage.id
-        );
-        if (index !== -1) {
-          this.internshipRequests[index] = updatedRequest;
-          this.applyFilters();
-        }
+  rejectInternship(internship: any): void {
+    Swal.fire({
+      title: 'Motif de rejet',
+      input: 'textarea',
+      inputLabel: 'Raison du rejet',
+      inputPlaceholder: 'Saisissez une raison...',
+      inputAttributes: {
+        'aria-label': 'Raison du rejet'
       },
-      error: (error) => {
-        console.error('Erreur de validation:', error);
-        this.errorMessage = validate 
-          ? 'Impossible d\'accepter la demande' 
-          : 'Impossible de refuser la demande';
+      showCancelButton: true,
+      confirmButtonText: 'Rejeter',
+      cancelButtonText: 'Annuler',
+      // inputValidator: (value) => {
+      //   if (!value) {
+      //     return 'Vous devez saisir un motif de rejet';
+      //   }
+      // }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        this.managerService.rejectInternshipRequest(internship.demandeStage.id)
+        .subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Stage rejeté',
+              text: `Le stage de ${internship.candidat.firstName} a été rejeté`
+            });
+            this.loadProposedInternships();
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Impossible de rejeter le stage'
+            });
+          }
+        });
       }
     });
   }
 
-  viewDocument(documentBase64: string, contentType: string): void {
-      const byteCharacters = atob(documentBase64);
-      const byteArrays = [];
-      for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-        const slice = byteCharacters.slice(offset, offset + 1024);
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-          byteNumbers[i] = slice.charCodeAt(i);
-        }
-        byteArrays.push(new Uint8Array(byteNumbers));
-      }
-      const blob = new Blob(byteArrays, { type: contentType });
-      const url = URL.createObjectURL(blob);
-      window.open(url, '_blank');
+  viewInternshipDetails(internship: any): void {
+    this.selectedDetailsModal = internship;
   }
 
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'PROPOSE':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'ACCEPTE':
-        return 'bg-green-100 text-green-800';
-      case 'REFUSE':
-        return 'bg-red-100 text-red-800';
-      case 'EN_COURS':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  }
-
-  getStatusLabel(status: string): string {
-    const labels: { [key: string]: string } = {
-      'PROPOSE': 'Proposé',
-      'ACCEPTE': 'Accepté',
-      'REFUSE': 'Refusé',
-      'EN_COURS': 'En cours'
+  getStatusClass(status: InternshipStatus): string {
+    const statusClasses = {
+      [InternshipStatus.PROPOSE]: 'bg-yellow-100 text-yellow-800',
+      [InternshipStatus.ACCEPTE]: 'bg-green-100 text-green-800',
+      [InternshipStatus.REFUSE]: 'bg-red-100 text-red-800'
     };
-    return labels[status] || status;
+    return statusClasses[status as keyof typeof statusClasses] || 'bg-gray-100 text-gray-800';
   }
 
-  getPendingRequestsCount(): number {
-    return this.internshipRequests.filter(r => r.status === 'PROPOSE').length;
+  closeDetailsModal(): void {
+    this.selectedDetailsModal = null;
   }
-
-  getAcceptedRequestsCount(): number {
-    return this.internshipRequests.filter(r => r.status === 'ACCEPTE').length;
-  }
-
-  getOngoingRequestsCount(): number {
-    return this.internshipRequests.filter(r => r.status === 'EN_COURS').length;
-  }
-
-  async acceptRequest(request: any) {
-    try {
-      // Appel API pour accepter la demande
-      request.status = InternshipStatus.ACCEPTE;
-      // Rafraîchir les données
-      this.applyFilters();
-    } catch (error) {
-      console.error('Error accepting request:', error);
-    }
-  }
-
-  async rejectRequest(request: any) {
-    try {
-      // Appel API pour refuser la demande
-      request.status = InternshipStatus.REFUSE;
-      // Rafraîchir les données
-      this.applyFilters();
-    } catch (error) {
-      console.error('Error rejecting request:', error);
-    }
-  }
-
 }
