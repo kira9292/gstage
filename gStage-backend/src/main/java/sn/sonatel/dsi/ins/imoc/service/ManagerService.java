@@ -2,14 +2,14 @@ package sn.sonatel.dsi.ins.imoc.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
-import sn.sonatel.dsi.ins.imoc.dto.ValidationRequest;
 import sn.sonatel.dsi.ins.imoc.exceptions.InternshipRequestValidationException;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
+
+import java.util.Optional;
 
 @Service
 public class ManagerService {
@@ -18,20 +18,33 @@ public class ManagerService {
     private DemandeStageRepository demandeStageRepository;
 
     @Transactional
-    public ResponseEntity<?> validateInternshipRequest(Long requestId, ValidationRequest validationRequest) {
-        return demandeStageRepository.findById(requestId)
+    public Optional<String> validateInternshipRequest(Long internshipId) {
+        return demandeStageRepository
+            .findById(internshipId)
             .map(demandeStage -> {
                 // Vérifier que la demande est dans un état valide pour validation/rejet
                 validateRequestStatus(demandeStage);
                 // Mettre à jour le statut
-                updateInternshipRequestStatus(demandeStage, validationRequest);
-
+                demandeStage.setStatus(InternshipStatus.ACCEPTE);
                 // Sauvegarder la demande
-                DemandeStage savedDemandeStage = demandeStageRepository.save(demandeStage);
+                demandeStageRepository.save(demandeStage);
+                return "Demande Stage " + internshipId.toString() + " accepted";
+            });
+    }
 
-                return ResponseEntity.ok(savedDemandeStage);
-            })
-            .orElseThrow(() -> new InternshipRequestValidationException("Demande de stage introuvable"));
+    @Transactional
+    public Optional<String> rejectInternshipRequest(Long internshipId) {
+        return demandeStageRepository
+            .findById(internshipId)
+            .map(demandeStage -> {
+                // Vérifier que la demande est dans un état valide pour validation/rejet
+                validateRequestStatus(demandeStage);
+                // Mettre à jour le statut
+                demandeStage.setStatus(InternshipStatus.REFUSE);
+                // Sauvegarder la demande
+                demandeStageRepository.save(demandeStage);
+                return "Demande Stage " + internshipId.toString() + " refused";
+            });
     }
 
     private void validateRequestStatus(DemandeStage demandeStage) {
@@ -43,12 +56,5 @@ public class ManagerService {
         }
     }
 
-    private void updateInternshipRequestStatus(DemandeStage demandeStage, ValidationRequest validationRequest) {
-        if (Boolean.TRUE.equals(validationRequest.getValidated())) {
-            demandeStage.setStatus(InternshipStatus.ACCEPTE);
-        } else {
-            demandeStage.setStatus(InternshipStatus.REFUSE);
-        }
-    }
 }
 

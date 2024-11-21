@@ -11,8 +11,8 @@ export class ManagerService {
 
   constructor(private http: HttpClient) { }
 
-  getManagerInternshipRequests(managerId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/manager/${managerId}`);
+  getManagerInternshipRequests(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}`);
   }
 
   validateInternshipRequest(requestId: string, validate: boolean): Observable<any> {

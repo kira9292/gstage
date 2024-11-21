@@ -37,13 +37,6 @@ public class  DemandeStageService {
 
 
 
-
-
-
-
-
-
-
     public void activation(Map<String, String> code) {
         ValidationStatuscandidat validation = this.validationCanditatService.getUserByCode(code.get("code"));
         if (Instant.now().isAfter(validation.getExpire())){
@@ -130,5 +123,4 @@ public class  DemandeStageService {
     public List<DemandeStage> findAllArchived() {
         return demandeStageRepository.findByStatus(InternshipStatus.ARCHIVE);
     }
-
 }

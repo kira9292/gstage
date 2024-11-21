@@ -1,28 +1,38 @@
 package sn.sonatel.dsi.ins.imoc.controller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.transaction.annotation.Transactional;
-import sn.sonatel.dsi.ins.imoc.dto.ValidationRequest;
+import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
+import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO;
+import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
+import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
 import sn.sonatel.dsi.ins.imoc.service.ManagerService;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/manager-internships")
 public class ManagerController {
-    @Autowired
-    private ManagerService managerService;
 
-    @PatchMapping("/{requestId}/validate")
-    public ResponseEntity<?> validateInternshipRequest(
-        @PathVariable Long requestId,
-        @RequestBody ValidationRequest validationRequest
-    ) {
-        return managerService.validateInternshipRequest(requestId, validationRequest);
+    private final AppUserRepository appUserRepository;
+    private final RoleRepository roleRepository;
+    private final DemandeStageRepository demandeStageRepository;
+    private final ManagerService managerService;
+
+    public ManagerController(
+        AppUserRepository appUserRepository,
+        RoleRepository roleRepository,
+        DemandeStageRepository demandeStageRepository,
+        ManagerService managerService) {
+        this.demandeStageRepository = demandeStageRepository;
+        this.roleRepository = roleRepository;
+        this.appUserRepository = appUserRepository;
+        this.managerService = managerService;
     }
     @GetMapping("api/managers")
     public List<ManagerDTO> getAppUsers() {
@@ -44,16 +54,24 @@ public class ManagerController {
         return managerDTOs;
     }
 
-    @GetMapping("/api/demande-proposer-manager")
+    @GetMapping("/api/manager-internships")
     public List<DemandeStage> managertodemande(){
 
         AppUser user =(AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
          String email =  user.getEmail();
 
-
          return this.demandeStageRepository.findByAppUser(user);
-
-
 
     }
 
+    @PutMapping("/api/manager-internships/{internshipId}/validate")
+    public Optional<String> validateInternship(@PathVariable Long internshipId) {
+        return managerService.validateInternshipRequest(internshipId);
+    }
+
+    @PutMapping("/api/manager-internships/{internshipId}/reject")
+    public Optional<String> rejectInternship(@PathVariable Long internshipId) {
+        return managerService.rejectInternshipRequest(internshipId);
+    }
+
+}
