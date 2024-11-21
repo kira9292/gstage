@@ -12,7 +12,6 @@ export enum InternshipType {
     REFUSE = 'REFUSE',                // Refusé
     PROPOSE = 'PROPOSE',
     ARCHIVE = 'ARCHIVE',
-
   }
   // Niveau d'éducation
   export enum EducationLevel {

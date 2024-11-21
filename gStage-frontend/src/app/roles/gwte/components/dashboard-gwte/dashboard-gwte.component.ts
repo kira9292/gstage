@@ -29,6 +29,7 @@ export class DashboardGwteComponent implements OnInit {
   searchTerm: string = '';
   internshipStatuses = [
     InternshipStatus.EN_ATTENTE,
+    InternshipStatus.PROPOSE,
     InternshipStatus.ACCEPTE,
     InternshipStatus.REFUSE,
     InternshipStatus.EN_COURS,
@@ -71,6 +72,14 @@ export class DashboardGwteComponent implements OnInit {
         borderColor: 'border-purple-500',
         bgColor: 'bg-purple-100',
         iconColor: 'text-purple-500'
+      },
+      {
+        label: 'Proposé',
+        value: 0,
+        icon: 'fa-paper-plane',
+        borderColor: 'border-indigo-500',
+        bgColor: 'bg-indigo-100',
+        iconColor: 'text-indigo-500'
       }
     ];
     
@@ -105,6 +114,7 @@ export class DashboardGwteComponent implements OnInit {
     this.statsData[1].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_ATTENTE).length;
     this.statsData[2].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.ACCEPTE).length;
     this.statsData[3].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_COURS).length;
+    this.statsData[4].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.PROPOSE).length;
   }
 
 
@@ -309,7 +319,9 @@ downloadCoverLetter(demande: any): void {
       [InternshipStatus.ACCEPTE]: 'Accepté',
       [InternshipStatus.REFUSE]: 'Rejeté',
       [InternshipStatus.EN_COURS]: 'En cours',
-      [InternshipStatus.TERMINER]: 'Terminé'
+      [InternshipStatus.TERMINER]: 'Terminé',
+      [InternshipStatus.PROPOSE]: 'Proposé'
+
     };
 
     return statusLabels[status as keyof typeof statusLabels] || '';
@@ -326,6 +338,8 @@ downloadCoverLetter(demande: any): void {
         return 'bg-blue-100 text-blue-800';
       case InternshipStatus.TERMINER:
         return 'bg-gray-100 text-gray-800';
+      case InternshipStatus.PROPOSE:
+        return 'bg-indigo-100 text-indigo-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }

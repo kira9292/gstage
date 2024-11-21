@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ManagerService {
 
-  private apiUrl = 'http://localhost:8080/api/manager-internships'; // Remplacez par votre URL réelle
+  private apiUrl = 'http://localhost:8081/api/manager-internships'; // Remplacez par votre URL réelle
 
   constructor(private http: HttpClient) { }
 

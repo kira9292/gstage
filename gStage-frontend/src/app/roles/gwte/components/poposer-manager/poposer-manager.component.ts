@@ -18,14 +18,6 @@ export class PoposerManagerComponent implements OnInit {
   demande: any;
   selectedDemandeur: any = null;
 
-
-
-
-
-
-
-
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -34,34 +26,13 @@ export class PoposerManagerComponent implements OnInit {
   ) {
     // Initialisation du formulaire sans 'nbreStagiaire'
     this.demandeForm = this.fb.group({
-      demandeur: [
-        '',
-        [Validators.required]
-      ],
-      direction: [
-        { value: '1', disabled: true },
-        [Validators.maxLength(255)]
-      ],
-      profilFormation: [
-        { value: '', disabled: true },
-        [Validators.required]
-      ],
-      stagiaire: [
-        { value: '1', disabled: true },
-        [Validators.maxLength(255)]
-      ],
-      commentaire: [
-        '',
-        [Validators.maxLength(500)]
-      ],
-      motif: [
-        '',
-        [Validators.maxLength(500)]
-      ],
-      traitement: [
-        'ok',
-        [Validators.maxLength(500)]
-      ]
+      demandeur: ['', [Validators.required]],
+      direction: [{ value: '', disabled: true }, [Validators.maxLength(255)]],
+      profilFormation: [{ value: '', disabled: true }, [Validators.required]],
+      stagiaire: [{ value: '1', disabled: true }, [Validators.maxLength(255)]],
+      commentaire: ['', [Validators.maxLength(500)]],
+      motif: ['', [Validators.maxLength(500)]],
+      traitement: ['ok', [Validators.maxLength(500)]]
     });
   }
 
@@ -69,9 +40,8 @@ export class PoposerManagerComponent implements OnInit {
 
     //
     this.GwteService.getManagers().subscribe(
-      (demandes) => {
-        // Récupérer les demandeurs (ici vous pouvez les adapter selon vos données)
-        this.demandeurs = demandes; // Assurez-vous que l'API renvoie les bons objets
+      (data) => {
+        this.demandeurs = data;
         console.log('Liste des demandeurs récupérés :', this.demandeurs);
       },
       (error) => {

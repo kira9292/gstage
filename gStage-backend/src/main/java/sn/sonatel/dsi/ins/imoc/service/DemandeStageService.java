@@ -60,7 +60,6 @@ public class  DemandeStageService {
         ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(mail.get("mail"));
         if (validationStatusOptional!=null) {
             this.notificationService.envoyercandidat(validationStatusOptional);
-
         } else {
             throw new RuntimeException("Aucun candidat trouvé avec cet email");
         }

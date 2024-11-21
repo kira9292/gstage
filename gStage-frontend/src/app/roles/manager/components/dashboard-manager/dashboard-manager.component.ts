@@ -39,6 +39,8 @@ export class DashboardManagerComponent implements OnInit {
     this.managerService.getManagerInternshipRequests().subscribe({
       next: (requests) => {
         this.internshipRequests = requests;
+        console.log("Demandes: ", this.internshipRequests);
+        
         this.applyFilters();
         this.isLoading = false;
       },

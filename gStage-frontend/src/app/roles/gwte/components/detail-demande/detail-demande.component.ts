@@ -315,7 +315,9 @@ getInternshipStatusLabel(status: InternshipStatus): string {
     case InternshipStatus.EN_COURS:
       return 'En cours';
     case InternshipStatus.TERMINER:
-      return 'Termine'
+      return 'Termine';
+    case InternshipStatus.PROPOSE:
+      return 'Proposé';
     default:
       return 'Statut inconnu';
   }
@@ -332,6 +334,8 @@ getInternshipStatusClass(status: InternshipStatus): string {
       return 'bg-blue-100 text-blue-800';
     case InternshipStatus.TERMINER:
       return 'bg-gray-100 text-gray-800';
+    case InternshipStatus.PROPOSE:
+      return 'bg-purple-100 text-purple-800';
     default:
       return 'bg-gray-100 text-gray-800';
   }
