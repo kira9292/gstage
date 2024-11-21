@@ -6,12 +6,12 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class AdminServiceService {
-  private apiUrl = 'http://localhost:8081/api/app-users'; // URL de l'API
+  private apiUrl = 'http://localhost:8081/api'; // URL de l'API
 
   constructor(private http: HttpClient) { }
 
   // Méthode pour récupérer tous les utilisateurs
   getAppUsers(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(this.apiUrl+"/app-users");
   }
 }

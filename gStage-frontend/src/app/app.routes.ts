@@ -135,7 +135,7 @@ export const routes: Routes = [
   {
     path:'admin-dashboard',
     component:DashboardAdminComponent,
-    canActivate: [AuthGuard, RoleGuard],
-    data: {expectedRole: 'ROLE_ADMIN'}
+    // canActivate: [AuthGuard, RoleGuard],
+    // data: {expectedRole: 'ROLE_ADMIN'}
   }
 ];
