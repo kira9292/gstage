@@ -41,10 +41,10 @@ export class DashboardGwteComponent implements OnInit {
     // Stats data
     statsData = [
       {
-        label: 'Total Demandes',
+        label: 'Total Demandes non archivées',
         value: 0,
         icon: 'fa-file-alt',
-        borderColor: 'border-blue-500',
+        borderColor: 'border-blue-500',  
         bgColor: 'bg-blue-100',
         iconColor: 'text-blue-500'
       },
@@ -101,7 +101,7 @@ export class DashboardGwteComponent implements OnInit {
 
   
   updateStats(): void {
-    this.statsData[0].value = this.demandesStage.length;
+    this.statsData[0].value = this.demandesStage.length - this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.ARCHIVE).length;
     this.statsData[1].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_ATTENTE).length;
     this.statsData[2].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.ACCEPTE).length;
     this.statsData[3].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_COURS).length;

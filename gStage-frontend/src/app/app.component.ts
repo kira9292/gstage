@@ -7,6 +7,7 @@ import { BreadcrumbComponent } from './shared/components/breadcrump/breadcrump.c
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { AuthService } from './core/services/auth.service';
 import { SidebarGwteComponent } from './shared/components/sidebar-gwte/sidebar-gwte.component';
+import { SidebarManagerComponent } from "./shared/components/sidebar-manager/sidebar-manager.component";
 
 
 @Component({
@@ -18,8 +19,9 @@ import { SidebarGwteComponent } from './shared/components/sidebar-gwte/sidebar-g
     BreadcrumbComponent,
     NavbarComponent,
     CommonModule,
-    SidebarGwteComponent
-  ],
+    SidebarGwteComponent,
+    SidebarManagerComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -50,6 +52,9 @@ export class AppComponent {
 
     showSidebarGwte(): boolean {
       return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_ASSISTANT_GWTE');
+    }
+    showSidebarManager(): boolean {
+      return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_MANAGER');
     }
 
     isAuthenticated(): boolean {

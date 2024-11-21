@@ -15,6 +15,12 @@
       (sidebarClose)="closeSidebar()"
       class="h-full">
     </app-sidebar-gwte>
+    <app-sidebar-manager 
+      *ngIf="showSidebarManager()"
+      [isSidebarOpen]="isSidebarOpen"
+      (sidebarClose)="closeSidebar()"
+      class="h-full">
+    </app-sidebar-manager>
 
     <!-- Le contenu principal -->
     <div class="flex-1 overflow-auto bg-gray-50" [ngClass]="{'p-4 md:p-8': !isAuthPage()}">

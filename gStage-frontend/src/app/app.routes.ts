@@ -17,6 +17,7 @@ import { DashboardGwteComponent } from './roles/gwte/components/dashboard-gwte/d
 import { PoposerManagerComponent } from './roles/gwte/components/poposer-manager/poposer-manager.component';
 import { DashboardManagerComponent } from './roles/manager/components/dashboard-manager/dashboard-manager.component';
 import { AdminRegisterComponent } from './roles/admin/components/admin-register/admin-register.component';
+import { StatsComponent } from './roles/gwte/components/stats/stats.component';
 
 
 
@@ -107,6 +108,12 @@ export const routes: Routes = [
      {
       path: 'dashboard-gwte',
       component: DashboardGwteComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+     },
+     {
+      path: 'statistics',
+      component: StatsComponent,
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
      },

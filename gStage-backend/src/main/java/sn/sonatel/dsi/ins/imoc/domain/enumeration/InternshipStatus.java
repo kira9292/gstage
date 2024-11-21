@@ -10,4 +10,5 @@ public enum InternshipStatus {
     TERMINER,
     EN_COURS,
     ARCHIVE,
+    PROPOSE
 }
