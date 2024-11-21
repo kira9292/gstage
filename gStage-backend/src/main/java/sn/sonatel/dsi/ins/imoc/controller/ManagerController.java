@@ -24,5 +24,36 @@ public class ManagerController {
     ) {
         return managerService.validateInternshipRequest(requestId, validationRequest);
     }
-}
+    @GetMapping("api/managers")
+    public List<ManagerDTO> getAppUsers() {
+        // Récupérer les utilisateurs avec le rôle MANAGER
+        List<AppUser> users = appUserRepository.findByRoleName(ERole.MANAGER);
+
+        // Transformer les utilisateurs en ManagerDTO
+        List<ManagerDTO> managerDTOs = users.stream()
+            .map(user -> {
+                // Récupérer le nom du service associé à cet utilisateur
+                String serviceName = null;
+                if (user.getService() != null) {
+                    serviceName = user.getService().getName(); // Accéder au nom du service
+                }
+                return new ManagerDTO(user.getName(),user.getFirstName() ,user.getEmail(), serviceName);
+            })
+            .collect(Collectors.toList());
+
+        return managerDTOs;
+    }
+
+    @GetMapping("/api/demande-proposer-manager")
+    public List<DemandeStage> managertodemande(){
+
+        AppUser user =(AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+         String email =  user.getEmail();
+
+
+         return this.demandeStageRepository.findByAppUser(user);
+
+
+
+    }
 
