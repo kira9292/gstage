@@ -1,6 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -66,7 +67,7 @@ public class AppUser implements UserDetails, Serializable {
     private Boolean status;
 
     @JsonIgnoreProperties(value = { "businessUnit", "appUser", "departemen" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Service service;
 
@@ -83,7 +84,7 @@ public class AppUser implements UserDetails, Serializable {
     @JsonIgnoreProperties(value = { "validations", "appUser" }, allowSetters = true)
     private Set<Contrat> contrats = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appUser")
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
     private Set<DemandeStage> demandeStages = new HashSet<>();
 
@@ -99,7 +100,7 @@ public class AppUser implements UserDetails, Serializable {
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "appUsers" }, allowSetters = true)
     private Role role;
 

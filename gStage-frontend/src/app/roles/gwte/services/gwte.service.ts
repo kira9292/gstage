@@ -36,4 +36,9 @@ export class GwteService {
     return this.http.put(`${this.apiUrl}/internships/${id}/archive`, {});
   }
 
+  getManagers():Observable<any[]> {
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-type', 'application/json');
+    return this.http.get<any[]>(`${this.apiUrl}/managers`, {headers});
+  }
 }

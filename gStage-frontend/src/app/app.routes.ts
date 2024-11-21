@@ -17,7 +17,7 @@ import { DashboardGwteComponent } from './roles/gwte/components/dashboard-gwte/d
 import { PoposerManagerComponent } from './roles/gwte/components/poposer-manager/poposer-manager.component';
 import { DashboardManagerComponent } from './roles/manager/components/dashboard-manager/dashboard-manager.component';
 import { AdminRegisterComponent } from './roles/admin/components/admin-register/admin-register.component';
-import { StatsComponent } from './roles/gwte/components/stats/stats.component';
+import {DashboardAdminComponent} from "./roles/admin/components/dashboard-admin/dashboard-admin.component";
 
 
 
@@ -111,12 +111,6 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
      },
-     {
-      path: 'statistics',
-      component: StatsComponent,
-      canActivate: [AuthGuard, RoleGuard],
-      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
-     },
 
      {
       path: 'propose-to-manager',
@@ -130,5 +124,18 @@ export const routes: Routes = [
       component: DashboardManagerComponent,
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_MANAGER'}
-     }
+     },
+
+    {
+      path:'admin-register',
+      component: AdminRegisterComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_ADMIN'}
+    },
+  {
+    path:'admin-dashboard',
+    component:DashboardAdminComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: {expectedRole: 'ROLE_ADMIN'}
+  }
 ];

@@ -26,7 +26,7 @@ public class Role implements Serializable {
     @Column(name = "name")
     private ERole name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "role")
     @JsonIgnoreProperties(
         value = {
             "service",

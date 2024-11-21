@@ -19,40 +19,40 @@
 
  <!-- Résumé des demandes -->
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-    <div class="bg-white rounded-lg shadow p-4">
+    <div class="bg-white rounded-lg shadow-sm p-4">
       <div class="flex justify-between items-center">
         <h3 class="text-lg font-semibold text-gray-700">Total</h3>
         <span class="text-2xl font-bold text-gray-900">{{totalDemandes}}</span>
       </div>
     </div>
-    <div class="bg-white rounded-lg shadow p-4">
+    <div class="bg-white rounded-lg shadow-sm p-4">
       <div class="flex justify-between items-center">
         <h3 class="text-lg font-semibold text-yellow-700">En attente</h3>
         <span class="text-2xl font-bold text-yellow-600">{{pendingDemandesCount}}</span>
       </div>
     </div>
-    <div class="bg-white rounded-lg shadow p-4">
+    <div class="bg-white rounded-lg shadow-sm p-4">
       <div class="flex justify-between items-center">
         <h3 class="text-lg font-semibold text-green-700">Acceptées</h3>
         <span class="text-2xl font-bold text-green-600">{{acceptedDemandesCount}}</span>
       </div>
     </div>
-    <div class="bg-white rounded-lg shadow p-4">
+    <div class="bg-white rounded-lg shadow-sm p-4">
       <div class="flex justify-between items-center">
         <h3 class="text-lg font-semibold text-blue-700">En cours</h3>
         <span class="text-2xl font-bold text-blue-600">{{inProgressDemandesCount}}</span>
       </div>
     </div>
   </div>
-  
+
   <!-- Liste des demandes -->
   <div class="bg-white rounded-lg shadow">
     <div class="p-6">
       <h3 class="text-lg font-semibold text-gray-900 mb-4">Mes demandes de stage</h3>
-      
+
       <!-- Filtres -->
       <div class="mb-6 flex gap-4 flex-wrap">
-        <select 
+        <select
           [(ngModel)]="statusFilter"
           (change)="applyFilters()"
           class="block appearance-none w-48 bg-white border border-gray-300 rounded px-4 py-2">
@@ -62,7 +62,7 @@
           </option>
         </select>
 
-        <input 
+        <input
           type="text"
           [(ngModel)]="searchTerm"
           (input)="applyFilters()"
@@ -73,13 +73,13 @@
 
       <!-- Liste des demandes -->
       <div class="space-y-4">
-        <div *ngFor="let demande of paginatedDemandes" 
+        <div *ngFor="let demande of paginatedDemandes"
              class="border rounded-lg p-4 hover:bg-gray-50">
           <div class="flex justify-between items-start mb-4">
             <div>
               <h4 class="text-lg font-medium text-gray-900">{{demande.reference}}</h4>
               <p class="text-sm text-gray-600">
-                {{formatInternshipType(demande.internshipType)}} | 
+                {{formatInternshipType(demande.internshipType)}} |
                 Créée le {{demande.creationDate | date:'dd/MM/yyyy'}}
               </p>
             </div>
@@ -89,34 +89,39 @@
           </div>
 
           <!-- Timeline de progression -->
-          <div class="relative pb-4">
-            <div class="flex items-center space-x-4">
-              <div *ngFor="let step of demande.processSteps; let isLast = last" 
-                   class="flex-1">
-                <div class="flex items-center">
-                  <div [class]="getStepStatusClass(step.status)">
-                    <i [class]="getStepIcon(step.status)" class="fas"></i>
+          <div class="relative pb-6">
+            <div class="grid grid-cols-1 md:grid-cols-{{demande.processSteps.length}} gap-6">
+              <div *ngFor="let step of demande.processSteps; let isLast = last" class="flex flex-col items-center">
+                <!-- Icone et statut -->
+                <div class="relative flex items-center justify-center">
+                  <div [class]="getStepStatusClass(step.status) + ' flex items-center justify-center w-8 h-8 rounded-full border'">
+                    <i [class]="getStepIcon(step.status)" class="fas text-lg"></i>
                   </div>
-                  <div [class]="isLast ? '' : 'flex-1 h-px bg-gray-300 mx-2'"></div>
+                  <!-- Ligne connectrice -->
+                  <div *ngIf="!isLast" class="absolute w-full h-0.5 bg-gray-300 top-4 left-full"></div>
                 </div>
-                <p class="text-xs mt-1" [class]="getStepTextClass(step.status)">
-                  {{step.step}}
-                </p>
-                <p *ngIf="step.date" class="text-xs text-gray-500">
-                  {{step.date | date:'dd/MM/yyyy'}}
-                </p>
+
+                <!-- Texte de la timeline -->
+                <div class="mt-2 text-center">
+                  <p class="text-sm font-semibold" [class]="getStepTextClass(step.status)">
+                    {{ step.step }}
+                  </p>
+                  <p *ngIf="step.date" class="text-xs text-gray-500">
+                    {{ step.date | date: 'dd/MM/yyyy' }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Actions -->
           <div class="mt-4 flex justify-end space-x-3">
-            <button 
+            <button
               (click)="viewDemande(demande)"
               class="text-sm text-sonatel-orange hover:text-orange-600 transition-colors">
               Voir les détails
             </button>
-            <button 
+            <button
               *ngIf="demande.feedback"
               (click)="viewFeedback(demande)"
               class="text-sm text-sonatel-orange hover:text-orange-600 transition-colors">
@@ -129,11 +134,11 @@
       <!-- Pagination -->
       <div class="mt-4 flex justify-between items-center">
         <div class="text-sm text-gray-600">
-          Affichage de {{(pagination.currentPage - 1) * pagination.pageSize + 1}} à 
+          Affichage de {{(pagination.currentPage - 1) * pagination.pageSize + 1}} à
           {{Math.min(pagination.currentPage * pagination.pageSize, filteredDemandes.length)}}
           sur {{filteredDemandes.length}} demandes
         </div>
-        
+
         <div class="flex items-center space-x-2">
           <button
             (click)="goToPage(pagination.currentPage - 1)"
@@ -154,7 +159,7 @@
 </div>
 
 <!-- Modal de détails -->
-<div *ngIf="showDemandeDialog" 
+<div *ngIf="showDemandeDialog"
      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white rounded-lg p-6 w-11/12 max-w-4xl">
     <div class="flex justify-between items-start mb-6">
@@ -187,7 +192,7 @@
             </dd>
             <dt class="text-sm text-gray-500">Période</dt>
             <dd class="text-sm text-gray-900">
-              Du {{selectedDemande?.startDate | date:'dd/MM/yyyy'}} 
+              Du {{selectedDemande?.startDate | date:'dd/MM/yyyy'}}
               au {{selectedDemande?.endDate | date:'dd/MM/yyyy'}}
             </dd>
             <dt class="text-sm text-gray-500">Statut</dt>

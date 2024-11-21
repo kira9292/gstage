@@ -249,7 +249,7 @@ export class SuiviDemandeStageComponent implements OnInit {
   applyFilters() {
     this.filteredDemandes = this.demandes.filter(demande => {
       const matchStatus = !this.statusFilter || demande.status === this.statusFilter;
-      const matchSearch = !this.searchTerm || 
+      const matchSearch = !this.searchTerm ||
         demande.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         demande.description.toLowerCase().includes(this.searchTerm.toLowerCase());
       return matchStatus && matchSearch;
@@ -290,11 +290,11 @@ export class SuiviDemandeStageComponent implements OnInit {
     }
 
   downloadResume(demande: DemandeStage) {
-    window.open('assets/documents/CV_Mouhamadou_L_NDIAYE.pdf', '_blank'); 
+    window.open('assets/documents/CV_Mouhamadou_L_NDIAYE.pdf', '_blank');
   }
 
   downloadCoverLetter(demande: DemandeStage) {
-    window.open('assets/documents/eCommerce.pdf', '_blank'); 
+    window.open('assets/documents/eCommerce.pdf', '_blank');
   }
 
   getNextStep(demande: DemandeStage): { step: string; message: string } | null {
@@ -329,4 +329,28 @@ export class SuiviDemandeStageComponent implements OnInit {
   get inProgressDemandesCount(): number {
       return this.demandes?.filter(d => d.status === InternshipStatus.EN_COURS).length ?? 0;
   }
+
+  getProgressWidth(index: number, demande: DemandeStage): string {
+    const totalSteps = demande.processSteps.length;
+
+    if (index >= totalSteps - 1) {
+      return '0%'; // Pas de progression après la dernière étape
+    }
+    // getProgressWidth(index: number): string {
+    //   return ((index + 1) / this.demande.processSteps.length) * 100 + '%';
+    // }
+
+    const currentStep = demande.processSteps[index];
+    const nextStep = demande.processSteps[index + 1];
+
+    if (currentStep.status === 'completed') {
+      return '100%'; // Étape complètement remplie si terminée
+    } else if (currentStep.status === 'pending' && nextStep.status === 'pending') {
+      return '50%'; // Étape à moitié remplie si en attente
+    } else {
+      return '0%'; // Aucun remplissage sinon
+    }
+  }
+
+
 }

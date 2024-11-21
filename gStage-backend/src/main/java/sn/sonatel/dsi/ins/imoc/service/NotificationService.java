@@ -86,7 +86,7 @@ public class NotificationService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom("abdoulkarimly008@gmail.com", "Sonatel Stage");  // Email de l'expéditeur
         helper.setTo(validation.getCandidat().getEmail());
-        helper.setSubject("Action requise : Remplissez le document pour votre stage");
+        helper.setSubject("Félicitations : Votre candidature a été retenue chez Sonatel !");
 
         // Construction du contenu HTML pour le stagiaire
         String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
@@ -94,9 +94,19 @@ public class NotificationService {
             + "<tr><td style='text-align: center;'>"
             + "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>"
             + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>"
-            + "<p>Nous sommes ravis de vous accueillir pour un stage chez Sonatel !</p>"
-            + "<p style='font-size: 16px;'>Pour finaliser votre dossier, nous vous prions de bien vouloir remplir le document en piece jointe </p>"
-            + "<p style='font-size: 16px;'>Veuillez compléter et soumettre le document avant la date limite indiquée. Si vous avez des questions, n'hésitez pas à nous contacter.</p>"
+            + "<p>Félicitations ! Votre candidature a été retenue pour un stage chez Sonatel.</p>"
+            + "<p style='font-size: 16px;'>Voici les détails de votre stage :</p>"
+            + "<ul style='font-size: 16px; text-align: left; display: inline-block; margin: auto;'>"
+//            + "<li><b>Mois de démarrage :</b> " + moisDemarrage + "</li>"
+//            + "<li><b>Direction :</b> " + direction + "</li>"
+//            + "<li><b>Durée :</b> " + duree + "</li>"
+            + "</ul>"
+            + "<p style='font-size: 16px;'>Pour finaliser votre dossier, veuillez remplir les documents suivants : </p>"
+            + "<ul style='font-size: 16px; text-align: left; display: inline-block; margin: auto;'>"
+            + "<li>La fiche de renseignement</li>"
+            + "<li>Le formulaire d’information</li>"
+            + "</ul>"
+            + "<p>Merci de retourner ces documents à l'adresse GWTE avant la date limite indiquée. Si vous avez des questions, n'hésitez pas à nous contacter.</p>"
             + "<hr style='border: 0; border-top: 1px solid #ddd; margin: 20px 0;'>"
             + "<p style='font-size: 14px;'>Cordialement,<br>L'équipe Sonatel</p>"
             + "<footer style='font-size: 12px; color: #aaa; text-align: center;'>"

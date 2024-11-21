@@ -3,18 +3,28 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from "@angular/router";
 import { AssistantgwteService } from "../../services/assistantgwte.service";
 import { GwteService } from "../../services/gwte.service";
-import {NgIf} from "@angular/common";
+import {CommonModule, NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-poposer-manager',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, NgClass,CommonModule,],
   templateUrl: './poposer-manager.component.html',
   styleUrls: ['./poposer-manager.component.scss']
 })
 export class PoposerManagerComponent implements OnInit {
   demandeForm: FormGroup;
+  demandeurs: any[] = []; // Tableau pour stocker les demandeurs récupérés
   demande: any;
+
+
+
+
+
+
+
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -36,8 +46,8 @@ export class PoposerManagerComponent implements OnInit {
         { value: '', disabled: true },
         [Validators.required]
       ],
-      stagiaireSousRecomandation: [
-        { value: '', disabled: true },
+      stagiaire: [
+        { value: '1', disabled: true },
         [Validators.maxLength(255)]
       ],
       commentaire: [
@@ -49,13 +59,41 @@ export class PoposerManagerComponent implements OnInit {
         [Validators.maxLength(500)]
       ],
       traitement: [
-        '',
+        'ok',
         [Validators.maxLength(500)]
       ]
     });
   }
 
   ngOnInit() {
+
+    //
+    this.GwteService.getManagers().subscribe(
+      (demandes) => {
+        // Récupérer les demandeurs (ici vous pouvez les adapter selon vos données)
+        this.demandeurs = demandes; // Assurez-vous que l'API renvoie les bons objets
+        console.log('Liste des demandeurs récupérés :', this.demandeurs);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des demandeurs :', error);
+      }
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Récupération de la demande et pré-remplissage du formulaire
     this.GwteService.currentDemande.subscribe(
       (demande) => {
@@ -67,7 +105,7 @@ export class PoposerManagerComponent implements OnInit {
           const candidat = this.demande?.candidat;
           this.demandeForm.patchValue({
             profilFormation: candidat?.formation || '',
-            stagiaireSousRecomandation: `${candidat?.firstName || ''} ${candidat?.lastName || ''}`
+            stagiaire: `${candidat?.firstName || ''} ${candidat?.lastName || ''}`
           });
         }
       }
@@ -77,21 +115,101 @@ export class PoposerManagerComponent implements OnInit {
   onSubmit() {
     if (this.demandeForm.valid) {
       const formData = this.demandeForm.value;
-      console.log('Données du formulaire :', formData);
 
-      // Appel du service pour envoyer les données à l'API
-      this.assistantService.postDemande(formData).subscribe(
+
+      const demandeur = formData.demandeur;
+      const demandeStageId = this.demande?.demandeStage?.id;
+
+
+      // Création des données dans le format exact demandé
+      const payload = {
+        "demandeur": formData.demandeur, // Exemple : "Jean Dupont Direction Technique"
+        "direction": formData.direction, // Exemple : "for gurn consequently"
+        "nbreStagiaire": formData.nbreStagiaire, // Exemple : 16387
+        "profilFormation": formData.profilFormation, // Exemple : "oh behind glum"
+        "stagiaieSousRecomandation": formData.stagiaire, // Exemple : "outnumber"
+        "commentaire": formData.commentaire, // Exemple : "CD following nervously"
+        "motif": formData.motif, // Exemple : "while fairly"
+        "traitement": formData.traitement // Exemple : "near shrilly"
+      };
+
+      console.log('Données préparées pour l\'API :', JSON.stringify(payload));
+
+      const payload1 = {
+        "appUser": {
+          "email": formData.demandeur
+        },
+        "demandeStage": {
+          "id": demandeStageId
+        }
+      };
+      this.assistantService.postDemande1(payload1).subscribe(
         response => {
-          console.log('Réponse de l\'API :', response);
-          this.demandeForm.reset();
-          this.router.navigate(['/login']);  // Redirection après la soumission
+          console.log('Réponse de l\'API pour payload1 :', response);
+
+          // Appel à postDemande pour envoyer les autres informations
+          this.assistantService.postDemande(payload).subscribe(
+            response => {
+              console.log('Réponse de l\'API pour payload :', response);
+              this.demandeForm.reset();
+              this.router.navigate(['/login']); // Redirection après soumission
+            },
+            error => {
+              console.error('Erreur lors de l\'envoi des données (payload) :', error);
+            }
+          );
         },
         error => {
-          console.error('Erreur lors de l\'envoi des données :', error);
+          console.error('Erreur lors de l\'envoi des données (payload1) :', error);
         }
       );
     } else {
       console.log('Formulaire invalide');
     }
+
+
+
+
+
+
+
   }
+
+
+
+
+
+
+  // onDemandeurChange(event: any) {
+  //   const selectedDemandeur = event.target.value; // L'élément sélectionné
+  //   const emailDemandeur = selectedDemandeur.email; // Récupérer l'email
+  //   console.log('Email du demandeur sélectionné:', emailDemandeur);
+  //
+  //   // Vous pouvez aussi récupérer l'ID de la demande de stage
+  //   this.GwteService.currentDemande.subscribe(
+  //     (demande) => {
+  //
+  //         const demandeStageId = demande.demandeStage.id;
+  //         console.log('ID de la demande de stage:', demandeStageId);
+  //
+  //     }
+  //
+  //   );
+  //     console.log('Demande récupérée :', this.demande);
+  //
+  //   console.log('ID de la demande de stage:', demandeStageId);
+  //
+  //   // Appeler l'API avec ces informations
+  //   this.envoyerDonneesAAPI(emailDemandeur, demandeStageId);
+  // }
+  //
+  // envoyerDonneesAAPI(email: string, demandeStageId: number) {
+  //   // Exemple de code pour envoyer les données à votre API
+  //   const body = { email: email, demandeStageId: demandeStageId };
+  //   this.apiService.sendDemandeData(body).subscribe(response => {
+  //     console.log('Réponse de l\'API:', response);
+  //   });
+  // }
+
+
 }

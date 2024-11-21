@@ -8,7 +8,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 export class AssistantgwteService {
 
 
-  private apiUrl = 'http://localhost:8081/api/stagiaires-proposers'; // Remplacez par votre endpoint réel
+  private apiUrl = 'http://localhost:8081/api'; // Remplacez par votre endpoint réel
   private token = localStorage.getItem('jwtToken'); // ou sessionStorage
 
   constructor(private http: HttpClient) { }
@@ -19,7 +19,11 @@ export class AssistantgwteService {
       'Authorization': `Bearer ${this.token}`
     });
 
-    return this.http.post(this.apiUrl, data, { headers });
+    return this.http.post(this.apiUrl+"/stagiaires-proposers", data, { headers });
+  }
+
+  postDemande1(payload: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl+"/demande-to-manager", payload);
   }
 
 
