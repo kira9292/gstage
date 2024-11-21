@@ -67,17 +67,17 @@ export class PoposerManagerComponent implements OnInit {
 
   ngOnInit() {
 
-
-    this.GwteService.getManagers().subscribe(
-      (demandes) => {
-        // Récupérer les demandeurs (ici vous pouvez les adapter selon vos données)
-        this.demandeurs = demandes; // Assurez-vous que l'API renvoie les bons objets
-        console.log('Liste des demandeurs récupérés :', this.demandeurs);
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des demandeurs :', error);
-      }
-    );
+    //
+    // this.GwteService.getManagers().subscribe(
+    //   (demandes) => {
+    //     // Récupérer les demandeurs (ici vous pouvez les adapter selon vos données)
+    //     this.demandeurs = demandes; // Assurez-vous que l'API renvoie les bons objets
+    //     console.log('Liste des demandeurs récupérés :', this.demandeurs);
+    //   },
+    //   (error) => {
+    //     console.error('Erreur lors de la récupération des demandeurs :', error);
+    //   }
+    // );
 
 
 
