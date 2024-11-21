@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
+import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
 import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
@@ -49,17 +50,22 @@ public class ManagerController {
     }
 
     @GetMapping("/api/demande-proposer-manager")
-    public List<DemandeStage> managertodemande(){
+    public List<DemandeStagecandidatDTO> managertodemande() {
+        // Récupérer l'utilisateur actuellement connecté
+        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        AppUser user =(AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-         String email =  user.getEmail();
+        // Rechercher toutes les demandes associées à cet utilisateur
+        List<DemandeStage> demandes = this.demandeStageRepository.findByAppUser(user);
 
-
-         return this.demandeStageRepository.findByAppUser(user);
-
-
-
+        // Transformer chaque demande en un DTO contenant la demande et le candidat associé
+        return demandes.stream()
+            .map(demandeStage -> new DemandeStagecandidatDTO(
+                demandeStage,
+                demandeStage.getCandidat() // Suppose que DemandeStage a une relation avec Candidat
+            ))
+            .toList();
     }
+
 
 
 }

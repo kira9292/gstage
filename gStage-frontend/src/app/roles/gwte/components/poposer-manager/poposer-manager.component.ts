@@ -39,7 +39,7 @@ export class PoposerManagerComponent implements OnInit {
         [Validators.required]
       ],
       direction: [
-        { value: '1', disabled: true },
+        { value: '', disabled: true },
         [Validators.maxLength(255)]
       ],
       profilFormation: [
@@ -47,7 +47,7 @@ export class PoposerManagerComponent implements OnInit {
         [Validators.required]
       ],
       stagiaire: [
-        { value: '1', disabled: true },
+        { value: '', disabled: true },
         [Validators.maxLength(255)]
       ],
       commentaire: [
@@ -114,7 +114,7 @@ export class PoposerManagerComponent implements OnInit {
 
   onSubmit() {
     if (this.demandeForm.valid) {
-      const formData = this.demandeForm.value;
+      const formData = this.demandeForm.getRawValue();
 
 
       const demandeur = formData.demandeur;
