@@ -1,12 +1,15 @@
 package sn.sonatel.dsi.ins.imoc.controller;
 
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
 import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
+import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
 
 import java.util.List;
@@ -17,7 +20,13 @@ public class ManagerController {
 
     private final AppUserRepository appUserRepository;
     private final RoleRepository roleRepository;
-    public ManagerController(AppUserRepository appUserRepository, RoleRepository roleRepository) {
+    private final DemandeStageRepository demandeStageRepository;
+    public ManagerController(
+        AppUserRepository appUserRepository,
+        RoleRepository roleRepository,
+        DemandeStageRepository demandeStageRepository
+    ) {
+        this.demandeStageRepository = demandeStageRepository;
         this.roleRepository = roleRepository;
         this.appUserRepository = appUserRepository;
 
@@ -41,18 +50,19 @@ public class ManagerController {
 
         return managerDTOs;
     }
-//@GetMapping("api/managers")
-//public List<AppUser> getAppUsers() {
-//    // Récupérer les utilisateurs avec le rôle MANAGER
-//    List<AppUser> users = appUserRepository.findByRoleName(ERole.MANAGER);
-//
-//    // Transformer les utilisateurs en ManagerDTO
-//    List<ManagerDTO> managerDTOs = users.stream()
-//        .map(user -> new ManagerDTO(user.getName(), user.getEmail()))
-//        .collect(Collectors.toList());
-//
-//    return users;
-//}
+
+    @GetMapping("/api/demande-proposer-manager")
+    public List<DemandeStage> managertodemande(){
+
+        AppUser user =(AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+         String email =  user.getEmail();
+
+
+         return this.demandeStageRepository.findByAppUser(user);
+
+
+
+    }
 
 
 }

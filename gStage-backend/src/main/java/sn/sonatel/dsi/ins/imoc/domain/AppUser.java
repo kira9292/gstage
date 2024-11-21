@@ -99,7 +99,7 @@ public class AppUser implements UserDetails, Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "appUsers" }, allowSetters = true)
     private Role role;

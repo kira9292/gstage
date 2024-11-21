@@ -2,6 +2,7 @@ package sn.sonatel.dsi.ins.imoc.repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 
@@ -14,4 +15,6 @@ import java.util.List;
 @Repository
 public interface DemandeStageRepository extends JpaRepository<DemandeStage, Long> {
     List<DemandeStage> findByStatus(InternshipStatus status);
+
+    List<DemandeStage> findByAppUser(AppUser user);
 }

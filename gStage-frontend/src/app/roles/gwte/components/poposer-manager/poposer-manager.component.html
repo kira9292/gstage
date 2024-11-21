@@ -34,7 +34,7 @@
               class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow hover:shadow-md bg-white/50"
               [ngClass]="{ 'border-red-500': demandeForm.get('demandeur')?.invalid && demandeForm.get('demandeur')?.touched }">
               <option value="" disabled selected>Choisissez un demandeur</option>
-              <option *ngFor="let demandeur of demandeurs" [value]="demandeur.lastname +'  '+ demandeur.name +'  ---'+ demandeur.serviceName  "> {{ demandeur.lastname }}  {{ demandeur.name }} -- {{ demandeur.serviceName }}</option>
+              <option *ngFor="let demandeur of demandeurs" [value]="demandeur.email"> {{ demandeur.lastname }}  {{ demandeur.name }} -- {{ demandeur.serviceName }}</option>
             </select>
             <div *ngIf="demandeForm.get('demandeur')?.touched && demandeForm.get('demandeur')?.invalid"
                  class="text-red-500 text-xs mt-1">
