@@ -77,7 +77,7 @@ public class ManagerController {
     public Optional<String> validateInternship(@PathVariable Long internshipId) {
         return managerService.validateInternshipRequest(internshipId);
     }
-
+    
     @PutMapping("/api/manager-internships/{internshipId}/reject")
     public Optional<String> rejectInternship(@PathVariable Long internshipId) {
         return managerService.rejectInternshipRequest(internshipId);

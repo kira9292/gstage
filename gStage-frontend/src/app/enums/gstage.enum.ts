@@ -8,7 +8,7 @@ export enum InternshipType {
     EN_ATTENTE = 'EN_ATTENTE',       // En attente de confirmation
     ACCEPTE = 'ACCEPTE',             // Accepté
     EN_COURS = 'EN_COURS',           // En cours de réalisation
-    TERMINER = 'TERMINER',             // Terminé
+    TERMINE = 'TERMINE',             // Terminé
     REFUSE = 'REFUSE',                // Refusé
     PROPOSE = 'PROPOSE',
     ARCHIVE = 'ARCHIVE',

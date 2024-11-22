@@ -20,7 +20,10 @@ import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.Role;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatusUser;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
+import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO2;
 import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
+import sn.sonatel.dsi.ins.imoc.dto.mapper.AppUserMapper;
+import sn.sonatel.dsi.ins.imoc.exceptions.ResourceNotFoundException;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
 import sn.sonatel.dsi.ins.imoc.repository.ServiceRepository;
@@ -45,6 +48,9 @@ public class AppUserService implements UserDetailsService {
     private RoleRepository roleRepository;
     @Autowired
     private ServiceRepository serviceRepository;
+    @Autowired
+    private AppUserMapper appUserMapper;
+
 
     public AppUserService() {
     }
@@ -238,4 +244,12 @@ public class AppUserService implements UserDetailsService {
         LOG.debug("Request to delete AppUser : {}", id);
         appUserRepository.deleteById(id);
     }
+
+    public ManagerDTO2 getUserById(Long id) {
+        AppUser appUser = appUserRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'id: " + id));
+
+        return appUserMapper.toManagerDTO(appUser);
+    }
 }
+

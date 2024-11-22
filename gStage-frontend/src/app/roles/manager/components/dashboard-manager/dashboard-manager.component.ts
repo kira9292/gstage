@@ -7,12 +7,13 @@ import { ManagerService } from '../../services/manager.service';
 import { InternshipDetailModalComponent } from '../../../gwte/components/detail-demande/detail-demande.component';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { DetailDemandeForManagerComponent } from "../detail-demande-for-manager/detail-demande-for-manager.component";
 
 
 @Component({
   selector: 'app-dashboard-manager',
   standalone: true,
-  imports: [CommonModule, FormsModule, InternshipDetailModalComponent],
+  imports: [CommonModule, FormsModule, InternshipDetailModalComponent, DetailDemandeForManagerComponent],
   templateUrl: './dashboard-manager.component.html',
   styleUrl: './dashboard-manager.component.scss'
 })
@@ -22,6 +23,15 @@ export class DashboardManagerComponent implements OnInit {
   filteredInternships: any[] = [];
   searchTerm: string = '';
   selectedDetailsModal: any = null;
+  managerInternshipStatuses = [
+    InternshipStatus.PROPOSE,
+    InternshipStatus.ACCEPTE,
+    InternshipStatus.REFUSE,
+    InternshipStatus.EN_COURS,
+    InternshipStatus.TERMINE
+  ];
+  selectedStatus: InternshipStatus | null = null;
+
 
   statsData = [
     {
@@ -48,6 +58,7 @@ export class DashboardManagerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.selectedStatus = InternshipStatus.PROPOSE;
     this.loadProposedInternships();
   }
 
@@ -68,13 +79,49 @@ export class DashboardManagerComponent implements OnInit {
     );
   }
 
+  selectStatus(status: InternshipStatus): void {
+    this.selectedStatus = status;
+    this.applyFilters();
+  }
+
   applyFilters(): void {
-    this.filteredInternships = this.proposedInternships.filter(internship => 
-      !this.searchTerm || 
-      internship.candidat.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      internship.candidat.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      internship.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    let filtered = this.proposedInternships;
+
+    // Filter by selected status
+    if (this.selectedStatus) {
+      filtered = filtered.filter(
+        internship => internship.demandeStage.status === this.selectedStatus
+      );
+    }
+
+    // Filter by search term
+    if (this.searchTerm) {
+      filtered = filtered.filter(internship => 
+        internship.candidat.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        internship.candidat.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        internship.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+
+    this.filteredInternships = filtered;
+  }
+
+  getInternshipStatusLabel(status: InternshipStatus): string {
+    const statusLabels = {
+      [InternshipStatus.PROPOSE]: 'Proposé',
+      [InternshipStatus.ACCEPTE]: 'Accepté',
+      [InternshipStatus.REFUSE]: 'Rejeté',
+      [InternshipStatus.EN_COURS]: 'En cours',
+      [InternshipStatus.TERMINE]: 'Terminé'
+    };
+
+    return statusLabels[status as keyof typeof statusLabels] || '';
+  }
+
+  getStatusCount(status: InternshipStatus): number {
+    return this.proposedInternships.filter(
+      internship => internship.demandeStage.status === status
+    ).length;
   }
 
   updateStats(): void {
@@ -167,7 +214,9 @@ export class DashboardManagerComponent implements OnInit {
     const statusClasses = {
       [InternshipStatus.PROPOSE]: 'bg-yellow-100 text-yellow-800',
       [InternshipStatus.ACCEPTE]: 'bg-green-100 text-green-800',
-      [InternshipStatus.REFUSE]: 'bg-red-100 text-red-800'
+      [InternshipStatus.REFUSE]: 'bg-red-100 text-red-800',
+      [InternshipStatus.EN_COURS]: 'bg-blue-100 text-blue-800',
+      [InternshipStatus.TERMINE]: 'bg-purple-100 text-purple-800'
     };
     return statusClasses[status as keyof typeof statusClasses] || 'bg-gray-100 text-gray-800';
   }

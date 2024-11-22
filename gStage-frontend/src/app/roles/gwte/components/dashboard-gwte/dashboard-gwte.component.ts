@@ -33,7 +33,7 @@ export class DashboardGwteComponent implements OnInit {
     InternshipStatus.ACCEPTE,
     InternshipStatus.REFUSE,
     InternshipStatus.EN_COURS,
-    InternshipStatus.TERMINER
+    InternshipStatus.TERMINE
   ];
 
   selectedStatus: InternshipStatus | null = null;
@@ -319,7 +319,7 @@ downloadCoverLetter(demande: any): void {
       [InternshipStatus.ACCEPTE]: 'Accepté',
       [InternshipStatus.REFUSE]: 'Rejeté',
       [InternshipStatus.EN_COURS]: 'En cours',
-      [InternshipStatus.TERMINER]: 'Terminé',
+      [InternshipStatus.TERMINE]: 'Terminé',
       [InternshipStatus.PROPOSE]: 'Proposé'
 
     };
@@ -336,7 +336,7 @@ downloadCoverLetter(demande: any): void {
         return 'bg-red-100 text-red-800';
       case InternshipStatus.EN_COURS:
         return 'bg-blue-100 text-blue-800';
-      case InternshipStatus.TERMINER:
+      case InternshipStatus.TERMINE:
         return 'bg-gray-100 text-gray-800';
       case InternshipStatus.PROPOSE:
         return 'bg-indigo-100 text-indigo-800';
@@ -344,6 +344,9 @@ downloadCoverLetter(demande: any): void {
         return 'bg-gray-100 text-gray-800';
     }
   }
+
+
+
 
 
   selectStatus(status: InternshipStatus) {
