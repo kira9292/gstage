@@ -17,4 +17,7 @@ public interface DemandeStageRepository extends JpaRepository<DemandeStage, Long
     List<DemandeStage> findByStatus(InternshipStatus status);
 
     List<DemandeStage> findByAppUser(AppUser user);
+
+    void deleteByAppUserId(Long id);
+
 }
