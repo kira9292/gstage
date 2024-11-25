@@ -31,12 +31,13 @@
       "ValidationStatusUser",
       "Jwt",
       "ValidationStatuscandidat",
-      "StagiairesProposer"
+      "StagiairesProposer",
+      "Notification"
     ],
     "feignClient": true,
     "jhipsterVersion": "8.7.1",
     "jwtSecretKey": "YzcwMzhlMGJlZDcxNDBlYTQ4ODExN2VhODYwYWZkNTgyNzA1ODA5NjE2MWFmNzJhYjBkZTE3NGIxZGU0MDI5ZTNkMTQwN2Q4Y2ExZDdiY2JjZDk0MmNhYzAzODY2NTZmZDYyZDU0YWNjNjIzZjkxMmZhMGQ4Yzg2MDg3MmZiYzQ=",
-    "lastLiquibaseTimestamp": 1731490339000,
+    "lastLiquibaseTimestamp": 1732549293000,
     "messageBroker": false,
     "microfrontend": null,
     "microfrontends": [],
