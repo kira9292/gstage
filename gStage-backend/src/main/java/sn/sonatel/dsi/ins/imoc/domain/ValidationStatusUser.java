@@ -64,6 +64,7 @@ public class ValidationStatusUser implements Serializable {
         return this;
     }
 
+
     public void setId(Long id) {
         this.id = id;
     }

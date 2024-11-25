@@ -29,10 +29,11 @@ export class DashboardGwteComponent implements OnInit {
   searchTerm: string = '';
   internshipStatuses = [
     InternshipStatus.EN_ATTENTE,
+    InternshipStatus.PROPOSE,
     InternshipStatus.ACCEPTE,
     InternshipStatus.REFUSE,
     InternshipStatus.EN_COURS,
-    InternshipStatus.TERMINER
+    InternshipStatus.TERMINE
   ];
 
   selectedStatus: InternshipStatus | null = null;
@@ -41,10 +42,10 @@ export class DashboardGwteComponent implements OnInit {
     // Stats data
     statsData = [
       {
-        label: 'Total Demandes',
+        label: 'Total Demandes non archivées',
         value: 0,
         icon: 'fa-file-alt',
-        borderColor: 'border-blue-500',
+        borderColor: 'border-blue-500',  
         bgColor: 'bg-blue-100',
         iconColor: 'text-blue-500'
       },
@@ -71,6 +72,14 @@ export class DashboardGwteComponent implements OnInit {
         borderColor: 'border-purple-500',
         bgColor: 'bg-purple-100',
         iconColor: 'text-purple-500'
+      },
+      {
+        label: 'Proposé',
+        value: 0,
+        icon: 'fa-paper-plane',
+        borderColor: 'border-indigo-500',
+        bgColor: 'bg-indigo-100',
+        iconColor: 'text-indigo-500'
       }
     ];
     
@@ -101,10 +110,11 @@ export class DashboardGwteComponent implements OnInit {
 
   
   updateStats(): void {
-    this.statsData[0].value = this.demandesStage.length;
+    this.statsData[0].value = this.demandesStage.length - this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.ARCHIVE).length;
     this.statsData[1].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_ATTENTE).length;
     this.statsData[2].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.ACCEPTE).length;
     this.statsData[3].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_COURS).length;
+    this.statsData[4].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.PROPOSE).length;
   }
 
 
@@ -309,7 +319,9 @@ downloadCoverLetter(demande: any): void {
       [InternshipStatus.ACCEPTE]: 'Accepté',
       [InternshipStatus.REFUSE]: 'Rejeté',
       [InternshipStatus.EN_COURS]: 'En cours',
-      [InternshipStatus.TERMINER]: 'Terminé'
+      [InternshipStatus.TERMINE]: 'Terminé',
+      [InternshipStatus.PROPOSE]: 'Proposé'
+
     };
 
     return statusLabels[status as keyof typeof statusLabels] || '';
@@ -324,12 +336,17 @@ downloadCoverLetter(demande: any): void {
         return 'bg-red-100 text-red-800';
       case InternshipStatus.EN_COURS:
         return 'bg-blue-100 text-blue-800';
-      case InternshipStatus.TERMINER:
+      case InternshipStatus.TERMINE:
         return 'bg-gray-100 text-gray-800';
+      case InternshipStatus.PROPOSE:
+        return 'bg-indigo-100 text-indigo-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
   }
+
+
+
 
 
   selectStatus(status: InternshipStatus) {

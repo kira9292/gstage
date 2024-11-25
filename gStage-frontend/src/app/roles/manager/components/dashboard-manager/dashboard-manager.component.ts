@@ -3,330 +3,225 @@ import { Component, OnInit } from '@angular/core';
 import { InternshipStatus } from '../../../../enums/gstage.enum';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ManagerService } from '../../services/manager.service';
+import { InternshipDetailModalComponent } from '../../../gwte/components/detail-demande/detail-demande.component';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { DetailDemandeForManagerComponent } from "../detail-demande-for-manager/detail-demande-for-manager.component";
 
-interface Manager {
-  id: string;
-  firstName: string;
-  lastName: string;
-  department: string;
-}
-
-interface InternshipRequest {
-  id: string;
-  reference: string;
-  candidate: {
-    firstName: string;
-    lastName: string;
-    formation: string;
-    school: string;
-    cv?: string;
-    coverLetter?: string;
-  };
-  department: string;
-  status: InternshipStatus;
-  proposedDate: Date;
-  startDate?: Date;
-  endDate?: Date;
-  comments?: string;
-}
 
 @Component({
   selector: 'app-dashboard-manager',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  template: `
-    <div class="min-h-screen bg-gray-50 py-8">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header Section -->
-        <div class="mb-8">
-          <div class="flex items-center justify-between">
-            <div>
-              <h1 class="text-3xl font-bold text-gray-900">Dashboard Manager - {{ currentManager.department }}</h1>
-              <p class="mt-2 text-sm text-gray-600">
-                {{ filteredRequests.length }} demande(s) de stage à traiter
-              </p>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
-          <div class="p-6 bg-white rounded-lg shadow-sm border-l-4 border-yellow-500">
-            <div class="flex items-center">
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-600">En attente de décision</p>
-                <p class="mt-2 text-3xl font-semibold text-gray-900">
-                  {{ getPendingRequestsCount() }}
-                </p>
-              </div>
-              <div class="p-3 rounded-full bg-yellow-100">
-                <i class="fas fa-clock text-xl text-yellow-600"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-6 bg-white rounded-lg shadow-sm border-l-4 border-green-500">
-            <div class="flex items-center">
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-600">Stages validés</p>
-                <p class="mt-2 text-3xl font-semibold text-gray-900">
-                  {{ getAcceptedRequestsCount() }}
-                </p>
-              </div>
-              <div class="p-3 rounded-full bg-green-100">
-                <i class="fas fa-check text-xl text-green-600"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="p-6 bg-white rounded-lg shadow-sm border-l-4 border-blue-500">
-            <div class="flex items-center">
-              <div class="flex-1">
-                <p class="text-sm font-medium text-gray-600">Stages en cours</p>
-                <p class="mt-2 text-3xl font-semibold text-gray-900">
-                  {{ getOngoingRequestsCount() }}
-                </p>
-              </div>
-              <div class="p-3 rounded-full bg-blue-100">
-                <i class="fas fa-user-graduate text-xl text-blue-600"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-            <div class="w-full md:w-1/3">
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                  <i class="fas fa-search text-gray-400"></i>
-                </span>
-                <input 
-                  type="text"
-                  [(ngModel)]="searchTerm"
-                  (input)="applyFilters()"
-                  placeholder="Rechercher par nom, référence..."
-                  class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-              </div>
-            </div>
-            
-            <div class="w-full md:w-1/4">
-              <select 
-                [(ngModel)]="statusFilter"
-                (change)="applyFilters()"
-                class="w-full border border-gray-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                <option value="">Tous les statuts</option>
-                <option value="PROPOSE">Proposé</option>
-                <option value="ACCEPTE">Accepté</option>
-                <option value="REFUSE">Refusé</option>
-                <option value="EN_COURS">En cours</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Internship Requests List -->
-        <div class="space-y-6">
-          <div 
-            *ngFor="let request of filteredRequests" 
-            class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-            <div class="p-6">
-              <div class="flex justify-between items-start">
-                <div>
-                  <div class="flex items-center space-x-2">
-                    <h3 class="text-lg font-semibold text-gray-900">
-                      {{ request.candidate.firstName }} {{ request.candidate.lastName }}
-                    </h3>
-                    <span 
-                      [ngClass]="getStatusClass(request.status)"
-                      class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
-                      {{ getStatusLabel(request.status) }}
-                    </span>
-                  </div>
-                  <p class="text-sm text-gray-600 mt-1">Réf: {{ request.reference }}</p>
-                  <p class="text-sm text-gray-600 mt-1">Proposé le: {{ request.proposedDate | date:'dd/MM/yyyy' }}</p>
-                </div>
-
-                <!-- Action Buttons for PROPOSE status -->
-                <div *ngIf="request.status === 'PROPOSE'" class="flex space-x-3">
-                  <button 
-                    (click)="acceptRequest(request)"
-                    class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                    <i class="fas fa-check mr-2"></i>
-                    Accepter
-                  </button>
-                  <button 
-                    (click)="rejectRequest(request)"
-                    class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-                    <i class="fas fa-times mr-2"></i>
-                    Refuser
-                  </button>
-                </div>
-              </div>
-
-              <!-- Candidate Details -->
-              <div class="mt-4 grid grid-cols-2 gap-4">
-                <div class="flex items-center">
-                  <i class="fas fa-graduation-cap text-gray-400 w-5"></i>
-                  <span class="ml-2 text-sm text-gray-600">{{ request.candidate.formation }}</span>
-                </div>
-                <div class="flex items-center">
-                  <i class="fas fa-school text-gray-400 w-5"></i>
-                  <span class="ml-2 text-sm text-gray-600">{{ request.candidate.school }}</span>
-                </div>
-              </div>
-
-              <!-- Documents -->
-              <div class="mt-4 flex space-x-4">
-                <button 
-                  *ngIf="request.candidate.cv"
-                  (click)="viewDocument(request.candidate.cv)"
-                  class="flex items-center text-sm text-blue-600 hover:text-blue-800">
-                  <i class="fas fa-file-pdf mr-2"></i>
-                  Voir CV
-                </button>
-                <button 
-                  *ngIf="request.candidate.coverLetter"
-                  (click)="viewDocument(request.candidate.coverLetter)"
-                  class="flex items-center text-sm text-blue-600 hover:text-blue-800">
-                  <i class="fas fa-envelope mr-2"></i>
-                  Voir Lettre de motivation
-                </button>
-              </div>
-
-              <!-- Comments section for PROPOSE status -->
-              <div *ngIf="request.status === 'PROPOSE'" class="mt-4">
-                <textarea
-                  [(ngModel)]="request.comments"
-                  placeholder="Ajouter un commentaire sur la décision..."
-                  class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  rows="2"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-
-          <!-- Empty State -->
-          <div 
-            *ngIf="filteredRequests.length === 0" 
-            class="text-center py-12 bg-white rounded-lg shadow-sm">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-              <i class="fas fa-folder-open text-gray-400 text-xl"></i>
-            </div>
-            <h3 class="text-lg font-medium text-gray-900">Aucune demande trouvée</h3>
-            <p class="mt-2 text-sm text-gray-500">Aucune demande ne correspond à vos critères de recherche.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  `
+  imports: [CommonModule, FormsModule, InternshipDetailModalComponent, DetailDemandeForManagerComponent],
+  templateUrl: './dashboard-manager.component.html',
+  styleUrl: './dashboard-manager.component.scss'
 })
 export class DashboardManagerComponent implements OnInit {
-  currentManager: Manager = {
-    id: '1',
-    firstName: 'Seydina',
-    lastName: 'Dia',
-    department: 'Informatique'
-  };
-
-  internshipRequests: InternshipRequest[] = [];
-  filteredRequests: InternshipRequest[] = [];
+  InternshipStatus = InternshipStatus;
+  proposedInternships: any[] = [];
+  filteredInternships: any[] = [];
   searchTerm: string = '';
-  statusFilter: string = '';
+  selectedDetailsModal: any = null;
+  managerInternshipStatuses = [
+    InternshipStatus.PROPOSE,
+    InternshipStatus.ACCEPTE,
+    InternshipStatus.REFUSE,
+    InternshipStatus.EN_COURS,
+    InternshipStatus.TERMINE
+  ];
+  selectedStatus: InternshipStatus | null = null;
 
-  constructor() {}
 
-  ngOnInit() {
-    // Simuler le chargement des données
-    this.loadInternshipRequests();
+  statsData = [
+    {
+      label: 'Total Propositions',
+      value: 0,
+      icon: 'fa-file-alt',
+      borderColor: 'border-blue-500',  
+      bgColor: 'bg-blue-100',
+      iconColor: 'text-blue-500'
+    },
+    {
+      label: 'Nouvelles Propositions',
+      value: 0,
+      icon: 'fa-paper-plane',
+      borderColor: 'border-yellow-500',
+      bgColor: 'bg-yellow-100',
+      iconColor: 'text-yellow-500'
+    }
+  ];
+
+  constructor(
+    private managerService: ManagerService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.selectedStatus = InternshipStatus.PROPOSE;
+    this.loadProposedInternships();
+  }
+
+  loadProposedInternships(): void {
+    this.managerService.getManagerInternshipRequests().subscribe(
+      (data) => {
+        this.proposedInternships = data;
+        this.applyFilters();
+        this.updateStats();
+      },
+      (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Impossible de charger les propositions de stage'
+        });
+      }
+    );
+  }
+
+  selectStatus(status: InternshipStatus): void {
+    this.selectedStatus = status;
     this.applyFilters();
   }
 
-  loadInternshipRequests() {
-    // À remplacer par un vrai appel API
-    this.internshipRequests = [
-      // Exemple de données
-    ];
-    this.filteredRequests = [...this.internshipRequests];
+  applyFilters(): void {
+    let filtered = this.proposedInternships;
+
+    // Filter by selected status
+    if (this.selectedStatus) {
+      filtered = filtered.filter(
+        internship => internship.demandeStage.status === this.selectedStatus
+      );
+    }
+
+    // Filter by search term
+    if (this.searchTerm) {
+      filtered = filtered.filter(internship => 
+        internship.candidat.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        internship.candidat.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        internship.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+
+    this.filteredInternships = filtered;
   }
 
-  applyFilters() {
-    this.filteredRequests = this.internshipRequests.filter(request => {
-      const matchesSearch = !this.searchTerm || 
-        request.candidate.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        request.candidate.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        request.reference.toLowerCase().includes(this.searchTerm.toLowerCase());
+  getInternshipStatusLabel(status: InternshipStatus): string {
+    const statusLabels = {
+      [InternshipStatus.PROPOSE]: 'Proposé',
+      [InternshipStatus.ACCEPTE]: 'Accepté',
+      [InternshipStatus.REFUSE]: 'Rejeté',
+      [InternshipStatus.EN_COURS]: 'En cours',
+      [InternshipStatus.TERMINE]: 'Terminé'
+    };
 
-      const matchesStatus = !this.statusFilter || request.status === this.statusFilter;
+    return statusLabels[status as keyof typeof statusLabels] || '';
+  }
 
-      return matchesSearch && matchesStatus;
+  getStatusCount(status: InternshipStatus): number {
+    return this.proposedInternships.filter(
+      internship => internship.demandeStage.status === status
+    ).length;
+  }
+
+  updateStats(): void {
+    this.statsData[0].value = this.proposedInternships.length;
+    this.statsData[1].value = this.proposedInternships.filter(
+      p => p.demandeStage.status === InternshipStatus.PROPOSE
+    ).length;
+  }
+
+  acceptInternship(internship: any): void {
+    Swal.fire({
+      title: 'Confirmer l\'acceptation',
+      text: `Voulez-vous accepter le stage de ${internship.candidat.firstName} ${internship.candidat.lastName} ?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Accepter',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.managerService.validateInternshipRequest(internship.demandeStage.id)
+        .subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Stage accepté !',
+              text: `Le stage de ${internship.candidat.firstName} a été accepté`
+            });
+            this.loadProposedInternships();
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Impossible d\'accepter le stage'
+            });
+          }
+        });
+      }
     });
   }
 
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'PROPOSE':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'ACCEPTE':
-        return 'bg-green-100 text-green-800';
-      case 'REFUSE':
-        return 'bg-red-100 text-red-800';
-      case 'EN_COURS':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
+  rejectInternship(internship: any): void {
+    Swal.fire({
+      title: 'Motif de rejet',
+      input: 'textarea',
+      inputLabel: 'Raison du rejet',
+      inputPlaceholder: 'Saisissez une raison...',
+      inputAttributes: {
+        'aria-label': 'Raison du rejet'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Rejeter',
+      cancelButtonText: 'Annuler',
+      // inputValidator: (value) => {
+      //   if (!value) {
+      //     return 'Vous devez saisir un motif de rejet';
+      //   }
+      // }
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        this.managerService.rejectInternshipRequest(internship.demandeStage.id)
+        .subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Stage rejeté',
+              text: `Le stage de ${internship.candidat.firstName} a été rejeté`
+            });
+            this.loadProposedInternships();
+          },
+          error: () => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Impossible de rejeter le stage'
+            });
+          }
+        });
+      }
+    });
   }
 
-  getStatusLabel(status: string): string {
-    const labels: { [key: string]: string } = {
-      'PROPOSE': 'Proposé',
-      'ACCEPTE': 'Accepté',
-      'REFUSE': 'Refusé',
-      'EN_COURS': 'En cours'
+  viewInternshipDetails(internship: any): void {
+    this.selectedDetailsModal = internship;
+  }
+
+  getStatusClass(status: InternshipStatus): string {
+    const statusClasses = {
+      [InternshipStatus.PROPOSE]: 'bg-yellow-100 text-yellow-800',
+      [InternshipStatus.ACCEPTE]: 'bg-green-100 text-green-800',
+      [InternshipStatus.REFUSE]: 'bg-red-100 text-red-800',
+      [InternshipStatus.EN_COURS]: 'bg-blue-100 text-blue-800',
+      [InternshipStatus.TERMINE]: 'bg-purple-100 text-purple-800'
     };
-    return labels[status] || status;
+    return statusClasses[status as keyof typeof statusClasses] || 'bg-gray-100 text-gray-800';
   }
 
-  getPendingRequestsCount(): number {
-    return this.internshipRequests.filter(r => r.status === 'PROPOSE').length;
-  }
-
-  getAcceptedRequestsCount(): number {
-    return this.internshipRequests.filter(r => r.status === 'ACCEPTE').length;
-  }
-
-  getOngoingRequestsCount(): number {
-    return this.internshipRequests.filter(r => r.status === 'EN_COURS').length;
-  }
-
-  async acceptRequest(request: InternshipRequest) {
-    try {
-      // Appel API pour accepter la demande
-      request.status = InternshipStatus.ACCEPTE;
-      // Rafraîchir les données
-      this.applyFilters();
-    } catch (error) {
-      console.error('Error accepting request:', error);
-    }
-  }
-
-  async rejectRequest(request: InternshipRequest) {
-    try {
-      // Appel API pour refuser la demande
-      request.status = InternshipStatus.REFUSE;
-      // Rafraîchir les données
-      this.applyFilters();
-    } catch (error) {
-      console.error('Error rejecting request:', error);
-    }
-  }
-
-  viewDocument(documentUrl: string) {
-    // Implémenter la logique pour visualiser les documents
-    window.open(documentUrl, '_blank');
+  closeDetailsModal(): void {
+    this.selectedDetailsModal = null;
   }
 }

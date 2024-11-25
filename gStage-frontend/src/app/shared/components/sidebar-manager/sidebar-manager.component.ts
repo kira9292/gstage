@@ -1,26 +1,24 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { NavigationService } from '../../../services/navigation.service';
 import { AuthService } from '../../../core/services/auth.service';
 import Swal from 'sweetalert2';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-sidebar-gwte',
+  selector: 'app-sidebar-manager',
   standalone: true,
   imports: [
     RouterLink, 
-    CommonModule, 
+    CommonModule,
     ReactiveFormsModule, 
     RouterLinkActive
   ],
-  templateUrl: './sidebar-gwte.component.html',
-  styleUrl: './sidebar-gwte.component.scss'
+  templateUrl: './sidebar-manager.component.html',
+  styleUrl: './sidebar-manager.component.scss'
 })
-
-
-export class SidebarGwteComponent {
+export class SidebarManagerComponent {
   activeTab: string = 'dashboard';
   userInfo: { firstName: string; name: string } | null = null;
   constructor(

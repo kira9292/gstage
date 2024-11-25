@@ -70,7 +70,7 @@ public class Candidat implements Serializable {
     @Column(name = "formation")
     private Formation formation;
 
-    @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "candidat", "departement", "businessUnit" }, allowSetters = true)
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "candidat")
     @JsonBackReference
     private DemandeStage demandeStage;

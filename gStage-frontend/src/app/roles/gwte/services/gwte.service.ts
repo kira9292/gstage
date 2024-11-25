@@ -2,6 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 
+
+export interface AppUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  service?: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -40,5 +47,11 @@ export class GwteService {
     let headers = new HttpHeaders();
     headers = headers.append('Content-type', 'application/json');
     return this.http.get<any[]>(`${this.apiUrl}/managers`, {headers});
+  }
+
+  getManagerById(userId: string): Observable<AppUser> {
+    let headers = new HttpHeaders();
+    headers = headers.append('Content-type', 'application/json');
+    return this.http.get<AppUser>(`${this.apiUrl}/users/${userId}`, {headers});
   }
 }

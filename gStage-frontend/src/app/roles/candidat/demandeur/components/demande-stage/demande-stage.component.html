@@ -1,114 +1,199 @@
 <!-- Step1 -->
 <div *ngIf="currentStep === 1" class="bg-white rounded-lg shadow-md p-8 w-full mx-auto">
-    <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
-      <i class="fas fa-file-alt mr-3 text-orange-500"></i>
-      Demande de Stage (1/2)
-    </h2>
-    <form [formGroup]="applicationForm" (ngSubmit)="goToStep2()" class="space-y-8">
-      <div class="space-y-6">
-        <!-- Première ligne : Prénom et Nom -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Prénom -->
-          <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <i class="fas fa-user mr-2 text-orange-500"></i>
-              Prénom
-            </label>
-            <input type="text" formControlName="firstName"
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="firstNameError" 
-                 class="text-red-500 text-sm mt-1 flex items-center">
-              <i class="fas fa-exclamation-circle mr-1"></i>
-              {{ firstNameError }}
-            </div>
-          </div>
-
-          <!-- Nom -->
-          <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <i class="fas fa-user mr-2 text-orange-500"></i>
-              Nom
-            </label>
-            <input type="text" formControlName="lastName"
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="lastNameError" 
-                 class="text-red-500 text-sm mt-1 flex items-center">
-              <i class="fas fa-exclamation-circle mr-1"></i>
-              {{ lastNameError }}
-            </div>
+  <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center">
+    <i class="fas fa-file-alt mr-3 text-orange-500"></i>
+    Demande de Stage (1/2)
+  </h2>
+  <form [formGroup]="applicationForm" (ngSubmit)="goToStep2()" class="space-y-8">
+    <div class="space-y-6">
+      <!-- Première ligne : Prénom et Nom -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Prénom -->
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <i class="fas fa-user mr-2 text-orange-500"></i>
+            Prénom
+          </label>
+          <input type="text" formControlName="firstName"
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+          <div *ngIf="firstNameError" 
+               class="text-red-500 text-sm mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i>
+            {{ firstNameError }}
           </div>
         </div>
 
-        <!-- Deuxième ligne : Email et Numéro de téléphone -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Email -->
-          <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <i class="fas fa-envelope mr-2 text-orange-500"></i>
-              Email
-            </label>
-            <input type="email" formControlName="email"
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="emailError" 
-                 class="text-red-500 text-sm mt-1 flex items-center">
-              <i class="fas fa-exclamation-circle mr-1"></i>
-              {{ emailError }}
-            </div>
-          </div>
-
-          <!-- Numéro de téléphone -->
-          <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <i class="fas fa-phone mr-2 text-orange-500"></i>
-              Numéro de téléphone
-            </label>
-            <input type="tel" formControlName="phone"
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="phoneError" 
-                 class="text-red-500 text-sm mt-1 flex items-center">
-              <i class="fas fa-exclamation-circle mr-1"></i>
-              {{phoneError}}
-            </div>
+        <!-- Nom -->
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <i class="fas fa-user mr-2 text-orange-500"></i>
+            Nom
+          </label>
+          <input type="text" formControlName="lastName"
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+          <div *ngIf="lastNameError" 
+               class="text-red-500 text-sm mt-1 flex items-center">
+            <i class="fas fa-exclamation-circle mr-1"></i>
+            {{ lastNameError }}
           </div>
         </div>
 
-        <!-- Troisième ligne : Formation et École -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Formation -->
-          <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <i class="fas fa-book mr-2 text-orange-500"></i>
-              Formation
-            </label>
-            <select formControlName="formation" 
-                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-              <option value="">Sélectionnez une formation</option>
-              <option value="INFORMATIQUE_SI">Informatique et Systèmes d'Information</option>
-              <option value="GESTION_RH">Gestion des Ressources Humaines</option>
-              <option value="MARKETING_COMMUNICTION">Marketing et Communication</option>
-              <option value="DROIT_ADMINISTRATION">Droit et Administration</option>
-              <option value="GI">Génie Industriel</option>
-              <option value="FINANCE_COMPTABILIILE">Finance et Comptabilité</option>
-              <option value="MANAGEMENT_OPERATION">Management des Opérations</option>
-              <option value="ANALYSE_DONNE">Data Science et Analyse de Données</option>
-              <option value="RESEAUX_TELECOMS">Réseaux et Télécommunications</option>
-              <option value="COMMERCE">Commerce et Ventes</option>
-            </select>
-            <div *ngIf="formationError" 
-                 class="text-red-500 text-sm mt-1 flex items-center">
-              <i class="fas fa-exclamation-circle mr-1"></i>
-              {{ formationError }}
-            </div>
-          </div>
-          
+                <!-- Email -->
+                <div class="form-group">
+                  <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                    <i class="fas fa-envelope mr-2 text-orange-500"></i>
+                    Email
+                  </label>
+                  <input type="email" formControlName="email"
+                         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                  <div *ngIf="emailError" 
+                       class="text-red-500 text-sm mt-1 flex items-center">
+                    <i class="fas fa-exclamation-circle mr-1"></i>
+                    {{ emailError }}
+                  </div>
+                </div>
+      </div>
 
-          <!-- École -->
+      <!-- Deuxième ligne : Email et Numéro de téléphone -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+ <!-- Date de naissance -->
+ <div class="form-group">
+  <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+    <i class="fas fa-calendar mr-2 text-orange-500"></i>
+    Date de naissance
+  </label>
+  <input type="date" 
+         formControlName="birthDate"
+         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+  <div *ngIf="birthDateError" 
+       class="text-red-500 text-sm mt-1 flex items-center">
+    <i class="fas fa-exclamation-circle mr-1"></i>
+    {{ birthDateError }}
+  </div>
+</div>
+
+<!-- Lieu de naissance -->
+<div class="form-group">
+  <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+    <i class="fas fa-map-marker-alt mr-2 text-orange-500"></i>
+    Lieu de naissance
+  </label>
+  <input type="text" 
+         formControlName="birthPlace"
+         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+  <div *ngIf="birthPlaceError" 
+       class="text-red-500 text-sm mt-1 flex items-center">
+    <i class="fas fa-exclamation-circle mr-1"></i>
+    {{ birthPlaceError }}
+  </div>
+</div>
+ <!-- Adresse -->
+ <div class="form-group">
+  <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+    <i class="fas fa-home mr-2 text-orange-500"></i>
+    Adresse
+  </label>
+  <input type="text" 
+         formControlName="address"
+         class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+  <div *ngIf="addressError" 
+       class="text-red-500 text-sm mt-1 flex items-center">
+    <i class="fas fa-exclamation-circle mr-1"></i>
+    {{ addressError }}
+  </div>
+</div>
+
+        
+      </div>
+
+      <!-- Troisième ligne : Date et Lieu de naissance -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+       <!-- Numéro de téléphone -->
+       <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <i class="fas fa-phone mr-2 text-orange-500"></i>
+          Numéro de téléphone
+        </label>
+        <input type="tel" formControlName="phone"
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+        <div *ngIf="phoneError" 
+             class="text-red-500 text-sm mt-1 flex items-center">
+          <i class="fas fa-exclamation-circle mr-1"></i>
+          {{phoneError}}
+        </div>
+      </div>
+      <!-- CNI -->
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <i class="fas fa-id-card mr-2 text-orange-500"></i>
+          Numéro CNI
+        </label>
+        <input type="text" 
+               formControlName="cni"
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+        <div *ngIf="cniError" 
+             class="text-red-500 text-sm mt-1 flex items-center">
+          <i class="fas fa-exclamation-circle mr-1"></i>
+          {{ cniError }}
+        </div>
+      </div>
+
+      <!-- Nationalité -->
+      <div class="form-group">
+        <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <i class="fas fa-globe mr-2 text-orange-500"></i>
+          Nationalité
+        </label>
+        <input type="text" 
+               formControlName="nationality"
+               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+        <div *ngIf="nationalityError" 
+             class="text-red-500 text-sm mt-1 flex items-center">
+          <i class="fas fa-exclamation-circle mr-1"></i>
+          {{ nationalityError }}
+        </div>
+      </div>
+      </div>
+
+      <!-- Quatrième ligne : CNI et Nationalité -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Formation -->
+                <div class="form-group">
+                  <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                    <i class="fas fa-book mr-2 text-orange-500"></i>
+                    Formation
+                  </label>
+                  <select formControlName="formation" 
+                          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                    <option value="">Sélectionnez une formation</option>
+                    <option value="INFORMATIQUE_SI">Informatique et Systèmes d'Information</option>
+                    <option value="GESTION_RH">Gestion des Ressources Humaines</option>
+                    <option value="MARKETING_COMMUNICATION">Marketing et Communication</option>
+                    <option value="DROIT_ADMINISTRATION">Droit et Administration</option>
+                    <option value="GI">Génie Industriel</option>
+                    <option value="FINANCE_COMPTABILIILE">Finance et Comptabilité</option>
+                    <option value="MANAGEMENT_OPERATION">Management des Opérations</option>
+                    <option value="ANALYSE_DONNE">Data Science et Analyse de Données</option>
+                    <option value="RESEAUX_TELECOMS">Réseaux et Télécommunications</option>
+                    <option value="COMMERCE">Commerce et Ventes</option>
+                  </select>
+                  <div *ngIf="formationError" 
+                       class="text-red-500 text-sm mt-1 flex items-center">
+                    <i class="fas fa-exclamation-circle mr-1"></i>
+                    {{ formationError }}
+                  </div>
+                </div>
+
+
+                <!-- Ecole/Universite -->
           <div class="form-group">
             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
               <i class="fas fa-school mr-2 text-orange-500"></i>
               École/Universite
             </label>
-            <input type="text" formControlName="school"
+            <input type="text" 
+                   formControlName="school"
                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
             <div *ngIf="schoolError" 
                  class="text-red-500 text-sm mt-1 flex items-center">
@@ -116,20 +201,43 @@
               {{ schoolError }}
             </div>
           </div>
-        </div>
+
+          <!-- Niveau d'Etudes -->
+          <div class="form-group">
+            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-book mr-2 text-orange-500"></i>
+              Niveau d'etudes
+            </label>
+            <select formControlName="educationLevel" 
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+              <option value="">Sélectionnez un niveau d'etudes</option>
+              <option value="BAC">Bac+1</option>
+              <option value="BAC_PLUS_2">Bac+2</option>
+              <option value="BAC_PLUS_3">Bac+3</option>
+              <option value="BAC_PLUS_4">Bac+4</option>
+              <option value="BAC_PLUS_5">Bac+5</option>
+            </select>
+            <div *ngIf="formationError" 
+                 class="text-red-500 text-sm mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              {{ formationError }}
+            </div>
+          </div>
       </div>
 
-      <!-- Bouton de Soumission -->
-      <div class="flex justify-end pt-4">
-        <button type="submit"
-                (click)="goToStep2()"
-                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-          <i class="fas fa-arrow-right mr-2"></i>
-          Suivant
-        </button>
-      </div>
-    </form>
-  </div>
+    </div>
+
+    <!-- Bouton de Soumission -->
+    <div class="flex justify-end pt-4">
+      <button type="submit"
+              (click)="goToStep2()"
+              class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        <i class="fas fa-arrow-right mr-2"></i>
+        Suivant
+      </button>
+    </div>
+  </form>
+</div>
 
   
 
@@ -143,6 +251,9 @@
     <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="space-y-8">
       <!-- Section Information sur le Stage -->
       <div class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+        </div>
         <!-- Première Ligne: Type et Direction -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Type de Stage -->
@@ -366,16 +477,4 @@
 </div>
 <app-success-modal *ngIf="showModal" (close)="closeModal()"></app-success-modal>
 
-<!-- Step3 : Vérification de l'email -->
-<!-- Étape 3 : Saisie du code de vérification -->
-<!-- <div *ngIf="currentStep === 3">
-  <h3>Vérification de votre e-mail</h3>
-  <p>Un email de confirmation a été envoyé à l'adresse {{ applicationForm.get('email')?.value }}. Veuillez le saisir ci-dessous.</p>
-  
-  <form [formGroup]="verificationForm" (ngSubmit)="verifyCode()">
-    <input formControlName="verificationCode" placeholder="Entrez le code de vérification" />
-    <div *ngIf="verificationError" class="error">{{ verificationError }}</div>
-    <button type="submit">Vérifier le code</button>
-  </form>
-</div> -->
 

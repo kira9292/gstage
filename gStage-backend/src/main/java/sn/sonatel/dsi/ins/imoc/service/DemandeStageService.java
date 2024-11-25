@@ -4,6 +4,7 @@ package sn.sonatel.dsi.ins.imoc.service;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.domain.*;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
@@ -37,13 +38,6 @@ public class  DemandeStageService {
 
 
 
-
-
-
-
-
-
-
     public void activation(Map<String, String> code) {
         ValidationStatuscandidat validation = this.validationCanditatService.getUserByCode(code.get("code"));
         if (Instant.now().isAfter(validation.getExpire())){
@@ -67,12 +61,11 @@ public class  DemandeStageService {
         ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(mail.get("mail"));
         if (validationStatusOptional!=null) {
             this.notificationService.envoyercandidat(validationStatusOptional);
-
         } else {
             throw new RuntimeException("Aucun candidat trouvé avec cet email");
         }
     }
-
+    @Transactional
     public void accepterstagiaire(Map<String, String> mail) throws MessagingException, UnsupportedEncodingException {
         ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(mail.get("mail"));
         if (validationStatusOptional!=null) {
@@ -130,5 +123,4 @@ public class  DemandeStageService {
     public List<DemandeStage> findAllArchived() {
         return demandeStageRepository.findByStatus(InternshipStatus.ARCHIVE);
     }
-
 }

@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { LoginData, RegisterData } from '../interfaces/auth.interface';
+import Swal from 'sweetalert2';
 
 
 @Injectable({
@@ -154,7 +155,6 @@ export class AuthService {
         this.router.navigate(['/login']);
         break;
     }
-    
   }
 
   // Méthode pour vérifier si l'utilisateur est authentifié
@@ -188,16 +188,29 @@ export class AuthService {
             localStorage.removeItem(this.TOKEN_KEY);
             localStorage.removeItem(this.USER_INFO_KEY);
             this.userInfoSubject.next(null);
-            alert("Deconnexion reussie avec succes !");
             this.router.navigate(['/login']);
+            Swal.fire({
+              icon: 'success',
+              title: 'Deconnexion reussie',
+              text: 'La deconnexion a reussie !',
+              showConfirmButton: true,
+              timer: 3000,
+              position: 'top-end',
+              toast: true
+            });
         },
+
         error => {
             console.error("Erreur lors de la déconnexion", error);
-            alert("Échec de la déconnexion, veuillez réessayer.");
-        }
-    );
-  }
-
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de la deconnexion',
+              footer: error.message
+            });        
+          });
+    }
+    
   // startTokenExpirationCheck(): void {
   //   setInterval(() => {
   //     const token = localStorage.getItem(this.TOKEN_KEY);

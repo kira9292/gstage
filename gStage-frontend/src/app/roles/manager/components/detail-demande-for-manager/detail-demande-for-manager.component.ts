@@ -1,20 +1,20 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import Swal from 'sweetalert2';
-import { GwteService } from '../../services/gwte.service';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InternshipStatus } from '../../../../enums/gstage.enum';
+import { GwteService } from '../../../gwte/services/gwte.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
+import { ManagerService } from '../../services/manager.service';
 
 @Component({
-  selector: 'app-internship-details-modal',
+  selector: 'app-detail-demande-for-manager',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './detail-demande.component.html',
-  styleUrl: './detail-demande.component.scss'
+  templateUrl: './detail-demande-for-manager.component.html',
+  styleUrl: './detail-demande-for-manager.component.scss'
 })
-export class InternshipDetailModalComponent implements OnInit {
+export class DetailDemandeForManagerComponent {
   @Input() demande: any;
-  manager: any;
   @Output() close = new EventEmitter<void>();
   @Output() statusUpdated = new EventEmitter<void>();  // Nouvel EventEmitter
 
@@ -23,12 +23,9 @@ export class InternshipDetailModalComponent implements OnInit {
 
   constructor(
     private gwteService: GwteService,
-    private router: Router
+    private router: Router,
+    private managerService: ManagerService
   ){
-  }
-  ngOnInit(): void {
-    if(this.demande.demandeStage.status == InternshipStatus.PROPOSE || this.demande.demandeStage.status == InternshipStatus.ACCEPTE )
-      this.loadManagerDetails(this.demande.demandeStage.appUser.id);
   }
 
 // Nouvelles méthodes pour les actions contextuelles
@@ -75,6 +72,83 @@ sendWelcomeEmail() {
         title: 'Erreur',
         text: 'Une erreur est survenue lors de l\'envoi du mail',
         footer: error.message
+      });
+    }
+  });
+}
+
+acceptInternship(internship: any): void {
+  Swal.fire({
+    title: 'Confirmer l\'acceptation',
+    text: `Voulez-vous accepter le stage de ${internship.candidat.firstName} ${internship.candidat.lastName} ?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Accepter',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.managerService.validateInternshipRequest(internship.demandeStage.id)
+      .subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Stage accepté !',
+            text: `Le stage de ${internship.candidat.firstName} a été accepté`
+          });
+          this.statusUpdated.emit();
+          this.closeModal();
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Impossible d\'accepter le stage'
+          });
+        }
+      });
+    }
+  });
+}
+
+rejectInternship(internship: any): void {
+  Swal.fire({
+    title: 'Motif de rejet',
+    input: 'textarea',
+    inputLabel: 'Raison du rejet',
+    inputPlaceholder: 'Saisissez une raison...',
+    inputAttributes: {
+      'aria-label': 'Raison du rejet'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Rejeter',
+    cancelButtonText: 'Annuler',
+    // inputValidator: (value) => {
+    //   if (!value) {
+    //     return 'Vous devez saisir un motif de rejet';
+    //   }
+    // }
+  }).then((result) => {
+    if (result.isConfirmed && result.value) {
+      this.managerService.rejectInternshipRequest(internship.demandeStage.id)
+      .subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Stage rejeté',
+            text: `Le stage de ${internship.candidat.firstName} a été rejeté`
+          });
+          this.statusUpdated.emit();
+          this.closeModal();
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Impossible de rejeter le stage'
+          });
+        }
       });
     }
   });
@@ -141,64 +215,6 @@ archiveApplication(): void {
               icon: 'error',
               title: 'Erreur',
               text: 'Une erreur est survenue lors de l\'archivage de la demande',
-              footer: error.message
-            });
-          }
-        });
-    }
-  });
-}
-
-cancelProposal(){
-  console.log("Annuler la proposition");
-  
-}
-
-rejectApplication(): void {
-  Swal.fire({
-    title: 'Confirmer le rejet',
-    text: 'Êtes-vous sûr de vouloir rejeter cette demande de stage ?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Oui, rejeter',
-    cancelButtonText: 'Annuler'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // Montrer une notification de chargement
-      Swal.fire({
-        title: 'Traitement en cours...',
-        text: 'Rejet de la demande de stage',
-        icon: 'info',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
-
-      this.gwteService.rejectInternshipApplication(this.demande.demandeStage.id)
-        .subscribe({
-          next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Demande rejetée',
-              text: 'La demande de stage a été rejetée avec succès',
-              showConfirmButton: true,
-              timer: 3000,
-              position: 'top-end',
-              toast: true
-            });
-            this.statusUpdated.emit();  // Émettre l'événement de mise à jour
-            this.closeModal();            
-            
-          },
-          error: (error) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur',
-              text: 'Une erreur est survenue lors du rejet de la demande',
               footer: error.message
             });
           }
@@ -332,7 +348,6 @@ getInternshipStatusLabel(status: InternshipStatus): string {
       return 'Statut inconnu';
   }
 }
-
 getInternshipStatusClass(status: InternshipStatus): string {
   switch (status) {
     case InternshipStatus.EN_ATTENTE:
@@ -352,20 +367,7 @@ getInternshipStatusClass(status: InternshipStatus): string {
   }
 }
 
-private loadManagerDetails(managerId: string) {
-  this.gwteService.getManagerById(managerId).subscribe({
-    next: (user) => {
-      this.manager = user;
-    },
-    error: (error) => {
-      console.error('Erreur lors du chargement des informations du manager:', error);
-    }
-  });
-}
-
-
 closeModal() {
   this.close.emit();
 }
 }
-

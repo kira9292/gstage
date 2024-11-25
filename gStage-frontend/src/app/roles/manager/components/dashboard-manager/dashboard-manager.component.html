@@ -1,0 +1,137 @@
+<div class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Propositions de Stage</h1>
+    
+    <!-- Stats -->
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div 
+        *ngFor="let stat of statsData" 
+        class="bg-white rounded-xl shadow-sm p-4 border-l-4 flex items-center"
+        [ngClass]="stat.borderColor"
+      >
+        <div 
+          class="rounded-full p-3 mr-4 flex items-center justify-center"
+          [ngClass]="[stat.bgColor, stat.iconColor]"
+        >
+          <i [class]="'fas ' + stat.icon"></i>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">{{ stat.label }}</p>
+          <p class="text-2xl font-bold text-gray-800">{{ stat.value }}</p>
+        </div>
+      </div>
+    </div>
+
+  <!-- Status Tabs -->
+  <div class="flex gap-2 mb-6">
+    <button 
+      *ngFor="let status of managerInternshipStatuses" 
+      (click)="selectStatus(status)"
+      class="px-3 py-2 text-sm font-medium transition-colors border-b-2"
+      [ngClass]="selectedStatus === status ? 'text-blue-600 border-blue-500' : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-200'"
+    >
+      {{ getInternshipStatusLabel(status) }}
+      <span class="ml-1.5 text-xs bg-gray-100 text-gray-600 rounded-full px-2 py-0.5">
+        {{ getStatusCount(status) }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Search -->
+  <div class="mb-6 w-1/3">
+    <input 
+      type="text" 
+      [(ngModel)]="searchTerm"
+      (input)="applyFilters()"
+      placeholder="Rechercher par nom ou référence"
+      class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+    >
+  </div>
+
+    <!-- Internship Requests Table -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-3 text-left">Référence</th>
+            <th class="px-4 py-3 text-left">Candidat</th>
+            <th class="px-4 py-3 text-left">Formation</th>
+            <th class="px-4 py-3 text-left">Status</th>
+            <th class="px-4 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let internship of filteredInternships" 
+            class="border-b hover:bg-gray-50"
+          >
+            <td class="px-4 py-3">
+              {{ internship.demandeStage.reference }}
+            </td>
+            <td class="px-4 py-3">
+              {{ internship.candidat.firstName }} {{ internship.candidat.lastName }}
+            </td>
+            <td class="px-4 py-3">
+              {{ internship.candidat.formation }}
+            </td>
+            <td class="px-4 py-3">
+              <span 
+                [ngClass]="getStatusClass(internship.demandeStage.status)"
+                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+              >
+                {{ internship.demandeStage.status }}
+              </span>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <div class="flex justify-end space-x-2">
+                <button 
+                  (click)="viewInternshipDetails(internship)"
+                  class="text-blue-600 hover:text-blue-800 mr-2"
+                >
+                  Détails
+                </button>
+                <div class="relative">
+                  <button 
+                    *ngIf="internship.demandeStage.status === InternshipStatus.PROPOSE"
+                    class="text-green-600 hover:text-green-800 mr-2"
+                    (click)="acceptInternship(internship)"
+                  >
+                    Accepter
+                  </button>
+                  <button 
+                    *ngIf="internship.demandeStage.status === InternshipStatus.PROPOSE"
+                    class="text-red-600 hover:text-red-800"
+                    (click)="rejectInternship(internship)"
+                  >
+                    Rejeter
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div 
+        *ngIf="filteredInternships.length === 0" 
+        class="text-center py-12"
+      >
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+          <i class="fas fa-folder-open text-gray-400 text-xl"></i>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900">Aucune proposition</h3>
+        <p class="mt-2 text-sm text-gray-500">Aucune demande de stage n'a été proposée pour le moment.</p>
+      </div>
+    </div>
+
+    <!-- Details Modal -->
+  <!-- Modal Placeholder -->
+  <ng-container *ngIf="selectedDetailsModal">
+    <app-detail-demande-for-manager
+      [demande]="selectedDetailsModal"
+      (close)="closeDetailsModal()"
+      (statusUpdated)="loadProposedInternships()"
+    ></app-detail-demande-for-manager>
+  </ng-container>
+</div>

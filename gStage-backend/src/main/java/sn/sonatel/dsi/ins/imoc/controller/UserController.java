@@ -9,12 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.dto.AuthentificationDTO;
+import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO2;
 import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
 import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 import sn.sonatel.dsi.ins.imoc.service.JwtService;
@@ -64,6 +62,11 @@ public class UserController {
     public ResponseEntity<Void> logout() {
         this.jwtService.deconnexion();
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("api/users/{id}")
+    public ResponseEntity<ManagerDTO2> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(appUserService.getUserById(id));
     }
 
 }

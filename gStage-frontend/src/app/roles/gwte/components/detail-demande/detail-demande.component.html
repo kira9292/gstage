@@ -36,6 +36,15 @@
           <div class="flex items-center">
             <i class="fas fa-file-alt mr-3 text-gray-500"></i>
             <span>Référence: {{ demande?.demandeStage?.reference }}</span>
+            
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-calendar-alt mr-3 text-gray-500"></i>
+            <span>Date de début: {{ demande?.demandeStage?.startDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-calendar-check mr-3 text-gray-500"></i>
+            <span>Date de fin: {{ demande?.demandeStage?.endDate | date:'dd/MM/yyyy' }}</span>
           </div>
           <div class="flex items-center">
             <i class="fas fa-info-circle mr-3 text-gray-500"></i>
@@ -46,6 +55,19 @@
               </span>
             </span>
           </div>
+
+          <ng-container *ngIf="demande?.demandeStage?.status === InternshipStatus.PROPOSE ||
+              demande?.demandeStage?.status === InternshipStatus.ACCEPTE">
+              <div class="flex items-center">
+              <i class="fas fa-building mr-3 text-gray-500"></i>
+              <span>Service: {{ manager?.service }}</span>
+              </div>
+              <div class="flex items-center">
+              <i class="fas fa-user-tie mr-3 text-gray-500"></i>
+              <span>Manager: {{ manager?.firstName }} {{ manager?.lastName }}</span>
+              </div>
+          </ng-container>
+          
         </div>
       </div>
     </div>
@@ -84,10 +106,23 @@
           *ngSwitchCase="InternshipStatus.ACCEPTE"
           (click)="sendWelcomeEmail()"
           class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
-          <i class="fas fa-envelope mr-2"></i> Envoyer email d'accueil
+          <i class="fas fa-envelope mr-2"></i> Generer Contrat et envoyer via mail
         </button>
+
+        <div *ngSwitchCase="InternshipStatus.PROPOSE" class="flex space-x-4">
+          <button 
+            (click)="proposeToManager()"
+            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-user-plus mr-2"></i> Proposer à un autre manager
+          </button>
+          <button 
+            (click)="cancelProposal()"
+            class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
+            <i class="fas fa-ban mr-2"></i> Annuler la proposition
+          </button>
+        </div>
         
-        <button 
+        <button
           *ngSwitchCase="InternshipStatus.EN_COURS"
           (click)="scheduleEvaluation()"
           class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">
@@ -95,7 +130,7 @@
         </button>
         
         <button 
-          *ngSwitchCase="InternshipStatus.TERMINER"
+          *ngSwitchCase="InternshipStatus.TERMINE"
           (click)="generateCertificate()"
           class="w-full bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors">
           <i class="fas fa-certificate mr-2"></i> Générer attestation

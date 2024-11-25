@@ -3,6 +3,7 @@ package sn.sonatel.dsi.ins.imoc.service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,10 +17,12 @@ import java.io.UnsupportedEncodingException;
 public class NotificationService {
 
     private final JavaMailSender mailSender;
+    private final ContratService contratService;
 
     @Autowired
-    public NotificationService(JavaMailSender mailSender) {
+    public NotificationService(JavaMailSender mailSender, ContratService contratService) {
         this.mailSender = mailSender;
+        this.contratService = contratService;
     }
 
     // Envoi de mail avec HTML pour l'utilisateur
@@ -84,11 +87,9 @@ public class NotificationService {
     public void envoyerDocument(ValidationStatuscandidat validation) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setFrom("abdoulkarimly008@gmail.com", "Sonatel Stage");  // Email de l'expéditeur
+        helper.setFrom("abdoulkarimly008@gmail.com", "Sonatel Stage");
         helper.setTo(validation.getCandidat().getEmail());
         helper.setSubject("Félicitations : Votre candidature a été retenue chez Sonatel !");
-
-        // Construction du contenu HTML pour le stagiaire
         String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
             + "<table width='100%' cellspacing='0' cellpadding='20' style='background-color: #f4f4f4;'>"
             + "<tr><td style='text-align: center;'>"
@@ -97,32 +98,38 @@ public class NotificationService {
             + "<p>Félicitations ! Votre candidature a été retenue pour un stage chez Sonatel.</p>"
             + "<p style='font-size: 16px;'>Voici les détails de votre stage :</p>"
             + "<ul style='font-size: 16px; text-align: left; display: inline-block; margin: auto;'>"
-//            + "<li><b>Mois de démarrage :</b> " + moisDemarrage + "</li>"
-//            + "<li><b>Direction :</b> " + direction + "</li>"
-//            + "<li><b>Durée :</b> " + duree + "</li>"
+            + "<li><b>Date de démarrage :</b> " + validation.getCandidat().getDemandeStage().getStartDate() + "</li>"
+            + "<li><b>Date de fin :</b> " + validation.getCandidat().getDemandeStage().getEndDate() + "</li>"
+            + "<li><b>Service :</b> " + validation.getCandidat().getDemandeStage().getAppUser().getService().getName() + "</li>"
             + "</ul>"
-            + "<p style='font-size: 16px;'>Pour finaliser votre dossier, veuillez remplir les documents suivants : </p>"
-            + "<ul style='font-size: 16px; text-align: left; display: inline-block; margin: auto;'>"
-            + "<li>La fiche de renseignement</li>"
-            + "<li>Le formulaire d’information</li>"
-            + "</ul>"
-            + "<p>Merci de retourner ces documents à l'adresse GWTE avant la date limite indiquée. Si vous avez des questions, n'hésitez pas à nous contacter.</p>"
+            + "<p style='font-size: 16px; color: #D35400;'><b>Documents à fournir :</b></p>"
+            + "<p style='font-size: 16px;'>Vous trouverez ci-joint votre contrat de stage. Veuillez :</p>"
+            + "<ol style='font-size: 16px; text-align: left; display: inline-block; margin: auto;'>"
+            + "<li>Imprimer le contrat en 3 exemplaires</li>"
+            + "<li>Signer chaque exemplaire</li>"
+            + "<li>Les apporter avec vous le jour de votre arrivée</li>"
+            + "</ol>"
+            + "<p style='background-color: #FEF9E7; padding: 10px; border-radius: 5px; margin: 20px 0;'>"
+            + "<i class='fas fa-info-circle'></i> <b>Important :</b> Sans ces documents signés, votre stage ne pourra pas commencer."
+            + "</p>"
+            + "<p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>"
             + "<hr style='border: 0; border-top: 1px solid #ddd; margin: 20px 0;'>"
             + "<p style='font-size: 14px;'>Cordialement,<br>L'équipe Sonatel</p>"
             + "<footer style='font-size: 12px; color: #aaa; text-align: center;'>"
             + "<p>Ce message est généré automatiquement. Merci de ne pas y répondre.</p>"
             + "</footer>"
             + "</td></tr></table></body></html>";
+        helper.setText(htmlContent, true);
+        // Générer et joindre le contrat
+        ByteArrayResource contrat = contratService.genererContrat(validation);
+        helper.addAttachment(
+            String.format("Contrat_Stage_Sonatel_%s_%s.docx",
+                validation.getCandidat().getFirstName(),
+                validation.getCandidat().getLastName()),
+            new ByteArrayResource(contrat.getByteArray())
+        );
 
-        helper.setText(htmlContent, true);  // true indique que le contenu est en HTML
-        FileSystemResource file = new FileSystemResource("src/main/resources/Nom.docx");
-        System.out.println(file);
-        helper.addAttachment(file.getFilename(), file);
         mailSender.send(message);
     }
-
-
-
-
 
 }
