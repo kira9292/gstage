@@ -245,11 +245,9 @@
             formControlName="name"
             class="w-full px-4 py-2 border rounded"
           />
-          <div *ngIf="userForm.get('name')?.touched && userForm.get('name')?.invalid" class="text-red-500 text-sm">
-            <p *ngIf="userForm.get('name')?.errors?.['required']">Le nom est requis.</p>
-            <p *ngIf="userForm.get('name')?.errors?.['minlength']">
-              Le nom doit contenir au moins 2 caractères.
-            </p>
+          <div *ngIf="lastNameError" class="text-red-500 text-sm">
+            {{ lastNameError }}
+
           </div>
         </div>
 
@@ -286,9 +284,9 @@
             formControlName="email"
             class="w-full px-4 py-2 border rounded"
           />
-          <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="text-red-500 text-sm">
-            <p *ngIf="userForm.get('email')?.errors?.['required']">L'email est requis.</p>
-            <p *ngIf="userForm.get('email')?.errors?.['email']">Entrez un email valide.</p>
+          <div *ngIf="emailError" class="text-red-500 text-sm">
+            {{ emailError }}
+
           </div>
         </div>
 
@@ -299,11 +297,9 @@
             formControlName="password"
             class="w-full px-4 py-2 border rounded"
           />
-          <div *ngIf="userForm.get('password')?.touched && userForm.get('password')?.invalid" class="text-red-500 text-sm">
-            <p *ngIf="userForm.get('password')?.errors?.['required']">Le mot de passe est requis.</p>
-            <p *ngIf="userForm.get('password')?.errors?.['minlength']">
-              Le mot de passe doit contenir au moins 6 caractères.
-            </p>
+          <div *ngIf="passwordError" class="text-red-500 text-sm">
+            {{ passwordError }}
+
           </div>
         </div>
 
@@ -321,9 +317,9 @@
         </div>
 
         <!-- Champ Service (visible uniquement pour MANAGER) -->
-        <div *ngIf="userForm.get('roleName')?.value === 'MANAGER'">
-          <label for="serviceName">Service</label>
-          <select formControlName="serviceName" id="serviceName">
+        <div class="mb-4" *ngIf="userForm.get('roleName')?.value === 'MANAGER'">
+          <label for="serviceName" class="block text-sm font-medium">Service</label>
+          <select formControlName="serviceName" id="serviceName" class="w-full px-4 py-2 border rounded">
             <option *ngFor="let service of services" [value]="service.id">{{ service.name }}</option>
           </select>
         </div>
