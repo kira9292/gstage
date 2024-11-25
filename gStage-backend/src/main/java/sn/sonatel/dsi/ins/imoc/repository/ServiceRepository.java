@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 import sn.sonatel.dsi.ins.imoc.domain.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -12,5 +13,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Long> {
-    Optional<Service> findByAppUserId(Long appUserId);
+    Optional<Service> findByName(String s);
+
+    List<Service> findByAppUserIsNull();
 }

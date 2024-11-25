@@ -82,7 +82,7 @@ public class AppUserService implements UserDetailsService {
                 throw new RuntimeException("Service must be specified for Manager role");
             }
             sn.sonatel.dsi.ins.imoc.domain.Service service = appUser.getService();
-            if (service.getId() == null) {
+            if (appUser.getService().getId() == null) {
                 service = serviceRepository.save(service); // Save the service if it's new
             }
             appUser.getAppUser().setService(service);
