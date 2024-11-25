@@ -187,7 +187,47 @@
             </div>
           </div>
         </div>
+
+
+        <div *ngIf="isServiceModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div class="bg-white p-6 rounded-xl w-full max-w-lg">
+            <h2 class="text-xl font-semibold mb-4">{{ selectedService ? 'Modifier un service' : 'Ajouter un service' }}</h2>
+            <form [formGroup]="serviceForm" (ngSubmit)="saveService()">
+              <div class="mb-4">
+                <label class="block text-sm font-medium">Nom</label>
+                <input
+                  type="text"
+                  formControlName="name"
+                  class="w-full px-4 py-2 border rounded"
+                />
+                <div *ngIf="serviceNameError" class="text-red-500 text-sm">
+                        {{ serviceNameError }}
+              </div>
+              </div>
+              <div class="mb-4">
+                <label for="description" class="block text-sm font-medium">Description</label>
+                <textarea id="description" formControlName="description"
+                          class="w-full px-4 py-2 border rounded"
+                ></textarea>
+              </div>
+              <div class="flex justify-end mt-6">
+                <button type="button" (click)="closeServiceModal()" class="bg-gray-200 px-4 py-2 rounded mr-2">Annuler</button>
+                <button type="submit" [disabled]="!serviceForm.valid "
+                        class="bg-blue-500 text-white px-4 py-2 rounded">
+                  {{ isSubmitting ? 'En cours...' : 'Enregistrer' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
+
+
+
+
+
+
+
 
       <!-- Onglet Rôles -->
       <div *ngSwitchCase="'roles'" class="bg-white rounded-xl shadow-lg p-6">
@@ -335,6 +375,12 @@
       </form>
     </div>
   </div>
+
+
+
+
+
+
 
 
 

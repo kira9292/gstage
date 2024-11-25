@@ -36,4 +36,15 @@ export class AdminServiceService {
     return this.http.post<any>(this.apiUrl+"/inscription", payload, { headers });
   }
 
+
+  createService(service: Service): Observable<Service> {
+    return this.http.post<Service>(this.apiUrl+'/services', service);
+  }
+
+  updateService(service: Service): Observable<Service> {
+    return this.http.put<Service>(this.apiUrl+`/services/${service.id}`, service);
+  }
+
+
+
 }
