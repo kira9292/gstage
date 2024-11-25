@@ -239,28 +239,72 @@
         <!-- Champs communs -->
 
         <div class="mb-4">
-          <label class="block text-sm font-mediumnnb ">Nom</label>
-          <input type="text" formControlName="name" class="w-full px-4 py-2 border rounded" />
+          <label class="block text-sm font-medium">Nom</label>
+          <input
+            type="text"
+            formControlName="name"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="userForm.get('name')?.touched && userForm.get('name')?.invalid" class="text-red-500 text-sm">
+            <p *ngIf="userForm.get('name')?.errors?.['required']">Le nom est requis.</p>
+            <p *ngIf="userForm.get('name')?.errors?.['minlength']">
+              Le nom doit contenir au moins 2 caractères.
+            </p>
+          </div>
         </div>
 
         <div class="mb-4">
           <label class="block text-sm font-medium">Prénom</label>
-          <input type="text" formControlName="firstName" class="w-full px-4 py-2 border rounded" />
+          <input
+            type="text"
+            formControlName="firstName"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="firstNameError" class="text-red-500 text-sm">
+              {{ firstNameError }}
+
+          </div>
         </div>
 
         <div class="mb-4">
           <label class="block text-sm font-medium">Nom d'utilisateur</label>
-          <input type="text" formControlName="username" class="w-full px-4 py-2 border rounded" />
+          <input
+            type="text"
+            formControlName="username"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="usernameError" class="text-red-500 text-sm">
+            {{ usernameError }}
+
+          </div>
         </div>
 
         <div class="mb-4">
           <label class="block text-sm font-medium">Email</label>
-          <input type="email" formControlName="email" class="w-full px-4 py-2 border rounded" />
+          <input
+            type="email"
+            formControlName="email"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid" class="text-red-500 text-sm">
+            <p *ngIf="userForm.get('email')?.errors?.['required']">L'email est requis.</p>
+            <p *ngIf="userForm.get('email')?.errors?.['email']">Entrez un email valide.</p>
+          </div>
         </div>
 
         <div class="mb-4">
           <label class="block text-sm font-medium">Mot de passe</label>
-          <input type="password" formControlName="password" class="w-full px-4 py-2 border rounded" />
+          <input
+            type="password"
+            formControlName="password"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="userForm.get('password')?.touched && userForm.get('password')?.invalid" class="text-red-500 text-sm">
+            <p *ngIf="userForm.get('password')?.errors?.['required']">Le mot de passe est requis.</p>
+            <p *ngIf="userForm.get('password')?.errors?.['minlength']">
+              Le mot de passe doit contenir au moins 6 caractères.
+            </p>
+          </div>
         </div>
 
         <div class="mb-4">
@@ -271,6 +315,9 @@
             <option value="ASSISTANT_GWTE">Assistant_gwte</option>
             <option value="RH">Rh</option>
           </select>
+          <div *ngIf="userForm.get('roleName')?.touched && userForm.get('roleName')?.invalid" class="text-red-500 text-sm">
+            <p>Le rôle est requis.</p>
+          </div>
         </div>
 
         <!-- Champ Service (visible uniquement pour MANAGER) -->
@@ -284,7 +331,9 @@
         <!-- Boutons -->
         <div class="flex justify-end mt-6">
           <button type="button" (click)="closeModal()" class="bg-gray-200 px-4 py-2 rounded mr-2">Annuler</button>
-          <button type="submit" [disabled]="isSubmitting" class="bg-blue-500 text-white px-4 py-2 rounded">
+          <button type="submit" [disabled]="!userForm.valid || isSubmitting"
+                  class="bg-blue-500 text-white px-4 py-2 rounded">
+            {{ isSubmitting ? 'En cours...' : 'Enregistrer' }}
           </button>
         </div>
       </form>

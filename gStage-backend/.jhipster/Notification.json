@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "changelogDate": "20241125154133"
+  },
+  "applications": "*",
+  "clientRootFolder": "backend",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "message",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "sendingDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "typeNotification",
+      "fieldType": "InternshipStatus",
+      "fieldValues": "EN_ATTENTE,ACCEPTE,REFUSE,TERMINER,EN_COURS"
+    }
+  ],
+  "microserviceName": "backend",
+  "name": "Notification",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "appUser",
+      "otherEntityRelationshipName": "notification",
+      "relationshipName": "appUser",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

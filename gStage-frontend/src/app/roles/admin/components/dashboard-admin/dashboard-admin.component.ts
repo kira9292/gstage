@@ -241,4 +241,62 @@ export class DashboardAdminComponent implements OnInit {
     console.log('Rôle modal ouvert', role);
   }
 
+
+  get firstNameError(): string {
+    const control = this.userForm.get('firstName');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le prénom est requis';
+      if (control.errors['minlength']) return 'Le prénom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le prénom ne doit pas contenir de caractere speciaux inutiles';
+    }
+    return '';
+  }
+
+  get lastNameError(): string {
+    const control = this.userForm.get('name');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le nom est requis';
+      if (control.errors['minlength']) return 'Le nom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom ne doit pas contenir de caracteres speciaux inutiles';
+    }
+    return '';
+  }
+
+  get roleError():string {
+    const control = this.userForm.get('role');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le role de l\'utilisateur est requis';
+    }
+    return '';
+  }
+
+  get usernameError(): string {
+    const control = this.userForm.get('username');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le nom d\'utilisateur est requis';
+      if (control.errors['minlength']) return 'Le nom d\'utilisateur doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom d\'utilisateur ne doit pas contenir de caracteres speciaux inutiles';
+    }
+    return '';
+  }
+
+  get emailError(): string {
+    const control = this.userForm.get('email');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'L\'email est requis';
+      if (control.errors['email']) return 'Format d\'email invalide';
+    }
+    return '';
+  }
+
+  get passwordError(): string {
+    const control = this.userForm.get('password');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le mot de passe est requis';
+      if (control.errors['minlength']) return 'Le mot de passe doit contenir au moins 8 caractères';
+      if (control.errors['pattern']) return 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial';
+    }
+    return '';
+  }
+
 }
