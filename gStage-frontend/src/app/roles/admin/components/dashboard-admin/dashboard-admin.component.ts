@@ -46,6 +46,9 @@ export class DashboardAdminComponent implements OnInit {
   isSubmitting = false;
   services: Service[]=[];
   activeTab: string = 'users';
+  isLoading: boolean = false;
+  errorMessage: string | null = null;
+
 
 
 
@@ -60,7 +63,7 @@ export class DashboardAdminComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
       name: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
       email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
+      username: ['', [Validators.required, Validators.minLength(2)]],
       password: ['', [
         Validators.required,
         Validators.minLength(8),

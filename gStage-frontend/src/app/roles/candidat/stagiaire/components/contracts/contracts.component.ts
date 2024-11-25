@@ -35,10 +35,10 @@ export class ContractsComponent implements OnInit {
   showContractDialog = false;
   selectedContract: Contract | null = null;
   safeUrl: SafeResourceUrl | null = null;
-  
+
   statusFilter = '';
   searchTerm = '';
-  
+
   contractStatuses = Object.values(ContractStatus);
 
   constructor(
@@ -80,14 +80,14 @@ export class ContractsComponent implements OnInit {
         url: '/assets/documents/contrat-2.pdf'
       }
     ];
-    
+
     this.applyFilters();
   }
 
   // loadContracts(): void {
   //   this.traineeService.getContracts().subscribe({
   //     next: (data) => {
-  //       this.contracts = data;        
+  //       this.contracts = data;
   //       this.applyFilters();
   //     },
   //     error: (err) => {
@@ -100,11 +100,11 @@ export class ContractsComponent implements OnInit {
     this.filteredContracts = this.contracts.filter(contract => {
       const matchesStatus = !this.statusFilter || contract.status === this.statusFilter;
       const searchLower = this.searchTerm.toLowerCase();
-      const matchesSearch = !this.searchTerm || 
+      const matchesSearch = !this.searchTerm ||
         contract.reference.toLowerCase().includes(searchLower) ||
         contract.name.toLowerCase().includes(searchLower) ||
         contract.assignmentSite.toLowerCase().includes(searchLower);
-      
+
       return matchesStatus && matchesSearch;
     });
   }
@@ -142,7 +142,7 @@ export class ContractsComponent implements OnInit {
 
   viewContract(contract: Contract): void {
     if (!this.canViewContract(contract)) return;
-    
+
     this.selectedContract = contract;
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(contract.url);
     this.showContractDialog = true;
@@ -158,4 +158,21 @@ export class ContractsComponent implements OnInit {
     this.selectedContract = null;
     this.safeUrl = null;
   }
+
+
+  startDate: string | null = null;
+  endDate: string | null = null;
+
+  applyFiltersdate(): void {
+    this.filteredContracts = this.contracts.filter(contract => {
+      const matchesStatus = !this.statusFilter || contract.status === this.statusFilter;
+      const matchesSearch = !this.searchTerm || contract.reference.includes(this.searchTerm);
+      const matchesDateRange =
+        (!this.startDate || new Date(contract.startDate) >= new Date(this.startDate)) &&
+        (!this.endDate || new Date(contract.endDate) <= new Date(this.endDate));
+
+      return matchesStatus && matchesSearch && matchesDateRange;
+    });
+  }
+
 }
