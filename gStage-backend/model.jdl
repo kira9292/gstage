@@ -11,6 +11,13 @@ entity ValidationStatusUser{
 
 
 
+entity Notification {
+  message String
+  sendingDate LocalDate
+  typeNotification InternshipStatus
+}
+
+
 
 entity AppUser {
   username String required minlength(3) maxlength(50)
@@ -242,6 +249,7 @@ relationship OneToMany {
     Departement{services} to Service{departemen}
   Departement{demandeStages} to DemandeStage{departement}
     BusinessUnit{demandeStages} to DemandeStage{businessUnit}
+  AppUser to Notification
 }
 
 relationship OneToOne {

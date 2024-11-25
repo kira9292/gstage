@@ -114,6 +114,13 @@
       "relationshipType": "one-to-many"
     },
     {
+      "otherEntityName": "notification",
+      "otherEntityRelationshipName": "appUser",
+      "relationshipName": "notification",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
       "otherEntityName": "role",
       "otherEntityRelationshipName": "appUser",
       "relationshipName": "role",

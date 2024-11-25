@@ -100,6 +100,10 @@ public class AppUser implements UserDetails, Serializable {
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
+    private Set<Notification> notifications = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "appUsers" }, allowSetters = true)
     private Role role;
@@ -549,6 +553,36 @@ public class AppUser implements UserDetails, Serializable {
         return this;
     }
 
+    public Set<Notification> getNotifications() {
+        return this.notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        if (this.notifications != null) {
+            this.notifications.forEach(i -> i.setAppUser(null));
+        }
+        if (notifications != null) {
+            notifications.forEach(i -> i.setAppUser(this));
+        }
+        this.notifications = notifications;
+    }
+
+    public AppUser notifications(Set<Notification> notifications) {
+        this.setNotifications(notifications);
+        return this;
+    }
+
+    public AppUser addNotification(Notification notification) {
+        this.notifications.add(notification);
+        notification.setAppUser(this);
+        return this;
+    }
+
+    public AppUser removeNotification(Notification notification) {
+        this.notifications.remove(notification);
+        notification.setAppUser(null);
+        return this;
+    }
     public Set<Jwt> getJwts() {
         return this.jwts;
     }
