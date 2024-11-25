@@ -42,10 +42,6 @@ public class AssistantGWTEController {
 
     @PostMapping("proposer-to-manager")
     public ResponseEntity<Void> createStagiairesProposer(@RequestBody StagiairesProposer stagiairesProposer){
-
-
-
-
         stagiairesProposerRepository.save(stagiairesProposer);
         return ResponseEntity.ok().build();
     }
@@ -68,11 +64,4 @@ public class AssistantGWTEController {
 
         return ResponseEntity.ok().build();
     }
-
-
-
-
-
-
-
 }

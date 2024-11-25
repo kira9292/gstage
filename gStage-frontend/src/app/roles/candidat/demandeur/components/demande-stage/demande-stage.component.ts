@@ -47,7 +47,7 @@ export class DemandeStageComponent {
         Validators.required,
         Validators.pattern(/^(70|75|76|77|78)[0-9]{7}$/)
       ]],
-      formation: [Validators.required],
+      formation: ['', Validators.required],
       school: ['',[Validators.required, Validators.minLength(2), noWhitespaceValidator]],
 
 
@@ -55,8 +55,15 @@ export class DemandeStageComponent {
       type: ['', Validators.required],
       direction: ['', Validators.required],
       startDate: ['', Validators.required],
-      endDate: ['', Validators.required]
+      endDate: ['', Validators.required],
+      birthDate: ['', Validators.required],
+      nationality: ['', Validators.required],
+      birthPlace: ['', Validators.required],
+      cni: ['', Validators.required],
+      address: ['', Validators.required],
+      educationLevel: ['', Validators.required]
     }, { validator: this.dateRangeValidator });
+    
 
     // Initialisation du formulaire de code de vérification
     this.verificationForm = this.fb.group({
@@ -84,6 +91,50 @@ export class DemandeStageComponent {
     }
     return '';
   }
+
+  get birthDateError(): string {
+    const control = this.applicationForm.get('birthDate');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'La date de naissance est requise';
+    }
+    return '';
+  }
+  
+  get birthPlaceError(): string {
+    const control = this.applicationForm.get('birthPlace');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le lieu de naissance est requis';
+      if (control.errors['whitespace']) return 'Le lieu de naissance ne doit pas contenir de caractères spéciaux inutiles';
+    }
+    return '';
+  }
+  
+  get cniError(): string {
+    const control = this.applicationForm.get('cni');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le numéro CNI est requis';
+      if (control.errors['pattern']) return 'Le numéro CNI doit contenir 13 chiffres';
+    }
+    return '';
+  }
+  
+  get nationalityError(): string {
+    const control = this.applicationForm.get('nationality');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'La nationalité est requise';
+      if (control.errors['whitespace']) return 'La nationalité ne doit pas contenir de caractères spéciaux inutiles';
+    }
+    return '';
+  }
+  get addressError(): string {
+    const control = this.applicationForm.get('address');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'L\'adresse est requise';
+      if (control.errors['whitespace']) return 'L\'adresse ne doit pas contenir de caractères spéciaux inutiles';
+    }
+    return '';
+  }
+  
 
   
   get formationError(): string {
@@ -131,11 +182,17 @@ export class DemandeStageComponent {
       this.applicationForm.get('email')?.valid &&
       this.applicationForm.get('phone')?.valid &&
       this.applicationForm.get('formation')?.valid &&
-      this.applicationForm.get('school')?.valid) {
-    this.currentStep = 2;
-    
-  }
-  console.log("Step: " + this.currentStep);
+      this.applicationForm.get('birthDate')?.valid &&
+      this.applicationForm.get('birthPlace')?.valid &&
+      this.applicationForm.get('cni')?.valid &&
+      this.applicationForm.get('nationality')?.valid &&
+      this.applicationForm.get('address')?.valid &&
+      this.applicationForm.get('formation')?.valid && 
+      this.applicationForm.get('school')?.valid && 
+      this.applicationForm.get('educationLevel')?.valid) 
+      {
+        this.currentStep = 2;
+      }
   
 }
   // Pour revenir à l'étape précédente
@@ -221,14 +278,14 @@ onSubmit(): void {
       candidat: {
         firstName: this.applicationForm.get('firstName')?.value,
         lastName: this.applicationForm.get('lastName')?.value,
-        birthDate: null, // Exemple de date de naissance
-        nationality: 'Senegalese', // Exemple de nationalité
-        birthPlace: null, // Exemple de lieu de naissance
-        cni: null, // Exemple de numéro de CNI
-        address: '', // Exemple d'adresse
+        birthDate: this.applicationForm.get('birthDate')?.value, // Exemple de date de naissance
+        nationality: this.applicationForm.get('nationality')?.value, // Exemple de nationalité
+        birthPlace: this.applicationForm.get('birthPlace')?.value, // Exemple de lieu de naissance
+        cni: this.applicationForm.get('cni')?.value, // Exemple de numéro de CNI
+        address: this.applicationForm.get('address')?.value, // Exemple d'adresse
         email: this.applicationForm.get('email')?.value,
         phone: this.applicationForm.get('phone')?.value,
-        educationLevel: 'BAC_PLUS_2', // Exemple de niveau d'éducation
+        educationLevel: this.applicationForm.get('educationLevel')?.value, // Exemple de niveau d'éducation
         school: this.applicationForm.get('school')?.value,
         formation: this.applicationForm.get('formation')?.value,
       }
@@ -242,6 +299,8 @@ onSubmit(): void {
     .then((motivationLetterBase64) => {
       demandeStageData.demandeStage.coverLetter = motivationLetterBase64.split(',')[1] || motivationLetterBase64;      
 
+      console.log(demandeStageData);
+      
       // Appel au service pour soumettre les données et envoyer le code de vérification
      return this.demandeStageService.submitDemandeStage(demandeStageData).subscribe((response) => {
       console.log("DEmande reusie");

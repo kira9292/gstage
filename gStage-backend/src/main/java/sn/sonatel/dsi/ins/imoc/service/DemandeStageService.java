@@ -4,6 +4,7 @@ package sn.sonatel.dsi.ins.imoc.service;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.domain.*;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
@@ -64,7 +65,7 @@ public class  DemandeStageService {
             throw new RuntimeException("Aucun candidat trouvé avec cet email");
         }
     }
-
+    @Transactional
     public void accepterstagiaire(Map<String, String> mail) throws MessagingException, UnsupportedEncodingException {
         ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(mail.get("mail"));
         if (validationStatusOptional!=null) {

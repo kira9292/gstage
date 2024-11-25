@@ -248,7 +248,6 @@ public class AppUserService implements UserDetailsService {
     public ManagerDTO2 getUserById(Long id) {
         AppUser appUser = appUserRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'id: " + id));
-
         return appUserMapper.toManagerDTO(appUser);
     }
 }

@@ -149,6 +149,11 @@ archiveApplication(): void {
   });
 }
 
+cancelProposal(){
+  console.log("Annuler la proposition");
+  
+}
+
 rejectApplication(): void {
   Swal.fire({
     title: 'Confirmer le rejet',

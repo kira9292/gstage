@@ -38,6 +38,14 @@
               <span>Référence: {{ demande?.demandeStage?.reference }}</span>
             </div>
             <div class="flex items-center">
+              <i class="fas fa-calendar-alt mr-3 text-gray-500"></i>
+              <span>Date de début: {{ demande?.demandeStage?.startDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-calendar-check mr-3 text-gray-500"></i>
+              <span>Date de fin: {{ demande?.demandeStage?.endDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="flex items-center">
               <i class="fas fa-info-circle mr-3 text-gray-500"></i>
               <span>
                 Status: 
