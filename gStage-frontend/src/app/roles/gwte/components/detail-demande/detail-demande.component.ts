@@ -150,8 +150,61 @@ archiveApplication(): void {
 }
 
 cancelProposal(){
-  console.log("Annuler la proposition");
-  
+  Swal.fire({
+    title: 'Confirmer l\'annulation',
+    text: 'Êtes-vous sûr de vouloir retirer cette proposition pour ce manager ? Cette action est irréversible et la demande sera remise en attente.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Oui, retirer',
+    cancelButtonText: 'Non, annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Afficher le loader
+      Swal.fire({
+        title: 'Retrait en cours...',
+        text: 'Veuillez patienter pendant le traitement de l\'annulation de la proposition.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      this.gwteService.cancelProposal(this.demande.demandeStage.id)
+        .subscribe({
+          next: () => {
+            // Notification de succès
+            Swal.fire({
+              icon: 'success',
+              title: 'Proposition retirée',
+              text: 'La proposition a été annulée avec succès et la demande est de nouveau disponible.',
+              showConfirmButton: true,
+              timer: 3000,
+              position: 'top-end',
+              toast: true
+            });
+            
+            // Émettre l'événement pour mettre à jour la liste
+            this.statusUpdated.emit();
+            
+            // Fermer le modal
+            this.closeModal();
+          },
+          error: (error) => {
+            // Notification d'erreur
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de l\'annulation de la proposition.',
+              footer: error.message
+            });
+          }
+        });
+    }
+  });  
 }
 
 rejectApplication(): void {

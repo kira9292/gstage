@@ -95,4 +95,9 @@ public class DemandeStageController {
     public List<DemandeStage> getArchivedInternships() {
         return demandeStageService.findAllArchived();
     }
+
+    @PutMapping("/api/internships/{id}/cancel")
+    public Optional<String> cancelInternship(@PathVariable Long id) {
+        return demandeStageService.cancelInternship(id);
+    }
 }

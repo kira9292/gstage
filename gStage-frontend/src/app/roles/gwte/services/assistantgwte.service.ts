@@ -26,6 +26,4 @@ export class AssistantgwteService {
     return this.http.post<any>(this.apiUrl+"/demande-to-manager", payload);
   }
 
-
-
 }

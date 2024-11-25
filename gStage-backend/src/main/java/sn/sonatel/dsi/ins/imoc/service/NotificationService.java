@@ -80,7 +80,6 @@ public class NotificationService {
             + "</td></tr></table></body></html>";
 
         helper.setText(htmlContent, true);  // true indique que le contenu est en HTML
-
         mailSender.send(message);
     }
 

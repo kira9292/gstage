@@ -54,4 +54,9 @@ export class GwteService {
     headers = headers.append('Content-type', 'application/json');
     return this.http.get<AppUser>(`${this.apiUrl}/users/${userId}`, {headers});
   }
+
+      
+  cancelProposal(id: number){
+    return this.http.put(`${this.apiUrl}/internships/${id}/cancel`, {});
+  }
 }

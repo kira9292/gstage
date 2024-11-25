@@ -18,6 +18,7 @@ import { PoposerManagerComponent } from './roles/gwte/components/poposer-manager
 import { DashboardManagerComponent } from './roles/manager/components/dashboard-manager/dashboard-manager.component';
 import { AdminRegisterComponent } from './roles/admin/components/admin-register/admin-register.component';
 import {DashboardAdminComponent} from "./roles/admin/components/dashboard-admin/dashboard-admin.component";
+import { StatsComponent } from './roles/gwte/components/stats/stats.component';
 
 
 
@@ -115,8 +116,13 @@ export const routes: Routes = [
      {
       path: 'propose-to-manager',
       component: PoposerManagerComponent,
-      // canActivate: [AuthGuard, RoleGuard],
-      // data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
+     },
+
+     {
+      path: 'statistics',
+      component: StatsComponent,
      },
 
      {

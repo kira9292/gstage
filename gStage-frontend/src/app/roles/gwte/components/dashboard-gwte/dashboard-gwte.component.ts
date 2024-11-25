@@ -131,7 +131,8 @@ export class DashboardGwteComponent implements OnInit {
       filtered = filtered.filter(demande =>
         demande.demandeStage.reference.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         (demande.candidat?.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        demande.candidat?.lastName.toLowerCase().includes(this.searchTerm.toLowerCase()))
+        demande.candidat?.lastName.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+        demande.candidat?.formation.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
   

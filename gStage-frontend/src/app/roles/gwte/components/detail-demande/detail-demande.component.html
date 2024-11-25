@@ -36,7 +36,7 @@
           <div class="flex items-center">
             <i class="fas fa-file-alt mr-3 text-gray-500"></i>
             <span>Référence: {{ demande?.demandeStage?.reference }}</span>
-            
+
           </div>
           <div class="flex items-center">
             <i class="fas fa-calendar-alt mr-3 text-gray-500"></i>
@@ -56,6 +56,7 @@
             </span>
           </div>
 
+
           <ng-container *ngIf="demande?.demandeStage?.status === InternshipStatus.PROPOSE ||
               demande?.demandeStage?.status === InternshipStatus.ACCEPTE">
               <div class="flex items-center">
@@ -67,6 +68,7 @@
               <span>Manager: {{ manager?.firstName }} {{ manager?.lastName }}</span>
               </div>
           </ng-container>
+          
           
         </div>
       </div>

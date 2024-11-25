@@ -123,4 +123,28 @@ public class  DemandeStageService {
     public List<DemandeStage> findAllArchived() {
         return demandeStageRepository.findByStatus(InternshipStatus.ARCHIVE);
     }
+
+
+    public Optional<String> cancelInternship(Long id) {
+        return demandeStageRepository
+            .findById(id)
+            .map(demandeStage -> {
+                // Vérifier que la demande est refusée
+                if (demandeStage.getStatus() != InternshipStatus.PROPOSE) {
+                    throw new BadRequestAlertException(
+                        "La proposition ne peut être annulee que si elle a ete deja proposée a un manager",
+                        "demandeStage",
+                        "statusError"
+                    );
+                }
+
+                // Mettre à jour le statut et la date d'archivage
+                demandeStage.setStatus(InternshipStatus.EN_ATTENTE);
+                demandeStage.setAppUser(null);
+
+                // Sauvegarder la demande
+                demandeStageRepository.save(demandeStage);
+                return "Demande Stage " + id.toString() + " archived";
+            });
+    }
 }

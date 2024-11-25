@@ -110,7 +110,7 @@ export class StatsComponent implements OnInit {
       InternshipStatus.ACCEPTE,
       InternshipStatus.REFUSE,
       InternshipStatus.EN_COURS,
-      InternshipStatus.TERMINER,
+      InternshipStatus.TERMINE,
       InternshipStatus.ARCHIVE
     ];
 
@@ -275,7 +275,7 @@ export class StatsComponent implements OnInit {
     ).length;
     
     const completed = this.demandesStage.filter(d => 
-      d.demandeStage.status === InternshipStatus.TERMINER
+      d.demandeStage.status === InternshipStatus.TERMINE
     ).length;
     
     const archived = this.demandesStage.filter(d => 
