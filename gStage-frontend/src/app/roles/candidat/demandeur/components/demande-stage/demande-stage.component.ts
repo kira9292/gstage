@@ -222,6 +222,11 @@ get addressError(): string {
 // Pour les dates de stage
 get dateRangeError(): string {
   const form = this.applicationForm;
+
+  if (form.errors && form.errors['startDate']) {
+    return 'La date de début doit être après la date actuelle';
+  }
+  
   if (form.errors && form.errors['dateRange']) {
     return 'La date de début doit être antérieure à la date de fin';
   }
@@ -312,26 +317,34 @@ get schoolError(): string {
 
   ngOnInit(): void {}
 
-  // Validateur existant dans le code
+  // dat
   dateRangeValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
     const endDate = group.get('endDate')?.value;
-    
+  
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Réinitialiser les heures pour une comparaison précise
+  
     if (startDate && endDate) {
       const start = new Date(startDate);
       const end = new Date(endDate);
       const minDuration = 1; // Durée minimale du stage en mois
       const maxDuration = 6; // Durée maximale du stage en mois
-
+  
+      // Vérifier que la date de début est après aujourd'hui
+      if (start <= today) {
+        return { startDate: 'La date de début doit être postérieure à la date actuelle' };
+      }
+  
       // Vérifier que la date de début est avant la date de fin
       if (start >= end) {
         return { dateRange: 'La date de début doit être antérieure à la date de fin' };
       }
-
+  
       // Calculer la durée du stage
       const monthDifference = (end.getFullYear() - start.getFullYear()) * 12 + 
                               (end.getMonth() - start.getMonth());
-
+  
       if (monthDifference < minDuration || monthDifference > maxDuration) {
         return { 
           stageDuration: `La durée du stage doit être entre ${minDuration} et ${maxDuration} mois` 
