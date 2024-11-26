@@ -50,4 +50,8 @@ export class AdminServiceService {
     return this.http.get<Service[]>(`${this.apiUrl}/departements`);
 
   }
+  getCandidat():Observable<Departement[]> {
+    return this.http.get<Service[]>(`${this.apiUrl}/departements`);
+
+  }
 }

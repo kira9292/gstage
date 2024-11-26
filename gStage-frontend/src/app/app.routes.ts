@@ -51,8 +51,8 @@ export const routes: Routes = [
         path: 'dashboard-stagiaire',
         component: DashboardComponent,
         title: 'Tableau de Bord',
-        // canActivate: [AuthGuard, RoleGuard],
-        // data: {expectedRole: 'ROLE_STAGIAIRE'}
+        canActivate: [AuthGuard, RoleGuard],
+        data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
     {
         path: 'application',
