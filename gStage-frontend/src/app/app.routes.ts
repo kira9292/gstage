@@ -19,6 +19,7 @@ import { DashboardManagerComponent } from './roles/manager/components/dashboard-
 import { AdminRegisterComponent } from './roles/admin/components/admin-register/admin-register.component';
 import {DashboardAdminComponent} from "./roles/admin/components/dashboard-admin/dashboard-admin.component";
 import { StatsComponent } from './roles/gwte/components/stats/stats.component';
+import { NotificationsGwteComponent } from './roles/gwte/components/notifications-gwte/notifications-gwte.component';
 
 
 
@@ -112,6 +113,13 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}
      },
+
+     {
+      path: 'notifications-gwte',
+      component: NotificationsGwteComponent,
+      canActivate: [AuthGuard, RoleGuard],
+      data: {expectedRole: 'ROLE_ASSISTANT_GWTE'}     
+    },
 
      {
       path: 'propose-to-manager',

@@ -80,6 +80,21 @@ export class AuthService {
         return null;
       }
     }
+
+    getUserIdFromToken(): number | null {
+      const token = localStorage.getItem(this.TOKEN_KEY);
+      if (!token) return null;
+  
+      try {
+        const decodedToken: any = jwtDecode(token);
+        return decodedToken.id;
+      } catch (error) {
+        console.error('Invalid token:', error);
+        return null;
+      }
+    }
+
+    
   
     // Récupérer les informations utilisateur du stockage local
     private getUserInfoFromStorage(): { firstName: string; name: string } | null {
@@ -99,15 +114,6 @@ export class AuthService {
       }
     }
 
-    // Vérifier si l'utilisateur est authentifié et si le token est expiré
-    private checkTokenAndRedirect(): boolean {
-      const token = localStorage.getItem(this.TOKEN_KEY);
-      if (!token || this.isTokenExpired(token)) {
-        this.logout();
-        return false;
-      }
-      return true;
-    }
 
   // Méthode pour décoder le token JWT et récupérer le rôle
   getRole(): string | null {

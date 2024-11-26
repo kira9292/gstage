@@ -59,4 +59,11 @@ export class GwteService {
   cancelProposal(id: number){
     return this.http.put(`${this.apiUrl}/internships/${id}/cancel`, {});
   }
+
+
+
+  getNotificationsForUser(userId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}notifications/user/${userId}`);
+  }
+
 }

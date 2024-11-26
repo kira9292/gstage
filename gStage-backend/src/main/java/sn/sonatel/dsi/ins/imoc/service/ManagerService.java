@@ -17,6 +17,12 @@ public class ManagerService {
     @Autowired
     private DemandeStageRepository demandeStageRepository;
 
+    private final NotificationService notificationService;
+
+    public ManagerService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
     @Transactional
     public Optional<String> validateInternshipRequest(Long internshipId) {
         return demandeStageRepository
@@ -28,6 +34,10 @@ public class ManagerService {
                 demandeStage.setStatus(InternshipStatus.ACCEPTE);
                 // Sauvegarder la demande
                 demandeStageRepository.save(demandeStage);
+
+                // Notification
+                String message = "La demande de stage " + demandeStage.getReference() + " a été acceptée.";
+                notificationService.notifyAssistants(message, InternshipStatus.ACCEPTE);
                 return "Demande Stage " + internshipId.toString() + " accepted";
             });
     }
@@ -43,6 +53,10 @@ public class ManagerService {
                 demandeStage.setStatus(InternshipStatus.REFUSE);
                 // Sauvegarder la demande
                 demandeStageRepository.save(demandeStage);
+
+                // Notification
+                String message = "La demande de stage " + demandeStage.getReference() + " a été rejetée.";
+                notificationService.notifyAssistants(message, InternshipStatus.REFUSE);
                 return "Demande Stage " + internshipId.toString() + " refused";
             });
     }

@@ -8,21 +8,31 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import sn.sonatel.dsi.ins.imoc.domain.ValidationStatusUser;
-import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
+import sn.sonatel.dsi.ins.imoc.domain.*;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
+import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
+import sn.sonatel.dsi.ins.imoc.repository.NotificationRepository;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class NotificationService {
 
     private final JavaMailSender mailSender;
     private final ContratService contratService;
+    private final NotificationRepository notificationRepository;
+    private final AppUserRepository appUserRepository;
 
     @Autowired
-    public NotificationService(JavaMailSender mailSender, ContratService contratService) {
+    public NotificationService(JavaMailSender mailSender, ContratService contratService, NotificationRepository notificationRepository, AppUserRepository appUserRepository) {
         this.mailSender = mailSender;
         this.contratService = contratService;
+        this.notificationRepository = notificationRepository;
+        this.appUserRepository = appUserRepository;
     }
 
     // Envoi de mail avec HTML pour l'utilisateur
@@ -129,6 +139,19 @@ public class NotificationService {
         );
 
         mailSender.send(message);
+    }
+
+    public void notifyAssistants(String message, InternshipStatus type) {
+        List<AppUser> assistants = appUserRepository.findByRoleName(ERole.ASSISTANT_GWTE);
+
+        for (AppUser assistant : assistants) {
+            Notification notification = new Notification();
+            notification.setMessage(message);
+            notification.setTypeNotification(type);
+            notification.setSendingDate(LocalDate.now());
+            notification.setAppUser(assistant);
+            notificationRepository.save(notification);
+        }
     }
 
 }

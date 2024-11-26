@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.Role;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
 
 /**
@@ -37,4 +38,5 @@ public interface AppUserRepository extends AppUserRepositoryWithBagRelationships
 
 
     List<AppUser> findByRoleName(ERole eRole);
+
 }
