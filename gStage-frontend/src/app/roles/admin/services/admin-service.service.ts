@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Service, User} from "../components/dashboard-admin/dashboard-admin.component";
+import {Departement, Service, User} from "../components/dashboard-admin/dashboard-admin.component";
 
 
 @Injectable({
@@ -25,7 +25,7 @@ export class AdminServiceService {
     return this.http.put<User>(`${this.apiUrl}/users/${user.id}`, user);
   }
   getServices(): Observable<Service[]> {
-    return this.http.get<Service[]>(`${this.apiUrl}/list-services`);
+    return this.http.get<Service[]>(`${this.apiUrl}/list-services-and-departments`);
   }
 
   saveUser(payload: any): Observable<any> {
@@ -38,13 +38,16 @@ export class AdminServiceService {
 
 
   createService(service: Service): Observable<Service> {
-    return this.http.post<Service>(this.apiUrl+'/services', service);
+    return this.http.post<Service>(this.apiUrl+'/depts-services', service);
   }
 
-  updateService(service: Service): Observable<Service> {
-    return this.http.put<Service>(this.apiUrl+`/services/${service.id}`, service);
+  deleteService(serviceId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/services/${serviceId}`);
   }
 
 
+  getDepartement():Observable<Departement[]> {
+    return this.http.get<Service[]>(`${this.apiUrl}/departements`);
 
+  }
 }

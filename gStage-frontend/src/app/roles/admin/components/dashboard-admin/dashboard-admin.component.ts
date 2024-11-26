@@ -24,6 +24,16 @@ export interface Service{
   id: number;
   name: string;
   description: string;
+  departmentId:number;
+  departmentName: string;
+
+}
+
+export interface Departement{
+  id: number;
+  name: string;
+  description: string;
+
 }
 
 @Component({
@@ -45,6 +55,7 @@ export class DashboardAdminComponent implements OnInit {
   userForm!: FormGroup;
   isSubmitting = false;
   services: Service[]=[];
+  depts: Departement[]=[];
   activeTab: string = 'users';
   serviceForm!: FormGroup;
   isServiceModalOpen: boolean = false;
@@ -86,19 +97,34 @@ export class DashboardAdminComponent implements OnInit {
 
     this.serviceForm = this.fb.group({
       name: ['',[Validators.required, Validators.minLength(2), noWhitespaceValidator]],
-      description: ['']
+      description: [''],
+      departmentId: ['',[Validators.required]],
+
     });
   }
 
   ngOnInit(): void {
     this.fetchUsers();
     this.fetchServices();
+    this.fetchDepartement();
+
   }
 
   fetchServices(): void {
     this.adminService.getServices().subscribe(
       (data: Service[]) => {
         this.services = data;
+        console.log(data);
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des services:', error);
+      }
+    );
+  }
+  fetchDepartement(): void {
+    this.adminService.getDepartement().subscribe(
+      (data: Departement[]) => {
+        this.depts = data;
         console.log(data);
       },
       (error) => {
@@ -252,13 +278,16 @@ export class DashboardAdminComponent implements OnInit {
 
 
   saveService(): void {
+    console.log(this.serviceForm.valid);
+    console.log(this.serviceForm.value);
+
     if (this.serviceForm.valid) {
       const serviceData = this.serviceForm.value;
 
       if (this.selectedService) {
         // Modification d'un service existant
         const updatedService = { ...this.selectedService, ...serviceData };
-        this.adminService.updateService(updatedService).subscribe(
+        this.adminService.createService(updatedService).subscribe(
           () => {
             this.fetchServices();
             this.closeServiceModal();
@@ -287,9 +316,16 @@ export class DashboardAdminComponent implements OnInit {
 
   selectedService: any = null;
 
-  deleteService(serviceId: number) {
-    this.services = this.services.filter(service => service.id !== serviceId);
-    console.log('Service supprimé:', serviceId);
+  deleteService(serviceId: number): void {
+    this.adminService.deleteService(serviceId).subscribe({
+      next: () => {
+        this.services = this.services.filter(service => service.id !== serviceId);
+        console.log('Service supprimé:', serviceId);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la suppression du service:', err);
+      }
+    });
   }
   openRoleModal(role?: any) {
     console.log('Rôle modal ouvert', role);
