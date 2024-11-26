@@ -126,7 +126,7 @@ export class AuthService {
     
     switch (role) {
       case 'ROLE_ADMIN':
-        this.router.navigate(['/dashboard-admin']);        
+        this.router.navigate(['/admin-dashboard']);        
         break;
       
       case 'ROLE_STAGIAIRE':

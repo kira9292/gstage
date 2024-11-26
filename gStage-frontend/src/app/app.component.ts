@@ -8,6 +8,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { AuthService } from './core/services/auth.service';
 import { SidebarGwteComponent } from './shared/components/sidebar-gwte/sidebar-gwte.component';
 import { SidebarManagerComponent } from "./shared/components/sidebar-manager/sidebar-manager.component";
+import { SidebarAdminComponent } from "./shared/components/sidebar-admin/sidebar-admin.component";
 
 
 @Component({
@@ -20,7 +21,8 @@ import { SidebarManagerComponent } from "./shared/components/sidebar-manager/sid
     NavbarComponent,
     CommonModule,
     SidebarGwteComponent,
-    SidebarManagerComponent
+    SidebarManagerComponent,
+    SidebarAdminComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -55,6 +57,9 @@ export class AppComponent {
     }
     showSidebarManager(): boolean {
       return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_MANAGER');
+    }
+    showSidebarAdmin(): boolean {
+      return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_ADMIN');
     }
 
     isAuthenticated(): boolean {

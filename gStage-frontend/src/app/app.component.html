@@ -21,6 +21,11 @@
       (sidebarClose)="closeSidebar()"
       class="h-full">
     </app-sidebar-manager>
+    <app-sidebar-admin 
+      *ngIf="showSidebarAdmin()"
+      (sidebarClose)="closeSidebar()"
+      class="h-full">
+    </app-sidebar-admin>
 
     <!-- Le contenu principal -->
     <div class="flex-1 overflow-auto bg-gray-50" [ngClass]="{'p-4 md:p-8': !isAuthPage()}">
