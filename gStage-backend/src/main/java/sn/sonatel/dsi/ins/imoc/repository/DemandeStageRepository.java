@@ -20,4 +20,5 @@ public interface DemandeStageRepository extends JpaRepository<DemandeStage, Long
 
     void deleteByAppUserId(Long id);
 
+    List<DemandeStage> findAllByAppUserIsNotNull();
 }

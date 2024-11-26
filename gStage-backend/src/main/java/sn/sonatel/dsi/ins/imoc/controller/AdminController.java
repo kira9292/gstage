@@ -11,10 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sn.sonatel.dsi.ins.imoc.domain.AppUser;
-import sn.sonatel.dsi.ins.imoc.domain.Departement;
-import sn.sonatel.dsi.ins.imoc.domain.Role;
-import sn.sonatel.dsi.ins.imoc.domain.Service;
+import sn.sonatel.dsi.ins.imoc.domain.*;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 import sn.sonatel.dsi.ins.imoc.dto.ServiceWithDepartmentDTO;
 import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
 import sn.sonatel.dsi.ins.imoc.dto.UserForAdminDTO;
@@ -23,6 +21,7 @@ import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 import tech.jhipster.web.util.PaginationUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +34,7 @@ public class AdminController {
     private final ServiceRepository serviceRepository;
     private final DemandeStageRepository demandeStageRepository;
     private final DepartementRepository departementRepository;
+    private final CandidatRepository candidatRepository;
 
     public AdminController(
         AppUserService appUserService,
@@ -42,7 +42,8 @@ public class AdminController {
         RoleRepository roleRepository,
         ServiceRepository serviceRepository,
         DemandeStageRepository demandeStageRepository,
-        DepartementRepository departementRepository
+        DepartementRepository departementRepository,
+        CandidatRepository candidatRepository
     ) {
         this.appUserService = appUserService;
         this.appUserRepository = appUserRepository;
@@ -50,6 +51,7 @@ public class AdminController {
         this.serviceRepository = serviceRepository;
         this.demandeStageRepository = demandeStageRepository;
         this.departementRepository = departementRepository;
+        this.candidatRepository = candidatRepository;
     }
 
     @PostMapping("/api/inscription")
@@ -208,7 +210,27 @@ public class AdminController {
         return ResponseEntity.ok(savedService);
     }
 
+    @Transactional
+    @GetMapping("/api/admin-candidat")
+    public ResponseEntity<List<Candidat>> getStagiairesAvecDerniereDemandeAcceptee() {
 
+        // Récupérer toutes les demandes de stage associées à un utilisateur
+        List<DemandeStage> demandeStages = demandeStageRepository.findAllByAppUserIsNotNull();
+
+        // Filtrer les demandes de stage avec le statut 'ACCEPTE'
+        List<DemandeStage> demandeStagesAcceptees = demandeStages.stream()
+            .filter(demande -> demande.getStatus() == InternshipStatus.ACCEPTE)
+            .collect(Collectors.toList());
+
+        // Récupérer les candidats associés aux demandes acceptées
+        List<Candidat> candidats = demandeStagesAcceptees.stream()
+            .map(DemandeStage::getCandidat) // On récupère le candidat associé à chaque demande de stage
+            .filter(Objects::nonNull) // On s'assure que le candidat n'est pas nul
+            .collect(Collectors.toList());
+
+        // Retourner la liste des candidats associés aux demandes acceptées
+        return ResponseEntity.ok(candidats);
+    }
 
 
 
