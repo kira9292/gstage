@@ -12,14 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.Departement;
 import sn.sonatel.dsi.ins.imoc.domain.Role;
 import sn.sonatel.dsi.ins.imoc.domain.Service;
+import sn.sonatel.dsi.ins.imoc.dto.ServiceWithDepartmentDTO;
 import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
 import sn.sonatel.dsi.ins.imoc.dto.UserForAdminDTO;
-import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
-import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
-import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
-import sn.sonatel.dsi.ins.imoc.repository.ServiceRepository;
+import sn.sonatel.dsi.ins.imoc.repository.*;
 import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 import tech.jhipster.web.util.PaginationUtil;
 
@@ -35,19 +34,22 @@ public class AdminController {
     private final RoleRepository roleRepository;
     private final ServiceRepository serviceRepository;
     private final DemandeStageRepository demandeStageRepository;
+    private final DepartementRepository departementRepository;
 
     public AdminController(
         AppUserService appUserService,
         AppUserRepository appUserRepository,
         RoleRepository roleRepository,
         ServiceRepository serviceRepository,
-        DemandeStageRepository demandeStageRepository
+        DemandeStageRepository demandeStageRepository,
+        DepartementRepository departementRepository
     ) {
         this.appUserService = appUserService;
         this.appUserRepository = appUserRepository;
         this.roleRepository = roleRepository;
         this.serviceRepository = serviceRepository;
         this.demandeStageRepository = demandeStageRepository;
+        this.departementRepository = departementRepository;
     }
 
     @PostMapping("/api/inscription")
@@ -152,7 +154,70 @@ public class AdminController {
              return ResponseEntity.ok(servicesSansUtilisateur);
     }
 
+    @Transactional
+    @GetMapping("/api/list-services-and-departments")
+    public ResponseEntity<List<ServiceWithDepartmentDTO>> getServicesWithDepartments() {
+        List<Service> services = serviceRepository.findByDepartemenNotNull();
+
+        // Construire la liste des DTO à partir des entités
+        List<ServiceWithDepartmentDTO> response = services.stream()
+            .map(service -> new ServiceWithDepartmentDTO(
+                service.getId(),
+                service.getName(),
+                service.getDescription(),
+                service.getDepartemen() != null ? service.getDepartemen().getId() : null,
+                service.getDepartemen() != null ? service.getDepartemen().getName() : null
+            ))
+            .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
+    @PostMapping("/api/depts-services")
+    public ResponseEntity<Service> saveOrUpdateService(@RequestBody ServiceWithDepartmentDTO request) {
+        Service service;
+
+        // Si l'ID du service existe, on fait une mise à jour
+        if (request.id() != null) {
+            service = serviceRepository.findById(request.id())
+                .orElseThrow(() -> new RuntimeException("Service non trouvé avec ID : " + request.id()));
+        } else {
+            // Sinon, on crée un nouveau service
+            service = new Service();
+        }
+
+        // Mise à jour des champs du service
+        service.setName(request.name());
+        service.setDescription(request.description());
+
+        // Associer un département s'il est fourni
+        if (request.departmentId() != null) {
+            Departement departement = departementRepository.findById(request.departmentId())
+                .orElseThrow(() -> new RuntimeException("Département non trouvé avec ID : " + request.departmentId()));
+            service.setDepartemen(departement);
+        } else {
+            service.setDepartemen(null); // Aucun département associé
+        }
+
+        // Sauvegarder le service
+        Service savedService = serviceRepository.save(service);
+
+        return ResponseEntity.ok(savedService);
+    }
+
+
+
+
+
+
+
+
 }
+
+
 
 
 

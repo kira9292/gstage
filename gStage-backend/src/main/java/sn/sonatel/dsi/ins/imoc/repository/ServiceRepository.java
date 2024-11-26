@@ -16,4 +16,7 @@ public interface ServiceRepository extends JpaRepository<Service, Long> {
     Optional<Service> findByName(String s);
 
     List<Service> findByAppUserIsNull();
+
+
+    List<Service> findByDepartemenNotNull();
 }
