@@ -28,7 +28,7 @@ submitDemandeStage(demandeStageData: any): Observable<any> {
 }
 
 
-  verifyCode(code: string): Observable<any> {
+verifyCode(code: string): Observable<any> {
     const url = `${this.apiUrl}/validerdemande`;
     return this.http.post(url, { code });
   }
