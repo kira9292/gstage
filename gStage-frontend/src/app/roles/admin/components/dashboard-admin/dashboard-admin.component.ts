@@ -46,10 +46,8 @@ export class DashboardAdminComponent implements OnInit {
   isSubmitting = false;
   services: Service[]=[];
   activeTab: string = 'users';
-  isLoading: boolean = false;
-  errorMessage: string | null = null;
-
-
+  serviceForm!: FormGroup;
+  isServiceModalOpen: boolean = false;
 
 
   constructor(
@@ -83,6 +81,12 @@ export class DashboardAdminComponent implements OnInit {
         serviceControl?.clearValidators();
       }
       serviceControl?.updateValueAndValidity();
+    });
+
+
+    this.serviceForm = this.fb.group({
+      name: ['',[Validators.required, Validators.minLength(2), noWhitespaceValidator]],
+      description: ['']
     });
   }
 
@@ -137,11 +141,28 @@ export class DashboardAdminComponent implements OnInit {
     }
   }
 
+  openServiceModal(service?: Service): void {
+    this.isServiceModalOpen = true;
+    if (service) {
+      this.selectedService = service;
+      this.serviceForm.patchValue(service);
+    } else {
+      this.selectedService = null;
+      this.serviceForm.reset();
+    }
+  }
+
 
   closeModal(): void {
     this.isModalOpen = false;
     this.selectedUser = null;
     this.userForm.reset();
+  }
+
+  closeServiceModal(): void {
+    this.isServiceModalOpen = false;
+    this.selectedService = null;
+    this.serviceForm.reset();
   }
 
 
@@ -225,10 +246,43 @@ export class DashboardAdminComponent implements OnInit {
 
   }
 
-  openServiceModal(service?: any) {
-    this.selectedService = service ? { ...service } : null;
-    this.isModalOpen = true;
+
+
+
+
+
+  saveService(): void {
+    if (this.serviceForm.valid) {
+      const serviceData = this.serviceForm.value;
+
+      if (this.selectedService) {
+        // Modification d'un service existant
+        const updatedService = { ...this.selectedService, ...serviceData };
+        this.adminService.updateService(updatedService).subscribe(
+          () => {
+            this.fetchServices();
+            this.closeServiceModal();
+          },
+          error => {
+            console.error('Erreur lors de la mise à jour du service:', error);
+          }
+        );
+      } else {
+        // Ajout d'un nouveau service
+        this.adminService.createService(serviceData).subscribe(
+          () => {
+            this.fetchServices();
+            this.closeServiceModal();
+          },
+          error => {
+            console.error('Erreur lors de la création du service:', error);
+          }
+        );
+      }
+    }
   }
+
+
 
 
   selectedService: any = null;
@@ -295,6 +349,16 @@ export class DashboardAdminComponent implements OnInit {
       if (control.errors['required']) return 'Le mot de passe est requis';
       if (control.errors['minlength']) return 'Le mot de passe doit contenir au moins 8 caractères';
       if (control.errors['pattern']) return 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial';
+    }
+    return '';
+  }
+
+  get serviceNameError(): string {
+    const control = this.serviceForm.get('name');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le nom est requis';
+      if (control.errors['minlength']) return 'Le nom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom ne doit pas contenir de caracteres speciaux inutiles';
     }
     return '';
   }
