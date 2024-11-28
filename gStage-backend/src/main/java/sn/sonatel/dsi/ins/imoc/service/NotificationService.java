@@ -19,6 +19,7 @@ import sn.sonatel.dsi.ins.imoc.repository.NotificationRepository;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -231,25 +232,21 @@ public class NotificationService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom("amethndiaye840@gmail.com", "Sonatel Stage");
         helper.setTo(validation.getCandidat().getEmail());
-        helper.setSubject("Votre attestation de stage chez Sonatel ");
-        String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
-            + "<table width='100%' cellspacing='0' cellpadding='20' style='background-color: #f4f4f4;'>"
-            + "<tr><td style='text-align: center;'>"
-            + "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>"
-            + "<h2 style='color: #4CAF50;'>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>"
-            + "<p>Voici votre attestation de stage à Sonatel.</p>"
-            + "<p style='font-size: 16px;'>Nous espérons que votre expérience de stage a été enrichissante.</p>"
-            + "<p>Vous trouverez ci-joint votre attestation de stage.</p>"
-            + "<hr style='border: 0; border-top: 1px solid #ddd; margin: 20px 0;'>"
-            + "<p style='font-size: 14px;'>Cordialement,<br>L'équipe Sonatel</p>"
-            + "<footer style='font-size: 12px; color: #aaa; text-align: center;'>"
-            + "<p>Ce message est généré automatiquement. Merci de ne pas y répondre.</p>"
-            + "</footer>"
-            + "</td></tr></table></body></html>";
+        helper.setSubject("Votre attestation de stage chez Sonatel");
+
+        String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>" +
+            "<div style='max-width: 600px; margin: auto; padding: 20px; text-align: center;'>" +
+            "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>" +
+            "<h2>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>" +
+            "<p>Vous trouverez ci-joint votre attestation de présence du "+ request.startDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " au " + request.endDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +  " de stage à Sonatel.</p>" +
+            "<p>Cordialement,<br>L'équipe Sonatel</p>" +
+            "<footer style='font-size: 12px; color: #aaa;'>Message généré automatiquement</footer>" +
+            "</div></body></html>";
+
         helper.setText(htmlContent, true);
 
         // Générer et joindre l'attestation
-        ByteArrayResource attestation = attestationService.genererAttestationPresence(validation,request);
+        ByteArrayResource attestation = attestationService.genererAttestationPresence(validation, request);
         helper.addAttachment(
             String.format("Attestation_%s_%s.docx",
                 validation.getCandidat().getFirstName(),

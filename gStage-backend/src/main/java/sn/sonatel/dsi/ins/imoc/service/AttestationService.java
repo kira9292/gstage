@@ -126,7 +126,7 @@ public class AttestationService {
             XWPFParagraph titleParagraph = document.createParagraph();
             titleParagraph.setAlignment(ParagraphAlignment.CENTER);
             XWPFRun titleRun = titleParagraph.createRun();
-            titleRun.setText("Attestation de Fin de stage");
+            titleRun.setText("Attestation de Presence");
             titleRun.setFontFamily("Arial");
             titleRun.setFontSize(16);
             titleRun.setBold(true);

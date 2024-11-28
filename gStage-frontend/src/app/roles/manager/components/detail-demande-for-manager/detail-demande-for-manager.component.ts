@@ -464,40 +464,6 @@ closePresenceAttestationModal() {
   this.showPresenceAttestationModal = false;
 }
 
-// acceptInternship(internship: any): void {
-//   Swal.fire({
-//     title: 'Confirmer l\'acceptation',
-//     text: `Voulez-vous accepter le stage de ${internship.candidat.firstName} ${internship.candidat.lastName} ?`,
-//     icon: 'question',
-//     showCancelButton: true,
-//     confirmButtonColor: '#3085d6',
-//     cancelButtonColor: '#d33',
-//     confirmButtonText: 'Accepter',
-//     cancelButtonText: 'Annuler'
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       this.managerService.validateInternshipRequest(internship.demandeStage.id)
-//       .subscribe({
-//         next: () => {
-//           Swal.fire({
-//             icon: 'success',
-//             title: 'Stage accepté !',
-//             text: `Le stage de ${internship.candidat.firstName} a été accepté`
-//           });
-//           this.statusUpdated.emit();
-//           this.closeModal();
-//         },
-//         error: () => {
-//           Swal.fire({
-//             icon: 'error',
-//             title: 'Erreur',
-//             text: 'Impossible d\'accepter le stage'
-//           });
-//         }
-//       });
-//     }
-//   });
-// }
 
 generatePresenceAttestation() {
   // Vérifier que les dates sont valides
@@ -542,28 +508,39 @@ generatePresenceAttestation() {
   // Afficher une boîte de dialogue de confirmation
   Swal.fire({
     title: 'Générer une attestation de présence',
-    text: `Voulez-vous générer l'attestation pour la période du ${this.formatDate(startDate)} au ${this.formatDate(endDate)} ?`,
+    text: `Voulez-vous générer l'attestation pour la période du ${this.formatDate(startDate)} au ${this.formatDate(endDate)} et l'envoyer au stagiaire ${this.demande?.candidat?.firstName} ${this.demande?.candidat?.lastName} ?`,
     icon: 'question',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Générer',
+    confirmButtonText: 'Générer et envoyer',
     cancelButtonText: 'Annuler'
   }).then((result) => {
     if (result.isConfirmed) {
+           // Afficher le loader
+           Swal.fire({
+            title: 'Generation et Envoi en cours...',
+            text: 'Veuillez patienter pendant la generation et l\'envoi de l\'attestation de presence',
+            icon: 'info',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+    
       this.managerService.sendPresenceAttestation(request)
         .subscribe({
           next: (response) => {
             // Succès
             Swal.fire({
               icon: 'success',
-              title: 'Attestation générée !',
-              text: 'L\'attestation de présence a été générée avec succès.'
+              title: 'Attestation générée et envoyée !',
+              text: `L\'attestation de présence a été générée et envoyée a l'adresse ${this.demande?.candidat?.email} avec succès.`
             });
             this.closePresenceAttestationModal();
           },
           error: (error) => {
-            // Gestion des erreurs
             Swal.fire({
               icon: 'error',
               title: 'Erreur',

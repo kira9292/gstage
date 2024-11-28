@@ -97,7 +97,7 @@ export class DashboardAdminComponent implements OnInit {
 
 
     this.serviceForm = this.fb.group({
-      name: ['',[Validators.required, Validators.minLength(2), noWhitespaceValidator]],
+      name: ['',[Validators.required, Validators.minLength(2)]],
       description: [''],
       departmentId: ['',[Validators.required]],
 
