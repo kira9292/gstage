@@ -2,6 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+
+export interface AttestationRequest {
+  startDate: string;
+  endDate: string;
+  email: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +25,7 @@ export class ManagerService {
   validateInternshipRequest(requestId: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${requestId}/validate`, {});
   }
+
   rejectInternshipRequest(requestId: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${requestId}/reject`, {});
   }
@@ -29,7 +37,13 @@ export class ManagerService {
   markInternshipAsEnded(requestId: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${requestId}/markAsEnded`, {});
   }
-  sendAttestation(email: string) {
+
+
+  sendEndingInternshipAttestation(email: string) {
     return this.http.post(`${this.apiUrl}/sendAttestation`, { mail: email });
+  }
+
+  sendPresenceAttestation(request: AttestationRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/send-presence-attestation`, request);
   }
 }

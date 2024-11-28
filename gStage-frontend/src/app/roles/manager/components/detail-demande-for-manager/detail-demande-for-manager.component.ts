@@ -4,12 +4,16 @@ import { GwteService } from '../../../gwte/services/gwte.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-import { ManagerService } from '../../services/manager.service';
+import { AttestationRequest, ManagerService } from '../../services/manager.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-detail-demande-for-manager',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './detail-demande-for-manager.component.html',
   styleUrl: './detail-demande-for-manager.component.scss'
 })
@@ -18,6 +22,9 @@ export class DetailDemandeForManagerComponent {
   @Output() close = new EventEmitter<void>();
   @Output() statusUpdated = new EventEmitter<void>();  // Nouvel EventEmitter
 
+  showPresenceAttestationModal = false;
+  attestationStartDate: string | null = null;
+  attestationEndDate: string | null = null;
 
   InternshipStatus = InternshipStatus
 
@@ -51,7 +58,7 @@ sendAttestation() {
     return;
   }
 
-  this.managerService.sendAttestation(this.demande.candidat.email)
+  this.managerService.sendEndingInternshipAttestation(this.demande.candidat.email)
     .subscribe({
       next: () => {
       // Notification de succès
@@ -68,7 +75,6 @@ sendAttestation() {
       this.closeModal();
     },
     error: (error) => {
-      // Notification d'erreur
       Swal.fire({
         icon: 'error',
         title: 'Erreur',
@@ -447,4 +453,136 @@ getInternshipStatusClass(status: InternshipStatus): string {
 closeModal() {
   this.close.emit();
 }
+
+openPresenceAttestationModal() {
+  this.attestationStartDate = null;
+  this.attestationEndDate = null;
+  this.showPresenceAttestationModal = true;
+}
+
+closePresenceAttestationModal() {
+  this.showPresenceAttestationModal = false;
+}
+
+// acceptInternship(internship: any): void {
+//   Swal.fire({
+//     title: 'Confirmer l\'acceptation',
+//     text: `Voulez-vous accepter le stage de ${internship.candidat.firstName} ${internship.candidat.lastName} ?`,
+//     icon: 'question',
+//     showCancelButton: true,
+//     confirmButtonColor: '#3085d6',
+//     cancelButtonColor: '#d33',
+//     confirmButtonText: 'Accepter',
+//     cancelButtonText: 'Annuler'
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       this.managerService.validateInternshipRequest(internship.demandeStage.id)
+//       .subscribe({
+//         next: () => {
+//           Swal.fire({
+//             icon: 'success',
+//             title: 'Stage accepté !',
+//             text: `Le stage de ${internship.candidat.firstName} a été accepté`
+//           });
+//           this.statusUpdated.emit();
+//           this.closeModal();
+//         },
+//         error: () => {
+//           Swal.fire({
+//             icon: 'error',
+//             title: 'Erreur',
+//             text: 'Impossible d\'accepter le stage'
+//           });
+//         }
+//       });
+//     }
+//   });
+// }
+
+generatePresenceAttestation() {
+  // Vérifier que les dates sont valides
+  if (!this.attestationStartDate || !this.attestationEndDate) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Dates invalides',
+      text: 'Veuillez sélectionner une date de début et de fin valides.'
+    });
+    return;
+  }
+
+  // Calculer la durée entre les dates
+  const startDate = new Date(this.attestationStartDate);
+  const endDate = new Date(this.attestationEndDate);
+  
+  // Vérifier la période d'un mois avec tolérance de ±5 jours
+  const monthDifference = (endDate.getFullYear() - startDate.getFullYear()) * 12 
+    + endDate.getMonth() - startDate.getMonth();
+  
+  // Calculer le nombre de jours
+  const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
+  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+  // Vérification de la période d'un mois avec tolérance
+  if (!(monthDifference === 1 || monthDifference === 0) || daysDiff < 25 || daysDiff > 36) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Période invalide',
+      text: 'L\'attestation doit couvrir une période d\'un mois (±5 jours).'
+    });
+    return;
+  }
+
+  const candidateEmail = this.demande?.candidat?.email;
+  const request: AttestationRequest = {
+    startDate: this.attestationStartDate,
+    endDate: this.attestationEndDate,
+    email: candidateEmail
+  };
+
+  // Afficher une boîte de dialogue de confirmation
+  Swal.fire({
+    title: 'Générer une attestation de présence',
+    text: `Voulez-vous générer l'attestation pour la période du ${this.formatDate(startDate)} au ${this.formatDate(endDate)} ?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Générer',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.managerService.sendPresenceAttestation(request)
+        .subscribe({
+          next: (response) => {
+            // Succès
+            Swal.fire({
+              icon: 'success',
+              title: 'Attestation générée !',
+              text: 'L\'attestation de présence a été générée avec succès.'
+            });
+            this.closePresenceAttestationModal();
+          },
+          error: (error) => {
+            // Gestion des erreurs
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Impossible de générer l\'attestation de présence.'
+            });
+            console.error('Erreur lors de la génération de l\'attestation', error);
+          }
+        });
+    }
+  });
+}
+
+// Méthode utilitaire pour formater les dates
+private formatDate(date: Date): string {
+  return date.toLocaleDateString('fr-FR', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+
 }

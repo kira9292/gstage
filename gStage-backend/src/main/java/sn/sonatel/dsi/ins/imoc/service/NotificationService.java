@@ -173,7 +173,6 @@ public class NotificationService {
                 validation.getCandidat().getLastName()),
             new ByteArrayResource(attestation.getByteArray())
         );
-
         mailSender.send(message);
     }
 
