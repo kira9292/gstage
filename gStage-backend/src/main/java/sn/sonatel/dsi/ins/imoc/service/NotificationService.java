@@ -148,7 +148,7 @@ public class NotificationService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom("amethndiaye840@gmail.com", "Sonatel Stage");
         helper.setTo(validation.getCandidat().getEmail());
-        helper.setSubject("Votre attestation de stage chez Sonatel");
+        helper.setSubject("Votre attestation de stage chez Sonatel ");
         String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>"
             + "<table width='100%' cellspacing='0' cellpadding='20' style='background-color: #f4f4f4;'>"
             + "<tr><td style='text-align: center;'>"

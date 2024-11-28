@@ -83,7 +83,7 @@ public class ManagerService {
                 // Vérifier que la demande est dans un état valide pour validation/rejet
                 if (demandeStage.getStatus() != InternshipStatus.ACCEPTE && demandeStage.getStatus() != InternshipStatus.TERMINE) {
                     throw new InternshipRequestValidationException(
-                        "La demande ne peut être mise EN_COURS que si elle est en statut ACCEPTE ou TERMINE"
+                        "La demande ne peut être mise EN_COURS que si elle est en statut ACCEPTE ou TERMINE "
                     );
                 }                // Mettre à jour le statut
                 demandeStage.setStatus(InternshipStatus.EN_COURS);
