@@ -144,6 +144,12 @@ public class AttestationPresenceResource {
                 if (attestationPresence.getComments() != null) {
                     existingAttestationPresence.setComments(attestationPresence.getComments());
                 }
+                if (attestationPresence.getDocs() != null) {
+                    existingAttestationPresence.setDocs(attestationPresence.getDocs());
+                }
+                if (attestationPresence.getDocsContentType() != null) {
+                    existingAttestationPresence.setDocsContentType(attestationPresence.getDocsContentType());
+                }
 
                 return existingAttestationPresence;
             })

@@ -40,6 +40,13 @@ public class AttestationPresence implements Serializable {
     @Column(name = "comments")
     private String comments;
 
+    @Lob
+    @Column(name = "docs")
+    private byte[] docs;
+
+    @Column(name = "docs_content_type")
+    private String docsContentType;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "attestationPresence")
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
@@ -55,6 +62,7 @@ public class AttestationPresence implements Serializable {
             "attestationPresences",
             "candidats",
             "validations",
+            "notifications",
             "role",
             "validationStatusUser",
             "restaurationStagiaires",
@@ -144,6 +152,32 @@ public class AttestationPresence implements Serializable {
         this.comments = comments;
     }
 
+    public byte[] getDocs() {
+        return this.docs;
+    }
+
+    public AttestationPresence docs(byte[] docs) {
+        this.setDocs(docs);
+        return this;
+    }
+
+    public void setDocs(byte[] docs) {
+        this.docs = docs;
+    }
+
+    public String getDocsContentType() {
+        return this.docsContentType;
+    }
+
+    public AttestationPresence docsContentType(String docsContentType) {
+        this.docsContentType = docsContentType;
+        return this;
+    }
+
+    public void setDocsContentType(String docsContentType) {
+        this.docsContentType = docsContentType;
+    }
+
     public Set<Validation> getValidations() {
         return this.validations;
     }
@@ -217,6 +251,8 @@ public class AttestationPresence implements Serializable {
             ", signatureDate='" + getSignatureDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", comments='" + getComments() + "'" +
+            ", docs='" + getDocs() + "'" +
+            ", docsContentType='" + getDocsContentType() + "'" +
             "}";
     }
 }

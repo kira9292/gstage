@@ -1,11 +1,11 @@
-id;start_date;end_date;signature_date;status;comments
-1;2024-10-29;2024-10-29;2024-10-29;true;unless
-2;2024-10-29;2024-10-29;2024-10-29;true;round duh
-3;2024-10-29;2024-10-29;2024-10-28;false;judicious cruelty
-4;2024-10-29;2024-10-28;2024-10-28;false;highly heavily thongs
-5;2024-10-29;2024-10-29;2024-10-29;false;starboard cafe
-6;2024-10-29;2024-10-29;2024-10-29;false;aha emphasize positively
-7;2024-10-29;2024-10-29;2024-10-29;false;devise sonnet cumbersome
-8;2024-10-29;2024-10-29;2024-10-29;true;dazzling comparison and
-9;2024-10-28;2024-10-29;2024-10-28;true;below finally
-10;2024-10-29;2024-10-28;2024-10-29;true;comb source
+id;start_date;end_date;signature_date;status;comments;docs;docs_content_type
+1;2024-10-29;2024-10-29;2024-10-29;true;unless;../fake-data/blob/hipster.png;image/png
+2;2024-10-29;2024-10-29;2024-10-29;true;round duh;../fake-data/blob/hipster.png;image/png
+3;2024-10-29;2024-10-29;2024-10-28;false;judicious cruelty;../fake-data/blob/hipster.png;image/png
+4;2024-10-29;2024-10-28;2024-10-28;false;highly heavily thongs;../fake-data/blob/hipster.png;image/png
+5;2024-10-29;2024-10-29;2024-10-29;false;starboard cafe;../fake-data/blob/hipster.png;image/png
+6;2024-10-29;2024-10-29;2024-10-29;false;aha emphasize positively;../fake-data/blob/hipster.png;image/png
+7;2024-10-29;2024-10-29;2024-10-29;false;devise sonnet cumbersome;../fake-data/blob/hipster.png;image/png
+8;2024-10-29;2024-10-29;2024-10-29;true;dazzling comparison and;../fake-data/blob/hipster.png;image/png
+9;2024-10-28;2024-10-29;2024-10-28;true;below finally;../fake-data/blob/hipster.png;image/png
+10;2024-10-29;2024-10-28;2024-10-29;true;comb source;../fake-data/blob/hipster.png;image/png
