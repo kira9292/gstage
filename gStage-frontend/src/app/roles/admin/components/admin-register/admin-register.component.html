@@ -1,145 +1,204 @@
-<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
-    <div class="max-w-2xl w-full bg-white shadow-xl rounded-2xl overflow-hidden">
-      <div class="p-8">
-        <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">
-          Création de Compte Utilisateur
-        </h2>
-  
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- First Name -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Prénom</label>
-              <input type="text" formControlName="firstName"
-                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                     [ngClass]="{'border-red-500': registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched}">
-              <p *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Prénom invalide (minimum 2 caractères)
-              </p>
-            </div>
-  
-            <!-- Last Name -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Nom</label>
-              <input type="text" formControlName="lastName"
-                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                     [ngClass]="{'border-red-500': registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched}">
-              <p *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Nom invalide (minimum 2 caractères)
-              </p>
-            </div>
-  
-            <!-- Email -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-              <input type="email" formControlName="email"
-                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                     [ngClass]="{'border-red-500': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}">
-              <p *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Email invalide
-              </p>
-            </div>
-  
-            <!-- Username -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Nom d'utilisateur</label>
-              <input type="text" formControlName="username"
-                     class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                     [ngClass]="{'border-red-500': registerForm.get('username')?.invalid && registerForm.get('username')?.touched}">
-              <p *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Nom d'utilisateur invalide
-              </p>
-            </div>
-  
-            <!-- Role -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Rôle</label>
-              <select formControlName="role"
-                      class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                      [ngClass]="{'border-red-500': registerForm.get('role')?.invalid && registerForm.get('role')?.touched}">
-                <option value="" disabled>Sélectionner un rôle</option>
-                <option value="STAGIAIRE">Stagiaire</option>
-                <option value="RH">RH</option>
-                <option value="ASSISTANT_GWTE">Assistant GWTE</option>
-                <option value="DFC">DFC</option>
-                <option value="ADMIN">Admin</option>
-                <option value="MANAGER">Manager</option>
-              </select>
-              <p *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Rôle requis
-              </p>
-            </div>
-  
-            <!-- Service (for Managers) -->
-            <div *ngIf="registerForm.get('role')?.value === 'MANAGER'">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Service</label>
-              <select formControlName="service"
-                      class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                      [ngClass]="{'border-red-500': registerForm.get('service')?.invalid && registerForm.get('service')?.touched}">
-                <option value="" disabled>Sélectionner un service</option>
-                <option *ngFor="let service of services" [value]="service">
-                  {{service}}
-                </option>
-              </select>
-              <p *ngIf="registerForm.get('service')?.invalid && registerForm.get('service')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Service requis pour les managers
-              </p>
-            </div>
-  
-            <!-- Password -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Mot de passe</label>
-              <div class="relative">
-                <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
-                       class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                       [ngClass]="{'border-red-500': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}">
-                <button type="button" (click)="togglePasswordVisibility('password')"
-                        class="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  {{ showPassword ? 'Masquer' : 'Afficher' }}
-                </button>
-              </div>
-              <p *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Mot de passe invalide (8 caractères, majuscule, minuscule, chiffre, caractère spécial)
-              </p>
-            </div>
-  
-            <!-- Confirm Password -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Confirmer le mot de passe</label>
-              <div class="relative">
-                <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
-                       class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                       [ngClass]="{'border-red-500': registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched}">
-                <button type="button" (click)="togglePasswordVisibility('confirmPassword')"
-                        class="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  {{ showConfirmPassword ? 'Masquer' : 'Afficher' }}
-                </button>
-              </div>
-              <p *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" 
-                 class="text-red-500 text-xs mt-1">
-                 Les mots de passe ne correspondent pas
-              </p>
-            </div>
-          </div>
-  
-          <!-- Submit Button -->
-          <div class="mt-6">
-            <button type="submit" 
-                    [disabled]="registerForm.invalid || isSubmitting"
-                    class="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
-                           focus:outline-none focus:ring-2 focus:ring-blue-500 
-                           disabled:opacity-50 disabled:cursor-not-allowed">
-              {{ isSubmitting ? 'Création en cours...' : 'Créer un utilisateur' }}
-            </button>
-          </div>
-        </form>
+<div class="min-h-screen  from-blue-50 to-blue-100 p-8">
+  <div class="container mx-auto max-w-6xl">
+    <!-- Header -->
+    <div class="mb-8 flex justify-between items-center">
+      <div>
+        <h1 class="text-4xl font-extrabold text-blue-900">Gestion des Candidats</h1>
+        <p class="text-blue-600 mt-2">Gérez et convertissez vos candidats</p>
       </div>
+
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="mb-6 flex space-x-4">
+      <div class="relative flex-grow">
+        <input
+          [(ngModel)]="searchTerm"
+          placeholder="Rechercher des candidats..."
+          class="w-full px-4 py-3 pl-10 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-500"
+        />
+        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-400"></i>
+      </div>
+      <select
+        [(ngModel)]="statusFilter"
+        class="px-4 py-3 rounded-lg border border-blue-200"
+      >
+        <option value="">Tous les statuts</option>
+        <option value="Non validé">Non validé</option>
+        <option value="En cours">En cours</option>
+        <option value="Validé">Validé</option>
+      </select>
+    </div>
+
+    <!-- Candidate Table -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-blue-50">
+        <tr>
+          <th class="px-4 py-3 text-left">Nom</th>
+          <th class="px-4 py-3 text-left">Email</th>
+          <th class="px-4 py-3 text-left">Niveau d'Études</th>
+          <th class="px-4 py-3 text-left">Statut</th>
+          <th class="px-4 py-3 text-right">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let candidate of filteredCandidates()"
+          class="border-b hover:bg-blue-50 transition"
+        >
+          <td class="px-4 py-3">
+            {{ candidate.firstName }} {{ candidate.name }}
+          </td>
+          <td class="px-4 py-3 text-blue-600">{{ candidate.email }}</td>
+          <td class="px-4 py-3">{{ candidate.educationLevel }}</td>
+          <td class="px-4 py-3">
+                  <span
+                    class="px-3 py-1 rounded-full text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-yellow-100 text-yellow-800': candidate.validationStatus === 'Non validé',
+                      'bg-blue-100 text-blue-800': candidate.validationStatus === 'En cours',
+                      'bg-green-100 text-green-800': candidate.validationStatus === 'Validé'
+                    }"
+                  >
+                    {{ candidate.validationStatus }}
+                  </span>
+          </td>
+          <td class="px-4 py-3 text-right">
+            <div class="flex justify-end space-x-2">
+              <button
+                (click)="viewDetails(candidate)"
+                class="text-blue-500 hover:text-blue-700"
+                title="Voir détails"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+              <button
+                (click)="openAddModal(candidate)"
+                class="text-yellow-500 hover:text-yellow-700"
+                title="Modifier"
+              >
+                <i class="fas fa-edit"></i>
+              </button>
+              <button
+                (click)="deleteCandidate(candidate)"
+                class="text-red-500 hover:text-red-700"
+                title="Supprimer"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="filteredCandidates().length === 0"
+      class="text-center py-12 bg-white rounded-xl mt-6"
+    >
+      <div class="flex items-center justify-center mb-4">
+        <div class="bg-blue-100 rounded-full p-4">
+          <i class="fas fa-user-graduate text-blue-600 text-3xl"></i>
+        </div>
+      </div>
+      <h3 class="text-xl font-semibold text-blue-900">Aucun candidat trouvé</h3>
+      <p class="text-blue-600 mt-2">Aucun résultat ne correspond à vos critères.</p>
     </div>
   </div>
+
+  <div *ngIf="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl w-full max-w-lg">
+      <h2 class="text-xl font-semibold mb-4">Crée un utilisateur</h2>
+      <form [formGroup]="candidatForm" (ngSubmit)="saveUser()"  >
+        <!-- Champs communs -->
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium">Nom</label>
+          <input
+            type="text"
+            formControlName="firstName"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="firstNameError" class="text-red-500 text-sm">
+            {{ firstNameError }}
+
+          </div>
+
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium">Prénom</label>
+          <input
+            type="text"
+            formControlName="name"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="lastNameError" class="text-red-500 text-sm">
+            {{ lastNameError }}
+
+          </div>
+
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium">Nom d'utilisateur</label>
+          <input
+            type="text"
+            formControlName="username"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="usernameError" class="text-red-500 text-sm">
+            {{ usernameError }}
+
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium">Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="emailError" class="text-red-500 text-sm">
+            {{ emailError }}
+
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium">Mot de passe</label>
+          <input
+            type="password"
+            formControlName="password"
+            class="w-full px-4 py-2 border rounded"
+          />
+          <div *ngIf="passwordError" class="text-red-500 text-sm">
+            {{ passwordError }}
+
+          </div>
+        </div>
+
+
+
+        <!-- Boutons -->
+        <div class="flex justify-end mt-6">
+          <button type="button" (click)="closeModal()" class="bg-gray-200 px-4 py-2 rounded mr-2">Annuler</button>
+          <button type="submit" [disabled]="!candidatForm.invalid || isSubmitting"
+                  class="bg-blue-500 text-white px-4 py-2 rounded">
+            {{ isSubmitting ? 'En cours...' : 'Enregistrer' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+
+
+</div>

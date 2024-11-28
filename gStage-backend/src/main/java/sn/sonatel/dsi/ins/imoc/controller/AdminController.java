@@ -9,19 +9,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sn.sonatel.dsi.ins.imoc.domain.*;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
-import sn.sonatel.dsi.ins.imoc.dto.ServiceWithDepartmentDTO;
-import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
-import sn.sonatel.dsi.ins.imoc.dto.UserForAdminDTO;
+import sn.sonatel.dsi.ins.imoc.dto.*;
 import sn.sonatel.dsi.ins.imoc.repository.*;
 import sn.sonatel.dsi.ins.imoc.service.AppUserService;
 import tech.jhipster.web.util.PaginationUtil;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +35,7 @@ public class AdminController {
     private final DemandeStageRepository demandeStageRepository;
     private final DepartementRepository departementRepository;
     private final CandidatRepository candidatRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public AdminController(
         AppUserService appUserService,
@@ -43,7 +44,8 @@ public class AdminController {
         ServiceRepository serviceRepository,
         DemandeStageRepository demandeStageRepository,
         DepartementRepository departementRepository,
-        CandidatRepository candidatRepository
+        CandidatRepository candidatRepository,
+        PasswordEncoder passwordEncoder
     ) {
         this.appUserService = appUserService;
         this.appUserRepository = appUserRepository;
@@ -52,6 +54,7 @@ public class AdminController {
         this.demandeStageRepository = demandeStageRepository;
         this.departementRepository = departementRepository;
         this.candidatRepository = candidatRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/api/inscription")
@@ -235,6 +238,35 @@ public class AdminController {
 
 
 
+
+    @PostMapping("/api/inscription-candidat")
+    public void incriptionCandidat(@RequestBody CandidatToStagiaireDTO user) {
+        this.appUserService.inscriptioncandidat(user);
+    }
+
+
+    @PostMapping("/api/update-password")
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordDTO request) {
+        // Valider le nouveau mot de passe (par exemple, longueur minimale)
+        if (request.password().length() < 8) {
+            return ResponseEntity.badRequest().body("Le mot de passe doit contenir au moins 8 caractères.");
+        }
+
+        // Rechercher l'utilisateur par email
+        Optional<AppUser> optionalUser = appUserRepository.findByEmail(request.email());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur introuvable.");
+        }
+
+        // Mettre à jour le mot de passe
+        AppUser user = optionalUser.get();
+        String encryptedPassword = passwordEncoder.encode(request.password());
+        user.setPassword(encryptedPassword);
+
+        appUserRepository.save(user);
+
+        return ResponseEntity.ok("Mot de passe mis à jour avec succès.");
+    }
 
 
 }

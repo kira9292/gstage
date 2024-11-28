@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Departement, Service, User} from "../components/dashboard-admin/dashboard-admin.component";
+import {Candidat} from "../components/admin-register/admin-register.component";
+
 
 
 @Injectable({
@@ -35,6 +37,13 @@ export class AdminServiceService {
 
     return this.http.post<any>(this.apiUrl+"/inscription", payload, { headers });
   }
+  saveCandiat(payload: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post<any>(this.apiUrl+"/inscription-candidat", payload, { headers });
+  }
 
 
   createService(service: Service): Observable<Service> {
@@ -47,11 +56,24 @@ export class AdminServiceService {
 
 
   getDepartement():Observable<Departement[]> {
-    return this.http.get<Service[]>(`${this.apiUrl}/departements`);
+    return this.http.get<Departement[]>(`${this.apiUrl}/departements`);
 
   }
-  getCandidat():Observable<Departement[]> {
-    return this.http.get<Service[]>(`${this.apiUrl}/departements`);
-
+  getCandidats(): Observable<Candidat[]> {
+    return this.http.get<Candidat[]>(this.apiUrl+"/admin-candidat");
   }
+
+  // createUserFromCandidat(candidat: Candidat): Observable<User1> {
+  //   const userData: User1 = {
+  //     firstName: candidat.firstName,
+  //     lastName: candidat.lastName,
+  //     email: candidat.email,
+  //     username: `${candidat.firstName.toLowerCase()}.${candidat.lastName.toLowerCase()}`,
+  //     roleName: 'STAGIAIRE',
+  //     password: ""
+  //   };
+  //   return this.http.post<User1>(this.apiUrl, userData);
+  // }
+
+
 }

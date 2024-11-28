@@ -10,7 +10,7 @@
     <div class="bg-white rounded-xl shadow-sm p-1 inline-block mb-6">
       <nav class="flex space-x-1">
         <button
-          *ngFor="let tab of ['users', 'services', 'departments']"
+          *ngFor="let tab of ['users', 'services']"
           [class.bg-blue-100]="activeTab === tab"
           [class.text-blue-600]="activeTab === tab"
           class="px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
@@ -19,7 +19,6 @@
           <i class="fas" [ngClass]="{
             'fa-users': tab === 'users',
             'fa-building': tab === 'services',
-            'fa-sitemap': tab === 'departments',
           }"></i>
           {{ tab | titlecase }}
         </button>
@@ -92,17 +91,25 @@
                     <span  class="font-medium">
                       {{ user.serviceName}}
                     </span>
-                </td>
                 <td class="px-3 py-3 text-right space-x-3">
+<!--                  <button-->
+<!--                    (click)="openModal(user)"-->
+<!--                    class="text-blue-600 hover:text-blue-800 transition-colors"-->
+<!--                    title="Modifier"-->
+<!--                  >-->
+<!--                    <i class="fas fa-edit"></i>-->
+<!--                  </button>-->
                   <button
-                    (click)="openModal(user)"
-                    class="text-blue-600 hover:text-blue-800 transition-colors"
+                    (click)="openModal1(user.id)"
+                    class="text-yellow-600 hover:text-yellow-800 transition-colors"
+                    title="Réinitialiser le mot de passe"
                   >
-                    <i class="fas fa-edit"></i>
+                    <i class="fas fa-key"></i>
                   </button>
                   <button
                     (click)="deleteUser(user.id)"
                     class="text-red-600 hover:text-red-800 transition-colors"
+                    title="Supprimer"
                   >
                     <i class="fas fa-trash"></i>
                   </button>
@@ -112,6 +119,57 @@
             </table>
           </div>
 
+<!--          &#45;&#45;&#45;&#45;modal reset password-&#45;&#45;-->
+          <div
+            *ngIf="isModalOpen1"
+            class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50"
+          >
+            <div class="bg-white rounded-lg shadow-lg w-96 p-6">
+              <h2 class="text-lg font-bold mb-4">Réinitialiser le mot de passe</h2>
+              <form [formGroup]="resetPasswordForm" (ngSubmit)="submitPassword()">
+                <div class="mb-4">
+                  <label for="newPassword" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+                  <input
+                    id="newPassword"
+                    type="password"
+                    formControlName="newPassword"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500"
+                  />
+                  <div *ngIf="resetPasswordForm.controls['newPassword'].invalid && resetPasswordForm.controls['newPassword']" class="text-red-500 text-sm">
+                    Mot de passe requis.
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+                  <input
+                    id="confirmPassword"
+                    type="password"
+                    formControlName="confirmPassword"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500"
+                  />
+                  <div *ngIf="resetPasswordForm.hasError('passwordMismatch') && resetPasswordForm.controls['confirmPassword']" class="text-red-500 text-sm">
+                    Les mots de passe ne correspondent pas.
+                  </div>
+                </div>
+                <div class="flex justify-end">
+                  <button
+                    type="button"
+                    (click)="closeModal1()"
+                    class="px-4 py-2 mr-2 bg-gray-500 text-white rounded-md"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="submit"
+                    [disabled]="resetPasswordForm.invalid"
+                    class="px-4 py-2 bg-yellow-600 text-white rounded-md hover:bg-yellow-700"
+                  >
+                    Réinitialiser
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
           <!-- État vide -->
           <div
             *ngIf="filteredUsers().length === 0"
@@ -318,10 +376,10 @@
   <div *ngIf="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white p-6 rounded-xl w-full max-w-lg">
       <h2 class="text-xl font-semibold mb-4">{{ selectedUser ? 'Modifier' : 'Ajouter' }} un utilisateur</h2>
-      <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+      <form [formGroup]="userForm"  (ngSubmit)="saveUser() ">
         <!-- Champs communs -->
 
-        <div class="mb-4">
+        <div class="mb-4"  >
           <label class="block text-sm font-medium">Nom</label>
           <input
             type="text"
@@ -392,6 +450,7 @@
             <option value="STAGIAIRE">Stagiaire</option>
             <option value="MANAGER">Manager</option>
             <option value="ASSISTANT_GWTE">Assistant_gwte</option>
+            <option value="ADMIN">Admin</option>
             <option value="RH">Rh</option>
           </select>
           <div *ngIf="userForm.get('roleName')?.touched && userForm.get('roleName')?.invalid" class="text-red-500 text-sm">
@@ -410,7 +469,7 @@
         <!-- Boutons -->
         <div class="flex justify-end mt-6">
           <button type="button" (click)="closeModal()" class="bg-gray-200 px-4 py-2 rounded mr-2">Annuler</button>
-          <button type="submit" [disabled]="!userForm.valid || isSubmitting"
+          <button type="submit"
                   class="bg-blue-500 text-white px-4 py-2 rounded">
             {{ isSubmitting ? 'En cours...' : 'Enregistrer' }}
           </button>
