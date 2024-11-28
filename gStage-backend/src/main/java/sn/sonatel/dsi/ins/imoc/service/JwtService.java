@@ -55,8 +55,8 @@ public class JwtService {
 
        final Map<String,Object> claims = Map.of(
            "id",user.getId(),
-            "service",user.getService().getName(),
-            "departement",user.getService().getDepartemen().getName(),
+           "service", user.getService() != null ? user.getService().getName() : null,
+           "departement", user.getService() != null && user.getService().getDepartemen() != null ? user.getService().getDepartemen().getName() : null,
             "nom",user.getName(),
            "username",user.getUsername(),
            "prenom",user.getFirstName(),
