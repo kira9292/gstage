@@ -175,6 +175,11 @@ spring:
     ansi:
       console-available: true
 
+  liquibase:
+    parameters:
+      BLOBTYPE: BLOB
+
+
 server:
   servlet:
     session:

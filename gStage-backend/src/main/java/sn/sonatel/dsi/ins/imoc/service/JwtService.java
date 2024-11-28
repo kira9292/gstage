@@ -48,12 +48,15 @@ public class JwtService {
         this.jwtRepository.save(jwt);
         return jwtMap;
     }
+    @Transactional(readOnly = true)
     public Map<String, String> generatejwt(AppUser user) {
         final long currentTime = System.currentTimeMillis();
         final long expirationTime = currentTime + 30*60*1000000;
 
        final Map<String,Object> claims = Map.of(
            "id",user.getId(),
+            "service",user.getService().getName(),
+            "departement",user.getService().getDepartemen().getName(),
             "nom",user.getName(),
            "username",user.getUsername(),
            "prenom",user.getFirstName(),

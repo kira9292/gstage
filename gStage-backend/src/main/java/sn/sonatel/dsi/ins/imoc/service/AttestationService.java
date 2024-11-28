@@ -6,8 +6,10 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import sn.sonatel.dsi.ins.imoc.domain.AttestationPresence;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
 import sn.sonatel.dsi.ins.imoc.dto.AttestationPDTO;
+import sn.sonatel.dsi.ins.imoc.repository.AttestationPresenceRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
@@ -15,6 +17,12 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 public class AttestationService {
+    private  final AttestationPresenceRepository aPRepository;
+
+    public AttestationService(AttestationPresenceRepository aPRepository) {
+        this.aPRepository = aPRepository;
+    }
+
     public ByteArrayResource genererAttestation(ValidationStatuscandidat validation) {
         try (XWPFDocument document = new XWPFDocument()) {
             // En-tête
@@ -176,6 +184,13 @@ public class AttestationService {
 
             // Conversion en ByteArrayResource
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            AttestationPresence aP = new AttestationPresence();
+            aP.setDocs(baos.toByteArray());
+            aP.setDocsContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+            aP.setStartDate(request.startDate());
+            aP.setEndDate(request.endDate());
+            aP.setAppUser(validation.getCandidat().getDemandeStage().getAppUser());
+            this.aPRepository.save(aP);
             document.write(baos);
             return new ByteArrayResource(baos.toByteArray());
 
