@@ -18,6 +18,10 @@
       "fieldName": "typeNotification",
       "fieldType": "InternshipStatus",
       "fieldValues": "EN_ATTENTE,ACCEPTE,REFUSE,TERMINER,EN_COURS"
+    },
+    {
+      "fieldName": "read",
+      "fieldType": "Boolean"
     }
   ],
   "microserviceName": "backend",

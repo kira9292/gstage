@@ -128,22 +128,30 @@
           *ngSwitchCase="InternshipStatus.EN_COURS"
           (click)="scheduleEvaluation()"
           class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">
-          <i class="fas fa-calendar-check mr-2"></i> Planifier évaluation
+          <i class="fas fa-calendar-check mr-2"></i> Générer attestation de présence
         </button>
         
         <button 
           *ngSwitchCase="InternshipStatus.TERMINE"
           (click)="generateCertificate()"
           class="w-full bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors">
-          <i class="fas fa-certificate mr-2"></i> Générer attestation
+          <i class="fas fa-certificate mr-2"></i> Générer attestation de fin de stage
         </button>
-        
-        <button 
-          *ngSwitchCase="InternshipStatus.REFUSE"
-          (click)="archiveApplication()"
-          class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
-          <i class="fas fa-archive mr-2"></i> Archiver la demande
-        </button>
+    
+
+        <div *ngSwitchCase="InternshipStatus.REFUSE" class="flex space-x-4">
+          <button 
+            (click)="proposeToManager()"
+            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            <i class="fas fa-user-tie mr-2"></i> Proposer a un autre manager
+          </button>
+          <button 
+            (click)="archiveApplication()"
+            class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
+            <i class="fas fa-times-circle mr-2"></i> Archiver la demande
+          </button>
+        </div>
+
       </div>
     </div>
   </div>

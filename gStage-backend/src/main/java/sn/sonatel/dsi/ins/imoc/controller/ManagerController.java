@@ -1,11 +1,9 @@
 package sn.sonatel.dsi.ins.imoc.controller;
 
 
+import jakarta.mail.MessagingException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
@@ -16,7 +14,9 @@ import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
 import sn.sonatel.dsi.ins.imoc.service.ManagerService;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,15 +72,28 @@ public class ManagerController {
             .toList();
     }
 
-
     @PutMapping("/api/manager-internships/{internshipId}/validate")
     public Optional<String> validateInternship(@PathVariable Long internshipId) {
         return managerService.validateInternshipRequest(internshipId);
     }
-    
+
     @PutMapping("/api/manager-internships/{internshipId}/reject")
     public Optional<String> rejectInternship(@PathVariable Long internshipId) {
         return managerService.rejectInternshipRequest(internshipId);
     }
 
+    @PutMapping("/api/manager-internships/{internshipId}/confirmDebut")
+    public Optional<String> confirmInternshipStart(@PathVariable Long internshipId) {
+        return managerService.confirmInternshipStart(internshipId);
+    }
+
+    @PutMapping("/api/manager-internships/{internshipId}/markAsEnded")
+    public Optional<String> markInternshipAsEnded(@PathVariable Long internshipId) {
+        return managerService.markInternshipAsEnded(internshipId);
+    }
+
+    @PostMapping("/api/manager-internships/sendAttestation")
+    public void attestationStagiaire( @RequestBody Map<String ,String> mail ) throws MessagingException, UnsupportedEncodingException {
+        this.managerService.generateAttestation(mail);
+    }
 }

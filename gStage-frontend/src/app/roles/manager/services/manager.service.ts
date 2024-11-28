@@ -21,4 +21,15 @@ export class ManagerService {
   rejectInternshipRequest(requestId: string): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${requestId}/reject`, {});
   }
+
+  confirmIntershipStart(requestId: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${requestId}/confirmDebut`, {});
+  }
+
+  markInternshipAsEnded(requestId: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${requestId}/markAsEnded`, {});
+  }
+  sendAttestation(email: string) {
+    return this.http.post(`${this.apiUrl}/sendAttestation`, { mail: email });
+  }
 }

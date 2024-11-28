@@ -86,7 +86,6 @@
     {{ user.roleName | titlecase }}
   </span>
                 </td>
-
                 <td class="px-3 py-3">
                     <span  class="font-medium">
                       {{ user.serviceName}}
@@ -286,13 +285,6 @@
         </div>
       </div>
 
-
-
-
-
-
-
-
       <!-- Onglet Rôles -->
       <div *ngSwitchCase="'departments'" class="bg-white rounded-xl shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
@@ -452,6 +444,7 @@
             <option value="ASSISTANT_GWTE">Assistant_gwte</option>
             <option value="ADMIN">Admin</option>
             <option value="RH">Rh</option>
+            <option value="ADMIN">Admin</option>
           </select>
           <div *ngIf="userForm.get('roleName')?.touched && userForm.get('roleName')?.invalid" class="text-red-500 text-sm">
             <p>Le rôle est requis.</p>

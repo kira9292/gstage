@@ -15,6 +15,7 @@ entity Notification {
   message String
   sendingDate LocalDate
   typeNotification InternshipStatus
+  read Boolean
 }
 
 

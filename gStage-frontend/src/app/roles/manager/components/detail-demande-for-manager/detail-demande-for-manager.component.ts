@@ -29,11 +29,11 @@ export class DetailDemandeForManagerComponent {
   }
 
 // Nouvelles méthodes pour les actions contextuelles
-sendWelcomeEmail() {
+sendAttestation() {
   // Montrer une notification de chargement
   Swal.fire({
     title: 'Envoi en cours...',
-    text: 'Envoi du mail de bienvenue',
+    text: 'Envoi par mail l\'attestation',
     icon: 'info',
     allowOutsideClick: false,
     showConfirmButton: false,
@@ -51,19 +51,21 @@ sendWelcomeEmail() {
     return;
   }
 
-  this.gwteService.sendWelcomeEmail(this.demande.candidat.email)
+  this.managerService.sendAttestation(this.demande.candidat.email)
     .subscribe({
       next: () => {
       // Notification de succès
       Swal.fire({
         icon: 'success',
         title: 'Mail envoyé !',
-        text: `Le mail de bienvenue a été envoyé à ${this.demande.candidat.email}`,
+        text: `L'attestation a été envoyé à ${this.demande.candidat.email}`,
         showConfirmButton: true,
         timer: 3000,
         position: 'top-end',
         toast: true
       });
+
+      this.closeModal();
     },
     error: (error) => {
       // Notification d'erreur
@@ -152,6 +154,81 @@ rejectInternship(internship: any): void {
       });
     }
   });
+}
+
+
+confirmIntershipStart(internship: any): void {
+  Swal.fire({
+    title: 'Confirmer le debut du stage',
+    text: `Etes-vous sur de vouloir confirmer que le candidat ${internship.candidat.firstName} ${internship.candidat.lastName} a debute son stage ?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Accepter',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.managerService.confirmIntershipStart(internship.demandeStage.id)
+      .subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Stage en cours !',
+            text: `Le stage de ${internship.candidat.firstName} est en cours`
+          });
+          this.statusUpdated.emit();
+          this.closeModal();
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Impossible de confirmer le stage'
+          });
+        }
+      });
+    }
+  });
+}
+
+markInternshipAsEnd(internship: any): void {
+  Swal.fire({
+    title: 'Confirmer la fin du stage',
+    text: `Etes-vous sur de vouloir confirmer que le stage du candidat ${internship.candidat.firstName} ${internship.candidat.lastName} a termine ?`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Oui, confirmer',
+    cancelButtonText: 'Annuler'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.managerService.markInternshipAsEnded(internship.demandeStage.id)
+      .subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Stage en Termine !',
+            text: `Le stage de ${internship.candidat.firstName} a termine. Veuillez svp generer et lui envoyer son attestation de fin de stage dans la section Termine`
+          });
+          this.statusUpdated.emit();
+          this.closeModal();
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Impossible de confirmer la fin du stage'
+          });
+        }
+      });
+    }
+  });
+}
+
+internshipNotInProgress(internship: any): void {
+  this.acceptInternship(internship);
 }
 
 

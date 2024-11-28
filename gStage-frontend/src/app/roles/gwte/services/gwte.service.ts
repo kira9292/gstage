@@ -59,4 +59,38 @@ export class GwteService {
   cancelProposal(id: number){
     return this.http.put(`${this.apiUrl}/internships/${id}/cancel`, {});
   }
+
+
+  getNotificationsForUser(userId: number | null): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/notifications/user/${userId}`);
+  }
+
+
+  // Marquer une notification comme lue
+  markAsRead(notificationId: number, userId: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/notifications/${notificationId}/mark-as-read`, null, {
+      params: { userId: userId.toString() },
+    });
+  }
+
+  // Supprimer une notification
+  deleteNotification(notificationId: number, userId: number): Observable<void> {
+    return this.http.delete<void> (`${this.apiUrl}/notifications/${notificationId}/delete-notification`, 
+      {params: {userId: userId.toString()}
+    });
+  }
+
+  // Marquer toutes les notifications comme lues
+  markAllAsRead(userId: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/notifications/mark-all-as-read`, null, {
+      params: { userId: userId.toString() },
+    });
+  }
+
+  // Supprimer toutes les notifications
+  deleteAllNotifications(userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/notifications/delete-all-notifications`, {
+      params: { userId: userId.toString() },
+    });  
+  }
 }

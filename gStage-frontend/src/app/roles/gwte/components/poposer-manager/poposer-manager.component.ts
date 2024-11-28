@@ -50,20 +50,6 @@ export class PoposerManagerComponent implements OnInit {
     );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Récupération de la demande et pré-remplissage du formulaire
     this.GwteService.currentDemande.subscribe(
       (demande) => {
@@ -137,12 +123,6 @@ export class PoposerManagerComponent implements OnInit {
       console.log('Formulaire invalide');
     }
 
-
-
-
-
-
-
   }
 
 
@@ -158,5 +138,9 @@ export class PoposerManagerComponent implements OnInit {
         direction: this.selectedDemandeur.serviceName
       });
     }
+  }
+
+  goToBack() {
+    this.router.navigate(['dashboard-gwte']);
   }
 }

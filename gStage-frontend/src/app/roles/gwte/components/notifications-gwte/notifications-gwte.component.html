@@ -1,0 +1,102 @@
+<div class="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden max-w-md mx-auto">
+  <!-- Notifications Header -->
+  <div class="flex justify-between items-center p-4 bg-gray-50 border-b">
+    <div class="flex space-x-2">
+      <button 
+        *ngIf="notifications.length > 0"
+        class="text-sm text-blue-600 hover:text-blue-800 transition"
+        (click)="markAllNotificationsAsRead()"
+      >
+        Tout marquer comme lu
+      </button>
+      <button 
+        *ngIf="notifications.length > 0"
+        class="text-sm text-red-600 hover:text-red-800 transition"
+        (click)="deleteAllNotifications()"
+      >
+        Tout supprimer
+      </button>
+    </div>
+  </div>
+
+  <!-- Notifications List -->
+  <div class="notification-list max-h-96 overflow-y-auto">
+    <div 
+      *ngIf="notifications.length === 0" 
+      class="p-4 text-center text-gray-500"
+    >
+      Pas de nouvelles notifications
+    </div>
+
+    <div 
+      *ngFor="let notification of notifications" 
+      class="px-4 py-3 border-b last:border-b-0 hover:bg-gray-50 
+              transition duration-200 flex items-center justify-between 
+              space-x-3 group relative"
+      [ngClass]="{'bg-blue-50': !notification.read}"
+    >
+      <!-- Notification Content -->
+      <div 
+        class="flex items-center space-x-3 flex-grow cursor-pointer"
+        (click)="markNotificationAsRead(notification.id)"
+      >
+        <!-- Notification Status Icon -->
+        <div>
+          <span 
+            class="inline-block w-5 h-5 text-center rounded-full"
+            [ngClass]="getNotificationStatusColor(notification.typeNotification)"
+          >
+            {{ getNotificationStatusIcon(notification.typeNotification) }}
+          </span>
+        </div>
+
+        <div class="flex-grow">
+          <p 
+            class="text-sm font-medium" 
+            [ngClass]="{'font-bold': !notification.read}"
+          >
+            {{ notification.message }}
+          </p>
+          <small class="text-xs text-gray-500">
+            {{ notification.sendingDate | date:'dd/MM/yyyy'}} a {{ notification.sendingDate | date:'hh:mm'}}
+          </small>
+        </div>
+      </div>
+
+      <!-- Notification Actions -->
+      <div class="absolute top-2 right-2">
+        <button 
+          (click)="deleteNotification(notification.id)"
+          class="text-red-600 hover:text-red-800 transition-colors"
+          aria-label="Supprimer la notification"
+        >
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div 
+    *ngIf="!showAllNotifications && allNotifications.length > 2" 
+    class="p-4 bg-gray-50 border-t text-center"
+  >
+    <button 
+      class="text-sm text-blue-600 hover:text-blue-800 transition relative"
+      (click)="viewAllNotifications()"
+    >
+      Voir toutes les notifications
+    </button>
+  </div>
+  <div 
+    *ngIf="showAllNotifications" 
+    class="p-4 bg-gray-50 border-t text-center"
+  >
+    <button 
+      class="text-sm text-blue-600 hover:text-blue-800 transition relative"
+      (click)="viewSomeNotifications()"
+    >
+    Reduire
+    </button>
+  </div>
+</div>

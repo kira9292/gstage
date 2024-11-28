@@ -31,6 +31,9 @@ public class Notification implements Serializable {
     @Column(name = "type_notification")
     private InternshipStatus typeNotification;
 
+    @Column(name = "jhi_read")
+    private Boolean read;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
@@ -106,6 +109,19 @@ public class Notification implements Serializable {
         this.typeNotification = typeNotification;
     }
 
+    public Boolean getRead() {
+        return this.read;
+    }
+
+    public Notification read(Boolean read) {
+        this.setRead(read);
+        return this;
+    }
+
+    public void setRead(Boolean read) {
+        this.read = read;
+    }
+
     public AppUser getAppUser() {
         return this.appUser;
     }
@@ -146,6 +162,7 @@ public class Notification implements Serializable {
             ", message='" + getMessage() + "'" +
             ", sendingDate='" + getSendingDate() + "'" +
             ", typeNotification='" + getTypeNotification() + "'" +
+            ", read='" + getRead() + "'" +
             "}";
     }
 }
