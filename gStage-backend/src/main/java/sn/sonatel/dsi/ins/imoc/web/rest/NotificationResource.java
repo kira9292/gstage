@@ -135,6 +135,9 @@ public class NotificationResource {
                 if (notification.getTypeNotification() != null) {
                     existingNotification.setTypeNotification(notification.getTypeNotification());
                 }
+                if (notification.getRead() != null) {
+                    existingNotification.setRead(notification.getRead());
+                }
 
                 return existingNotification;
             })

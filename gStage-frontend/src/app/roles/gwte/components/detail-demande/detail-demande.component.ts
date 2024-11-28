@@ -67,6 +67,8 @@ sendWelcomeEmail() {
         position: 'top-end',
         toast: true
       });
+
+      this.closeModal();
     },
     error: (error) => {
       // Notification d'erreur

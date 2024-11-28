@@ -1,11 +1,11 @@
-id;message;sending_date;type_notification
-1;quick wherever;2024-11-25;REFUSE
-2;boohoo gloat repeatedly;2024-11-24;REFUSE
-3;requirement upliftingly;2024-11-24;REFUSE
-4;obedient;2024-11-24;EN_COURS
-5;suddenly contrast;2024-11-25;TERMINER
-6;unless courageously astonishing;2024-11-25;REFUSE
-7;gah;2024-11-25;ACCEPTE
-8;as provided;2024-11-25;EN_COURS
-9;kooky;2024-11-25;EN_ATTENTE
-10;custody;2024-11-24;REFUSE
+id;message;sending_date;type_notification;jhi_read
+1;quick wherever;2024-11-25;REFUSE;false
+2;arbitrate prejudge;2024-11-24;EN_COURS;true
+3;these thrifty given;2024-11-24;EN_ATTENTE;true
+4;gah suddenly;2024-11-25;EN_ATTENTE;false
+5;luck;2024-11-25;TERMINER;true
+6;wicked;2024-11-24;EN_ATTENTE;true
+7;ugh furthermore;2024-11-25;REFUSE;true
+8;as provided;2024-11-25;EN_COURS;true
+9;wonderfully yowza;2024-11-25;ACCEPTE;true
+10;drat before;2024-11-25;EN_COURS;false

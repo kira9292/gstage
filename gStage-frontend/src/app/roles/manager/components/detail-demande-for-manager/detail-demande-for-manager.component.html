@@ -89,18 +89,37 @@
           </div>
           
           <button 
-            *ngSwitchCase="InternshipStatus.EN_COURS"
-            (click)="scheduleEvaluation()"
+            *ngSwitchCase="InternshipStatus.ACCEPTE"
+            (click)="confirmIntershipStart(demande)"
             class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">
-            <i class="fas fa-calendar-check mr-2"></i> Créer une attestation de présence
+            <i class="fas fa-calendar-check mr-2"></i> Confirmer le debut du stage
           </button>
           
-          <button 
-            *ngSwitchCase="InternshipStatus.TERMINE"
-            (click)="generateCertificate()"
-            class="w-full bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors">
-            <i class="fas fa-certificate mr-2"></i> Générer attestation de fin de stage
-          </button>
+          <div *ngSwitchCase="InternshipStatus.EN_COURS" class="flex space-x-4">
+            <button 
+              (click)="markInternshipAsEnd(demande)"
+              class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+              <i class="fas fa-user-tie mr-2"></i> Marquer stage comme TERMINE
+            </button>
+            <button 
+              (click)="internshipNotInProgress(demande)"
+              class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
+              <i class="fas fa-times-circle mr-2"></i> Stage pas en cours ?
+            </button>
+          </div>
+
+          <div *ngSwitchCase="InternshipStatus.TERMINE" class="flex space-x-4">
+            <button 
+              (click)="sendAttestation()"
+              class="flex-1 bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors">
+              <i class="fas fa-certificate mr-2"></i> Générer et envoyer l'attestation de fin de stage
+            </button>
+            <button 
+              (click)="internshipNotInProgress(demande)"
+              class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
+              <i class="fas fa-times-circle mr-2"></i> Stage pas encore termine ?
+            </button>
+          </div>
           
           <button 
             *ngSwitchCase="InternshipStatus.REFUSE"

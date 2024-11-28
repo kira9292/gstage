@@ -49,7 +49,8 @@ public class NotificationAsserts {
             .as("Verify Notification relevant properties")
             .satisfies(e -> assertThat(e.getMessage()).as("check message").isEqualTo(actual.getMessage()))
             .satisfies(e -> assertThat(e.getSendingDate()).as("check sendingDate").isEqualTo(actual.getSendingDate()))
-            .satisfies(e -> assertThat(e.getTypeNotification()).as("check typeNotification").isEqualTo(actual.getTypeNotification()));
+            .satisfies(e -> assertThat(e.getTypeNotification()).as("check typeNotification").isEqualTo(actual.getTypeNotification()))
+            .satisfies(e -> assertThat(e.getRead()).as("check read").isEqualTo(actual.getRead()));
     }
 
     /**

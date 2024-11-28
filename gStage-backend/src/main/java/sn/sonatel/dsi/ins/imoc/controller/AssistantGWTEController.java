@@ -25,8 +25,6 @@ import java.util.Set;
 
 @RestController
 public class AssistantGWTEController {
-
-
     @Autowired
     private DemandeStageRepository demandeStageRepository;
     @Autowired
@@ -60,8 +58,6 @@ public class AssistantGWTEController {
         demandeStage.setAppUser(appUser);
         demandeStageRepository.save(demandeStage);
         System.out.println();
-
-
         return ResponseEntity.ok().build();
     }
 }
