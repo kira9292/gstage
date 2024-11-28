@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
+import sn.sonatel.dsi.ins.imoc.dto.AttestationPDTO;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
 import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
@@ -95,5 +96,12 @@ public class ManagerController {
     @PostMapping("/api/manager-internships/sendAttestation")
     public void attestationStagiaire( @RequestBody Map<String ,String> mail ) throws MessagingException, UnsupportedEncodingException {
         this.managerService.generateAttestation(mail);
+    }
+
+
+
+    @PostMapping("/api/manager-internships/send-presence-attestation")
+    public void attestationPresence(@RequestBody AttestationPDTO request) throws MessagingException, UnsupportedEncodingException {
+        this.managerService.generateAttestationPresence(request);
     }
 }

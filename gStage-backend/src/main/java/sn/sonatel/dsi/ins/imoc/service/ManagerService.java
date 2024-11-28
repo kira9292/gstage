@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
+import sn.sonatel.dsi.ins.imoc.dto.AttestationPDTO;
 import sn.sonatel.dsi.ins.imoc.exceptions.InternshipRequestValidationException;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.ValidationStatuscandidatRepository;
@@ -134,6 +135,14 @@ public class ManagerService {
             throw new RuntimeException("Aucun candidat trouvé avec cet email");
         }
     }
-
+    @Transactional
+    public void generateAttestationPresence(AttestationPDTO request) throws MessagingException, UnsupportedEncodingException {
+        ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(request.email());
+        if (validationStatusOptional!=null) {
+            this.notificationService.envoyerAttestationPresence(validationStatusOptional,request);
+        } else {
+            throw new RuntimeException("Aucun candidat trouvé avec cet email");
+        }
+    }
 }
 
