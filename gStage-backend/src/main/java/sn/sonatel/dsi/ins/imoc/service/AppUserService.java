@@ -1,9 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.service;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +15,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
+import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.Role;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatusUser;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ERole;
+import sn.sonatel.dsi.ins.imoc.dto.CandidatToStagiaireDTO;
 import sn.sonatel.dsi.ins.imoc.dto.ManagerDTO2;
 import sn.sonatel.dsi.ins.imoc.dto.UserDTO;
 import sn.sonatel.dsi.ins.imoc.dto.mapper.AppUserMapper;
 import sn.sonatel.dsi.ins.imoc.exceptions.ResourceNotFoundException;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
+import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.RoleRepository;
 import sn.sonatel.dsi.ins.imoc.repository.ServiceRepository;
+
+
 
 /**
  * Service Implementation for managing {@link sn.sonatel.dsi.ins.imoc.domain.AppUser}.
@@ -50,6 +53,8 @@ public class AppUserService implements UserDetailsService {
     private ServiceRepository serviceRepository;
     @Autowired
     private AppUserMapper appUserMapper;
+    @Autowired
+    private CandidatRepository candidatRepository;
 
 
     public AppUserService() {
@@ -88,12 +93,11 @@ public class AppUserService implements UserDetailsService {
             appUser.getAppUser().setService(service);
         }
 
-//        role.setName(ERole.STAGIAIRE);
-        Role role = roleRepository.save(appUser.getRole());
-        appUser.getAppUser().setRole(role);
 
-        AppUser utilisateur = this.appUserRepository.save(appUser.getAppUser());
-//        this.validationUserService.enregistrer(utilisateur);
+        Optional<Role> role = roleRepository.findByName(appUser.getRole().getName());
+        appUser.getAppUser().setRole(role.get());
+
+        this.appUserRepository.save(appUser.getAppUser());
 
 
     }
@@ -249,6 +253,37 @@ public class AppUserService implements UserDetailsService {
         AppUser appUser = appUserRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé avec l'id: " + id));
         return appUserMapper.toManagerDTO(appUser);
+    }
+    @Transactional
+    public void inscriptioncandidat(CandidatToStagiaireDTO user) {
+
+
+        if (!user.appUser().getEmail().contains("@") || !user.appUser().getEmail().contains(".")){
+            throw new RuntimeException("Invalid email address");
+        }
+        Optional<AppUser> useroptonal = this.appUserRepository.findByEmail(user.appUser().getEmail());
+
+        if (useroptonal.isPresent()) {
+            throw new RuntimeException("Email already in use");
+
+        }
+        String mdpCrypte = this.passwordEncoder.encode(user.appUser().getPassword());
+        user.appUser().setPassword(mdpCrypte);
+        user.appUser().setStatus(false);
+
+        AppUser user1 =this.appUserRepository.save(user.appUser());
+        Optional<Role> role =roleRepository.findByName(ERole.STAGIAIRE);
+
+        Optional<Candidat> candidat = this.candidatRepository.findById(user.candidat().getId());
+
+
+        candidat.get().setAppUser(user.appUser());
+
+        this.candidatRepository.save(candidat.get());
+
+
+
+
     }
 }
 

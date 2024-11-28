@@ -1,141 +1,219 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
-import { matchPasswordValidator } from '../../../../core/validators/password.validator';
-import { noWhitespaceValidator } from '../../../../core/validators/names.validator';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Router, RouterLinkActive} from '@angular/router';
+import {Departement, Service, User} from "../dashboard-admin/dashboard-admin.component";
+import {AdminServiceService} from "../../services/admin-service.service";
+import {noWhitespaceValidator} from "../../../../core/validators/names.validator";
+
+
+
+
+
+
+export interface Candidat {
+  id?: number;
+  firstName: string;
+  name: string;
+  email: string;
+  educationLevel: string;
+  validationStatus: 'Non validé' | 'En cours' | 'Validé';
+}
+
+
+
 
 @Component({
   selector: 'app-admin-register',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterLinkActive,
+    FormsModule
   ],
   templateUrl: './admin-register.component.html',
   styleUrls: ['./admin-register.component.scss']
 })
 export class AdminRegisterComponent implements OnInit {
-  registerForm: FormGroup;
-  isSubmitting = false;
-  showPassword = false;
-  showConfirmPassword = false;
+  candidates: Candidat[] = [];
 
-  // List of services for managers
-  services = [
-    'IMOC', 
-    'SICO', 
-    'Fusion Team', 
-    'Digital Factory', 
-    'Innovation Lab', 
-    'Commercial Strategy'
-  ];
+  searchTerm: string = '';
+  statusFilter: string = '';
+  selectedCandidate: Candidat | null = null;
+  isModalOpen: boolean=false;
+  candidatForm!: FormGroup;
+  isSubmitting = false;
+
 
   constructor(
+    private adminService: AdminServiceService,
     private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
   ) {
-    this.registerForm = this.fb.group({
+    this.candidatForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
-      lastName: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
-      email: ['', [Validators.required, Validators.email]],
-      username: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
+      name: ['', [Validators.required, Validators.minLength(2), noWhitespaceValidator]],
+      email: ['', [Validators.required, Validators.email ,noWhitespaceValidator]],
+      username: ['', [Validators.required, Validators.minLength(2)]],
       password: ['', [
         Validators.required,
         Validators.minLength(8),
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/)
       ]],
-      confirmPassword: ['', [Validators.required]],
-      role: ['', [Validators.required]],
-      service: [''] // Optional service for managers
-    }, {
-      validators: [
-        matchPasswordValidator('password', 'confirmPassword'),
-        this.managerServiceValidator()
-      ]
+
     });
 
-    // Dynamically show/hide service field based on role
-    this.registerForm.get('role')?.valueChanges.subscribe(role => {
-      const serviceControl = this.registerForm.get('service');
-      if (role === 'MANAGER') {
-        serviceControl?.setValidators([Validators.required]);
-      } else {
-        serviceControl?.clearValidators();
-      }
-      serviceControl?.updateValueAndValidity();
-    });
+
+
+
+
   }
 
-  // Custom validator to require service when role is MANAGER
-  managerServiceValidator() {
-    return (form: FormGroup) => {
-      const role = form.get('role')?.value;
-      const service = form.get('service')?.value;
-      
-      return (role === 'MANAGER' && !service) 
-        ? { managerServiceRequired: true } 
-        : null;
-    };
+  ngOnInit() {
+    this.fetchCandidat()
+
   }
 
-  ngOnInit(): void {}
 
-  async onSubmit(): Promise<void> {
-    if (this.registerForm.valid) {
-      this.isSubmitting = true;
+  filteredCandidates(): Candidat[] {
+    return this.candidates.filter(candidate =>
+      (!this.searchTerm ||
+        candidate.firstName.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        candidate.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        candidate.email.toLowerCase().includes(this.searchTerm.toLowerCase())
+      ) &&
+      (!this.statusFilter || candidate.validationStatus === this.statusFilter)
+    );
+  }
 
-      try {
-        const formData = {
-          appUser: {
-            username: this.registerForm.value.username,
-            email: this.registerForm.value.email,
-            password: this.registerForm.value.password,
-            name: this.registerForm.value.lastName,
-            firstName: this.registerForm.value.firstName
-          },
-          role: {
-            name: this.registerForm.value.role,
-            service: this.registerForm.value.role === 'MANAGER' 
-              ? this.registerForm.value.service 
-              : null
-          }
-        };
-
-        await this.authService.register(formData).toPromise();
-        this.router.navigate(['/admin/users'], {
-          queryParams: { registered: 'success' }
-        });
-      } catch (error: any) {
-        console.error('Registration error:', error);
-        // Handle specific error cases
-      } finally {
-        this.isSubmitting = false;
+  fetchCandidat(): void {
+    this.adminService.getCandidats().subscribe(
+      (data: Candidat[]) => {
+        this.candidates = data;
+        console.log(data);
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des services:', error);
       }
+    );
+  }
+
+  openAddModal(candidat?: Candidat): void {
+    this.isModalOpen = true;
+    if (candidat) {
+      this.selectedCandidate = candidat;
+      this.candidatForm.patchValue(candidat);
     } else {
-      // Mark all fields as touched to show validation errors
-      Object.keys(this.registerForm.controls).forEach(key => {
-        const control = this.registerForm.get(key);
-        if (control?.invalid) {
-          control.markAsTouched();
+      this.selectedCandidate = null;
+      this.candidatForm.reset({ enabled: true });
+    }
+  }
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.selectedCandidate = null;
+    console.log(this.candidatForm.value)
+
+    this.candidatForm.reset();
+  }
+
+
+
+
+  deleteCandidate(candidate: Candidat) {
+    this.candidates = this.candidates.filter(c => c.id !== candidate.id);
+  }
+
+  viewDetails(candidate: Candidat) {
+    this.selectedCandidate = candidate;
+  }
+
+  saveUser(): void {
+    console.log(this.candidatForm.value)
+    if (this.candidatForm.valid) {
+      const formData = this.candidatForm.value;
+      const payload = {
+        "candidat":{
+          "id":this.selectedCandidate ? this.selectedCandidate.id : null,
+        },
+        "appUser": {
+          "username":formData.username,
+          "email": formData.email,
+          "firstName": formData.firstName,
+          "name": formData.name,
+          "password": formData.password,
+
+        },
+
+
+      }
+      console.log('Données préparées pour l\'API :', JSON.stringify(payload));
+
+      this.adminService.saveCandiat(payload).subscribe(
+        (response) => {
+          this.isSubmitting=true;
+          console.log('Utilisateur sauvegardé avec succès:', response);
+
+          this.candidatForm.reset();
+          this.closeModal();
+          this.fetchCandidat();
+        },
+        (error) => {
+          console.error('Erreur lors de la sauvegarde de l\'utilisateur :', error);
         }
-      });
+      );
+    }else {
+      console.log('formulaire invalide')
     }
+
   }
 
-  
 
-  // Password visibility toggle
-  togglePasswordVisibility(field: 'password' | 'confirmPassword'): void {
-    if (field === 'password') {
-      this.showPassword = !this.showPassword;
-    } else {
-      this.showConfirmPassword = !this.showConfirmPassword;
+
+  get firstNameError(): string {
+    const control = this.candidatForm.get('firstName');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le prénom est requis';
+      if (control.errors['minlength']) return 'Le prénom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le prénom ne doit pas contenir de caractere speciaux inutiles';
     }
+    return '';
   }
 
-  // Error message getters (similar to previous implementation)
-  // ... (error message methods would be similar to the previous component)
+  get lastNameError(): string {
+    const control = this.candidatForm.get('name');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le nom est requis';
+      if (control.errors['minlength']) return 'Le nom doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom ne doit pas contenir de caracteres speciaux inutiles';
+    }
+    return '';
+  }
+  get usernameError(): string {
+    const control = this.candidatForm.get('username');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le nom d\'utilisateur est requis';
+      if (control.errors['minlength']) return 'Le nom d\'utilisateur doit contenir au moins 2 caractères';
+      if (control.errors['whitespace']) return 'Le nom d\'utilisateur ne doit pas contenir de caracteres speciaux inutiles';
+    }
+    return '';
+  }
+
+  get emailError(): string {
+    const control = this.candidatForm.get('email');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'L\'email est requis';
+      if (control.errors['email']) return 'Format d\'email invalide';
+    }
+    return '';
+  }
+
+  get passwordError(): string {
+    const control = this.candidatForm.get('password');
+    if (control?.errors && control.touched) {
+      if (control.errors['required']) return 'Le mot de passe est requis';
+      if (control.errors['minlength']) return 'Le mot de passe doit contenir au moins 8 caractères';
+      if (control.errors['pattern']) return 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial';
+    }
+    return '';
+  }
 }

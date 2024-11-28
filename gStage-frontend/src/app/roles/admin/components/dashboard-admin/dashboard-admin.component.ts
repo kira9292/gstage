@@ -59,6 +59,8 @@ export class DashboardAdminComponent implements OnInit {
   activeTab: string = 'users';
   serviceForm!: FormGroup;
   isServiceModalOpen: boolean = false;
+  isModalOpen1 = false;
+  resetPasswordForm!: FormGroup;
 
 
   constructor(
@@ -76,7 +78,6 @@ export class DashboardAdminComponent implements OnInit {
       password: ['', [
         Validators.required,
         Validators.minLength(8),
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/)
       ]],
       phone: [''],
       roleName: ['', Validators.required],
@@ -101,6 +102,15 @@ export class DashboardAdminComponent implements OnInit {
       departmentId: ['',[Validators.required]],
 
     });
+
+    this.resetPasswordForm = this.fb.group(
+      {
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required]
+      },
+      { validators: this.passwordMatchValidator }
+    );
+
   }
 
   ngOnInit(): void {
@@ -167,6 +177,7 @@ export class DashboardAdminComponent implements OnInit {
     }
   }
 
+
   openServiceModal(service?: Service): void {
     this.isServiceModalOpen = true;
     if (service) {
@@ -178,6 +189,14 @@ export class DashboardAdminComponent implements OnInit {
     }
   }
 
+  openModal1(userId: number) {
+    this.isModalOpen1 = true;
+    // Vous pouvez enregistrer l'ID utilisateur si nécessaire
+    console.log('Utilisateur à réinitialiser :', userId);
+  }
+  closeModal1() {
+    this.isModalOpen1 = false;
+  }
 
   closeModal(): void {
     this.isModalOpen = false;
@@ -201,6 +220,23 @@ export class DashboardAdminComponent implements OnInit {
       }
     });
   }
+
+  passwordMatchValidator(group: FormGroup) {
+    const password = group.get('newPassword')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  }
+
+
+  submitPassword() {
+    if (this.resetPasswordForm.valid) {
+      const newPassword = this.resetPasswordForm.value.newPassword;
+      console.log('Nouveau mot de passe soumis :', newPassword);
+      // Ajoutez ici la logique pour appeler votre API ou gérer la réinitialisation
+      this.closeModal();
+    }
+  }
+
 
 
   // Supprimer un utilisateur
@@ -399,4 +435,7 @@ export class DashboardAdminComponent implements OnInit {
     return '';
   }
 
+  resetPassword(id: number) {
+
+  }
 }
