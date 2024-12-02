@@ -2,6 +2,7 @@ package sn.sonatel.dsi.ins.imoc.repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
 
@@ -18,4 +19,6 @@ public interface CandidatRepository extends JpaRepository<Candidat, Long> {
 
 
     Candidat findByEmail(String email);
+
+    Candidat findByAppUser(AppUser user);
 }
