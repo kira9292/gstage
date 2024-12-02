@@ -300,8 +300,6 @@ class BusinessUnitResourceIT {
         BusinessUnit partialUpdatedBusinessUnit = new BusinessUnit();
         partialUpdatedBusinessUnit.setId(businessUnit.getId());
 
-        partialUpdatedBusinessUnit.description(UPDATED_DESCRIPTION);
-
         restBusinessUnitMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedBusinessUnit.getId())

@@ -14,41 +14,11 @@ import java.util.List;
 @RestController
 public class StagiaireContratController {
 
-    @Autowired
-    private StagiaireService stagiaireService;
 
 
 
-    @GetMapping("/api/stagiaire/documents/contrats")
-    public List<Contrat> getContrat() {
-
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return this.stagiaireService.getContrat(user) ;
-    }
-    @GetMapping("/api/stagiaire/documents/presence-attestations")
-    public List<AttestationPresence> attestationdepresence() {
-
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return this.stagiaireService.getattestationdepresence(user) ;
-    }
 
 
-    @GetMapping("/api/stagiaire/documents/ending-attestation")
-    public AttestationFinStage attestationFinStage() {
 
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return this.stagiaireService.getattestationfinstage(user) ;
-    }
-
-    @GetMapping("/api/stagiaire/documents/payments")
-    public List<EtatPaiement> etatPaiementList() {
-
-        AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        return this.stagiaireService.getEtatpaiement(user) ;
-    }
 
 }

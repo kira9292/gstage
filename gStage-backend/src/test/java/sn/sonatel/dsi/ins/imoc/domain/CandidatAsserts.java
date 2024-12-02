@@ -70,6 +70,9 @@ public class CandidatAsserts {
     public static void assertCandidatUpdatableRelationshipsEquals(Candidat expected, Candidat actual) {
         assertThat(expected)
             .as("Verify Candidat relationships")
+            .satisfies(e ->
+                assertThat(e.getAttestationFinStage()).as("check attestationFinStage").isEqualTo(actual.getAttestationFinStage())
+            )
             .satisfies(e -> assertThat(e.getAppUser()).as("check appUser").isEqualTo(actual.getAppUser()));
     }
 }

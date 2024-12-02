@@ -13,5 +13,4 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface EtatPaiementRepository extends JpaRepository<EtatPaiement, Long> {
-    List<EtatPaiement> getAllByAppUser(AppUser user);
 }

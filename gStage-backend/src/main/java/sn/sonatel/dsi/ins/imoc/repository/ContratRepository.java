@@ -13,5 +13,4 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface ContratRepository extends JpaRepository<Contrat, Long> {
-    List<Contrat> getAllByAppUser(AppUser user);
 }

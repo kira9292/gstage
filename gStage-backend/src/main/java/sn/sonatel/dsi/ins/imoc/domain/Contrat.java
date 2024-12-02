@@ -70,22 +70,17 @@ public class Contrat implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
-            "service",
             "attestationFinStage",
             "etatPaiements",
             "contrats",
-            "demandeStages",
             "attestationPresences",
-            "candidats",
-            "validations",
-            "role",
-            "validationStatusUser",
-            "restaurationStagiaires",
-            "jwts",
+            "demandeStage",
+            "validationStatuscandidat",
+            "appUser",
         },
         allowSetters = true
     )
-    private AppUser appUser;
+    private Candidat candidat;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -263,16 +258,16 @@ public class Contrat implements Serializable {
         return this;
     }
 
-    public AppUser getAppUser() {
-        return this.appUser;
+    public Candidat getCandidat() {
+        return this.candidat;
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
+    public void setCandidat(Candidat candidat) {
+        this.candidat = candidat;
     }
 
-    public Contrat appUser(AppUser appUser) {
-        this.setAppUser(appUser);
+    public Contrat candidat(Candidat candidat) {
+        this.setCandidat(candidat);
         return this;
     }
 

@@ -1,11 +1,12 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.Formation;
 
@@ -70,26 +71,39 @@ public class Candidat implements Serializable {
     @Column(name = "formation")
     private Formation formation;
 
-    @JsonIgnoreProperties(value = { "candidat", "departement", "businessUnit" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "candidat")
-    @JsonBackReference
+    @JsonIgnoreProperties(value = { "validations", "appuser" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private AttestationFinStage attestationFinStage;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @JsonIgnoreProperties(value = { "candidat" }, allowSetters = true)
+    private Set<EtatPaiement> etatPaiements = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @JsonIgnoreProperties(value = { "validations", "candidat" }, allowSetters = true)
+    private Set<Contrat> contrats = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @JsonIgnoreProperties(value = { "validations", "candidat" }, allowSetters = true)
+    private Set<AttestationPresence> attestationPresences = new HashSet<>();
+
+    @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
     private DemandeStage demandeStage;
 
     @JsonIgnoreProperties(value = { "candidat" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "candidat")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "candidat")
     private ValidationStatuscandidat validationStatuscandidat;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
             "service",
-            "attestationFinStage",
-            "etatPaiements",
-            "contrats",
             "demandeStages",
-            "attestationPresences",
             "candidats",
             "validations",
+            "notifications",
             "role",
             "validationStatusUser",
             "restaurationStagiaires",
@@ -268,6 +282,112 @@ public class Candidat implements Serializable {
 
     public void setFormation(Formation formation) {
         this.formation = formation;
+    }
+
+    public AttestationFinStage getAttestationFinStage() {
+        return this.attestationFinStage;
+    }
+
+    public void setAttestationFinStage(AttestationFinStage attestationFinStage) {
+        this.attestationFinStage = attestationFinStage;
+    }
+
+    public Candidat attestationFinStage(AttestationFinStage attestationFinStage) {
+        this.setAttestationFinStage(attestationFinStage);
+        return this;
+    }
+
+    public Set<EtatPaiement> getEtatPaiements() {
+        return this.etatPaiements;
+    }
+
+    public void setEtatPaiements(Set<EtatPaiement> etatPaiements) {
+        if (this.etatPaiements != null) {
+            this.etatPaiements.forEach(i -> i.setCandidat(null));
+        }
+        if (etatPaiements != null) {
+            etatPaiements.forEach(i -> i.setCandidat(this));
+        }
+        this.etatPaiements = etatPaiements;
+    }
+
+    public Candidat etatPaiements(Set<EtatPaiement> etatPaiements) {
+        this.setEtatPaiements(etatPaiements);
+        return this;
+    }
+
+    public Candidat addEtatPaiement(EtatPaiement etatPaiement) {
+        this.etatPaiements.add(etatPaiement);
+        etatPaiement.setCandidat(this);
+        return this;
+    }
+
+    public Candidat removeEtatPaiement(EtatPaiement etatPaiement) {
+        this.etatPaiements.remove(etatPaiement);
+        etatPaiement.setCandidat(null);
+        return this;
+    }
+
+    public Set<Contrat> getContrats() {
+        return this.contrats;
+    }
+
+    public void setContrats(Set<Contrat> contrats) {
+        if (this.contrats != null) {
+            this.contrats.forEach(i -> i.setCandidat(null));
+        }
+        if (contrats != null) {
+            contrats.forEach(i -> i.setCandidat(this));
+        }
+        this.contrats = contrats;
+    }
+
+    public Candidat contrats(Set<Contrat> contrats) {
+        this.setContrats(contrats);
+        return this;
+    }
+
+    public Candidat addContrat(Contrat contrat) {
+        this.contrats.add(contrat);
+        contrat.setCandidat(this);
+        return this;
+    }
+
+    public Candidat removeContrat(Contrat contrat) {
+        this.contrats.remove(contrat);
+        contrat.setCandidat(null);
+        return this;
+    }
+
+    public Set<AttestationPresence> getAttestationPresences() {
+        return this.attestationPresences;
+    }
+
+    public void setAttestationPresences(Set<AttestationPresence> attestationPresences) {
+        if (this.attestationPresences != null) {
+            this.attestationPresences.forEach(i -> i.setCandidat(null));
+        }
+        if (attestationPresences != null) {
+            attestationPresences.forEach(i -> i.setCandidat(this));
+        }
+        this.attestationPresences = attestationPresences;
+    }
+
+    public Candidat attestationPresences(Set<AttestationPresence> attestationPresences) {
+        this.setAttestationPresences(attestationPresences);
+        return this;
+    }
+
+    public Candidat addAttestationPresence(AttestationPresence attestationPresence) {
+        this.attestationPresences.add(attestationPresence);
+        attestationPresence.setCandidat(this);
+        return this;
+    }
+
+    public Candidat removeAttestationPresence(AttestationPresence attestationPresence) {
+        this.attestationPresences.remove(attestationPresence);
+        attestationPresence.setCandidat(null);
+        return this;
     }
 
     public DemandeStage getDemandeStage() {

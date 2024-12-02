@@ -429,10 +429,10 @@ class ContratResourceIT {
         partialUpdatedContrat.setId(contrat.getId());
 
         partialUpdatedContrat
-            .startDate(UPDATED_START_DATE)
-            .endDate(UPDATED_END_DATE)
-            .signatureDate(UPDATED_SIGNATURE_DATE)
-            .comments(UPDATED_COMMENTS);
+            .compensation(UPDATED_COMPENSATION)
+            .status(UPDATED_STATUS)
+            .docs(UPDATED_DOCS)
+            .docsContentType(UPDATED_DOCS_CONTENT_TYPE);
 
         restContratMockMvc
             .perform(

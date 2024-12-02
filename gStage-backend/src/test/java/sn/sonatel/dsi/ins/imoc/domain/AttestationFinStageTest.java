@@ -1,8 +1,8 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.AttestationFinStageTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ValidationTestSamples.*;
 
 import java.util.HashSet;
@@ -51,14 +51,14 @@ class AttestationFinStageTest {
     @Test
     void appuserTest() {
         AttestationFinStage attestationFinStage = getAttestationFinStageRandomSampleGenerator();
-        AppUser appUserBack = getAppUserRandomSampleGenerator();
+        Candidat candidatBack = getCandidatRandomSampleGenerator();
 
-        attestationFinStage.setAppuser(appUserBack);
-        assertThat(attestationFinStage.getAppuser()).isEqualTo(appUserBack);
-        assertThat(appUserBack.getAttestationFinStage()).isEqualTo(attestationFinStage);
+        attestationFinStage.setAppuser(candidatBack);
+        assertThat(attestationFinStage.getAppuser()).isEqualTo(candidatBack);
+        assertThat(candidatBack.getAttestationFinStage()).isEqualTo(attestationFinStage);
 
         attestationFinStage.appuser(null);
         assertThat(attestationFinStage.getAppuser()).isNull();
-        assertThat(appUserBack.getAttestationFinStage()).isNull();
+        assertThat(candidatBack.getAttestationFinStage()).isNull();
     }
 }

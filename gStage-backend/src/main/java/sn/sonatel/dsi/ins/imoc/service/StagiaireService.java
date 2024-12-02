@@ -35,22 +35,5 @@ public class StagiaireService {
 
 
 
-    public List<Contrat> getContrat(AppUser user) {
 
-        return contratRepository.getAllByAppUser(user);
-    }
-
-    public List<AttestationPresence> getattestationdepresence(AppUser user) {
-
-        return this.attestationPresenceRepository.getAllByAppUser(user);
-    }
-
-    public AttestationFinStage getattestationfinstage(AppUser user) {
-        return attestationFinStageRepository.getByAppuser(user);
-    }
-
-    public List<EtatPaiement> getEtatpaiement(AppUser user) {
-
-        return etatPaiementRepository.getAllByAppUser(user);
-    }
 }

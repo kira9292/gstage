@@ -57,22 +57,17 @@ public class EtatPaiement implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
-            "service",
             "attestationFinStage",
             "etatPaiements",
             "contrats",
-            "demandeStages",
             "attestationPresences",
-            "candidats",
-            "validations",
-            "role",
-            "validationStatusUser",
-            "restaurationStagiaires",
-            "jwts",
+            "demandeStage",
+            "validationStatuscandidat",
+            "appUser",
         },
         allowSetters = true
     )
-    private AppUser appUser;
+    private Candidat candidat;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -193,16 +188,16 @@ public class EtatPaiement implements Serializable {
         this.comments = comments;
     }
 
-    public AppUser getAppUser() {
-        return this.appUser;
+    public Candidat getCandidat() {
+        return this.candidat;
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
+    public void setCandidat(Candidat candidat) {
+        this.candidat = candidat;
     }
 
-    public EtatPaiement appUser(AppUser appUser) {
-        this.setAppUser(appUser);
+    public EtatPaiement candidat(Candidat candidat) {
+        this.setCandidat(candidat);
         return this;
     }
 

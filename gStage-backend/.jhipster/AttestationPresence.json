@@ -45,9 +45,9 @@
       "relationshipType": "one-to-many"
     },
     {
-      "otherEntityName": "appUser",
+      "otherEntityName": "candidat",
       "otherEntityRelationshipName": "attestationPresence",
-      "relationshipName": "appUser",
+      "relationshipName": "candidat",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"
     }

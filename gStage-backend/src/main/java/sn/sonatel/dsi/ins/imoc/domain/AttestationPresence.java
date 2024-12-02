@@ -54,23 +54,17 @@ public class AttestationPresence implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(
         value = {
-            "service",
             "attestationFinStage",
             "etatPaiements",
             "contrats",
-            "demandeStages",
             "attestationPresences",
-            "candidats",
-            "validations",
-            "notifications",
-            "role",
-            "validationStatusUser",
-            "restaurationStagiaires",
-            "jwts",
+            "demandeStage",
+            "validationStatuscandidat",
+            "appUser",
         },
         allowSetters = true
     )
-    private AppUser appUser;
+    private Candidat candidat;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -209,16 +203,16 @@ public class AttestationPresence implements Serializable {
         return this;
     }
 
-    public AppUser getAppUser() {
-        return this.appUser;
+    public Candidat getCandidat() {
+        return this.candidat;
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
+    public void setCandidat(Candidat candidat) {
+        this.candidat = candidat;
     }
 
-    public AttestationPresence appUser(AppUser appUser) {
-        this.setAppUser(appUser);
+    public AttestationPresence candidat(Candidat candidat) {
+        this.setCandidat(candidat);
         return this;
     }
 

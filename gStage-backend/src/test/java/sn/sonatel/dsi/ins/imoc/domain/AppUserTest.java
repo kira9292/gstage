@@ -2,13 +2,10 @@ package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.AttestationFinStageTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.AttestationPresenceTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.DemandeStageTestSamples.*;
-import static sn.sonatel.dsi.ins.imoc.domain.EtatPaiementTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.JwtTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.NotificationTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.RestaurationStagiaireTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.RoleTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ServiceTestSamples.*;
@@ -49,62 +46,6 @@ class AppUserTest {
     }
 
     @Test
-    void attestationFinStageTest() {
-        AppUser appUser = getAppUserRandomSampleGenerator();
-        AttestationFinStage attestationFinStageBack = getAttestationFinStageRandomSampleGenerator();
-
-        appUser.setAttestationFinStage(attestationFinStageBack);
-        assertThat(appUser.getAttestationFinStage()).isEqualTo(attestationFinStageBack);
-
-        appUser.attestationFinStage(null);
-        assertThat(appUser.getAttestationFinStage()).isNull();
-    }
-
-    @Test
-    void etatPaiementTest() {
-        AppUser appUser = getAppUserRandomSampleGenerator();
-        EtatPaiement etatPaiementBack = getEtatPaiementRandomSampleGenerator();
-
-        appUser.addEtatPaiement(etatPaiementBack);
-        assertThat(appUser.getEtatPaiements()).containsOnly(etatPaiementBack);
-        assertThat(etatPaiementBack.getAppUser()).isEqualTo(appUser);
-
-        appUser.removeEtatPaiement(etatPaiementBack);
-        assertThat(appUser.getEtatPaiements()).doesNotContain(etatPaiementBack);
-        assertThat(etatPaiementBack.getAppUser()).isNull();
-
-        appUser.etatPaiements(new HashSet<>(Set.of(etatPaiementBack)));
-        assertThat(appUser.getEtatPaiements()).containsOnly(etatPaiementBack);
-        assertThat(etatPaiementBack.getAppUser()).isEqualTo(appUser);
-
-        appUser.setEtatPaiements(new HashSet<>());
-        assertThat(appUser.getEtatPaiements()).doesNotContain(etatPaiementBack);
-        assertThat(etatPaiementBack.getAppUser()).isNull();
-    }
-
-    @Test
-    void contratTest() {
-        AppUser appUser = getAppUserRandomSampleGenerator();
-        Contrat contratBack = getContratRandomSampleGenerator();
-
-        appUser.addContrat(contratBack);
-        assertThat(appUser.getContrats()).containsOnly(contratBack);
-        assertThat(contratBack.getAppUser()).isEqualTo(appUser);
-
-        appUser.removeContrat(contratBack);
-        assertThat(appUser.getContrats()).doesNotContain(contratBack);
-        assertThat(contratBack.getAppUser()).isNull();
-
-        appUser.contrats(new HashSet<>(Set.of(contratBack)));
-        assertThat(appUser.getContrats()).containsOnly(contratBack);
-        assertThat(contratBack.getAppUser()).isEqualTo(appUser);
-
-        appUser.setContrats(new HashSet<>());
-        assertThat(appUser.getContrats()).doesNotContain(contratBack);
-        assertThat(contratBack.getAppUser()).isNull();
-    }
-
-    @Test
     void demandeStageTest() {
         AppUser appUser = getAppUserRandomSampleGenerator();
         DemandeStage demandeStageBack = getDemandeStageRandomSampleGenerator();
@@ -124,28 +65,6 @@ class AppUserTest {
         appUser.setDemandeStages(new HashSet<>());
         assertThat(appUser.getDemandeStages()).doesNotContain(demandeStageBack);
         assertThat(demandeStageBack.getAppUser()).isNull();
-    }
-
-    @Test
-    void attestationPresenceTest() {
-        AppUser appUser = getAppUserRandomSampleGenerator();
-        AttestationPresence attestationPresenceBack = getAttestationPresenceRandomSampleGenerator();
-
-        appUser.addAttestationPresence(attestationPresenceBack);
-        assertThat(appUser.getAttestationPresences()).containsOnly(attestationPresenceBack);
-        assertThat(attestationPresenceBack.getAppUser()).isEqualTo(appUser);
-
-        appUser.removeAttestationPresence(attestationPresenceBack);
-        assertThat(appUser.getAttestationPresences()).doesNotContain(attestationPresenceBack);
-        assertThat(attestationPresenceBack.getAppUser()).isNull();
-
-        appUser.attestationPresences(new HashSet<>(Set.of(attestationPresenceBack)));
-        assertThat(appUser.getAttestationPresences()).containsOnly(attestationPresenceBack);
-        assertThat(attestationPresenceBack.getAppUser()).isEqualTo(appUser);
-
-        appUser.setAttestationPresences(new HashSet<>());
-        assertThat(appUser.getAttestationPresences()).doesNotContain(attestationPresenceBack);
-        assertThat(attestationPresenceBack.getAppUser()).isNull();
     }
 
     @Test
@@ -190,6 +109,28 @@ class AppUserTest {
         appUser.setValidations(new HashSet<>());
         assertThat(appUser.getValidations()).doesNotContain(validationBack);
         assertThat(validationBack.getUser()).isNull();
+    }
+
+    @Test
+    void notificationTest() {
+        AppUser appUser = getAppUserRandomSampleGenerator();
+        Notification notificationBack = getNotificationRandomSampleGenerator();
+
+        appUser.addNotification(notificationBack);
+        assertThat(appUser.getNotifications()).containsOnly(notificationBack);
+        assertThat(notificationBack.getAppUser()).isEqualTo(appUser);
+
+        appUser.removeNotification(notificationBack);
+        assertThat(appUser.getNotifications()).doesNotContain(notificationBack);
+        assertThat(notificationBack.getAppUser()).isNull();
+
+        appUser.notifications(new HashSet<>(Set.of(notificationBack)));
+        assertThat(appUser.getNotifications()).containsOnly(notificationBack);
+        assertThat(notificationBack.getAppUser()).isEqualTo(appUser);
+
+        appUser.setNotifications(new HashSet<>());
+        assertThat(appUser.getNotifications()).doesNotContain(notificationBack);
+        assertThat(notificationBack.getAppUser()).isNull();
     }
 
     @Test

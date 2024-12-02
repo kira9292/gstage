@@ -50,23 +50,18 @@ public class AttestationFinStage implements Serializable {
 
     @JsonIgnoreProperties(
         value = {
-            "service",
             "attestationFinStage",
             "etatPaiements",
             "contrats",
-            "demandeStages",
             "attestationPresences",
-            "candidats",
-            "validations",
-            "role",
-            "validationStatusUser",
-            "restaurationStagiaires",
-            "jwts",
+            "demandeStage",
+            "validationStatuscandidat",
+            "appUser",
         },
         allowSetters = true
     )
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "attestationFinStage")
-    private AppUser appuser;
+    private Candidat appuser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -192,22 +187,22 @@ public class AttestationFinStage implements Serializable {
         return this;
     }
 
-    public AppUser getAppuser() {
+    public Candidat getAppuser() {
         return this.appuser;
     }
 
-    public void setAppuser(AppUser appUser) {
+    public void setAppuser(Candidat candidat) {
         if (this.appuser != null) {
             this.appuser.setAttestationFinStage(null);
         }
-        if (appUser != null) {
-            appUser.setAttestationFinStage(this);
+        if (candidat != null) {
+            candidat.setAttestationFinStage(this);
         }
-        this.appuser = appUser;
+        this.appuser = candidat;
     }
 
-    public AttestationFinStage appuser(AppUser appUser) {
-        this.setAppuser(appUser);
+    public AttestationFinStage appuser(Candidat candidat) {
+        this.setAppuser(candidat);
         return this;
     }
 

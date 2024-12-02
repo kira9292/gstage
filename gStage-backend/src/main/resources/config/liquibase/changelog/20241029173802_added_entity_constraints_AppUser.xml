@@ -17,13 +17,6 @@
                                  referencedTableName="service"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="attestation_fin_stage_id"
-                                 baseTableName="app_user"
-                                 constraintName="fk_app_user__attestation_fin_stage_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="attestation_fin_stage"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="role_id"
                                  baseTableName="app_user"
                                  constraintName="fk_app_user__role_id"

@@ -240,10 +240,10 @@ enum ERole{
 
 relationship OneToMany {
   AttestationPresence{validations} to Validation{attestationPresence}
-    AppUser to EtatPaiement
-  AppUser to Contrat
+    Candidat to EtatPaiement
+  Candidat to Contrat
     AppUser to DemandeStage
- AppUser to AttestationPresence
+ Candidat to AttestationPresence
    AppUser to Candidat
     Contrat{validations} to Validation{contrat}
   AttestationFinStage{validations} to Validation{attestationFinStage}
@@ -257,7 +257,7 @@ relationship OneToMany {
 relationship OneToOne {
   DemandeStage{candidat} to Candidat{demandeStage}
     AppUser to Service
-  AppUser{attestationFinStage} to AttestationFinStage{appuser}
+  Candidat{attestationFinStage} to AttestationFinStage{appuser}
   ValidationStatusUser to AppUser
   ValidationStatuscandidat to Candidat
 }

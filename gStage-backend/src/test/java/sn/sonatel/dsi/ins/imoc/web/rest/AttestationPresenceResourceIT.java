@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -49,6 +50,11 @@ class AttestationPresenceResourceIT {
     private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
 
+    private static final byte[] DEFAULT_DOCS = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_DOCS = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_DOCS_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_DOCS_CONTENT_TYPE = "image/png";
+
     private static final String ENTITY_API_URL = "/api/attestation-presences";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -83,7 +89,9 @@ class AttestationPresenceResourceIT {
             .endDate(DEFAULT_END_DATE)
             .signatureDate(DEFAULT_SIGNATURE_DATE)
             .status(DEFAULT_STATUS)
-            .comments(DEFAULT_COMMENTS);
+            .comments(DEFAULT_COMMENTS)
+            .docs(DEFAULT_DOCS)
+            .docsContentType(DEFAULT_DOCS_CONTENT_TYPE);
     }
 
     /**
@@ -98,7 +106,9 @@ class AttestationPresenceResourceIT {
             .endDate(UPDATED_END_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
             .status(UPDATED_STATUS)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .docs(UPDATED_DOCS)
+            .docsContentType(UPDATED_DOCS_CONTENT_TYPE);
     }
 
     @BeforeEach
@@ -204,7 +214,9 @@ class AttestationPresenceResourceIT {
             .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
             .andExpect(jsonPath("$.[*].signatureDate").value(hasItem(DEFAULT_SIGNATURE_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.booleanValue())))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)));
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
+            .andExpect(jsonPath("$.[*].docsContentType").value(hasItem(DEFAULT_DOCS_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].docs").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_DOCS))));
     }
 
     @Test
@@ -223,7 +235,9 @@ class AttestationPresenceResourceIT {
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
             .andExpect(jsonPath("$.signatureDate").value(DEFAULT_SIGNATURE_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.booleanValue()))
-            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS));
+            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS))
+            .andExpect(jsonPath("$.docsContentType").value(DEFAULT_DOCS_CONTENT_TYPE))
+            .andExpect(jsonPath("$.docs").value(Base64.getEncoder().encodeToString(DEFAULT_DOCS)));
     }
 
     @Test
@@ -250,7 +264,9 @@ class AttestationPresenceResourceIT {
             .endDate(UPDATED_END_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
             .status(UPDATED_STATUS)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .docs(UPDATED_DOCS)
+            .docsContentType(UPDATED_DOCS_CONTENT_TYPE);
 
         restAttestationPresenceMockMvc
             .perform(
@@ -330,7 +346,7 @@ class AttestationPresenceResourceIT {
         AttestationPresence partialUpdatedAttestationPresence = new AttestationPresence();
         partialUpdatedAttestationPresence.setId(attestationPresence.getId());
 
-        partialUpdatedAttestationPresence.comments(UPDATED_COMMENTS);
+        partialUpdatedAttestationPresence.startDate(UPDATED_START_DATE).comments(UPDATED_COMMENTS);
 
         restAttestationPresenceMockMvc
             .perform(
@@ -366,7 +382,9 @@ class AttestationPresenceResourceIT {
             .endDate(UPDATED_END_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
             .status(UPDATED_STATUS)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .docs(UPDATED_DOCS)
+            .docsContentType(UPDATED_DOCS_CONTENT_TYPE);
 
         restAttestationPresenceMockMvc
             .perform(

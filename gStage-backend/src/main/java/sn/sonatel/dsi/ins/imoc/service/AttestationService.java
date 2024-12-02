@@ -8,10 +8,12 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import sn.sonatel.dsi.ins.imoc.domain.AttestationFinStage;
 import sn.sonatel.dsi.ins.imoc.domain.AttestationPresence;
+import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
 import sn.sonatel.dsi.ins.imoc.dto.AttestationPDTO;
 import sn.sonatel.dsi.ins.imoc.repository.AttestationFinStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.AttestationPresenceRepository;
+import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
@@ -25,10 +27,17 @@ import java.util.Random;
 public class AttestationService {
     private final AttestationPresenceRepository aPRepository;
     private final AttestationFinStageRepository aFinStage;
+    private final CandidatRepository cRepository;
 
-    public AttestationService(AttestationPresenceRepository aPRepository, AttestationFinStageRepository aFinStage) {
+    public AttestationService(
+        AttestationPresenceRepository aPRepository,
+        AttestationFinStageRepository aFinStage,
+        CandidatRepository cRepository
+        ) {
         this.aPRepository = aPRepository;
         this.aFinStage = aFinStage;
+        this.cRepository = cRepository;
+
     }
 
     public ByteArrayResource genererAttestation(ValidationStatuscandidat validation) {
@@ -118,6 +127,7 @@ public class AttestationService {
 
             String base64Document = Base64.getEncoder().encodeToString(documentBytes);
             aFS.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+
             aFinStage.save(aFS);
             return new ByteArrayResource(documentBytes);
 
@@ -221,6 +231,8 @@ public class AttestationService {
 
             String base64Document = Base64.getEncoder().encodeToString(documentBytes);
             aP.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+            Candidat c = this.cRepository.findByEmail(request.email());
+            aP.setCandidat(c);
 
             aPRepository.save(aP);
             return new ByteArrayResource(documentBytes);

@@ -71,6 +71,34 @@
   "pagination": "pagination",
   "relationships": [
     {
+      "otherEntityName": "attestationFinStage",
+      "otherEntityRelationshipName": "appuser",
+      "relationshipName": "attestationFinStage",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "etatPaiement",
+      "otherEntityRelationshipName": "candidat",
+      "relationshipName": "etatPaiement",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "contrat",
+      "otherEntityRelationshipName": "candidat",
+      "relationshipName": "contrat",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "attestationPresence",
+      "otherEntityRelationshipName": "candidat",
+      "relationshipName": "attestationPresence",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
       "otherEntityName": "demandeStage",
       "otherEntityRelationshipName": "candidat",
       "relationshipName": "demandeStage",

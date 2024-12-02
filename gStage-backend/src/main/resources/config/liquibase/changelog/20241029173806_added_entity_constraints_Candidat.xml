@@ -10,6 +10,13 @@
     -->
     <changeSet id="20241029173806-2" author="jhipster">
 
+        <addForeignKeyConstraint baseColumnNames="attestation_fin_stage_id"
+                                 baseTableName="candidat"
+                                 constraintName="fk_candidat__attestation_fin_stage_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="attestation_fin_stage"
+                                 />
+
         <addForeignKeyConstraint baseColumnNames="app_user_id"
                                  baseTableName="candidat"
                                  constraintName="fk_candidat__app_user_id"

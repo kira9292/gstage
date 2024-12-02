@@ -1,7 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ContratTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ValidationTestSamples.*;
 
@@ -49,14 +49,14 @@ class ContratTest {
     }
 
     @Test
-    void appUserTest() {
+    void candidatTest() {
         Contrat contrat = getContratRandomSampleGenerator();
-        AppUser appUserBack = getAppUserRandomSampleGenerator();
+        Candidat candidatBack = getCandidatRandomSampleGenerator();
 
-        contrat.setAppUser(appUserBack);
-        assertThat(contrat.getAppUser()).isEqualTo(appUserBack);
+        contrat.setCandidat(candidatBack);
+        assertThat(contrat.getCandidat()).isEqualTo(candidatBack);
 
-        contrat.appUser(null);
-        assertThat(contrat.getAppUser()).isNull();
+        contrat.candidat(null);
+        assertThat(contrat.getCandidat()).isNull();
     }
 }

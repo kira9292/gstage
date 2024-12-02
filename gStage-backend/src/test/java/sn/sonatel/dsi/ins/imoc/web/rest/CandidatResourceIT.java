@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.IntegrationTest;
 import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.Formation;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 
 /**
@@ -56,17 +57,20 @@ class CandidatResourceIT {
     private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
     private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = "/FYe>G@;IS.z";
-    private static final String UPDATED_EMAIL = "b0G\"@4%+M.Td5~7";
+    private static final String DEFAULT_EMAIL = "o\\`^LD@4-&.:tW.I";
+    private static final String UPDATED_EMAIL = "N^w&&A@^JnRJy.l1SbpP";
 
-    private static final String DEFAULT_PHONE = "103896288";
-    private static final String UPDATED_PHONE = "597397496";
+    private static final String DEFAULT_PHONE = "295253593";
+    private static final String UPDATED_PHONE = "774870710";
 
     private static final EducationLevel DEFAULT_EDUCATION_LEVEL = EducationLevel.BAC;
     private static final EducationLevel UPDATED_EDUCATION_LEVEL = EducationLevel.BAC_PLUS_2;
 
     private static final String DEFAULT_SCHOOL = "AAAAAAAAAA";
     private static final String UPDATED_SCHOOL = "BBBBBBBBBB";
+
+    private static final Formation DEFAULT_FORMATION = Formation.INFORMATIQUE_SI;
+    private static final Formation UPDATED_FORMATION = Formation.GESTION_RH;
 
     private static final String ENTITY_API_URL = "/api/candidats";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -108,7 +112,8 @@ class CandidatResourceIT {
             .email(DEFAULT_EMAIL)
             .phone(DEFAULT_PHONE)
             .educationLevel(DEFAULT_EDUCATION_LEVEL)
-            .school(DEFAULT_SCHOOL);
+            .school(DEFAULT_SCHOOL)
+            .formation(DEFAULT_FORMATION);
     }
 
     /**
@@ -129,7 +134,8 @@ class CandidatResourceIT {
             .email(UPDATED_EMAIL)
             .phone(UPDATED_PHONE)
             .educationLevel(UPDATED_EDUCATION_LEVEL)
-            .school(UPDATED_SCHOOL);
+            .school(UPDATED_SCHOOL)
+            .formation(UPDATED_FORMATION);
     }
 
     @BeforeEach
@@ -270,7 +276,8 @@ class CandidatResourceIT {
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
             .andExpect(jsonPath("$.[*].educationLevel").value(hasItem(DEFAULT_EDUCATION_LEVEL.toString())))
-            .andExpect(jsonPath("$.[*].school").value(hasItem(DEFAULT_SCHOOL)));
+            .andExpect(jsonPath("$.[*].school").value(hasItem(DEFAULT_SCHOOL)))
+            .andExpect(jsonPath("$.[*].formation").value(hasItem(DEFAULT_FORMATION.toString())));
     }
 
     @Test
@@ -295,7 +302,8 @@ class CandidatResourceIT {
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
             .andExpect(jsonPath("$.educationLevel").value(DEFAULT_EDUCATION_LEVEL.toString()))
-            .andExpect(jsonPath("$.school").value(DEFAULT_SCHOOL));
+            .andExpect(jsonPath("$.school").value(DEFAULT_SCHOOL))
+            .andExpect(jsonPath("$.formation").value(DEFAULT_FORMATION.toString()));
     }
 
     @Test
@@ -328,7 +336,8 @@ class CandidatResourceIT {
             .email(UPDATED_EMAIL)
             .phone(UPDATED_PHONE)
             .educationLevel(UPDATED_EDUCATION_LEVEL)
-            .school(UPDATED_SCHOOL);
+            .school(UPDATED_SCHOOL)
+            .formation(UPDATED_FORMATION);
 
         restCandidatMockMvc
             .perform(
@@ -408,9 +417,11 @@ class CandidatResourceIT {
 
         partialUpdatedCandidat
             .firstName(UPDATED_FIRST_NAME)
-            .nationality(UPDATED_NATIONALITY)
-            .address(UPDATED_ADDRESS)
-            .school(UPDATED_SCHOOL);
+            .lastName(UPDATED_LAST_NAME)
+            .birthDate(UPDATED_BIRTH_DATE)
+            .birthPlace(UPDATED_BIRTH_PLACE)
+            .phone(UPDATED_PHONE)
+            .educationLevel(UPDATED_EDUCATION_LEVEL);
 
         restCandidatMockMvc
             .perform(
@@ -449,7 +460,8 @@ class CandidatResourceIT {
             .email(UPDATED_EMAIL)
             .phone(UPDATED_PHONE)
             .educationLevel(UPDATED_EDUCATION_LEVEL)
-            .school(UPDATED_SCHOOL);
+            .school(UPDATED_SCHOOL)
+            .formation(UPDATED_FORMATION);
 
         restCandidatMockMvc
             .perform(

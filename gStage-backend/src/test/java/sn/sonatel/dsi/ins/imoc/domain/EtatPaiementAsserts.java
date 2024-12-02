@@ -66,6 +66,6 @@ public class EtatPaiementAsserts {
     public static void assertEtatPaiementUpdatableRelationshipsEquals(EtatPaiement expected, EtatPaiement actual) {
         assertThat(expected)
             .as("Verify EtatPaiement relationships")
-            .satisfies(e -> assertThat(e.getAppUser()).as("check appUser").isEqualTo(actual.getAppUser()));
+            .satisfies(e -> assertThat(e.getCandidat()).as("check candidat").isEqualTo(actual.getCandidat()));
     }
 }

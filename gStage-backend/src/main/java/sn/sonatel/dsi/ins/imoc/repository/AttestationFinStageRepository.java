@@ -11,5 +11,4 @@ import sn.sonatel.dsi.ins.imoc.domain.AttestationFinStage;
 @SuppressWarnings("unused")
 @Repository
 public interface AttestationFinStageRepository extends JpaRepository<AttestationFinStage, Long> {
-    AttestationFinStage getByAppuser(AppUser user);
 }

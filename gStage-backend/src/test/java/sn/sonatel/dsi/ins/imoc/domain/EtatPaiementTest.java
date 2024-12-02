@@ -1,7 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.EtatPaiementTestSamples.*;
 
 import org.junit.jupiter.api.Test;
@@ -24,14 +24,14 @@ class EtatPaiementTest {
     }
 
     @Test
-    void appUserTest() {
+    void candidatTest() {
         EtatPaiement etatPaiement = getEtatPaiementRandomSampleGenerator();
-        AppUser appUserBack = getAppUserRandomSampleGenerator();
+        Candidat candidatBack = getCandidatRandomSampleGenerator();
 
-        etatPaiement.setAppUser(appUserBack);
-        assertThat(etatPaiement.getAppUser()).isEqualTo(appUserBack);
+        etatPaiement.setCandidat(candidatBack);
+        assertThat(etatPaiement.getCandidat()).isEqualTo(candidatBack);
 
-        etatPaiement.appUser(null);
-        assertThat(etatPaiement.getAppUser()).isNull();
+        etatPaiement.candidat(null);
+        assertThat(etatPaiement.getCandidat()).isNull();
     }
 }

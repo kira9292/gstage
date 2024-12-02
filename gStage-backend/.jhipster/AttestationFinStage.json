@@ -41,7 +41,7 @@
       "relationshipType": "one-to-many"
     },
     {
-      "otherEntityName": "appUser",
+      "otherEntityName": "candidat",
       "otherEntityRelationshipName": "attestationFinStage",
       "relationshipName": "appuser",
       "relationshipSide": "right",

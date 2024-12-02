@@ -65,6 +65,6 @@ public class AttestationPresenceAsserts {
     public static void assertAttestationPresenceUpdatableRelationshipsEquals(AttestationPresence expected, AttestationPresence actual) {
         assertThat(expected)
             .as("Verify AttestationPresence relationships")
-            .satisfies(e -> assertThat(e.getAppUser()).as("check appUser").isEqualTo(actual.getAppUser()));
+            .satisfies(e -> assertThat(e.getCandidat()).as("check candidat").isEqualTo(actual.getCandidat()));
     }
 }

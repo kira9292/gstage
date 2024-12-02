@@ -1,8 +1,8 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static sn.sonatel.dsi.ins.imoc.domain.AppUserTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.AttestationPresenceTestSamples.*;
+import static sn.sonatel.dsi.ins.imoc.domain.CandidatTestSamples.*;
 import static sn.sonatel.dsi.ins.imoc.domain.ValidationTestSamples.*;
 
 import java.util.HashSet;
@@ -49,14 +49,14 @@ class AttestationPresenceTest {
     }
 
     @Test
-    void appUserTest() {
+    void candidatTest() {
         AttestationPresence attestationPresence = getAttestationPresenceRandomSampleGenerator();
-        AppUser appUserBack = getAppUserRandomSampleGenerator();
+        Candidat candidatBack = getCandidatRandomSampleGenerator();
 
-        attestationPresence.setAppUser(appUserBack);
-        assertThat(attestationPresence.getAppUser()).isEqualTo(appUserBack);
+        attestationPresence.setCandidat(candidatBack);
+        assertThat(attestationPresence.getCandidat()).isEqualTo(candidatBack);
 
-        attestationPresence.appUser(null);
-        assertThat(attestationPresence.getAppUser()).isNull();
+        attestationPresence.candidat(null);
+        assertThat(attestationPresence.getCandidat()).isNull();
     }
 }

@@ -36,8 +36,8 @@ class AppUserResourceIT {
     private static final String DEFAULT_USERNAME = "AAAAAAAAAA";
     private static final String UPDATED_USERNAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_EMAIL = ">@^\\m|y_.=%FV-^";
-    private static final String UPDATED_EMAIL = "U:L@\"5qZ;z.X2\\^H";
+    private static final String DEFAULT_EMAIL = "{U$@\"$.eP`OE";
+    private static final String UPDATED_EMAIL = "bo2))@Aub.D}EDfN";
 
     private static final String DEFAULT_PASSWORD = "AAAAAAAAAA";
     private static final String UPDATED_PASSWORD = "BBBBBBBBBB";
@@ -402,7 +402,7 @@ class AppUserResourceIT {
         AppUser partialUpdatedAppUser = new AppUser();
         partialUpdatedAppUser.setId(appUser.getId());
 
-        partialUpdatedAppUser.username(UPDATED_USERNAME).name(UPDATED_NAME);
+        partialUpdatedAppUser.username(UPDATED_USERNAME).email(UPDATED_EMAIL).firstName(UPDATED_FIRST_NAME).status(UPDATED_STATUS);
 
         restAppUserMockMvc
             .perform(

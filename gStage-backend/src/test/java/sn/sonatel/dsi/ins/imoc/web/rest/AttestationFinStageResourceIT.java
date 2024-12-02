@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -46,6 +47,11 @@ class AttestationFinStageResourceIT {
     private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
 
+    private static final byte[] DEFAULT_DOCS = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_DOCS = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_DOCS_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_DOCS_CONTENT_TYPE = "image/png";
+
     private static final String ENTITY_API_URL = "/api/attestation-fin-stages";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -79,7 +85,9 @@ class AttestationFinStageResourceIT {
             .reference(DEFAULT_REFERENCE)
             .issueDate(DEFAULT_ISSUE_DATE)
             .signatureDate(DEFAULT_SIGNATURE_DATE)
-            .comments(DEFAULT_COMMENTS);
+            .comments(DEFAULT_COMMENTS)
+            .docs(DEFAULT_DOCS)
+            .docsContentType(DEFAULT_DOCS_CONTENT_TYPE);
     }
 
     /**
@@ -93,7 +101,9 @@ class AttestationFinStageResourceIT {
             .reference(UPDATED_REFERENCE)
             .issueDate(UPDATED_ISSUE_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .docs(UPDATED_DOCS)
+            .docsContentType(UPDATED_DOCS_CONTENT_TYPE);
     }
 
     @BeforeEach
@@ -198,7 +208,9 @@ class AttestationFinStageResourceIT {
             .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE)))
             .andExpect(jsonPath("$.[*].issueDate").value(hasItem(DEFAULT_ISSUE_DATE.toString())))
             .andExpect(jsonPath("$.[*].signatureDate").value(hasItem(DEFAULT_SIGNATURE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)));
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS)))
+            .andExpect(jsonPath("$.[*].docsContentType").value(hasItem(DEFAULT_DOCS_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].docs").value(hasItem(Base64.getEncoder().encodeToString(DEFAULT_DOCS))));
     }
 
     @Test
@@ -216,7 +228,9 @@ class AttestationFinStageResourceIT {
             .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE))
             .andExpect(jsonPath("$.issueDate").value(DEFAULT_ISSUE_DATE.toString()))
             .andExpect(jsonPath("$.signatureDate").value(DEFAULT_SIGNATURE_DATE.toString()))
-            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS));
+            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS))
+            .andExpect(jsonPath("$.docsContentType").value(DEFAULT_DOCS_CONTENT_TYPE))
+            .andExpect(jsonPath("$.docs").value(Base64.getEncoder().encodeToString(DEFAULT_DOCS)));
     }
 
     @Test
@@ -242,7 +256,9 @@ class AttestationFinStageResourceIT {
             .reference(UPDATED_REFERENCE)
             .issueDate(UPDATED_ISSUE_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .docs(UPDATED_DOCS)
+            .docsContentType(UPDATED_DOCS_CONTENT_TYPE);
 
         restAttestationFinStageMockMvc
             .perform(
@@ -322,7 +338,7 @@ class AttestationFinStageResourceIT {
         AttestationFinStage partialUpdatedAttestationFinStage = new AttestationFinStage();
         partialUpdatedAttestationFinStage.setId(attestationFinStage.getId());
 
-        partialUpdatedAttestationFinStage.signatureDate(UPDATED_SIGNATURE_DATE);
+        partialUpdatedAttestationFinStage.reference(UPDATED_REFERENCE).issueDate(UPDATED_ISSUE_DATE).signatureDate(UPDATED_SIGNATURE_DATE);
 
         restAttestationFinStageMockMvc
             .perform(
@@ -357,7 +373,9 @@ class AttestationFinStageResourceIT {
             .reference(UPDATED_REFERENCE)
             .issueDate(UPDATED_ISSUE_DATE)
             .signatureDate(UPDATED_SIGNATURE_DATE)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .docs(UPDATED_DOCS)
+            .docsContentType(UPDATED_DOCS_CONTENT_TYPE);
 
         restAttestationFinStageMockMvc
             .perform(

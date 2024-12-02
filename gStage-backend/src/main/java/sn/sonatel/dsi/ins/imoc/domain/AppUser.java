@@ -1,7 +1,6 @@
 package sn.sonatel.dsi.ins.imoc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -21,7 +20,7 @@ import sn.sonatel.dsi.ins.imoc.domain.enumeration.EducationLevel;
 @Entity
 @Table(name = "app_user")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class AppUser implements UserDetails, Serializable {
+public class AppUser implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -67,40 +66,34 @@ public class AppUser implements UserDetails, Serializable {
     private Boolean status;
 
     @JsonIgnoreProperties(value = { "businessUnit", "appUser", "departemen" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Service service;
 
-    @JsonIgnoreProperties(value = { "validations", "appuser" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(unique = true)
-    private AttestationFinStage attestationFinStage;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
-    private Set<EtatPaiement> etatPaiements = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "validations", "appUser" }, allowSetters = true)
-    private Set<Contrat> contrats = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appUser")
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
     private Set<DemandeStage> demandeStages = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "validations", "appUser" }, allowSetters = true)
-    private Set<AttestationPresence> attestationPresences = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
-    @JsonIgnoreProperties(value = { "demandeStage", "appUser" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = {
+            "attestationFinStage",
+            "etatPaiements",
+            "contrats",
+            "attestationPresences",
+            "demandeStage",
+            "validationStatuscandidat",
+            "appUser",
+        },
+        allowSetters = true
+    )
     private Set<Candidat> candidats = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appUser")
     @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
     private Set<Notification> notifications = new HashSet<>();
 
@@ -116,16 +109,18 @@ public class AppUser implements UserDetails, Serializable {
     @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
     private Set<RestaurationStagiaire> restaurationStagiaires = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appUser")
     @JsonIgnoreProperties(value = { "appUser" }, allowSetters = true)
     private Set<Jwt> jwts = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+ this.role.getName()));
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 
     @Override
@@ -143,10 +138,8 @@ public class AppUser implements UserDetails, Serializable {
         return UserDetails.super.isAccountNonExpired();
     }
 
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
         return this.id;
@@ -291,81 +284,6 @@ public class AppUser implements UserDetails, Serializable {
         return this;
     }
 
-    public AttestationFinStage getAttestationFinStage() {
-        return this.attestationFinStage;
-    }
-
-    public void setAttestationFinStage(AttestationFinStage attestationFinStage) {
-        this.attestationFinStage = attestationFinStage;
-    }
-
-    public AppUser attestationFinStage(AttestationFinStage attestationFinStage) {
-        this.setAttestationFinStage(attestationFinStage);
-        return this;
-    }
-
-    public Set<EtatPaiement> getEtatPaiements() {
-        return this.etatPaiements;
-    }
-
-    public void setEtatPaiements(Set<EtatPaiement> etatPaiements) {
-        if (this.etatPaiements != null) {
-            this.etatPaiements.forEach(i -> i.setAppUser(null));
-        }
-        if (etatPaiements != null) {
-            etatPaiements.forEach(i -> i.setAppUser(this));
-        }
-        this.etatPaiements = etatPaiements;
-    }
-
-    public AppUser etatPaiements(Set<EtatPaiement> etatPaiements) {
-        this.setEtatPaiements(etatPaiements);
-        return this;
-    }
-
-    public AppUser addEtatPaiement(EtatPaiement etatPaiement) {
-        this.etatPaiements.add(etatPaiement);
-        etatPaiement.setAppUser(this);
-        return this;
-    }
-
-    public AppUser removeEtatPaiement(EtatPaiement etatPaiement) {
-        this.etatPaiements.remove(etatPaiement);
-        etatPaiement.setAppUser(null);
-        return this;
-    }
-
-    public Set<Contrat> getContrats() {
-        return this.contrats;
-    }
-
-    public void setContrats(Set<Contrat> contrats) {
-        if (this.contrats != null) {
-            this.contrats.forEach(i -> i.setAppUser(null));
-        }
-        if (contrats != null) {
-            contrats.forEach(i -> i.setAppUser(this));
-        }
-        this.contrats = contrats;
-    }
-
-    public AppUser contrats(Set<Contrat> contrats) {
-        this.setContrats(contrats);
-        return this;
-    }
-
-    public AppUser addContrat(Contrat contrat) {
-        this.contrats.add(contrat);
-        contrat.setAppUser(this);
-        return this;
-    }
-
-    public AppUser removeContrat(Contrat contrat) {
-        this.contrats.remove(contrat);
-        contrat.setAppUser(null);
-        return this;
-    }
-
     public Set<DemandeStage> getDemandeStages() {
         return this.demandeStages;
     }
@@ -394,37 +312,6 @@ public class AppUser implements UserDetails, Serializable {
     public AppUser removeDemandeStage(DemandeStage demandeStage) {
         this.demandeStages.remove(demandeStage);
         demandeStage.setAppUser(null);
-        return this;
-    }
-
-    public Set<AttestationPresence> getAttestationPresences() {
-        return this.attestationPresences;
-    }
-
-    public void setAttestationPresences(Set<AttestationPresence> attestationPresences) {
-        if (this.attestationPresences != null) {
-            this.attestationPresences.forEach(i -> i.setAppUser(null));
-        }
-        if (attestationPresences != null) {
-            attestationPresences.forEach(i -> i.setAppUser(this));
-        }
-        this.attestationPresences = attestationPresences;
-    }
-
-    public AppUser attestationPresences(Set<AttestationPresence> attestationPresences) {
-        this.setAttestationPresences(attestationPresences);
-        return this;
-    }
-
-    public AppUser addAttestationPresence(AttestationPresence attestationPresence) {
-        this.attestationPresences.add(attestationPresence);
-        attestationPresence.setAppUser(this);
-        return this;
-    }
-
-    public AppUser removeAttestationPresence(AttestationPresence attestationPresence) {
-        this.attestationPresences.remove(attestationPresence);
-        attestationPresence.setAppUser(null);
         return this;
     }
 
@@ -487,6 +374,37 @@ public class AppUser implements UserDetails, Serializable {
     public AppUser removeValidations(Validation validation) {
         this.validations.remove(validation);
         validation.setUser(null);
+        return this;
+    }
+
+    public Set<Notification> getNotifications() {
+        return this.notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        if (this.notifications != null) {
+            this.notifications.forEach(i -> i.setAppUser(null));
+        }
+        if (notifications != null) {
+            notifications.forEach(i -> i.setAppUser(this));
+        }
+        this.notifications = notifications;
+    }
+
+    public AppUser notifications(Set<Notification> notifications) {
+        this.setNotifications(notifications);
+        return this;
+    }
+
+    public AppUser addNotification(Notification notification) {
+        this.notifications.add(notification);
+        notification.setAppUser(this);
+        return this;
+    }
+
+    public AppUser removeNotification(Notification notification) {
+        this.notifications.remove(notification);
+        notification.setAppUser(null);
         return this;
     }
 
@@ -553,36 +471,6 @@ public class AppUser implements UserDetails, Serializable {
         return this;
     }
 
-    public Set<Notification> getNotifications() {
-        return this.notifications;
-    }
-
-    public void setNotifications(Set<Notification> notifications) {
-        if (this.notifications != null) {
-            this.notifications.forEach(i -> i.setAppUser(null));
-        }
-        if (notifications != null) {
-            notifications.forEach(i -> i.setAppUser(this));
-        }
-        this.notifications = notifications;
-    }
-
-    public AppUser notifications(Set<Notification> notifications) {
-        this.setNotifications(notifications);
-        return this;
-    }
-
-    public AppUser addNotification(Notification notification) {
-        this.notifications.add(notification);
-        notification.setAppUser(this);
-        return this;
-    }
-
-    public AppUser removeNotification(Notification notification) {
-        this.notifications.remove(notification);
-        notification.setAppUser(null);
-        return this;
-    }
     public Set<Jwt> getJwts() {
         return this.jwts;
     }

@@ -13,5 +13,4 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface AttestationPresenceRepository extends JpaRepository<AttestationPresence, Long> {
-    List<AttestationPresence> getAllByAppUser(AppUser user);
 }

@@ -65,37 +65,9 @@
       "relationshipType": "one-to-one"
     },
     {
-      "otherEntityName": "attestationFinStage",
-      "otherEntityRelationshipName": "appuser",
-      "relationshipName": "attestationFinStage",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-one"
-    },
-    {
-      "otherEntityName": "etatPaiement",
-      "otherEntityRelationshipName": "appUser",
-      "relationshipName": "etatPaiement",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "contrat",
-      "otherEntityRelationshipName": "appUser",
-      "relationshipName": "contrat",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
       "otherEntityName": "demandeStage",
       "otherEntityRelationshipName": "appUser",
       "relationshipName": "demandeStage",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "attestationPresence",
-      "otherEntityRelationshipName": "appUser",
-      "relationshipName": "attestationPresence",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
     },

@@ -17,4 +17,5 @@ public interface CandidatRepository extends JpaRepository<Candidat, Long> {
     Candidat findByValidationStatuscandidatCode(String code);
 
 
+    Candidat findByEmail(String email);
 }
