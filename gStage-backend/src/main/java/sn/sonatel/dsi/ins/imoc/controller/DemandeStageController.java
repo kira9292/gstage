@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.sonatel.dsi.ins.imoc.domain.Candidat;
-import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
-import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
+import sn.sonatel.dsi.ins.imoc.domain.*;
+import sn.sonatel.dsi.ins.imoc.dto.CandidatCompleTDO;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
@@ -67,12 +66,35 @@ public class DemandeStageController {
             ))
             .collect(Collectors.toList());
     }
-//    @PostMapping("/resendcode")
-//    public void renvoicode( @RequestBody Map<String ,String> mail ) {
-//
-//        this.demandeStageService.resendcode(mail);
-//
-//    }
+
+
+    @GetMapping("/api/demande")
+    public List<CandidatCompleTDO> getAllDemande() {
+        List<DemandeStage> demandes = demandeStageRepository.findAllWithRelations();
+
+        return demandes.stream()
+            .map(demande -> new CandidatCompleTDO(
+                demande,
+                demande.getCandidat(),
+                (List<AttestationPresence>) demande.getCandidat().getAttestationPresences(),
+                demande.getCandidat().getAttestationFinStage(),
+                (Contrat) demande.getCandidat().getContrats()
+            ))
+            .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @PostMapping("/api/sendWelcomeEmail")
     public void contactercadidat( @RequestBody Map<String ,String> mail ) throws MessagingException, UnsupportedEncodingException {

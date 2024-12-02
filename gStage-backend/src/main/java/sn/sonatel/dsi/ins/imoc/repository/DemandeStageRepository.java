@@ -21,4 +21,12 @@ public interface DemandeStageRepository extends JpaRepository<DemandeStage, Long
     void deleteByAppUserId(Long id);
 
     List<DemandeStage> findAllByAppUserIsNotNull();
+
+
+
+    @Query("SELECT d FROM DemandeStage d JOIN FETCH d.candidat c "
+        + "LEFT JOIN FETCH c.attestationPresences "
+        + "LEFT JOIN FETCH c.attestationFinStage "
+        + "LEFT JOIN FETCH c.contrats")
+    List<DemandeStage> findAllWithRelations();
 }
