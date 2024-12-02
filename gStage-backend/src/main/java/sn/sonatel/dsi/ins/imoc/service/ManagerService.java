@@ -138,6 +138,7 @@ public class ManagerService {
     @Transactional
     public void generateAttestationPresence(AttestationPDTO request) throws MessagingException, UnsupportedEncodingException {
         ValidationStatuscandidat validationStatusOptional = validationStatuscandidatRepository.findTopByCandidatEmailOrderByCreationDesc(request.email());
+
         if (validationStatusOptional!=null) {
             this.notificationService.envoyerAttestationPresence(validationStatusOptional,request);
         } else {

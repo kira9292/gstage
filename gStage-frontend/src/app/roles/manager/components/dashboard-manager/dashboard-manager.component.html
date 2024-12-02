@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-gray-50 p-8">
   <div class="max-w-6xl mx-auto">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Propositions de Stage - </h1>
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Service {{managerInfos?.service}}</h1>
     
     <!-- Stats -->
     <div class="grid grid-cols-2 gap-4 mb-6">
@@ -9,18 +9,18 @@
         class="bg-white rounded-xl shadow-sm p-4 border-l-4 flex items-center"
         [ngClass]="stat.borderColor"
       >
-        <div 
-          class="rounded-full p-3 mr-4 flex items-center justify-center"
-          [ngClass]="[stat.bgColor, stat.iconColor]"
-        >
-          <i [class]="'fas ' + stat.icon"></i>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">{{ stat.label }}</p>
-          <p class="text-2xl font-bold text-gray-800">{{ stat.value }}</p>
-        </div>
+      <div 
+        class="rounded-full p-3 mr-4 flex items-center justify-center"
+        [ngClass]="[stat.bgColor, stat.iconColor]"
+      >
+        <i [class]="'fas ' + stat.icon"></i>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">{{ stat.label }}</p>
+        <p class="text-2xl font-bold text-gray-800">{{ stat.value }}</p>
       </div>
     </div>
+  </div>
 
   <!-- Status Tabs -->
   <div class="flex gap-2 mb-6">
@@ -125,7 +125,6 @@
       </div>
     </div>
 
-    <!-- Details Modal -->
   <!-- Modal Placeholder -->
   <ng-container *ngIf="selectedDetailsModal">
     <app-detail-demande-for-manager

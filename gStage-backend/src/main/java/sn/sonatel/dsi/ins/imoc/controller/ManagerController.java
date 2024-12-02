@@ -99,7 +99,6 @@ public class ManagerController {
     }
 
 
-
     @PostMapping("/api/manager-internships/send-presence-attestation")
     public void attestationPresence(@RequestBody AttestationPDTO request) throws MessagingException, UnsupportedEncodingException {
         this.managerService.generateAttestationPresence(request);

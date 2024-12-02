@@ -4,13 +4,28 @@ import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ByteArrayResource;
 
 import org.springframework.stereotype.Service;
+import sn.sonatel.dsi.ins.imoc.domain.AttestationFinStage;
+import sn.sonatel.dsi.ins.imoc.domain.Contrat;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
+import sn.sonatel.dsi.ins.imoc.domain.enumeration.ContractStatus;
+import sn.sonatel.dsi.ins.imoc.repository.ContratRepository;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+import java.util.Random;
 
 @Service
 public class ContratService {
+
+    private final ContratRepository contratRepository;
+
+    public ContratService(ContratRepository contratRepository) {
+        this.contratRepository = contratRepository;
+    }
 
     public ByteArrayResource genererContrat(ValidationStatuscandidat validation) {
         try (XWPFDocument document = new XWPFDocument()) {
@@ -113,12 +128,37 @@ public class ContratService {
             // Conversion en ByteArrayResource
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             document.write(baos);
-            return new ByteArrayResource(baos.toByteArray());
+            byte[] documentBytes = baos.toByteArray();
 
+            Contrat contrat = new Contrat();
+            contrat.setReference(generateUniqueReference());
+            contrat.setStartDate(validation.getCandidat().getDemandeStage().getStartDate());
+            contrat.setEndDate(validation.getCandidat().getDemandeStage().getEndDate());
+            contrat.setCompensation(60000.);
+            contrat.setStatus(ContractStatus.EN_SIGNATURE);
+            contrat.setAssignmentSite(validation.getCandidat().getDemandeStage().getAppUser().getService().getName());
+            contrat.setSignatureDate(LocalDate.now());
+            contrat.setComments("Contrat généré");
+
+
+            String base64Document = Base64.getEncoder().encodeToString(documentBytes);
+            contrat.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+            contratRepository.save(contrat);
+            return new ByteArrayResource(documentBytes);
         } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de la génération du contrat", e);
+            throw new RuntimeException("Erreur lors de la génération de l'attestation", e);
         }
     }
+
+    private String generateUniqueReference() {
+        // Format: CONTRAT-STG-YYYY-MMDD-HHMMSS-XXXX
+        LocalDateTime now = LocalDateTime.now();
+        String timestamp = now.format(DateTimeFormatter.ofPattern("yyyy-MMdd-HHmmss"));
+
+        String randomSuffix = String.format("%04d", new Random().nextInt(10000));
+        return "CONTART-STG-" + timestamp + "-" + randomSuffix;
+    }
+
 
     private void ajouterArticle(XWPFDocument document, String titre, String contenu) {
         XWPFParagraph articleParagraph = document.createParagraph();

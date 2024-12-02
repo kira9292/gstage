@@ -145,6 +145,79 @@ public class NotificationService {
 
         mailSender.send(message);
     }
+
+
+    public void notifyAssistants(String message, InternshipStatus type) {
+        List<AppUser> assistants = appUserRepository.findByRoleName(ERole.ASSISTANT_GWTE);
+        for (AppUser assistant : assistants) {
+            Notification notification = new Notification();
+            notification.setMessage(message);
+            notification.setTypeNotification(type);
+            notification.setSendingDate(LocalDate.now());
+            notification.setRead(false);
+            notification.setAppUser(assistant);
+            notificationRepository.save(notification);
+        }
+    }
+
+    @Transactional
+    public void markAsRead(Long notificationId, Long userId) {
+        Notification notification = notificationRepository.findByIdAndAppUserId(notificationId, userId)
+            .orElseThrow(() -> new RuntimeException("Notification not found or not authorized"));
+
+        notification.setRead(true);
+        notificationRepository.save(notification);
+    }
+
+    @Transactional
+    public void markAllAsRead(Long userId) {
+        List<Notification> notifications = notificationRepository.findByAppUserIdAndReadFalse(userId);
+        notifications.forEach(notification -> notification.setRead(true));
+        notificationRepository.saveAll(notifications);
+    }
+
+    @Transactional
+    public void deleteNotification(Long notificationId, Long userId) {
+        Notification notification = notificationRepository.findByIdAndAppUserId(notificationId, userId)
+            .orElseThrow(() -> new RuntimeException("Notification not found or not authorized"));
+        notificationRepository.delete(notification);
+    }
+
+    @Transactional
+    public void deleteAllNotifications(Long userId) {
+        List<Notification> notifications = notificationRepository.findByAppUserId(userId);
+        notificationRepository.deleteAll(notifications);
+    }
+
+    public void envoyerAttestationPresence(ValidationStatuscandidat validation, AttestationPDTO request) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom("amethndiaye840@gmail.com", "Sonatel Stage");
+        helper.setTo(validation.getCandidat().getEmail());
+        helper.setSubject("Votre attestation de presence chez Sonatel");
+
+        String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>" +
+            "<div style='max-width: 600px; margin: auto; padding: 20px; text-align: center;'>" +
+            "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>" +
+            "<h2>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>" +
+            "<p>Vous trouverez ci-joint votre attestation de présence du "+ request.startDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " au " + request.endDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +  " de stage à Sonatel.</p>" +
+            "<p>Cordialement,<br>L'équipe Sonatel</p>" +
+            "<footer style='font-size: 12px; color: #aaa;'>Message généré automatiquement</footer>" +
+            "</div></body></html>";
+
+        helper.setText(htmlContent, true);
+
+        // Générer et joindre l'attestation
+        ByteArrayResource attestation = attestationService.genererAttestationPresence(validation, request);
+        helper.addAttachment(
+            String.format("Attestation_%s_%s.docx",
+                validation.getCandidat().getFirstName(),
+                validation.getCandidat().getLastName()),
+            new ByteArrayResource(attestation.getByteArray())
+        );
+        mailSender.send(message);
+    }
+
     public void envoyerAttestation(ValidationStatuscandidat validation ) throws MessagingException, UnsupportedEncodingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -175,85 +248,6 @@ public class NotificationService {
                 validation.getCandidat().getLastName()),
             new ByteArrayResource(attestation.getByteArray())
         );
-        mailSender.send(message);
-    }
-
-    public void notifyAssistants(String message, InternshipStatus type) {
-        List<AppUser> assistants = appUserRepository.findByRoleName(ERole.ASSISTANT_GWTE);
-        for (AppUser assistant : assistants) {
-            Notification notification = new Notification();
-            notification.setMessage(message);
-            notification.setTypeNotification(type);
-            notification.setSendingDate(LocalDate.now());
-            notification.setRead(false);
-            notification.setAppUser(assistant);
-            notificationRepository.save(notification);
-        }
-    }
-
-    @Transactional
-    public void markAsRead(Long notificationId, Long userId) {
-        Notification notification = notificationRepository.findByIdAndAppUserId(notificationId, userId)
-            .orElseThrow(() -> new RuntimeException("Notification not found or not authorized"));
-
-        notification.setRead(true);
-        notificationRepository.save(notification);
-    }
-
-    @Transactional
-    public void markAllAsRead(Long userId) {
-        List<Notification> notifications = notificationRepository.findByAppUserIdAndReadFalse(userId);
-
-        notifications.forEach(notification -> notification.setRead(true));
-
-        notificationRepository.saveAll(notifications);
-    }
-
-    @Transactional
-    public void deleteNotification(Long notificationId, Long userId) {
-        Notification notification = notificationRepository.findByIdAndAppUserId(notificationId, userId)
-            .orElseThrow(() -> new RuntimeException("Notification not found or not authorized"));
-        notificationRepository.delete(notification);
-    }
-
-    @Transactional
-    public void deleteAllNotifications(Long userId) {
-        List<Notification> notifications = notificationRepository.findByAppUserId(userId);
-        notificationRepository.deleteAll(notifications);
-    }
-
-
-
-
-
-
-    public void envoyerAttestationPresence(ValidationStatuscandidat validation, AttestationPDTO request) throws MessagingException, UnsupportedEncodingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        helper.setFrom("amethndiaye840@gmail.com", "Sonatel Stage");
-        helper.setTo(validation.getCandidat().getEmail());
-        helper.setSubject("Votre attestation de stage chez Sonatel");
-
-        String htmlContent = "<html><body style='font-family: Arial, sans-serif; color: #333;'>" +
-            "<div style='max-width: 600px; margin: auto; padding: 20px; text-align: center;'>" +
-            "<img src='https://media.licdn.com/dms/image/v2/D4E0BAQFkSnqxS1MfTw/company-logo_200_200/company-logo_200_200/0/1730735216594/groupesonatel_logo?e=2147483647&v=beta&t=fP94m6ULPSu4X4kyuOSv6C8oiUv464rGn8DwgsB7ods' alt='Sonatel Logo' style='width: 150px; margin-bottom: 20px;'>" +
-            "<h2>Bonjour " + validation.getCandidat().getFirstName() + " " + validation.getCandidat().getLastName() + ",</h2>" +
-            "<p>Vous trouverez ci-joint votre attestation de présence du "+ request.startDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " au " + request.endDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) +  " de stage à Sonatel.</p>" +
-            "<p>Cordialement,<br>L'équipe Sonatel</p>" +
-            "<footer style='font-size: 12px; color: #aaa;'>Message généré automatiquement</footer>" +
-            "</div></body></html>";
-
-        helper.setText(htmlContent, true);
-
-        // Générer et joindre l'attestation
-        ByteArrayResource attestation = attestationService.genererAttestationPresence(validation, request);
-        helper.addAttachment(
-            String.format("Attestation_%s_%s.docx",
-                validation.getCandidat().getFirstName(),
-                validation.getCandidat().getLastName()),
-            new ByteArrayResource(attestation.getByteArray())
-        );
-
         mailSender.send(message);
     }
 }

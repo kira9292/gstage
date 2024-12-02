@@ -6,21 +6,29 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import sn.sonatel.dsi.ins.imoc.domain.AttestationFinStage;
 import sn.sonatel.dsi.ins.imoc.domain.AttestationPresence;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
 import sn.sonatel.dsi.ins.imoc.dto.AttestationPDTO;
+import sn.sonatel.dsi.ins.imoc.repository.AttestationFinStageRepository;
 import sn.sonatel.dsi.ins.imoc.repository.AttestationPresenceRepository;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+import java.util.Random;
 
 @Service
 public class AttestationService {
-    private  final AttestationPresenceRepository aPRepository;
+    private final AttestationPresenceRepository aPRepository;
+    private final AttestationFinStageRepository aFinStage;
 
-    public AttestationService(AttestationPresenceRepository aPRepository) {
+    public AttestationService(AttestationPresenceRepository aPRepository, AttestationFinStageRepository aFinStage) {
         this.aPRepository = aPRepository;
+        this.aFinStage = aFinStage;
     }
 
     public ByteArrayResource genererAttestation(ValidationStatuscandidat validation) {
@@ -95,20 +103,37 @@ public class AttestationService {
             signatureRun.setText(validation.getCandidat().getDemandeStage().getAppUser().getFirstName() + " " + validation.getCandidat().getDemandeStage().getAppUser().getName());
             signatureRun.addBreak();
 
+
+
             // Conversion en ByteArrayResource
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             document.write(baos);
-            return new ByteArrayResource(baos.toByteArray());
+            byte[] documentBytes = baos.toByteArray();
+
+            AttestationFinStage aFS = new AttestationFinStage();
+            aFS.setIssueDate(validation.getCandidat().getDemandeStage().getEndDate());
+            aFS.setSignatureDate(LocalDate.now());
+            aFS.setComments("Attestation de fin de stage générée");
+            aFS.setReference(generateUniqueReference());
+
+            String base64Document = Base64.getEncoder().encodeToString(documentBytes);
+            aFS.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+            aFinStage.save(aFS);
+            return new ByteArrayResource(documentBytes);
 
         } catch (Exception e) {
             throw new RuntimeException("Erreur lors de la génération de l'attestation", e);
         }
     }
 
+    private String generateUniqueReference() {
+        // Format: SONATEL-STAGE-YYYY-MMDD-HHMMSS-XXXX
+        LocalDateTime now = LocalDateTime.now();
+        String timestamp = now.format(DateTimeFormatter.ofPattern("yyyy-MMdd-HHmmss"));
 
-
-
-
+        String randomSuffix = String.format("%04d", new Random().nextInt(10000));
+        return "SONATEL-STG-" + timestamp + "-" + randomSuffix;
+    }
 
     public ByteArrayResource genererAttestationPresence(ValidationStatuscandidat validation, AttestationPDTO request) {
         try (XWPFDocument document = new XWPFDocument()) {
@@ -117,7 +142,7 @@ public class AttestationService {
             XWPFRun headerRun = headerParagraph.createRun();
             headerRun.setText("Direction des Systèmes d’Information");
             headerRun.addBreak();
-            headerRun.setText("Département Ingénierie des Systèmes d’Information");
+            headerRun.setText("Département " + validation.getCandidat().getDemandeStage().getAppUser().getService().getDepartemen().getName());
             headerRun.addBreak();
             headerRun.setText("Service " + validation.getCandidat().getDemandeStage().getAppUser().getService().getName());
             headerRun.setFontFamily("Arial");
@@ -184,15 +209,21 @@ public class AttestationService {
 
             // Conversion en ByteArrayResource
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            document.write(baos);
+            byte[] documentBytes = baos.toByteArray();
+
             AttestationPresence aP = new AttestationPresence();
-            aP.setDocs(baos.toByteArray());
-            aP.setDocsContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
             aP.setStartDate(request.startDate());
             aP.setEndDate(request.endDate());
-            aP.setAppUser(validation.getCandidat().getDemandeStage().getAppUser());
-            this.aPRepository.save(aP);
-            document.write(baos);
-            return new ByteArrayResource(baos.toByteArray());
+            aP.setSignatureDate(LocalDate.now());
+            aP.setStatus(true);
+            aP.setComments("Attestation de présence générée");
+
+            String base64Document = Base64.getEncoder().encodeToString(documentBytes);
+            aP.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+
+            aPRepository.save(aP);
+            return new ByteArrayResource(documentBytes);
 
         } catch (Exception e) {
             throw new RuntimeException("Erreur lors de la génération de l'attestation", e);

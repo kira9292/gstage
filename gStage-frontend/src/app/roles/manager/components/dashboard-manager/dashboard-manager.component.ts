@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { InternshipStatus } from '../../../../enums/gstage.enum';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ManagerService } from '../../services/manager.service';
+import { Manager, ManagerService } from '../../services/manager.service';
 import { InternshipDetailModalComponent } from '../../../gwte/components/detail-demande/detail-demande.component';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -18,6 +18,9 @@ import { DetailDemandeForManagerComponent } from "../detail-demande-for-manager/
   styleUrl: './dashboard-manager.component.scss'
 })
 export class DashboardManagerComponent implements OnInit {
+
+  managerInfos: Manager | null | undefined;
+
   InternshipStatus = InternshipStatus;
   proposedInternships: any[] = [];
   filteredInternships: any[] = [];
@@ -60,6 +63,7 @@ export class DashboardManagerComponent implements OnInit {
   ngOnInit(): void {
     this.selectedStatus = InternshipStatus.PROPOSE;
     this.loadProposedInternships();
+    this.managerInfos = this.managerService.extractManager();
   }
 
   loadProposedInternships(): void {

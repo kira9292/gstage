@@ -81,6 +81,8 @@ export class AuthService {
       }
     }
 
+    
+
     getUserIdFromToken(): number | null {
       const token = localStorage.getItem(this.TOKEN_KEY);
       if (!token) return null;
