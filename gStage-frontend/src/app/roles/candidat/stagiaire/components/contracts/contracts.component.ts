@@ -8,17 +8,6 @@ import { ContractStatus } from '../../enums/trainee.enum';
 import { TraineeService } from '../../services/trainee.service';
 
 
-
-
-// interface Contract {
-//   id: number;
-//   type: string;
-//   name: string;
-//   startDate: Date;
-//   endDate: Date;
-//   url: string;
-// }
-
 @Component({
   selector: 'app-contracts',
   standalone: true,
@@ -30,10 +19,9 @@ import { TraineeService } from '../../services/trainee.service';
   styleUrls: ['./contracts.component.scss']
 })
 export class ContractsComponent implements OnInit {
-  contracts: Contract[] = [];
-  filteredContracts: Contract[] = [];
+  contract: any;
   showContractDialog = false;
-  selectedContract: Contract | null = null;
+  selectedContract: any | null = null;
   safeUrl: SafeResourceUrl | null = null;
 
   statusFilter = '';
@@ -48,66 +36,22 @@ export class ContractsComponent implements OnInit {
 
   ngOnInit(): void {
     // Simuler le chargement des données
-    this.loadContracts();
+    this.loadContract();
   }
 
-  loadContracts(): void {
-    // À remplacer par un appel API
-    this.contracts = [
-      {
-        id: 1,
-        reference: 'STAGE-2024-001',
-        type: 'Stage',
-        name: 'Contrat Initial',
-        startDate: new Date('2024-01-01'),
-        endDate: new Date('2024-03-31'),
-        compensation: 150000,
-        status: ContractStatus.SIGNE,
-        assignmentSite: 'Sablux',
-        signatureDate: new Date('2023-12-15'),
-        url: '/assets/documents/eCommerce.pdf'
+  loadContract(): void {
+    this.traineeService.getContract().subscribe({
+      next: (data) => {
+        this.contract = data;
+        console.log("Contrat" + JSON.stringify(this.contract));
       },
-      {
-        id: 2,
-        reference: 'STAGE-2024-002',
-        type: 'Stage',
-        name: 'Renouvellement',
-        startDate: new Date('2024-04-01'),
-        endDate: new Date('2024-06-30'),
-        compensation: 150000,
-        status: ContractStatus.EN_SIGNATURE,
-        assignmentSite: 'Siege',
-        url: '/assets/documents/contrat-2.pdf'
+      error: (err) => {
+        console.error('Erreur lors de la récupération des contrats', err);
       }
-    ];
-
-    this.applyFilters();
-  }
-
-  // loadContracts(): void {
-  //   this.traineeService.getContracts().subscribe({
-  //     next: (data) => {
-  //       this.contracts = data;
-  //       this.applyFilters();
-  //     },
-  //     error: (err) => {
-  //       console.error('Erreur lors de la récupération des contrats', err);
-  //     }
-  //   });
-  // }
-
-  applyFilters(): void {
-    this.filteredContracts = this.contracts.filter(contract => {
-      const matchesStatus = !this.statusFilter || contract.status === this.statusFilter;
-      const searchLower = this.searchTerm.toLowerCase();
-      const matchesSearch = !this.searchTerm ||
-        contract.reference.toLowerCase().includes(searchLower) ||
-        contract.name.toLowerCase().includes(searchLower) ||
-        contract.assignmentSite.toLowerCase().includes(searchLower);
-
-      return matchesStatus && matchesSearch;
     });
   }
+
+
 
   getStatusLabel(status: ContractStatus): string {
     const labels: Record<ContractStatus, string> = {
@@ -140,7 +84,7 @@ export class ContractsComponent implements OnInit {
     return [ContractStatus.SIGNE, ContractStatus.TERMINE].includes(contract.status);
   }
 
-  viewContract(contract: Contract): void {
+  viewContract(contract: any): void {
     if (!this.canViewContract(contract)) return;
 
     this.selectedContract = contract;
@@ -148,7 +92,7 @@ export class ContractsComponent implements OnInit {
     this.showContractDialog = true;
   }
 
-  downloadDocument(contract: Contract): void {
+  downloadDocument(contract: any): void {
     if (!this.canDownloadContract(contract)) return;
     window.open(contract.url, '_blank');
   }
@@ -163,16 +107,5 @@ export class ContractsComponent implements OnInit {
   startDate: string | null = null;
   endDate: string | null = null;
 
-  applyFiltersdate(): void {
-    this.filteredContracts = this.contracts.filter(contract => {
-      const matchesStatus = !this.statusFilter || contract.status === this.statusFilter;
-      const matchesSearch = !this.searchTerm || contract.reference.includes(this.searchTerm);
-      const matchesDateRange =
-        (!this.startDate || new Date(contract.startDate) >= new Date(this.startDate)) &&
-        (!this.endDate || new Date(contract.endDate) <= new Date(this.endDate));
-
-      return matchesStatus && matchesSearch && matchesDateRange;
-    });
-  }
 
 }

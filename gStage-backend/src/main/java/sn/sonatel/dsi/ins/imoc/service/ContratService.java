@@ -4,10 +4,13 @@ import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ByteArrayResource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sn.sonatel.dsi.ins.imoc.domain.AttestationFinStage;
+import sn.sonatel.dsi.ins.imoc.domain.Candidat;
 import sn.sonatel.dsi.ins.imoc.domain.Contrat;
 import sn.sonatel.dsi.ins.imoc.domain.ValidationStatuscandidat;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.ContractStatus;
+import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.ContratRepository;
 
 import java.io.ByteArrayOutputStream;
@@ -22,11 +25,14 @@ import java.util.Random;
 public class ContratService {
 
     private final ContratRepository contratRepository;
+    private final CandidatRepository candidatRepository;
 
-    public ContratService(ContratRepository contratRepository) {
+    public ContratService(ContratRepository contratRepository, CandidatRepository candidatRepository) {
         this.contratRepository = contratRepository;
+        this.candidatRepository = candidatRepository;
     }
 
+    @Transactional
     public ByteArrayResource genererContrat(ValidationStatuscandidat validation) {
         try (XWPFDocument document = new XWPFDocument()) {
             // Logo et en-tête
@@ -140,9 +146,11 @@ public class ContratService {
             contrat.setSignatureDate(LocalDate.now());
             contrat.setComments("Contrat généré");
 
-
             String base64Document = Base64.getEncoder().encodeToString(documentBytes);
             contrat.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+            Candidat c = this.candidatRepository.findByEmail(validation.getCandidat().getEmail());
+            contrat.setCandidat(c);
+
             contratRepository.save(contrat);
             return new ByteArrayResource(documentBytes);
         } catch (Exception e) {
@@ -158,7 +166,6 @@ public class ContratService {
         String randomSuffix = String.format("%04d", new Random().nextInt(10000));
         return "CONTART-STG-" + timestamp + "-" + randomSuffix;
     }
-
 
     private void ajouterArticle(XWPFDocument document, String titre, String contenu) {
         XWPFParagraph articleParagraph = document.createParagraph();

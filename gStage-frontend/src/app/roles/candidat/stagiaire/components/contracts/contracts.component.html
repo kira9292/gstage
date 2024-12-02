@@ -1,44 +1,6 @@
 <div class="p-6">
   <h2 class="text-2xl font-bold mb-6 text-sonatel-black">Mes Contrats</h2>
 
-  <!-- Filtres -->
-  <div class="mb-6 flex gap-4 items-center">
-    <div class="relative">
-      <select
-        [(ngModel)]="statusFilter"
-        (change)="applyFilters()"
-        class="block appearance-none w-full bg-white border border-gray-300 rounded px-4 py-2 pr-8">
-        <option value="">Tous les statuts</option>
-        <option *ngFor="let status of contractStatuses" [value]="status">
-          {{getStatusLabel(status)}}
-        </option>
-      </select>
-    </div>
-
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      (input)="applyFilters()"
-      placeholder="Rechercher un contrat..."
-      class="block w-64 border border-gray-300 rounded px-4 py-2"
-    >
-
-    <!-- Champ pour la date de début -->
-    <input
-      type="date"
-      [(ngModel)]="startDate"
-      (change)="applyFiltersdate()"
-      class="block w-40 border border-gray-300 rounded px-4 py-2"
-      placeholder="Date de début">
-
-    <!-- Champ pour la date de fin -->
-    <input
-      type="date"
-      [(ngModel)]="endDate"
-      (change)="applyFiltersdate()"
-      class="block w-40 border border-gray-300 rounded px-4 py-2"
-      placeholder="Date de fin">
-  </div>
 
   <!-- Tableau des contrats -->
   <div class="overflow-x-auto">
@@ -55,25 +17,25 @@
       </tr>
       </thead>
       <tbody class="divide-y divide-gray-200">
-      <tr *ngFor="let contract of filteredContracts" class="hover:bg-gray-50">
+      <tr class="hover:bg-gray-50">
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{contract.reference}}
+          {{contract?.reference}}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{contract.type}}
+          {{contract?.type}}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{contract.assignmentSite}}
+          {{contract?.assignmentSite}}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{contract.startDate | date:'dd/MM/yyyy'}}
+          {{contract?.startDate | date:'dd/MM/yyyy'}}
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-          {{contract.endDate | date:'dd/MM/yyyy'}}
+          {{contract?.endDate | date:'dd/MM/yyyy'}}
         </td>
         <td class="px-6 py-4 whitespace-nowrap">
-            <span [class]="getStatusClass(contract.status)">
-              {{getStatusLabel(contract.status)}}
+            <span [class]="getStatusClass(contract?.status)">
+              {{getStatusLabel(contract?.status)}}
             </span>
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-4">

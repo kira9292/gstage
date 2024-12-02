@@ -39,4 +39,5 @@ public interface AppUserRepository extends AppUserRepositoryWithBagRelationships
 
     List<AppUser> findByRoleName(ERole eRole);
 
+    Optional<AppUser> findByUsername(String username);
 }

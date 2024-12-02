@@ -14,8 +14,6 @@ export interface DocumentsCard {
 export interface Contract {
     id: number;
     reference: string;
-    type: string;
-    name: string;
     startDate: Date;
     endDate: Date;
     compensation: number;
@@ -23,7 +21,7 @@ export interface Contract {
     assignmentSite: string;
     signatureDate?: Date;
     comments?: string;
-    url: string;
+    docs: string;
   }
 
   export interface AttestationPresence {
@@ -37,7 +35,7 @@ export interface Contract {
     comments?: string;
     url: string;
   }
-  
+
 export interface PaginationInfo {
     currentPage: number;
     pageSize: number;
@@ -65,4 +63,3 @@ export interface Candidat {
 
 
 
-  

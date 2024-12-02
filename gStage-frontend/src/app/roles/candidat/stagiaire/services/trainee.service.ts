@@ -8,12 +8,12 @@ import { AttestationPresence, Contract } from '../interfaces/trainee.interface';
 })
 export class TraineeService {
 
-  private apiUrl = 'http://127.0.0.1:8081/api/stagiaire/documents';
+  private apiUrl = 'http://127.0.0.1:8081/api/stagiaire';
 
   constructor(private http: HttpClient){}
 
-  getContracts(): Observable<Contract[]> {
-    return this.http.get<Contract[]>(`${this.apiUrl}/contrats`);
+  getContract(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/contrat`);
   }
 
   getPresenceAttestations(): Observable<AttestationPresence[]> {

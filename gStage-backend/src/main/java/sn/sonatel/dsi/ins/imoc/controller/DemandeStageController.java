@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.sonatel.dsi.ins.imoc.domain.*;
-import sn.sonatel.dsi.ins.imoc.dto.CandidatCompleTDO;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
@@ -68,20 +67,20 @@ public class DemandeStageController {
     }
 
 
-    @GetMapping("/api/demande")
-    public List<CandidatCompleTDO> getAllDemande() {
-        List<DemandeStage> demandes = demandeStageRepository.findAllWithRelations();
-
-        return demandes.stream()
-            .map(demande -> new CandidatCompleTDO(
-                demande,
-                demande.getCandidat(),
-                (List<AttestationPresence>) demande.getCandidat().getAttestationPresences(),
-                demande.getCandidat().getAttestationFinStage(),
-                (Contrat) demande.getCandidat().getContrats()
-            ))
-            .collect(Collectors.toList());
-    }
+//    @GetMapping("/api/demande")
+//    public List<CandidatCompleTDO> getAllDemande() {
+//        List<DemandeStage> demandes = demandeStageRepository.findAllWithRelations();
+//
+//        return demandes.stream()
+//            .map(demande -> new CandidatCompleTDO(
+//                demande,
+//                demande.getCandidat(),
+//                (List<AttestationPresence>) demande.getCandidat().getAttestationPresences(),
+//                demande.getCandidat().getAttestationFinStage(),
+//                (Contrat) demande.getCandidat().getContrats()
+//            ))
+//            .collect(Collectors.toList());
+//    }
 
 
 

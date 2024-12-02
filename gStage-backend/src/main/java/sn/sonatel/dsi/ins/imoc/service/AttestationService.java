@@ -127,6 +127,8 @@ public class AttestationService {
 
             String base64Document = Base64.getEncoder().encodeToString(documentBytes);
             aFS.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+            Candidat c = this.cRepository.findByEmail(validation.getCandidat().getEmail());
+            c.setAttestationFinStage(aFS);
 
             aFinStage.save(aFS);
             return new ByteArrayResource(documentBytes);

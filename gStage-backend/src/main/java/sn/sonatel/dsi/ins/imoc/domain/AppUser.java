@@ -66,11 +66,11 @@ public class AppUser implements Serializable, UserDetails {
     private Boolean status;
 
     @JsonIgnoreProperties(value = { "businessUnit", "appUser", "departemen" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Service service;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appUser")
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
     private Set<DemandeStage> demandeStages = new HashSet<>();
 
