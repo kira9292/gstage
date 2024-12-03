@@ -146,9 +146,8 @@ public class ContratService {
             contrat.setSignatureDate(LocalDate.now());
             contrat.setComments("Contrat généré");
 
-            String base64Document = Base64.getEncoder().encodeToString(documentBytes);
 
-            contrat.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+            contrat.setDocs(documentBytes);
             Candidat c = this.candidatRepository.findByEmail(validation.getCandidat().getEmail());
             contrat.setCandidat(c);
 

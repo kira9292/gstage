@@ -72,7 +72,7 @@ public class Candidat implements Serializable {
     private Formation formation;
 
     @JsonIgnoreProperties(value = { "validations", "appuser" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private AttestationFinStage attestationFinStage;
 
@@ -80,11 +80,11 @@ public class Candidat implements Serializable {
     @JsonIgnoreProperties(value = { "candidat" }, allowSetters = true)
     private Set<EtatPaiement> etatPaiements = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "candidat")
     @JsonIgnoreProperties(value = { "validations", "candidat" }, allowSetters = true)
     private Set<Contrat> contrats = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidat")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "candidat")
     @JsonIgnoreProperties(value = { "validations", "candidat" }, allowSetters = true)
     private Set<AttestationPresence> attestationPresences = new HashSet<>();
 

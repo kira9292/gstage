@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.sonatel.dsi.ins.imoc.domain.*;
+import sn.sonatel.dsi.ins.imoc.dto.CandidatCompleTDO;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeStagecandidatDTO;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 import sn.sonatel.dsi.ins.imoc.repository.DemandeStageRepository;
@@ -18,6 +19,7 @@ import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -67,20 +69,21 @@ public class DemandeStageController {
     }
 
 
-//    @GetMapping("/api/demande")
-//    public List<CandidatCompleTDO> getAllDemande() {
-//        List<DemandeStage> demandes = demandeStageRepository.findAllWithRelations();
-//
-//        return demandes.stream()
-//            .map(demande -> new CandidatCompleTDO(
-//                demande,
-//                demande.getCandidat(),
-//                (List<AttestationPresence>) demande.getCandidat().getAttestationPresences(),
-//                demande.getCandidat().getAttestationFinStage(),
-//                (Contrat) demande.getCandidat().getContrats()
-//            ))
-//            .collect(Collectors.toList());
-//    }
+    @GetMapping("/api/demande")
+    public List<CandidatCompleTDO> getAllDemande() {
+        List<DemandeStage> demandes = demandeStageRepository.findAllWithRelations();
+
+        return candidatRepository.findAll().stream()
+            .map(candidat -> new CandidatCompleTDO(
+                candidat.getDemandeStage(),
+                candidat,
+                new ArrayList<>(candidat.getAttestationPresences()),
+                candidat.getAttestationFinStage(),
+                candidat.getContrats().stream().findFirst().orElse(null)
+            ))
+            .collect(Collectors.toList());
+    }
+
 
 
 

@@ -34,6 +34,7 @@ export interface Contract {
     status: boolean;
     comments?: string;
     url: string;
+    docs: String;
   }
 
 export interface PaginationInfo {

@@ -16,6 +16,7 @@ import sn.sonatel.dsi.ins.imoc.repository.AttestationPresenceRepository;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -125,8 +126,7 @@ public class AttestationService {
             aFS.setComments("Attestation de fin de stage générée");
             aFS.setReference(generateUniqueReference());
 
-            String base64Document = Base64.getEncoder().encodeToString(documentBytes);
-            aFS.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+            aFS.setDocs(documentBytes);
             Candidat c = this.cRepository.findByEmail(validation.getCandidat().getEmail());
             c.setAttestationFinStage(aFS);
 
@@ -222,7 +222,8 @@ public class AttestationService {
             // Conversion en ByteArrayResource
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             document.write(baos);
-            byte[] documentBytes = baos.toByteArray();
+
+
 
             AttestationPresence aP = new AttestationPresence();
             aP.setStartDate(request.startDate());
@@ -231,8 +232,13 @@ public class AttestationService {
             aP.setStatus(true);
             aP.setComments("Attestation de présence générée");
 
-            String base64Document = Base64.getEncoder().encodeToString(documentBytes);
-            aP.setDocs(base64Document.getBytes(StandardCharsets.UTF_8));
+//            String base64Document = Base64.getEncoder().encodeToString(documentBytes);
+//            System.out.println("Base64 Document: " + base64Document);
+
+            byte[] documentBytes = baos.toByteArray();
+
+
+            aP.setDocs(documentBytes);
             Candidat c = this.cRepository.findByEmail(request.email());
             aP.setCandidat(c);
 

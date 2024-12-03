@@ -17,7 +17,7 @@ export class TraineeService {
   }
 
   getPresenceAttestations(): Observable<AttestationPresence[]> {
-    return this.http.get<AttestationPresence[]>(`${this.apiUrl}/presence-attestations`);
+    return this.http.get<AttestationPresence[]>(`${this.apiUrl}/attestation-de-presence`);
   }
 
   getPayments(): Observable<any[]> {

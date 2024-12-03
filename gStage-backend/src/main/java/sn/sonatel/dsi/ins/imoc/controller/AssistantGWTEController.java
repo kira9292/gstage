@@ -12,6 +12,7 @@ import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.DemandeStage;
 import sn.sonatel.dsi.ins.imoc.domain.StagiairesProposer;
 import sn.sonatel.dsi.ins.imoc.domain.enumeration.InternshipStatus;
+import sn.sonatel.dsi.ins.imoc.dto.CandidatCompleTDO;
 import sn.sonatel.dsi.ins.imoc.dto.DemandeManagerDto;
 import sn.sonatel.dsi.ins.imoc.repository.AppUserRepository;
 import sn.sonatel.dsi.ins.imoc.repository.CandidatRepository;
@@ -21,6 +22,7 @@ import sn.sonatel.dsi.ins.imoc.web.rest.errors.BadRequestAlertException;
 
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -33,13 +35,13 @@ public class AssistantGWTEController {
     private final StagiairesProposerRepository stagiairesProposerRepository;
     private final AppUserRepository appUserRepository;
 
-    public AssistantGWTEController(StagiairesProposerRepository stagiairesProposerRepository , AppUserRepository appUserRepository) {
+    public AssistantGWTEController(StagiairesProposerRepository stagiairesProposerRepository, AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
         this.stagiairesProposerRepository = stagiairesProposerRepository;
     }
 
     @PostMapping("proposer-to-manager")
-    public ResponseEntity<Void> createStagiairesProposer(@RequestBody StagiairesProposer stagiairesProposer){
+    public ResponseEntity<Void> createStagiairesProposer(@RequestBody StagiairesProposer stagiairesProposer) {
         stagiairesProposerRepository.save(stagiairesProposer);
         return ResponseEntity.ok().build();
     }
@@ -60,4 +62,6 @@ public class AssistantGWTEController {
         System.out.println();
         return ResponseEntity.ok().build();
     }
+
+
 }

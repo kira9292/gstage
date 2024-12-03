@@ -41,7 +41,7 @@ public class StagiaireContratController {
         return (contrats.isEmpty()) ? null : contrats.get(contrats.size()-1);
     }
 
-    @GetMapping("/api/stagiare/attestation-de-presence")
+    @GetMapping("/api/stagiaire/attestation-de-presence")
     public List<AttestationPresence> getAttestationPresence(){
         AppUser user = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal() ;
         Candidat ca = this.candidatRepository.findByAppUser(user);

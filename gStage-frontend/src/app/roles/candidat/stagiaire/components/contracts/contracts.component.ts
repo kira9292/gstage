@@ -84,17 +84,49 @@ export class ContractsComponent implements OnInit {
     return [ContractStatus.SIGNE, ContractStatus.TERMINE].includes(contract.status);
   }
 
-  viewContract(contract: any): void {
-    if (!this.canViewContract(contract)) return;
+  viewContract(contrat: any): void {
+    // // if (!this.canViewContract(contract)) return;
+    //
+    // this.selectedContract = contract;
+    // this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(contract.url);
+    // this.showContractDialog = true;
 
-    this.selectedContract = contract;
-    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(contract.url);
-    this.showContractDialog = true;
+    if (contrat.docs) {
+      // Convertir la chaîne Base64 en Blob
+      const byteCharacters = atob(contrat.docs);
+      const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+      const byteArray = new Uint8Array(byteNumbers);
+      // Créer un Blob pour un fichier Word
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      // Créer une URL pour le Blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Ouvrir dans une nouvelle fenêtre
+      window.open(blobUrl, '_blank');
+    } else {
+      console.error('Document Base64 non trouvé dans l’attestation.');
+    }
   }
 
-  downloadDocument(contract: any): void {
-    if (!this.canDownloadContract(contract)) return;
-    window.open(contract.url, '_blank');
+  downloadDocument(contrat: any): void {
+    // if (!this.canDownloadContract(contract)) return;
+    if (contrat.docs) {
+      // Convertir la chaîne Base64 en Blob
+      const byteCharacters = atob(contrat.docs);
+      const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+      const byteArray = new Uint8Array(byteNumbers);
+      // Créer un Blob pour un fichier Word
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      // Créer une URL pour le Blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Ouvrir dans une nouvelle fenêtre
+      window.open(blobUrl, '_blank');
+    } else {
+      console.error('Document Base64 non trouvé dans l’attestation.');
+    }
   }
 
   closeDialog(): void {

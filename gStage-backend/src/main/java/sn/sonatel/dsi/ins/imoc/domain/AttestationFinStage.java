@@ -60,7 +60,7 @@ public class AttestationFinStage implements Serializable {
         },
         allowSetters = true
     )
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "attestationFinStage")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "attestationFinStage")
     private Candidat appuser;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

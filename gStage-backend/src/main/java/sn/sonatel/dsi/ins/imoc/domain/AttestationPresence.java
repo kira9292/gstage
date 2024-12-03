@@ -51,7 +51,7 @@ public class AttestationPresence implements Serializable {
     @JsonIgnoreProperties(value = { "attestationPresence", "contrat", "attestationFinStage", "user" }, allowSetters = true)
     private Set<Validation> validations = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = {
             "attestationFinStage",

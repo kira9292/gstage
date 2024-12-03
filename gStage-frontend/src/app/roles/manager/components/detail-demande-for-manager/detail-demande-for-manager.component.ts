@@ -59,6 +59,7 @@ sendAttestation() {
   }
 
   this.managerService.sendEndingInternshipAttestation(this.demande.candidat.email)
+
     .subscribe({
       next: () => {
       // Notification de succès
@@ -285,10 +286,10 @@ archiveApplication(): void {
               position: 'top-end',
               toast: true
             });
-            
+
             // Émettre l'événement pour mettre à jour la liste
             this.statusUpdated.emit();
-            
+
             // Fermer le modal
             this.closeModal();
           },
@@ -479,11 +480,11 @@ generatePresenceAttestation() {
   // Calculer la durée entre les dates
   const startDate = new Date(this.attestationStartDate);
   const endDate = new Date(this.attestationEndDate);
-  
+
   // Vérifier la période d'un mois avec tolérance de ±5 jours
-  const monthDifference = (endDate.getFullYear() - startDate.getFullYear()) * 12 
+  const monthDifference = (endDate.getFullYear() - startDate.getFullYear()) * 12
     + endDate.getMonth() - startDate.getMonth();
-  
+
   // Calculer le nombre de jours
   const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
   const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
@@ -528,7 +529,7 @@ generatePresenceAttestation() {
               Swal.showLoading();
             }
           });
-    
+
       this.managerService.sendPresenceAttestation(request)
         .subscribe({
           next: (response) => {
@@ -555,10 +556,10 @@ generatePresenceAttestation() {
 
 // Méthode utilitaire pour formater les dates
 private formatDate(date: Date): string {
-  return date.toLocaleDateString('fr-FR', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  return date.toLocaleDateString('fr-FR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   });
 }
 
