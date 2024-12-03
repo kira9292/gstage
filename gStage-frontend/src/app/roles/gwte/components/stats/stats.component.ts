@@ -74,7 +74,7 @@ export class StatsComponent implements OnInit {
     this.gwteService.getDemandesStages().subscribe({
       next: (data) => {
         this.demandesStage = data;
-        
+
         this.updateStats();
         this.initCharts();
       },
@@ -86,13 +86,13 @@ export class StatsComponent implements OnInit {
 
   updateStats(): void {
     this.statsData[0].value = this.demandesStage.length;
-    this.statsData[1].value = this.demandesStage.filter(d => 
+    this.statsData[1].value = this.demandesStage.filter(d =>
       d.demandeStage.status === InternshipStatus.EN_ATTENTE
     ).length;
-    this.statsData[2].value = this.demandesStage.filter(d => 
+    this.statsData[2].value = this.demandesStage.filter(d =>
       d.demandeStage.status === InternshipStatus.ACCEPTE
     ).length;
-    this.statsData[3].value = this.demandesStage.filter(d => 
+    this.statsData[3].value = this.demandesStage.filter(d =>
       d.demandeStage.status === InternshipStatus.ARCHIVE
     ).length;
   }
@@ -114,7 +114,7 @@ export class StatsComponent implements OnInit {
       InternshipStatus.ARCHIVE
     ];
 
-    const statusCounts = statuses.map(status => 
+    const statusCounts = statuses.map(status =>
       this.demandesStage.filter(d => d.demandeStage.status === status).length
     );
 
@@ -270,15 +270,15 @@ export class StatsComponent implements OnInit {
     const total = this.demandesStage.length;
     if (total === 0) return [0, 0, 0];
 
-    const accepted = this.demandesStage.filter(d => 
+    const accepted = this.demandesStage.filter(d =>
       d.demandeStage.status === InternshipStatus.ACCEPTE
     ).length;
-    
-    const completed = this.demandesStage.filter(d => 
+
+    const completed = this.demandesStage.filter(d =>
       d.demandeStage.status === InternshipStatus.TERMINE
     ).length;
-    
-    const archived = this.demandesStage.filter(d => 
+
+    const archived = this.demandesStage.filter(d =>
       d.demandeStage.status === InternshipStatus.ARCHIVE
     ).length;
 

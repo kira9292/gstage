@@ -38,14 +38,14 @@ export class DashboardGwteComponent implements OnInit {
 
   selectedStatus: InternshipStatus | null = null;
   selectedDetailsModal: any = null;
-  
+
     // Stats data
     statsData = [
       {
         label: 'Total Demandes non archivées',
         value: 0,
         icon: 'fa-file-alt',
-        borderColor: 'border-blue-500',  
+        borderColor: 'border-blue-500',
         bgColor: 'bg-blue-100',
         iconColor: 'text-blue-500'
       },
@@ -82,7 +82,7 @@ export class DashboardGwteComponent implements OnInit {
         iconColor: 'text-indigo-500'
       }
     ];
-    
+
   constructor(
     private sanitizer: DomSanitizer,
     private gwteService: GwteService,
@@ -108,7 +108,7 @@ export class DashboardGwteComponent implements OnInit {
       );
   }
 
-  
+
   updateStats(): void {
     this.statsData[0].value = this.demandesStage.length - this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.ARCHIVE).length;
     this.statsData[1].value = this.demandesStage.filter(d => d.demandeStage.status === InternshipStatus.EN_ATTENTE).length;
@@ -120,12 +120,12 @@ export class DashboardGwteComponent implements OnInit {
 
   applyFilters(): void {
     let filtered = this.demandesStage;
-  
+
     // Filtrer par statut sélectionné
     if (this.selectedStatus) {
       filtered = filtered.filter(demande => demande.demandeStage.status === this.selectedStatus);
     }
-  
+
     // Filtrer par terme de recherche (si présent)
     if (this.searchTerm) {
       filtered = filtered.filter(demande =>
@@ -135,7 +135,7 @@ export class DashboardGwteComponent implements OnInit {
         demande.candidat?.formation.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
-  
+
     this.filteredDemandesStage = filtered;
   }
 
@@ -152,7 +152,7 @@ export class DashboardGwteComponent implements OnInit {
         Swal.showLoading();
       }
     });
-  
+
     if (!demande.candidat?.email) {
       Swal.fire({
         icon: 'error',
@@ -161,7 +161,7 @@ export class DashboardGwteComponent implements OnInit {
       });
       return;
     }
-  
+
     this.gwteService.sendWelcomeEmail(demande.candidat.email)
       .subscribe({
         next: () => {
@@ -198,12 +198,12 @@ export class DashboardGwteComponent implements OnInit {
     // Implémentation de la génération d'attestation
     console.log('Génération attestation pour:', demande.demandeStage.reference);
   }
-  
+
   archiveApplication(demande: any): void {
     // Implémentation de l'archivage
     console.log('Archivage de la demande:', demande.demandeStage.reference);
   }
-  
+
 
   canViewCV(demande: any): boolean {
     return !!demande.demandeStage.cv;
@@ -369,7 +369,7 @@ downloadCoverLetter(demande: any): void {
 
   toggleDropdown(demande: any): void {
     demande.showDropdown = !demande.showDropdown;
-    
+
     // Fermer les autres dropdowns
     this.filteredDemandesStage.forEach(d => {
       if (d !== demande) {

@@ -18,6 +18,8 @@ export class InternshipDetailModalComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() statusUpdated = new EventEmitter<void>();  // Nouvel EventEmitter
 
+  showAttestationModal: boolean = false;
+
 
   InternshipStatus = InternshipStatus
 
@@ -130,10 +132,10 @@ archiveApplication(): void {
               position: 'top-end',
               toast: true
             });
-            
+
             // Émettre l'événement pour mettre à jour la liste
             this.statusUpdated.emit();
-            
+
             // Fermer le modal
             this.closeModal();
           },
@@ -188,10 +190,10 @@ cancelProposal(){
               position: 'top-end',
               toast: true
             });
-            
+
             // Émettre l'événement pour mettre à jour la liste
             this.statusUpdated.emit();
-            
+
             // Fermer le modal
             this.closeModal();
           },
@@ -206,7 +208,7 @@ cancelProposal(){
           }
         });
     }
-  });  
+  });
 }
 
 rejectApplication(): void {
@@ -246,8 +248,8 @@ rejectApplication(): void {
               toast: true
             });
             this.statusUpdated.emit();  // Émettre l'événement de mise à jour
-            this.closeModal();            
-            
+            this.closeModal();
+
           },
           error: (error) => {
             Swal.fire({
@@ -422,5 +424,95 @@ private loadManagerDetails(managerId: string) {
 closeModal() {
   this.close.emit();
 }
+
+  openAttestationModal(): void {
+    this.showAttestationModal = true;
+  }
+
+  // Ferme le modal
+  closeAttestationModal(): void {
+    this.showAttestationModal = false;
+  }
+
+
+
+
+  viewAttestation(attestation: any) {
+    if (attestation.docs) {
+      // Convertir la chaîne Base64 en Blob
+      const byteCharacters = atob(attestation.docs);
+      const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+      const byteArray = new Uint8Array(byteNumbers);
+      // Créer un Blob pour un fichier Word
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      // Créer une URL pour le Blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Ouvrir dans une nouvelle fenêtre
+      window.open(blobUrl, '_blank');
+    } else {
+      console.error('Document Base64 non trouvé dans l’attestation.');
+    }
+  }
+
+
+  downloadDocument(attestation: any): void {
+    if (attestation.docs) {
+      // Convertir la chaîne Base64 en Blob
+      const byteCharacters = atob(attestation.docs);
+      const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+      const byteArray = new Uint8Array(byteNumbers);
+      // Créer un Blob pour un fichier Word
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      // Créer une URL pour le Blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Ouvrir dans une nouvelle fenêtre
+      window.open(blobUrl, '_blank');
+    } else {
+      console.error('Document Base64 non trouvé dans l’attestation.');
+    }
+  }
+
+  downloadcontrat(contrat: any):void {
+    if (contrat.docs) {
+      // Convertir la chaîne Base64 en Blob
+      const byteCharacters = atob(contrat.docs);
+      const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+      const byteArray = new Uint8Array(byteNumbers);
+      // Créer un Blob pour un fichier Word
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      // Créer une URL pour le Blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Ouvrir dans une nouvelle fenêtre
+      window.open(blobUrl, '_blank');
+    } else {
+      console.error('Document Base64 non trouvé dans l’attestation.');
+    }
+  }
+
+  downloadAttestationFindeStage(attestationF: any) {
+
+    if (attestationF.docs) {
+      // Convertir la chaîne Base64 en Blob
+      const byteCharacters = atob(attestationF.docs);
+      const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+      const byteArray = new Uint8Array(byteNumbers);
+      // Créer un Blob pour un fichier Word
+      const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+
+      // Créer une URL pour le Blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Ouvrir dans une nouvelle fenêtre
+      window.open(blobUrl, '_blank');
+    } else {
+      console.error('Document Base64 non trouvé dans l’attestation.');
+    }
+  }
 }
 

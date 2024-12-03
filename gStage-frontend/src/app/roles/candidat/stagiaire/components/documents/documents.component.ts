@@ -19,7 +19,7 @@ export interface Document {
   selector: 'app-documents',
   standalone: true,
   imports: [
-    RouterLink, 
+    RouterLink,
     CommonModule
   ],
   templateUrl: './documents.component.html',
@@ -33,9 +33,7 @@ export class DocumentsComponent implements OnInit {
   ) {}
 
 
-  ngOnInit(): void {
-    // this.loadDocumentCounts();
-  }
+
 
   cards: DocumentsCard[] = [
     {
@@ -43,45 +41,50 @@ export class DocumentsComponent implements OnInit {
       description: 'Consultez et téléchargez votre contrat de stage',
       icon: 'file-text',
       route: '/contracts',
-      count: 2, // Exemple: nombre de contrats disponibles
-      type: 'contrat'
+      count: 1,
+      type: 'contract'
     },
     {
       title: 'Mes Présences',
       description: 'Suivez vos attestations de présence',
       icon: 'clipboard-list',
       route: '/attestations',
-      count: 6 ,// Exemple: nombre d'attestations disponibles
+      count: 1 ,
       type: 'attestation'
     },
   ];
 
-  // loadDocumentCounts(): void {
-  //   // Charger le nombre de contrats
-  //   this.traineeService.getContracts().subscribe({
-  //     next: (contracts) => {
-  //       this.cards.find(card => card.type === 'contrat')!.count = contracts.length;
-  //     },
-  //     error: (err) => {
-  //       console.error('Erreur lors de la récupération des contrats', err);
-  //     }
-  //   });
 
-  //   // Charger le nombre d'attestations
-  //   this.traineeService.getPresenceAttestations().subscribe({
-  //     next: (attestations) => {
-  //       this.cards.find(card => card.type === 'attestation')!.count = attestations.length;
-  //     },
-  //     error: (err) => {
-  //       console.error('Erreur lors de la récupération des attestations', err);
-  //     }
-  //   });
-  // }
 
-  onCardClick(card: any) {  
+
+  onCardClick(card: any) {
     // Mettre à jour l'onglet actif
     this.navigationService.setActiveTab('documents');
     // Naviguer vers la page des documents
     this.router.navigate([`/documents${card.route}`]);
   }
+
+
+
+  ngOnInit(): void {
+    this.loadDocumentCounts();
+  }
+
+  loadDocumentCounts(): void {
+    
+
+    // Charger le nombre d'attestations
+    this.traineeService.getPresenceAttestations().subscribe({
+      next: (attestations) => {
+        const attestationCard = this.cards.find(card => card.type === 'attestation');
+        if (attestationCard) {
+          attestationCard.count = attestations.length;
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des attestations', err);
+      }
+    });
+  }
+
 }
