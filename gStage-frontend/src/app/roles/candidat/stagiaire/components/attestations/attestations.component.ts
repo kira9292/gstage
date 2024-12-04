@@ -151,19 +151,40 @@ export class AttestationsComponent implements OnInit {
       const byteCharacters = atob(attestation.docs);
       const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
       const byteArray = new Uint8Array(byteNumbers);
+
       // Créer un Blob pour un fichier Word
       const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
-      // Créer une URL pour le Blob
-      const blobUrl = URL.createObjectURL(blob);
+      // Générer un nom de fichier personnalisé
+      const fileName = this.generateDocumentFileName(attestation);
 
-      // Ouvrir dans une nouvelle fenêtre
-      window.open(blobUrl, '_blank');
+      // Créer un lien de téléchargement
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+
+      // Déclencher le téléchargement
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Libérer la mémoire
+      URL.revokeObjectURL(link.href);
     } else {
-      console.error('Document Base64 non trouvé dans l’attestation.');
+      console.error('Document Base64 non trouvé dans l\'attestation.');
     }
   }
 
+// Méthode pour générer un nom de fichier personnalisé pour le document
+  generateDocumentFileName(attestation: any): string {
+    // Vous pouvez personnaliser cette méthode selon vos besoins
+    const prefix = 'Attestation';
+    const date = new Date().toISOString().split('T')[0]; // Date au format AAAA-MM-JJ
+    const identifier = attestation.id || 'sans_id'; // Utiliser un identifiant unique si disponible
+    const type = attestation.type || 'presence'; // Type d'attestation si disponible
+
+    return `${prefix}_${type}_${identifier}_${date}.docx`;
+  }
   closeDialog(): void {
     this.showAttestationDialog = false;
     this.selectedAttestation = null;

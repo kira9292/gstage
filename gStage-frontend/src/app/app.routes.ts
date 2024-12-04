@@ -48,32 +48,12 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard-stagiaire',
-        component: DashboardComponent,
+        component: DocumentsComponent,
         title: 'Tableau de Bord',
         canActivate: [AuthGuard, RoleGuard],
         data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-    {
-        path: 'application',
-        component: ApplicationsComponent,
-        title: 'Renouvellement',
-        canActivate: [AuthGuard, RoleGuard],
-        data: {expectedRole: 'ROLE_STAGIAIRE'}
-    },
-    {
-      path: 'my-applications',
-      component: SuiviDemandeStageComponent,
-      title: "Mes demandes",
-      canActivate: [AuthGuard, RoleGuard],
-      data: {expectedRole: 'ROLE_STAGIAIRE'}
-    },
-    {
-      path: 'documents',
-      component: DocumentsComponent,
-      title: 'Mes Documents',
-      canActivate: [AuthGuard, RoleGuard],
-      data: {expectedRole: 'ROLE_STAGIAIRE'}
-    },
+  
 
     {
       path: 'notifications',

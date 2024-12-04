@@ -445,12 +445,20 @@ closeModal() {
       const byteArray = new Uint8Array(byteNumbers);
       // Créer un Blob pour un fichier Word
       const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      const fileName = this.generateAttestationFileName(attestation);
 
-      // Créer une URL pour le Blob
-      const blobUrl = URL.createObjectURL(blob);
+      // Créer un lien de téléchargement
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
 
-      // Ouvrir dans une nouvelle fenêtre
-      window.open(blobUrl, '_blank');
+      // Déclencher le téléchargement
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Libérer la mémoire
+      URL.revokeObjectURL(link.href);
     } else {
       console.error('Document Base64 non trouvé dans l’attestation.');
     }
@@ -463,56 +471,119 @@ closeModal() {
       const byteCharacters = atob(attestation.docs);
       const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
       const byteArray = new Uint8Array(byteNumbers);
+
       // Créer un Blob pour un fichier Word
       const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
-      // Créer une URL pour le Blob
-      const blobUrl = URL.createObjectURL(blob);
+      // Générer un nom de fichier personnalisé
+      const fileName = this.generateAttestationFileName(attestation);
 
-      // Ouvrir dans une nouvelle fenêtre
-      window.open(blobUrl, '_blank');
+      // Créer un lien de téléchargement
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+
+      // Déclencher le téléchargement
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Libérer la mémoire
+      URL.revokeObjectURL(link.href);
     } else {
-      console.error('Document Base64 non trouvé dans l’attestation.');
+      console.error('Document Base64 non trouvé dans l\'attestation.');
     }
   }
 
-  downloadcontrat(contrat: any):void {
+// Méthode pour générer un nom de fichier personnalisé pour l'attestation
+  generateAttestationFileName(attestation: any): string {
+    // Vous pouvez personnaliser cette méthode selon vos besoins
+    const prefix = 'Attestation_de_presence';
+    const date = new Date().toISOString().split('T')[0]; // Date au format AAAA-MM-JJ
+    const identifier = attestation.id || 'sans_id'; // Utiliser un identifiant unique si disponible
+
+    return `${prefix}_${identifier}_${date}.docx`;
+  }
+
+  downloadcontrat(contrat: any): void {
     if (contrat.docs) {
       // Convertir la chaîne Base64 en Blob
       const byteCharacters = atob(contrat.docs);
       const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
       const byteArray = new Uint8Array(byteNumbers);
+
       // Créer un Blob pour un fichier Word
       const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
-      // Créer une URL pour le Blob
-      const blobUrl = URL.createObjectURL(blob);
+      // Générer un nom de fichier personnalisé
+      const fileName = this.generateFileName(contrat);
 
-      // Ouvrir dans une nouvelle fenêtre
-      window.open(blobUrl, '_blank');
+      // Créer un lien de téléchargement
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+
+      // Déclencher le téléchargement
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Libérer la mémoire
+      URL.revokeObjectURL(link.href);
     } else {
-      console.error('Document Base64 non trouvé dans l’attestation.');
+      console.error('Document Base64 non trouvé dans l\'attestation.');
     }
   }
 
-  downloadAttestationFindeStage(attestationF: any) {
+// Méthode pour générer un nom de fichier personnalisé
+  generateFileName(contrat: any): string {
+    // Vous pouvez personnaliser cette méthode selon vos besoins
+    const prefix = 'Contrat';
+    const date = new Date().toISOString().split('T')[0]; // Date au format AAAA-MM-JJ
+    const identifier = contrat.id || 'sans_id'; // Utiliser un identifiant unique si disponible
 
+    return `${prefix}_${identifier}_${date}.docx`;
+  }
+
+  downloadAttestationFindeStage(attestationF: any): void {
     if (attestationF.docs) {
       // Convertir la chaîne Base64 en Blob
       const byteCharacters = atob(attestationF.docs);
       const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
       const byteArray = new Uint8Array(byteNumbers);
+
       // Créer un Blob pour un fichier Word
       const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
 
-      // Créer une URL pour le Blob
-      const blobUrl = URL.createObjectURL(blob);
+      // Générer un nom de fichier personnalisé
+      const fileName = this.generateAttestationFindeStageFileName(attestationF);
 
-      // Ouvrir dans une nouvelle fenêtre
-      window.open(blobUrl, '_blank');
+      // Créer un lien de téléchargement
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+
+      // Déclencher le téléchargement
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Libérer la mémoire
+      URL.revokeObjectURL(link.href);
     } else {
-      console.error('Document Base64 non trouvé dans l’attestation.');
+      console.error('Document Base64 non trouvé dans l\'attestation de fin de stage.');
     }
+  }
+
+// Méthode pour générer un nom de fichier personnalisé pour l'attestation de fin de stage
+  generateAttestationFindeStageFileName(attestationF: any): string {
+    // Vous pouvez personnaliser cette méthode selon vos besoins
+    const prefix = 'Attestation_de_fin_de_stage';
+    const date = new Date().toISOString().split('T')[0]; // Date au format AAAA-MM-JJ
+    const identifier = attestationF.id || 'sans_id'; // Utiliser un identifiant unique si disponible
+    const entreprise = attestationF.entreprise || 'entreprise'; // Nom de l'entreprise si disponible
+
+    return `${prefix}_${entreprise}_${identifier}_${date}.docx`;
   }
 }
 
