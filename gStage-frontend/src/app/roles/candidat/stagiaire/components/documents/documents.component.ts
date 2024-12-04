@@ -71,7 +71,7 @@ export class DocumentsComponent implements OnInit {
   }
 
   loadDocumentCounts(): void {
-    
+
 
     // Charger le nombre d'attestations
     this.traineeService.getPresenceAttestations().subscribe({
