@@ -19,6 +19,7 @@ export class InternshipDetailModalComponent implements OnInit {
   @Output() statusUpdated = new EventEmitter<void>();  // Nouvel EventEmitter
 
   showAttestationModal: boolean = false;
+  isActionDropdownOpen: boolean = false;
 
 
   InternshipStatus = InternshipStatus
@@ -585,5 +586,15 @@ closeModal() {
 
     return `${prefix}_${entreprise}_${identifier}_${date}.docx`;
   }
+
+
+  toggleActionDropdown() {
+    this.isActionDropdownOpen = !this.isActionDropdownOpen;
+  }
+
+  closeActionDropdown() {
+    this.isActionDropdownOpen = false;
+  }
+
 }
 

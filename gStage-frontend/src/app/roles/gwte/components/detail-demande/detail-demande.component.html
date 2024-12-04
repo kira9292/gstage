@@ -9,9 +9,9 @@
       </button>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-6 p-6">
+    <div class="grid md:grid-cols-12 gap-6 p-6">
       <!-- Candidate Info -->
-      <div>
+      <div class="md:col-span-5">
         <h3 class="text-lg font-semibold mb-4 text-gray-700">Informations du Candidat</h3>
         <div class="space-y-3">
           <div class="flex items-center">
@@ -26,21 +26,9 @@
             <i class="fas fa-school mr-3 text-gray-500"></i>
             <span>{{ demande?.candidat?.school }}</span>
           </div>
-          <div *ngIf="demande?.demandeStage?.status == InternshipStatus.EN_COURS || demande?.demandeStage?.status == InternshipStatus.TERMINE">
-            <i class="fas fa-list mr-2"></i>
-            <span class="rounded-b-md hover:cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:text-blue-500" (click)="openAttestationModal()">Consulter les attestations de présence</span>
-          </div>
-          <div *ngIf="demande?.demandeStage?.status == InternshipStatus.EN_COURS || demande?.demandeStage?.status == InternshipStatus.TERMINE">
-            <i class="fas fa-file mr-2"></i>
-            <span class="rounded-b-md hover:cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:text-blue-500" (click)="downloadcontrat(demande?.candidat?.contrats[0])">Visualiser le contrat</span>
-          </div>
-          <div *ngIf="demande?.demandeStage?.status == InternshipStatus.TERMINE">
-            <i class="fas fa-file mr-2"></i>
-            <span class="rounded-b-md hover:cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:text-blue-500" (click)="downloadAttestationFindeStage(demande?.candidat?.attestationFinStage)">Visualiser l'attestation de fin de stage</span>
-          </div>
         </div>
       </div>
-      <div *ngIf="showAttestationModal " class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+      <div *ngIf="showAttestationModal " class="fixed inset-0 z-50 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="bg-white rounded-lg shadow-lg w-[90%] max-w-6xl overflow-y-auto">
           <div class="p-6 border-b border-gray-200 flex justify-between items-center">
             <h2 class="text-2xl font-bold text-gray-800">Liste des Attestations de Présence</h2>
@@ -104,7 +92,7 @@
       </div>
 
       <!-- Internship Details -->
-      <div>
+      <div class="md:col-span-6">
         <h3 class="text-lg font-semibold mb-4 text-gray-700">Détails de la Demande</h3>
         <div class="space-y-3">
           <div class="flex items-center">
@@ -146,90 +134,102 @@
 
         </div>
       </div>
+
+      <!-- Dropdown Menu for Multiple Actions -->
+      <div class="md:col-span-1 flex justify-end">
+        <div class="relative">
+          <button
+            (click)="toggleActionDropdown()"
+            class="bg-gray-200 text-gray-700 px-3 py-2 rounded-lg flex items-center hover:bg-gray-300 transition-colors">
+            <i class="fas fa-ellipsis-v mr-2"></i> Actions
+            <i class="fas fa-caret-down ml-2"></i>
+          </button>
+
+          <div
+            *ngIf="isActionDropdownOpen"
+            class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-40 border border-gray-200"
+            (clickOutside)="closeActionDropdown()">
+            <ul class="py-1 text-left px-0">
+              <li *ngIf="demande?.demandeStage?.status === InternshipStatus.ACCEPTE" class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center" (click)="sendWelcomeEmail()">
+                <i class="fas fa-calendar-check mr-3 text-purple-600"></i> Generer Contrat
+              </li>
+              <li *ngIf="demande?.demandeStage?.status === InternshipStatus.REFUSE" class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center" (click)="proposeToManager()">
+                <i class="fas fa-archive mr-3 text-red-600"></i> Proposer a un autre
+              </li>
+              <li *ngIf="demande?.demandeStage?.status === InternshipStatus.REFUSE" class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center" (click)="archiveApplication()">
+                <i class="fas fa-archive mr-3 text-red-600"></i> Archiver
+              </li>
+              <!-- Actions for InternshipStatus.PROPOSE -->
+              <li
+                *ngIf="demande?.demandeStage?.status === InternshipStatus.PROPOSE"
+                class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="proposeToManager()">
+                <i class="fas fa-user-tie mr-3 text-blue-600"></i> Proposer à un autre
+              </li>
+              <li
+                *ngIf="demande?.demandeStage?.status === InternshipStatus.PROPOSE"
+                class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="cancelProposal()">
+                <i class="fas fa-times-circle mr-3 text-red-600"></i> Annuler la proposition
+              </li>
+              <li
+                *ngIf="demande?.demandeStage?.status === InternshipStatus.EN_ATTENTE"
+                class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="proposeToManager()">
+                <i class="fas fa-times-circle mr-3 text-red-600"></i> Proposer à un manager
+              </li>
+              <li
+                *ngIf="demande?.demandeStage?.status === InternshipStatus.EN_ATTENTE"
+                class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="rejectApplication()">
+                <i class="fas fa-times-circle mr-3 text-red-600"></i> Rejeter
+              </li>
+              <li
+                *ngIf="demande?.demandeStage?.status === InternshipStatus.EN_COURS || demande?.demandeStage?.status === InternshipStatus.TERMINE"
+                class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="openAttestationModal()">
+                <i class="fas fa-list mr-2"></i>
+                Attestation de presence
+              </li>
+              <li
+                *ngIf="demande?.demandeStage?.status === InternshipStatus.EN_COURS || demande?.demandeStage?.status === InternshipStatus.TERMINE"
+                class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="downloadcontrat(demande?.candidat?.contrats[0])">
+                <i class="fas fa-file mr-2"></i>
+                Contrat
+              </li>
+              <li
+                *ngIf="demande?.demandeStage?.status === InternshipStatus.TERMINE"
+                class="px-2 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+                (click)="downloadAttestationFindeStage(demande?.candidat?.attestationFinStage)">
+                <i class="fas fa-file mr-2"></i>
+                Attestation de Fin de stage
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="p-6 border-t border-gray-200 flex space-x-4">
-      <button
+    <!-- CV and Cover Letter Icons -->
+    <div class="p-6 flex space-x-4">
+      <div
         *ngIf="canViewCV()"
         (click)="viewCV()"
-        class="flex items-center bg-blue-100 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-200 transition-colors">
-        <i class="fas fa-file-pdf mr-2"></i> Visualiser CV
-      </button>
-      <button
+        class="flex flex-col items-center cursor-pointer hover:opacity-75 transition-colors">
+        <i class="fas fa-file-pdf text-3xl text-red-600 mb-1"></i>
+        <span class="text-xs text-gray-700">CV</span>
+      </div>
+
+      <div
         *ngIf="canViewCoverLetter()"
         (click)="viewCoverLetter()"
-        class="flex items-center bg-green-100 text-green-600 px-4 py-2 rounded-lg hover:bg-green-200 transition-colors">
-        <i class="fas fa-envelope mr-2"></i> Visualiser Lettre de motivation
-      </button>
-    </div>
-
-    <div class="p-6 border-t border-gray-200">
-      <div [ngSwitch]="demande?.demandeStage?.status">
-        <div *ngSwitchCase="InternshipStatus.EN_ATTENTE" class="flex space-x-4">
-          <button
-            (click)="proposeToManager()"
-            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-user-tie mr-2"></i> Proposer au manager
-          </button>
-          <button
-            (click)="rejectApplication()"
-            class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
-            <i class="fas fa-times-circle mr-2"></i> Rejeter
-          </button>
-        </div>
-
-        <button
-          *ngSwitchCase="InternshipStatus.ACCEPTE"
-          (click)="sendWelcomeEmail()"
-          class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
-          <i class="fas fa-envelope mr-2"></i> Generer Contrat et envoyer via mail
-        </button>
-
-        <div *ngSwitchCase="InternshipStatus.PROPOSE" class="flex space-x-4">
-          <button
-            (click)="proposeToManager()"
-            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-user-plus mr-2"></i> Proposer à un autre manager
-          </button>
-          <button
-            (click)="cancelProposal()"
-            class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
-            <i class="fas fa-ban mr-2"></i> Annuler la proposition
-          </button>
-        </div>
-
-<!--        <button-->
-<!--          *ngSwitchCase="InternshipStatus.EN_COURS"-->
-<!--          (click)="scheduleEvaluation()"-->
-<!--          class="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">-->
-<!--          <i class="fas fa-calendar-check mr-2"></i> Générer attestation de présence-->
-<!--        </button>-->
-
-<!--        <button-->
-<!--          *ngSwitchCase="InternshipStatus.TERMINE"-->
-<!--          (click)="generateCertificate()"-->
-<!--          class="w-full bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors">-->
-<!--          <i class="fas fa-certificate mr-2"></i> Générer attestation de fin de stage-->
-<!--        </button>-->
-
-
-        <div *ngSwitchCase="InternshipStatus.REFUSE" class="flex space-x-4">
-          <button
-            (click)="proposeToManager()"
-            class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
-            <i class="fas fa-user-tie mr-2"></i> Proposer a un autre manager
-          </button>
-          <button
-            (click)="archiveApplication()"
-            class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors">
-            <i class="fas fa-times-circle mr-2"></i> Archiver la demande
-          </button>
-        </div>
-
-
+        class="flex flex-col items-center cursor-pointer hover:opacity-75 transition-colors">
+        <i class="fas fa-file-pdf text-3xl text-red-600 mb-1"></i>
+        <span class="text-xs text-gray-700">LM</span>
       </div>
     </div>
-  </div>
 </div>
 
-
+</div>
