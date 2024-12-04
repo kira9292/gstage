@@ -25,6 +25,8 @@ export class DetailDemandeForManagerComponent {
   showPresenceAttestationModal = false;
   attestationStartDate: string | null = null;
   attestationEndDate: string | null = null;
+  isActionDropdownOpen = false;
+
 
   InternshipStatus = InternshipStatus
 
@@ -176,6 +178,16 @@ confirmIntershipStart(internship: any): void {
     cancelButtonText: 'Annuler'
   }).then((result) => {
     if (result.isConfirmed) {
+      Swal.fire({
+        title: 'Traitement en cours...',
+        text: 'Confirmation du debut de stage',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       this.managerService.confirmIntershipStart(internship.demandeStage.id)
       .subscribe({
         next: () => {
@@ -459,6 +471,8 @@ openPresenceAttestationModal() {
   this.attestationStartDate = null;
   this.attestationEndDate = null;
   this.showPresenceAttestationModal = true;
+  this.closeActionDropdown();
+
 }
 
 closePresenceAttestationModal() {
@@ -552,6 +566,7 @@ generatePresenceAttestation() {
         });
     }
   });
+  this.closePresenceAttestationModal();
 }
 
 // Méthode utilitaire pour formater les dates
@@ -560,7 +575,15 @@ private formatDate(date: Date): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
-  });
-}
+    });
+  }
+
+  toggleActionDropdown() {
+    this.isActionDropdownOpen = !this.isActionDropdownOpen;
+  }
+
+  closeActionDropdown() {
+    this.isActionDropdownOpen = false;
+  }
 
 }
