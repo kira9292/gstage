@@ -1,6 +1,6 @@
 // success-modal.component.ts
 
-import { Component, Output, EventEmitter } from '@angular/core';
+import {Component, Output, EventEmitter, Input} from '@angular/core';
 
 @Component({
   selector: 'app-success-modal',
@@ -12,6 +12,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 export class SuccessModalComponent {
   @Output() close = new EventEmitter<void>();
+  @Input() email: string = '';
 
   closeModal() {
     this.close.emit();

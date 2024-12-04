@@ -29,39 +29,39 @@ export class DemandeStageComponent {
   cvError: string = '';
   motivationLetterError: string = '';
 
-  verificationError: string = ''; // Message d'erreur pour la vérification du code
+  recipientEmail: string = ''; // Message d'erreur pour la vérification du code
 
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private router: Router,
     private demandeStageService: DemandeStageService
   ) {
     this.applicationForm = this.fb.group({
 
       // Champs de la première étape
-      firstName: ['', 
+      firstName: ['',
         [
-          Validators.required, 
-          Validators.minLength(2), 
+          Validators.required,
+          Validators.minLength(2),
           noWhitespaceValidator
         ]],
-      lastName: ['', 
+      lastName: ['',
         [
-          Validators.required, 
-          Validators.minLength(2), 
+          Validators.required,
+          Validators.minLength(2),
           noWhitespaceValidator
         ]],
-      email: ['', 
+      email: ['',
         [
-          Validators.required, 
+          Validators.required,
           Validators.email
         ]],
       phone: ['', [
         Validators.required,
         Validators.pattern(/^(70|75|76|77|78)[0-9]{7}$/)
       ]],
-      formation: ['', 
+      formation: ['',
         [
           Validators.required
         ]],
@@ -76,38 +76,38 @@ export class DemandeStageComponent {
       type: ['', [
         Validators.required
       ]],
-      direction: ['', 
+      direction: ['',
         [
           Validators.required
         ]],
-      startDate: ['', 
+      startDate: ['',
         [
           Validators.required
         ]],
-      endDate: ['', 
+      endDate: ['',
         [
           Validators.required
         ]],
       birthDate: ['', [
         Validators.required,
-        this.dateOfBirthValidator 
-      ]],      
+        this.dateOfBirthValidator
+      ]],
       nationality: ['', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
-        noWhitespaceValidator 
-      ]],      
+        noWhitespaceValidator
+      ]],
       birthPlace: ['', [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(50),
-        noWhitespaceValidator 
-      ]],      
+        noWhitespaceValidator
+      ]],
       cni: ['', [
         Validators.required,
         Validators.pattern(/^\d{13}$/), // Exact 13 chiffres
-      ]],      
+      ]],
       address: ['', [
         Validators.required,
         Validators.minLength(5),
@@ -116,7 +116,7 @@ export class DemandeStageComponent {
       ]],
       educationLevel: ['', Validators.required]
     }, { validator: this.dateRangeValidator });
-    
+
 
     // Initialisation du formulaire de code de vérification
     this.verificationForm = this.fb.group({
@@ -133,7 +133,7 @@ dateOfBirthValidator(control: AbstractControl): { [key: string]: any } | null {
 
   let age = currentDate.getFullYear() - birthDate.getFullYear();
   const monthDiff = currentDate.getMonth() - birthDate.getMonth();
-  
+
   if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDate.getDate())) {
     age--;
   }
@@ -175,7 +175,7 @@ get birthDateError(): string {
   }
   return '';
 }
-  
+
 // Pour le lieu de naissance
 get birthPlaceError(): string {
   const control = this.applicationForm.get('birthPlace');
@@ -187,7 +187,7 @@ get birthPlaceError(): string {
   }
   return '';
 }
-  
+
   get cniError(): string {
     const control = this.applicationForm.get('cni');
     if (control?.errors && control.touched) {
@@ -226,7 +226,7 @@ get dateRangeError(): string {
   if (form.errors && form.errors['startDate']) {
     return 'La date de début doit être après la date actuelle';
   }
-  
+
   if (form.errors && form.errors['dateRange']) {
     return 'La date de début doit être antérieure à la date de fin';
   }
@@ -300,13 +300,13 @@ get schoolError(): string {
       this.applicationForm.get('cni')?.valid &&
       this.applicationForm.get('nationality')?.valid &&
       this.applicationForm.get('address')?.valid &&
-      this.applicationForm.get('formation')?.valid && 
-      this.applicationForm.get('school')?.valid && 
-      this.applicationForm.get('educationLevel')?.valid) 
+      this.applicationForm.get('formation')?.valid &&
+      this.applicationForm.get('school')?.valid &&
+      this.applicationForm.get('educationLevel')?.valid)
       {
         this.currentStep = 2;
       }
-  
+
 }
   // Pour revenir à l'étape précédente
 
@@ -321,40 +321,40 @@ get schoolError(): string {
   dateRangeValidator(group: FormGroup) {
     const startDate = group.get('startDate')?.value;
     const endDate = group.get('endDate')?.value;
-  
+
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Réinitialiser les heures pour une comparaison précise
-  
+
     if (startDate && endDate) {
       const start = new Date(startDate);
       const end = new Date(endDate);
       const minDuration = 1; // Durée minimale du stage en mois
       const maxDuration = 6; // Durée maximale du stage en mois
-  
+
       // Vérifier que la date de début est après aujourd'hui
       if (start <= today) {
         return { startDate: 'La date de début doit être postérieure à la date actuelle' };
       }
-  
+
       // Vérifier que la date de début est avant la date de fin
       if (start >= end) {
         return { dateRange: 'La date de début doit être antérieure à la date de fin' };
       }
-  
+
       // Calculer la durée du stage
-      const monthDifference = (end.getFullYear() - start.getFullYear()) * 12 + 
+      const monthDifference = (end.getFullYear() - start.getFullYear()) * 12 +
                               (end.getMonth() - start.getMonth());
-  
+
       if (monthDifference < minDuration || monthDifference > maxDuration) {
-        return { 
-          stageDuration: `La durée du stage doit être entre ${minDuration} et ${maxDuration} mois` 
+        return {
+          stageDuration: `La durée du stage doit être entre ${minDuration} et ${maxDuration} mois`
         };
       }
     }
-    
+
     return null;
   }
-  
+
  // Fonction de conversion d'un fichier en Base64 sans le préfixe
 convertToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -373,7 +373,7 @@ convertToBase64(file: File): Promise<string> {
         'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       ];
-      
+
       if (allowedTypes.includes(file.type)) {
         if (fileType === 'cv') {
           this.selectedCV = file;
@@ -397,90 +397,93 @@ convertToBase64(file: File): Promise<string> {
 
 
 // Fonction de soumission du formulaire
-onSubmit(): void {
-  if (this.applicationForm.valid && this.selectedCV && this.selectedMotivationLetter) {
-    
-    // Créer l'objet demandeStage avec les informations du formulaire
-    const demandeStageData = {
-      demandeStage: {
-        reference: '',
-        creationDate: new Date().toISOString().split('T')[0], // Date actuelle
-        internshipType: this.applicationForm.get('type')?.value, // Exemple de type de stage
-        startDate: this.applicationForm.get('startDate')?.value,
-        endDate: this.applicationForm.get('endDate')?.value,
-        status: "EN_ATTENTE", // Statut initial
-        validated: false, // Statut de validation
-        // Champs pour le contenu Base64 des fichiers
-        cv: '',
-        cvContentType: this.selectedCV ? this.selectedCV.type : '', // Vérifie si selectedCV est défini
-        coverLetter: '',
-        coverLetterContentType: this.selectedMotivationLetter ? this.selectedMotivationLetter.type : '', // Vérifie si selectedMotivationLetter est défini
-      },
-      candidat: {
-        firstName: this.applicationForm.get('firstName')?.value,
-        lastName: this.applicationForm.get('lastName')?.value,
-        birthDate: this.applicationForm.get('birthDate')?.value, // Exemple de date de naissance
-        nationality: this.applicationForm.get('nationality')?.value, // Exemple de nationalité
-        birthPlace: this.applicationForm.get('birthPlace')?.value, // Exemple de lieu de naissance
-        cni: this.applicationForm.get('cni')?.value, // Exemple de numéro de CNI
-        address: this.applicationForm.get('address')?.value, // Exemple d'adresse
-        email: this.applicationForm.get('email')?.value,
-        phone: this.applicationForm.get('phone')?.value,
-        educationLevel: this.applicationForm.get('educationLevel')?.value, // Exemple de niveau d'éducation
-        school: this.applicationForm.get('school')?.value,
-        formation: this.applicationForm.get('formation')?.value,
-      }
-    };
+  onSubmit(): void {
+    if (this.applicationForm.valid && this.selectedCV && this.selectedMotivationLetter) {
 
-    this.convertToBase64(this.selectedCV as File)
-    .then((cvBase64) => {
-      demandeStageData.demandeStage.cv = cvBase64.split(',')[1] || cvBase64;
-      return this.convertToBase64(this.selectedMotivationLetter as File);
-    })
-    .then((motivationLetterBase64) => {
-      demandeStageData.demandeStage.coverLetter = motivationLetterBase64.split(',')[1] || motivationLetterBase64;      
-
-      console.log(demandeStageData);
-      
-      this.currentStep = 3; // Passe à l'étape de saisie du code de vérification
-
-      // Appel au service pour soumettre les données et envoyer le code de vérification
-      return this.demandeStageService.submitDemandeStage(demandeStageData).subscribe((response) => {
-      console.log("Demande reusie", demandeStageData);
-     },  (error) => {
-        console.error("Erreur lors de la soumission:", error);
-        
-     })
-
-    })
-  
-    .catch(error => {
-      console.error("Erreur lors de la soumission :", error);
-    });
-} else {
-  console.warn("Le formulaire n'est pas valide ou les fichiers sont manquants.");
-}
-}
-
-
-  // Méthode pour vérifier le code de validation
-  verifyCode(): void {
-    const verificationCode = this.verificationForm.get('verificationCode')?.value;
-
-    if (this.verificationForm.valid) {
-      this.demandeStageService.verifyCode(verificationCode).subscribe(
-        response => {
-          this.showModal = true; // Affiche la modal de succès
+      // Créer l'objet demandeStage avec les informations du formulaire
+      const demandeStageData = {
+        demandeStage: {
+          reference: '',
+          creationDate: new Date().toISOString().split('T')[0], // Date actuelle
+          internshipType: this.applicationForm.get('type')?.value, // Exemple de type de stage
+          startDate: this.applicationForm.get('startDate')?.value,
+          endDate: this.applicationForm.get('endDate')?.value,
+          status: "EN_ATTENTE", // Statut initial
+          validated: false, // Statut de validation
+          // Champs pour le contenu Base64 des fichiers
+          cv: '',
+          cvContentType: this.selectedCV ? this.selectedCV.type : '', // Vérifie si selectedCV est défini
+          coverLetter: '',
+          coverLetterContentType: this.selectedMotivationLetter ? this.selectedMotivationLetter.type : '', // Vérifie si selectedMotivationLetter est défini
         },
-        error => {
-          this.verificationError = 'Code invalide. Veuillez réessayer.';
-          console.error('Erreur de vérification du code:', error);
+        candidat: {
+          firstName: this.applicationForm.get('firstName')?.value,
+          lastName: this.applicationForm.get('lastName')?.value,
+          birthDate: this.applicationForm.get('birthDate')?.value, // Exemple de date de naissance
+          nationality: this.applicationForm.get('nationality')?.value, // Exemple de nationalité
+          birthPlace: this.applicationForm.get('birthPlace')?.value, // Exemple de lieu de naissance
+          cni: this.applicationForm.get('cni')?.value, // Exemple de numéro de CNI
+          address: this.applicationForm.get('address')?.value, // Exemple d'adresse
+          email: this.applicationForm.get('email')?.value,
+          phone: this.applicationForm.get('phone')?.value,
+          educationLevel: this.applicationForm.get('educationLevel')?.value, // Exemple de niveau d'éducation
+          school: this.applicationForm.get('school')?.value,
+          formation: this.applicationForm.get('formation')?.value,
         }
-      );
+      };
+
+      this.convertToBase64(this.selectedCV as File)
+        .then((cvBase64) => {
+          demandeStageData.demandeStage.cv = cvBase64.split(',')[1] || cvBase64;
+          return this.convertToBase64(this.selectedMotivationLetter as File);
+        })
+        .then((motivationLetterBase64) => {
+          demandeStageData.demandeStage.coverLetter = motivationLetterBase64.split(',')[1] || motivationLetterBase64;
+
+          this.recipientEmail = this.applicationForm.get('email')?.value;
+          // Réinitialiser les champs du formulaire
+          this.applicationForm.reset();
+          // Réinitialiser les fichiers sélectionnés
+          this.selectedCV = null;
+          this.selectedMotivationLetter = null;
+
+          // Appel au service pour soumettre les données et envoyer le code de vérification
+          return this.demandeStageService.submitDemandeStage(demandeStageData).subscribe((response) => {
+            this.showModal = true;
+
+          },  (error) => {
+            console.error("Erreur lors de la soumission:", error);
+          })
+
+        })
+        .catch(error => {
+          console.error("Erreur lors de la soumission :", error);
+        });
     } else {
-      this.verificationError = 'Veuillez entrer un code valide.';
+      console.warn("Le formulaire n'est pas valide ou les fichiers sont manquants.");
     }
   }
+
+
+
+  // // Méthode pour vérifier le code de validation
+  // verifyCode(): void {
+  //   const verificationCode = this.verificationForm.get('verificationCode')?.value;
+  //
+  //   if (this.verificationForm.valid) {
+  //     this.demandeStageService.verifyCode(verificationCode).subscribe(
+  //       response => {
+  //         this.showModal = true; // Affiche la modal de succès
+  //       },
+  //       error => {
+  //         this.verificationError = 'Code invalide. Veuillez réessayer.';
+  //         console.error('Erreur de vérification du code:', error);
+  //       }
+  //     );
+  //   } else {
+  //     this.verificationError = 'Veuillez entrer un code valide.';
+  //   }
+  // }
 
 
   closeModal() {

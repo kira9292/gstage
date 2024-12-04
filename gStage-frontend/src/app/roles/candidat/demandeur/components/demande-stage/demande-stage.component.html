@@ -426,51 +426,8 @@
     </form>
   </div>
 
-
-
-<!-- Step3 : Vérification de l'email -->
-<div *ngIf="currentStep === 3" class="bg-white rounded-lg shadow-md p-8 w-full mx-auto max-w-lg">
-  <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">
-    Vérification de votre e-mail
-  </h2>
-
-  <p class="text-gray-600 text-lg mb-6 text-center">
-    Un email de confirmation a été envoyé à l'adresse <strong>{{ applicationForm.get('email')?.value }}</strong>.
-    Veuillez saisir le code de vérification ci-dessous pour continuer.
-  </p>
-
-  <form [formGroup]="verificationForm" (ngSubmit)="verifyCode()" class="space-y-6">
-    <!-- Code de vérification -->
-    <div class="form-group">
-      <label for="verificationCode" class="block text-sm font-medium text-gray-700 mb-2 flex items-center justify-between">
-        <i class="fas fa-key mr-2 text-orange-500"></i>
-        Code de vérification
-      </label>
-      <input id="verificationCode" formControlName="verificationCode"
-             placeholder="Entrez le code de vérification"
-             class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-lg">
-      <div *ngIf="verificationError" class="text-red-500 text-sm mt-1 flex items-center">
-        <i class="fas fa-exclamation-circle mr-1"></i>
-        {{ verificationError }}
-      </div>
-    </div>
-
-    <!-- Bouton de soumission -->
-    <div class="flex justify-center pt-4">
-      <button type="submit"
-              [disabled]="!verificationForm.valid"
-              class="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
-        <i class="fas fa-paper-plane mr-2"></i>
-        Vérifier le code
-      </button>
-    </div>
-  </form>
-
-  <div class="text-center mt-6">
-    <p class="text-gray-600 text-sm">
-      Si vous n'avez pas reçu l'email, vérifiez votre boîte de spam ou <a  class="text-orange-500"><button (click)="goToStep1()">modifier votre mail</button></a>.
-    </p>
-  </div>
-</div>
-<app-success-modal *ngIf="showModal" (close)="closeModal()"></app-success-modal>
+<app-success-modal
+  *ngIf="showModal" (close)="closeModal()"
+  [email]="recipientEmail"
+></app-success-modal>
 </div>
