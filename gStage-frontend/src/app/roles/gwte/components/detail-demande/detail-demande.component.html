@@ -55,6 +55,7 @@
             <table class="min-w-full bg-white rounded-lg shadow">
               <thead class="bg-gray-50">
               <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mois</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Période début</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Période fin</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date signature</th>
@@ -63,7 +64,9 @@
               </thead>
               <tbody class="divide-y divide-gray-200">
               <tr *ngFor="let attestation of demande?.candidat?.attestationPresences" class="hover:bg-gray-50">
-
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {{ getMonthFromDate(attestation.startDate) }}
+                </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {{ attestation.startDate | date: 'dd/MM/yyyy' }}
                 </td>

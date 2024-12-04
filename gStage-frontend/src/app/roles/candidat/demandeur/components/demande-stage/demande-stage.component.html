@@ -1,5 +1,8 @@
 <!-- Step1 -->
-<div *ngIf="currentStep === 1" class="bg-white rounded-lg shadow-md p-8 w-full max-w-2xl mx-auto">
+
+<div class="h-screen bg-white bg-gray-100 flex items-center justify-center">
+
+<div *ngIf="currentStep === 1" class="bg-white rounded-lg  p-8 w-full max-w-2xl mx-auto">
   <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center">
     <i class="fas fa-file-alt mr-3 text-orange-500"></i>
     Demande de Stage (1/2)
@@ -15,7 +18,7 @@
         </label>
           <input type="text" formControlName="firstName"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="firstNameError" 
+          <div *ngIf="firstNameError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ firstNameError }}
@@ -30,7 +33,7 @@
           </label>
           <input type="text" formControlName="lastName"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="lastNameError" 
+          <div *ngIf="lastNameError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ lastNameError }}
@@ -45,7 +48,7 @@
           </label>
           <input type="email" formControlName="email"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="emailError" 
+          <div *ngIf="emailError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ emailError }}
@@ -60,10 +63,10 @@
             <i class="fas fa-calendar mr-2 text-orange-500"></i>
             Date de naissance <span class="text-red-500 ml-1">*</span>
           </label>
-          <input type="date" 
+          <input type="date"
                  formControlName="birthDate"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="birthDateError" 
+          <div *ngIf="birthDateError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ birthDateError }}
@@ -76,10 +79,10 @@
             <i class="fas fa-map-marker-alt mr-2 text-orange-500"></i>
             Lieu de naissance <span class="text-red-500 ml-1">*</span>
           </label>
-          <input type="text" 
+          <input type="text"
                  formControlName="birthPlace"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="birthPlaceError" 
+          <div *ngIf="birthPlaceError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ birthPlaceError }}
@@ -92,10 +95,10 @@
             <i class="fas fa-home mr-2 text-orange-500"></i>
             Adresse <span class="text-red-500 ml-1">*</span>
           </label>
-          <input type="text" 
+          <input type="text"
                  formControlName="address"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="addressError" 
+          <div *ngIf="addressError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ addressError }}
@@ -112,7 +115,7 @@
           </label>
           <input type="tel" formControlName="phone"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="phoneError" 
+          <div *ngIf="phoneError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{phoneError}}
@@ -125,10 +128,10 @@
             <i class="fas fa-id-card mr-2 text-orange-500"></i>
             Numéro CNI <span class="text-red-500 ml-1">*</span>
           </label>
-          <input type="text" 
+          <input type="text"
                  formControlName="cni"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="cniError" 
+          <div *ngIf="cniError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ cniError }}
@@ -141,10 +144,10 @@
             <i class="fas fa-globe mr-2 text-orange-500"></i>
             Nationalité <span class="text-red-500 ml-1">*</span>
           </label>
-          <input type="text" 
+          <input type="text"
                  formControlName="nationality"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="nationalityError" 
+          <div *ngIf="nationalityError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ nationalityError }}
@@ -159,7 +162,7 @@
             <i class="fas fa-book mr-2 text-orange-500"></i>
             Formation
           </label>
-          <select formControlName="formation" 
+          <select formControlName="formation"
                   class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
             <option value="">Sélectionnez une formation</option>
             <option value="INFORMATIQUE_SI">Informatique et Systèmes d'Information</option>
@@ -173,7 +176,7 @@
             <option value="RESEAUX_TELECOMS">Réseaux et Télécommunications</option>
             <option value="COMMERCE">Commerce et Ventes</option>
           </select>
-          <div *ngIf="formationError" 
+          <div *ngIf="formationError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ formationError }}
@@ -185,10 +188,10 @@
             <i class="fas fa-school mr-2 text-orange-500"></i>
             École/Universite <span class="text-red-500 ml-1">*</span>
           </label>
-          <input type="text" 
+          <input type="text"
                  formControlName="school"
                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="schoolError" 
+          <div *ngIf="schoolError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ schoolError }}
@@ -200,7 +203,7 @@
             <i class="fas fa-book mr-2 text-orange-500"></i>
             Niveau d'etudes <span class="text-red-500 ml-1">*</span>
           </label>
-          <select formControlName="educationLevel" 
+          <select formControlName="educationLevel"
                   class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
             <option value="">Sélectionnez un niveau d'etudes</option>
             <option value="BAC">Bac+1</option>
@@ -209,7 +212,7 @@
             <option value="BAC_PLUS_4">Bac+4</option>
             <option value="BAC_PLUS_5">Bac+5</option>
           </select>
-          <div *ngIf="educationLevelError" 
+          <div *ngIf="educationLevelError"
                class="text-red-500 text-sm mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ educationLevelError }}
@@ -231,11 +234,11 @@
 </div>
 
 
-  
 
-  <!-- Step2 -->
 
-  <div *ngIf="currentStep === 2" class="bg-white rounded-lg shadow-md p-8 w-full max-w-2xl mx-auto">
+  <!-- Ste  p2 -->
+
+  <div *ngIf="currentStep === 2" class="bg-white rounded-lg  p-8 w-full max-w-2xl mx-auto">
     <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center">
       <i class="fas fa-file-alt mr-3 text-orange-500"></i>
       Demande de Stage (2/2)
@@ -251,41 +254,41 @@
               <i class="fas fa-graduation-cap mr-2 text-orange-500"></i>
               Type de Stage <span class="text-red-500 ml-1">*</span>
             </label>
-            <select formControlName="type" 
+            <select formControlName="type"
                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
               <option value="">Sélectionnez un type</option>
               <option value="ACADEMIQUE">Stage Académique</option>
               <option value="PROFESSIONNEL">Stage Professionnel</option>
               <option value="PROJET_FIN_ETUDES">Projet Fin d'Études</option>
             </select>
-            <div *ngIf="applicationForm.get('type')?.touched && applicationForm.get('type')?.invalid" 
+            <div *ngIf="applicationForm.get('type')?.touched && applicationForm.get('type')?.invalid"
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               Ce champ est requis
             </div>
           </div>
-  
+
           <!-- Direction -->
           <div class="form-group">
             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
               <i class="fas fa-building mr-2 text-orange-500"></i>
               Direction Souhaitée <span class="text-red-500 ml-1">*</span>
             </label>
-            <select formControlName="direction" 
+            <select formControlName="direction"
                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
               <option value="">Sélectionnez une direction</option>
               <option value="dsi">Direction des Systèmes d'Information</option>
               <option value="drh">Direction des Ressources Humaines</option>
               <option value="dmk">Direction Marketing</option>
             </select>
-            <div *ngIf="applicationForm.get('direction')?.touched && applicationForm.get('direction')?.invalid" 
+            <div *ngIf="applicationForm.get('direction')?.touched && applicationForm.get('direction')?.invalid"
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               Ce champ est requis
             </div>
           </div>
         </div>
-  
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Date de début -->
           <div class="form-group">
@@ -293,26 +296,26 @@
               <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>
               Date de début souhaitée <span class="text-red-500 ml-1">*</span>
             </label>
-            <input type="date" 
+            <input type="date"
                    formControlName="startDate"
                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="applicationForm.get('startDate')?.touched && applicationForm.get('startDate')?.invalid" 
+            <div *ngIf="applicationForm.get('startDate')?.touched && applicationForm.get('startDate')?.invalid"
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               Ce champ est requis
             </div>
           </div>
-  
+
           <!-- Date de fin -->
           <div class="form-group">
             <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
               <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>
               Date de fin souhaitée <span class="text-red-500 ml-1">*</span>
             </label>
-            <input type="date" 
+            <input type="date"
                    formControlName="endDate"
                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-            <div *ngIf="applicationForm.get('endDate')?.touched && applicationForm.get('endDate')?.invalid" 
+            <div *ngIf="applicationForm.get('endDate')?.touched && applicationForm.get('endDate')?.invalid"
                  class="text-red-500 text-sm mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               Ce champ est requis
@@ -320,14 +323,14 @@
           </div>
 
           <!-- Date Range Error -->
-          <div *ngIf="dateRangeError" 
+          <div *ngIf="dateRangeError"
               class="text-red-500 text-sm mt-1 flex items-center col-span-2">
               <i class="fas fa-exclamation-circle mr-1"></i>
               {{ dateRangeError }}
           </div>
         </div>
       </div>
-  
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Upload CV -->
         <div class="form-group">
@@ -342,7 +345,7 @@
                    class="hidden"
                    (change)="onFileSelected($event, 'cv')"
                    accept=".pdf,.docx,.doc">
-            <label for="cv-upload" 
+            <label for="cv-upload"
                    class="flex items-center justify-between w-full p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
               <div class="flex items-center truncate">
                 <i class="fas fa-upload mr-2 text-gray-400"></i>
@@ -364,7 +367,7 @@
             </div>
           </div>
         </div>
-  
+
         <!-- Upload Lettre de motivation -->
         <div class="form-group">
           <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
@@ -378,7 +381,7 @@
                    class="hidden"
                    (change)="onFileSelected($event, 'motivation')"
                    accept=".pdf,.docx,.doc">
-            <label for="motivation-upload" 
+            <label for="motivation-upload"
                    class="flex items-center justify-between w-full p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
               <div class="flex items-center truncate">
                 <i class="fas fa-upload mr-2 text-gray-400"></i>
@@ -401,7 +404,7 @@
           </div>
         </div>
       </div>
-  
+
       <div class="flex justify-between pt-4">
         <!-- Bouton Précédent -->
         <button type="button"
@@ -410,7 +413,7 @@
           <i class="fas fa-arrow-left mr-2"></i>
           Précédent
         </button>
-  
+
         <!-- Bouton Soumettre ma demande -->
         <button type="submit"
                 [disabled]="!applicationForm.valid || !selectedCV || !selectedMotivationLetter"
@@ -423,16 +426,16 @@
     </form>
   </div>
 
-  
+
 
 <!-- Step3 : Vérification de l'email -->
 <div *ngIf="currentStep === 3" class="bg-white rounded-lg shadow-md p-8 w-full mx-auto max-w-lg">
   <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">
     Vérification de votre e-mail
   </h2>
-  
+
   <p class="text-gray-600 text-lg mb-6 text-center">
-    Un email de confirmation a été envoyé à l'adresse <strong>{{ applicationForm.get('email')?.value }}</strong>. 
+    Un email de confirmation a été envoyé à l'adresse <strong>{{ applicationForm.get('email')?.value }}</strong>.
     Veuillez saisir le code de vérification ci-dessous pour continuer.
   </p>
 
@@ -443,8 +446,8 @@
         <i class="fas fa-key mr-2 text-orange-500"></i>
         Code de vérification
       </label>
-      <input id="verificationCode" formControlName="verificationCode" 
-             placeholder="Entrez le code de vérification" 
+      <input id="verificationCode" formControlName="verificationCode"
+             placeholder="Entrez le code de vérification"
              class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all text-lg">
       <div *ngIf="verificationError" class="text-red-500 text-sm mt-1 flex items-center">
         <i class="fas fa-exclamation-circle mr-1"></i>
@@ -454,8 +457,8 @@
 
     <!-- Bouton de soumission -->
     <div class="flex justify-center pt-4">
-      <button type="submit" 
-              [disabled]="!verificationForm.valid" 
+      <button type="submit"
+              [disabled]="!verificationForm.valid"
               class="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
         <i class="fas fa-paper-plane mr-2"></i>
         Vérifier le code
@@ -470,3 +473,4 @@
   </div>
 </div>
 <app-success-modal *ngIf="showModal" (close)="closeModal()"></app-success-modal>
+</div>
