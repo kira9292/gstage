@@ -19,6 +19,7 @@ export class InternshipDetailModalComponent implements OnInit {
   @Output() statusUpdated = new EventEmitter<void>();  // Nouvel EventEmitter
 
   showAttestationModal: boolean = false;
+  isActionDropdownOpen = false;
 
 
   InternshipStatus = InternshipStatus
@@ -584,6 +585,19 @@ closeModal() {
     const entreprise = attestationF.entreprise || 'entreprise'; // Nom de l'entreprise si disponible
 
     return `${prefix}_${entreprise}_${identifier}_${date}.docx`;
+  }
+
+  getMonthFromDate(date: Date): string {
+    const dateObj = new Date(date);
+    return dateObj.toLocaleString('fr-FR', { month: 'long' });
+  }
+
+  toggleActionDropdown() {
+    this.isActionDropdownOpen = !this.isActionDropdownOpen;
+  }
+
+  closeActionDropdown() {
+    this.isActionDropdownOpen = false;
   }
 }
 
