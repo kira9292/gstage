@@ -585,10 +585,5 @@ closeModal() {
 
     return `${prefix}_${entreprise}_${identifier}_${date}.docx`;
   }
-
-  getMonthFromDate(date: Date): string {
-    const dateObj = new Date(date);
-    return dateObj.toLocaleString('fr-FR', { month: 'long' });
-  }
 }
 
