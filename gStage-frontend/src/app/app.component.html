@@ -3,32 +3,32 @@
   <app-navbar *ngIf="!this.isAuthPage()" (menuToggle)="toggleSidebar()"></app-navbar>
 
   <div class="flex flex-1 overflow-hidden">
-    <app-sidebar 
+    <app-sidebar
       *ngIf="showSidebarStagiaire()"
       [isSidebarOpen]="isSidebarOpen"
       (sidebarClose)="closeSidebar()"
       class="h-full">
     </app-sidebar>
-    <app-sidebar-gwte 
+    <app-sidebar-gwte
       *ngIf="showSidebarGwte()"
       [isSidebarOpen]="isSidebarOpen"
       (sidebarClose)="closeSidebar()"
       class="h-full">
     </app-sidebar-gwte>
-    <app-sidebar-manager 
+    <app-sidebar-manager
       *ngIf="showSidebarManager()"
       [isSidebarOpen]="isSidebarOpen"
       (sidebarClose)="closeSidebar()"
       class="h-full">
     </app-sidebar-manager>
-    <app-sidebar-admin 
+    <app-sidebar-admin
       *ngIf="showSidebarAdmin()"
       (sidebarClose)="closeSidebar()"
       class="h-full">
     </app-sidebar-admin>
 
     <!-- Le contenu principal -->
-    <div class="flex-1 overflow-auto bg-gray-50" [ngClass]="{'p-4 md:p-8': !isAuthPage()}">
+    <div class="flex-1 overflow-auto bg-gray-50" [ngClass]="{'': !isAuthPage()}">
       <!-- <app-breadcrump *ngIf="isAuthenticated()"></app-breadcrump> -->
       <router-outlet></router-outlet>
     </div>

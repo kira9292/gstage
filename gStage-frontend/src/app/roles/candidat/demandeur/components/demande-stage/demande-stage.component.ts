@@ -98,6 +98,7 @@ export class DemandeStageComponent {
         Validators.maxLength(50),
         noWhitespaceValidator
       ]],
+      customNationality: [''],
       birthPlace: ['', [
         Validators.required,
         Validators.minLength(2),
@@ -207,6 +208,14 @@ get nationalityError(): string {
   }
   return '';
 }
+
+  shouldShowNationalityInput(): boolean {
+    const nationalityControl = this.applicationForm.get('nationality');
+    return nationalityControl?.value === 'Autre' ||
+      (nationalityControl?.value &&
+        !['Sénégalaise', 'Malienne', 'Guinéenne', 'Ivoirienne', 'Burkinabé']
+          .includes(nationalityControl.value));
+  }
 // Pour l'adresse
 get addressError(): string {
   const control = this.applicationForm.get('address');
@@ -398,6 +407,19 @@ convertToBase64(file: File): Promise<string> {
 
 // Fonction de soumission du formulaire
   onSubmit(): void {
+    // Récupérer la valeur de nationalité
+    const nationalityValue = this.applicationForm.get('nationality')?.value;
+    const customNationalityValue = this.applicationForm.get('customNationality')?.value;
+
+    // Utiliser la valeur personnalisée si 'Autre' est sélectionné ou si c'est une nationalité non standard
+    const finalNationality = nationalityValue === 'Autre' ||
+    !['Sénégalaise', 'Malienne', 'Guinéenne', 'Ivoirienne', 'Burkinabé'].includes(nationalityValue)
+      ? (customNationalityValue || nationalityValue)
+      : nationalityValue;
+
+    // Mettre à jour la valeur de nationality
+    this.applicationForm.get('nationality')?.setValue(finalNationality);
+
     if (this.applicationForm.valid && this.selectedCV && this.selectedMotivationLetter) {
 
       // Créer l'objet demandeStage avec les informations du formulaire
@@ -420,7 +442,7 @@ convertToBase64(file: File): Promise<string> {
           firstName: this.applicationForm.get('firstName')?.value,
           lastName: this.applicationForm.get('lastName')?.value,
           birthDate: this.applicationForm.get('birthDate')?.value, // Exemple de date de naissance
-          nationality: this.applicationForm.get('nationality')?.value, // Exemple de nationalité
+          nationality: finalNationality,
           birthPlace: this.applicationForm.get('birthPlace')?.value, // Exemple de lieu de naissance
           cni: this.applicationForm.get('cni')?.value, // Exemple de numéro de CNI
           address: this.applicationForm.get('address')?.value, // Exemple d'adresse
@@ -451,7 +473,7 @@ convertToBase64(file: File): Promise<string> {
           return this.demandeStageService.submitDemandeStage(demandeStageData).subscribe((response) => {
             this.showModal = true;
 
-          },  (error) => {
+          }, (error) => {
             console.error("Erreur lors de la soumission:", error);
           })
 

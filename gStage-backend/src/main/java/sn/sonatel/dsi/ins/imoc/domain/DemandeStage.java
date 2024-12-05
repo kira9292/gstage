@@ -66,7 +66,7 @@ public class DemandeStage implements Serializable {
     @JsonBackReference
     private Candidat candidat;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties(
         value = {
             "service",

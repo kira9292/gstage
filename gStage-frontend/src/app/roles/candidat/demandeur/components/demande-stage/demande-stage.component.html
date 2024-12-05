@@ -1,73 +1,77 @@
-<!-- Step1 -->
+<div class="min-h-screen bg-gradient-to-br from-orange-50 to-white flex items-center justify-center px-4 py-8">
+  <div class="w-full max-w-4xl bg-white shadow-2xl rounded-2xl overflow-hidden">
+    <!-- Step 1 -->
+    <div *ngIf="currentStep === 1" class="p-10">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-extrabold text-gray-800 flex items-center justify-center">
+          <i class="fas fa-file-alt mr-4 text-orange-500"></i>
+          Demande de Stage <span class="text-gray-400 ml-2">(1/2)</span>
+        </h2>
+        <p class="text-gray-500 mt-2">Commencez par vos informations personnelles</p>
+      </div>
 
-<div class="h-screen bg-white bg-gray-100 flex items-center justify-center">
-
-<div *ngIf="currentStep === 1" class="bg-white rounded-lg  p-8 w-full max-w-2xl mx-auto">
-  <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center">
-    <i class="fas fa-file-alt mr-3 text-orange-500"></i>
-    Demande de Stage (1/2)
-  </h2>
-  <form [formGroup]="applicationForm" (ngSubmit)="goToStep2()" class="space-y-8">
-    <div class="space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Prénom -->
-        <div class="form-group">
-        <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-          <i class="fas fa-user mr-2 text-orange-500"></i>
-          Prénom <span class="text-red-500 ml-1">*</span>
-        </label>
-          <input type="text" formControlName="firstName"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="firstNameError"
-               class="text-red-500 text-sm mt-1 flex items-center">
-            <i class="fas fa-exclamation-circle mr-1"></i>
-            {{ firstNameError }}
+      <form [formGroup]="applicationForm" (ngSubmit)="goToStep2()" class="space-y-6">
+        <!-- Personal Information Grid -->
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- Prénom -->
+          <div class="form-group">
+            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-user mr-2 text-orange-500"></i>
+              Prénom <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input type="text" formControlName="firstName"
+                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
+            <div *ngIf="firstNameError"
+                 class="text-red-500 text-xs mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              {{ firstNameError }}
+            </div>
           </div>
-        </div>
 
         <!-- Nom -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-user mr-2 text-orange-500"></i>
             Nom <span class="text-red-500 ml-1">*</span>
           </label>
           <input type="text" formControlName="lastName"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
           <div *ngIf="lastNameError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ lastNameError }}
           </div>
         </div>
 
         <!-- Email -->
-        <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-            <i class="fas fa-envelope mr-2 text-orange-500"></i>
-            Email <span class="text-red-500 ml-1">*</span>
-          </label>
-          <input type="email" formControlName="email"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
-          <div *ngIf="emailError"
-               class="text-red-500 text-sm mt-1 flex items-center">
-            <i class="fas fa-exclamation-circle mr-1"></i>
-            {{ emailError }}
+          <!-- Email -->
+          <div class="form-group">
+            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+              <i class="fas fa-user mr-2 text-orange-500"></i>
+              Email <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input type="email" formControlName="email"
+                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
+            <div *ngIf="emailError"
+                 class="text-red-500 text-xs mt-1 flex items-center">
+              <i class="fas fa-exclamation-circle mr-1"></i>
+              {{ emailError }}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid md:grid-cols-3 gap-6">
         <!-- Date de naissance -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-calendar mr-2 text-orange-500"></i>
             Date de naissance <span class="text-red-500 ml-1">*</span>
           </label>
           <input type="date"
                  formControlName="birthDate"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
           <div *ngIf="birthDateError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ birthDateError }}
           </div>
@@ -75,15 +79,15 @@
 
         <!-- Lieu de naissance -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-map-marker-alt mr-2 text-orange-500"></i>
             Lieu de naissance <span class="text-red-500 ml-1">*</span>
           </label>
           <input type="text"
                  formControlName="birthPlace"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
           <div *ngIf="birthPlaceError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ birthPlaceError }}
           </div>
@@ -91,32 +95,32 @@
 
         <!-- Adresse -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-home mr-2 text-orange-500"></i>
             Adresse <span class="text-red-500 ml-1">*</span>
           </label>
           <input type="text"
                  formControlName="address"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
           <div *ngIf="addressError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ addressError }}
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid md:grid-cols-3 gap-6">
         <!-- Numéro de téléphone -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-phone mr-2 text-orange-500"></i>
             Numéro de téléphone <span class="text-red-500 ml-1">*</span>
           </label>
           <input type="tel" formControlName="phone"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
           <div *ngIf="phoneError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{phoneError}}
           </div>
@@ -124,15 +128,15 @@
 
         <!-- CNI -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-id-card mr-2 text-orange-500"></i>
             Numéro CNI <span class="text-red-500 ml-1">*</span>
           </label>
           <input type="text"
                  formControlName="cni"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
           <div *ngIf="cniError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ cniError }}
           </div>
@@ -140,30 +144,50 @@
 
         <!-- Nationalité -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-globe mr-2 text-orange-500"></i>
             Nationalité <span class="text-red-500 ml-1">*</span>
           </label>
-          <input type="text"
-                 formControlName="nationality"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+          <select
+            formControlName="nationality"
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
+          >
+            <option value="">Sélectionnez votre nationalité</option>
+            <option value="Sénégalaise">Sénégal</option>
+            <option value="Malienne">Mali</option>
+            <option value="Guinéenne">Guinée</option>
+            <option value="Ivoirienne">Côte d'Ivoire</option>
+            <option value="Burkinabé">Burkina Faso</option>
+            <option value="Camérounaise">Cameroun</option>
+            <option value="Autre">Autre</option>
+          </select>
+
+          <div *ngIf="shouldShowNationalityInput()"
+               class="mt-2">
+            <input
+              type="text"
+              formControlName="customNationality"
+              placeholder="Saisissez votre nationalité"
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
+          </div>
+
           <div *ngIf="nationalityError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ nationalityError }}
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid md:grid-cols-3 gap-6">
         <!-- Formation -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-book mr-2 text-orange-500"></i>
             Formation
           </label>
           <select formControlName="formation"
-                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
             <option value="">Sélectionnez une formation</option>
             <option value="INFORMATIQUE_SI">Informatique et Systèmes d'Information</option>
             <option value="GESTION_RH">Gestion des Ressources Humaines</option>
@@ -177,34 +201,34 @@
             <option value="COMMERCE">Commerce et Ventes</option>
           </select>
           <div *ngIf="formationError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ formationError }}
           </div>
         </div>
 
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-school mr-2 text-orange-500"></i>
             École/Universite <span class="text-red-500 ml-1">*</span>
           </label>
           <input type="text"
                  formControlName="school"
-                 class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
           <div *ngIf="schoolError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ schoolError }}
           </div>
         </div>
 
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-book mr-2 text-orange-500"></i>
             Niveau d'etudes <span class="text-red-500 ml-1">*</span>
           </label>
           <select formControlName="educationLevel"
-                  class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
             <option value="">Sélectionnez un niveau d'etudes</option>
             <option value="BAC">Bac+1</option>
             <option value="BAC_PLUS_2">Bac+2</option>
@@ -213,56 +237,55 @@
             <option value="BAC_PLUS_5">Bac+5</option>
           </select>
           <div *ngIf="educationLevelError"
-               class="text-red-500 text-sm mt-1 flex items-center">
+               class="text-red-500 text-xs mt-1 flex items-center">
             <i class="fas fa-exclamation-circle mr-1"></i>
             {{ educationLevelError }}
           </div>
         </div>
       </div>
-    </div>
+
 
     <!-- Bouton de Soumission -->
-    <div class="flex justify-center pt-4">
+    <div class="flex justify-center pt-6">
       <button type="submit"
-              (click)="goToStep2()"
-              class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-        <i class="fas fa-arrow-right mr-2"></i>
-        Suivant
+              class="group relative px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+            <span class="flex items-center">
+              <i class="fas fa-arrow-right mr-3 group-hover:translate-x-1 transition-transform"></i>
+              Suivant
+            </span>
       </button>
     </div>
-  </form>
+    </form>
 </div>
 
+    <!-- Step 2 -->
+    <div *ngIf="currentStep === 2" class="p-10">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-extrabold text-gray-800 flex items-center justify-center">
+          <i class="fas fa-file-alt mr-4 text-orange-500"></i>
+          Détails du Stage <span class="text-gray-400 ml-2">(2/2)</span>
+        </h2>
+        <p class="text-gray-500 mt-2">Précisez les détails de votre stage</p>
+      </div>
 
-
-
-  <!-- Ste  p2 -->
-
-  <div *ngIf="currentStep === 2" class="bg-white rounded-lg  p-8 w-full max-w-2xl mx-auto">
-    <h2 class="text-2xl font-bold text-gray-800 mb-8 flex items-center justify-center">
-      <i class="fas fa-file-alt mr-3 text-orange-500"></i>
-      Demande de Stage (2/2)
-    </h2>
-    <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="space-y-8">
-      <!-- Section Information sur le Stage -->
-      <div class="space-y-6">
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Stage Information Grid -->
+        <div class="grid md:grid-cols-2 gap-6">
           <!-- Type de Stage -->
           <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
               <i class="fas fa-graduation-cap mr-2 text-orange-500"></i>
               Type de Stage <span class="text-red-500 ml-1">*</span>
             </label>
             <select formControlName="type"
-                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
               <option value="">Sélectionnez un type</option>
               <option value="ACADEMIQUE">Stage Académique</option>
               <option value="PROFESSIONNEL">Stage Professionnel</option>
               <option value="PROJET_FIN_ETUDES">Projet Fin d'Études</option>
             </select>
             <div *ngIf="applicationForm.get('type')?.touched && applicationForm.get('type')?.invalid"
-                 class="text-red-500 text-sm mt-1 flex items-center">
+                 class="text-red-500 text-xs mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               Ce champ est requis
             </div>
@@ -270,12 +293,12 @@
 
           <!-- Direction -->
           <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
               <i class="fas fa-building mr-2 text-orange-500"></i>
               Direction Souhaitée <span class="text-red-500 ml-1">*</span>
             </label>
             <select formControlName="direction"
-                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
               <option value="">Sélectionnez une direction</option>
               <option value="dsi">Direction des Systèmes d'Information</option>
               <option value="drh">Direction des Ressources Humaines</option>
@@ -289,18 +312,18 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid md:grid-cols-2 gap-6">
           <!-- Date de début -->
           <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
-              <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>
+            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
+               <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>
               Date de début souhaitée <span class="text-red-500 ml-1">*</span>
             </label>
             <input type="date"
                    formControlName="startDate"
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
             <div *ngIf="applicationForm.get('startDate')?.touched && applicationForm.get('startDate')?.invalid"
-                 class="text-red-500 text-sm mt-1 flex items-center">
+                 class="text-red-500 text-xs mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               Ce champ est requis
             </div>
@@ -308,15 +331,15 @@
 
           <!-- Date de fin -->
           <div class="form-group">
-            <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
               <i class="fas fa-calendar-alt mr-2 text-orange-500"></i>
               Date de fin souhaitée <span class="text-red-500 ml-1">*</span>
             </label>
             <input type="date"
                    formControlName="endDate"
-                   class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all">
+                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 transition-all">
             <div *ngIf="applicationForm.get('endDate')?.touched && applicationForm.get('endDate')?.invalid"
-                 class="text-red-500 text-sm mt-1 flex items-center">
+                 class="text-red-500 text-xs mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               Ce champ est requis
             </div>
@@ -324,17 +347,16 @@
 
           <!-- Date Range Error -->
           <div *ngIf="dateRangeError"
-              class="text-red-500 text-sm mt-1 flex items-center col-span-2">
+               class="text-red-500 text-xs mt-1 flex items-center">
               <i class="fas fa-exclamation-circle mr-1"></i>
               {{ dateRangeError }}
           </div>
         </div>
-      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid md:grid-cols-2 gap-6">
         <!-- Upload CV -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-file-pdf mr-2 text-orange-500"></i>
             CV (PDF, DOCX, DOC) <span class="text-red-500 ml-1">*</span>
           </label>
@@ -346,14 +368,14 @@
                    (change)="onFileSelected($event, 'cv')"
                    accept=".pdf,.docx,.doc">
             <label for="cv-upload"
-                   class="flex items-center justify-between w-full p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                   class="flex items-center justify-between w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:bg-orange-50 transition-all">
               <div class="flex items-center truncate">
-                <i class="fas fa-upload mr-2 text-gray-400"></i>
+                <i class="fas fa-upload mr-3 text-gray-400"></i>
                 <span class="text-gray-500 truncate">
                   {{ selectedCV?.name || 'Choisir un fichier' }}
                 </span>
               </div>
-              <span class="bg-gray-100 px-3 py-1 rounded-md text-sm text-gray-600 flex-shrink-0">
+              <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-md text-sm">
                 Parcourir
               </span>
             </label>
@@ -370,7 +392,7 @@
 
         <!-- Upload Lettre de motivation -->
         <div class="form-group">
-          <label class="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+          <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center">
             <i class="fas fa-envelope mr-2 text-orange-500"></i>
             Lettre de motivation <span class="text-red-500 ml-1">*</span>
           </label>
@@ -382,14 +404,14 @@
                    (change)="onFileSelected($event, 'motivation')"
                    accept=".pdf,.docx,.doc">
             <label for="motivation-upload"
-                   class="flex items-center justify-between w-full p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                   class="flex items-center justify-between w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:bg-orange-50 transition-all">
               <div class="flex items-center truncate">
-                <i class="fas fa-upload mr-2 text-gray-400"></i>
+                <i class="fas fa-upload mr-3 text-gray-400"></i>
                 <span class="text-gray-500 truncate">
                   {{ selectedMotivationLetter?.name || 'Choisir un fichier' }}
                 </span>
               </div>
-              <span class="bg-gray-100 px-3 py-1 rounded-md text-sm text-gray-600 flex-shrink-0">
+              <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-md text-sm">
                 Parcourir
               </span>
             </label>
@@ -405,29 +427,31 @@
         </div>
       </div>
 
-      <div class="flex justify-between pt-4">
+      <div class="flex justify-between pt-6">
         <!-- Bouton Précédent -->
         <button type="button"
                 (click)="goToStep1()"
-                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-          <i class="fas fa-arrow-left mr-2"></i>
+                class="group relative px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all">
+          <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
           Précédent
         </button>
 
         <!-- Bouton Soumettre ma demande -->
         <button type="submit"
                 [disabled]="!applicationForm.valid || !selectedCV || !selectedMotivationLetter"
-                class="flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-          <i class="fas fa-paper-plane mr-2"></i>
-          Soumettre ma demande
+                class="group relative px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span class="flex items-center">
+              <i class="fas fa-paper-plane mr-3 group-hover:translate-x-1 transition-transform"></i>
+              Soumettre ma demande
+            </span>
         </button>
       </div>
-
     </form>
   </div>
-
+  </div>
+</div>
 <app-success-modal
   *ngIf="showModal" (close)="closeModal()"
   [email]="recipientEmail"
 ></app-success-modal>
-</div>
+

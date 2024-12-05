@@ -74,7 +74,7 @@ public class AppUser implements Serializable, UserDetails {
     @JsonIgnoreProperties(value = { "candidat", "appUser", "departement", "businessUnit" }, allowSetters = true)
     private Set<DemandeStage> demandeStages = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "appUser")
     @JsonIgnoreProperties(
         value = {
             "attestationFinStage",

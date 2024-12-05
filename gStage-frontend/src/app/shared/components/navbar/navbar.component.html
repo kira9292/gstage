@@ -1,30 +1,31 @@
 <div class="h-16 bg-white shadow-md z-10 flex items-center justify-between px-4">
   <!-- Section gauche avec menu hamburger et logo -->
   <div class="flex items-center space-x-4">
-    <button 
+    <button
       class="md:hidden p-2 rounded-full hover:bg-gray-100"
       (click)="toggleMenu()">
       <i class="fas fa-bars text-xl text-gray-600"></i>
     </button>
     <img src="assets/images/LOGO_SONATEL_HD_FB.JPG" alt="Sonatel Logo" class="h-10">
   </div>
-  
+
   <!-- Section des icônes à droite -->
-  <div class="flex items-center space-x-4">
+  <div *ngIf="userInfo!=null"
+    class="flex items-center space-x-4">
     <!-- Bouton notification -->
     <div class="relative">
-      <button 
+      <button
         class="p-2 rounded-full hover:bg-gray-100 relative"
         (click)="toggleNotificationsDropdown()">
         <i class="fas fa-bell text-xl text-gray-600"></i>
-        <span *ngIf="notificationCount > 0" 
+        <span *ngIf="notificationCount > 0"
           class="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
           {{ notificationCount }}
         </span>
       </button>
-      
+
       <!-- Notifications Dropdown -->
-      <div *ngIf="showNotificationsDropdown" 
+      <div *ngIf="showNotificationsDropdown"
         class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg z-20">
         <app-notifications-gwte
         (readed)="countNotification()"
@@ -33,7 +34,7 @@
       </div>
     </div>
 
-    
+
     <!-- Profil utilisateur -->
     <div class="flex items-center space-x-2">
       <i class="fas fa-user-circle text-2xl text-gray-600"></i>

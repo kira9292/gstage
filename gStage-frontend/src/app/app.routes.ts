@@ -53,7 +53,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard, RoleGuard],
         data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
-  
+
 
     {
       path: 'notifications',
@@ -77,6 +77,12 @@ export const routes: Routes = [
       canActivate: [AuthGuard, RoleGuard],
       data: {expectedRole: 'ROLE_STAGIAIRE'}
     },
+
+
+  {
+    path: 'application',
+    component: ApplicationsComponent
+  },
 
     {
       path: 'payments',
