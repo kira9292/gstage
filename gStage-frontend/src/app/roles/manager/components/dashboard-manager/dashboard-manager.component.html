@@ -3,10 +3,10 @@
     <h1 class="text-3xl font-bold text-gray-900 mb-6">Service {{managerInfos?.service}}</h1>
 
     <!-- Stats -->
-    <div class="grid grid-cols-2 gap-4 mb-6">
+    <div class="grid grid-cols-2 gap-4 mb-6 w-1/2">
       <div
         *ngFor="let stat of statsData"
-        class="bg-white rounded-xl shadow-sm p-4 border-l-4 flex items-center"
+        class="bg-white rounded-xl shadow-sm p-4 border-l-4 flex items-center "
         [ngClass]="stat.borderColor"
       >
       <div
