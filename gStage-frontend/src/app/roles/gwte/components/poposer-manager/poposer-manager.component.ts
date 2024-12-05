@@ -29,7 +29,7 @@ export class PoposerManagerComponent implements OnInit {
       demandeur: ['', [Validators.required]],
       direction: [{ value: '', disabled: true }, [Validators.maxLength(255)]],
       profilFormation: [{ value: '', disabled: true }, [Validators.required]],
-      stagiaire: [{ value: '1', disabled: true }, [Validators.maxLength(255)]],
+      stagiaire: [{ value: '', disabled: true }, [Validators.maxLength(255)]],
       commentaire: ['', [Validators.maxLength(500)]],
       motif: ['', [Validators.maxLength(500)]],
       traitement: ['ok', [Validators.maxLength(500)]]

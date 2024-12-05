@@ -1,15 +1,15 @@
-<div class="min-h-screen bg-gray-50 p-8">
+<div class="min-h-screen bg-gradient-to-br from-orange-50  bg-gray-50 p-8">
   <div class="max-w-6xl mx-auto">
     <h1 class="text-3xl font-bold text-gray-900 mb-6">Gestion des Demandes de Stage</h1>
-    
+
     <!-- Statistiques -->
     <div class="grid grid-cols-4 gap-4 mb-6">
-      <div 
-        *ngFor="let stat of statsData" 
+      <div
+        *ngFor="let stat of statsData"
         class="bg-white rounded-xl shadow-sm p-4 border-l-4 flex items-center"
         [ngClass]="stat.borderColor"
       >
-        <div 
+        <div
           class="rounded-full p-3 mr-4 flex items-center justify-center"
           [ngClass]="[stat.bgColor, stat.iconColor]"
         >
@@ -21,13 +21,13 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Search and Filters -->
     <div class="mb-6 flex justify-between items-center">
       <!-- Status Tabs -->
       <div class="flex gap-1">
-        <button 
-          *ngFor="let status of internshipStatuses" 
+        <button
+          *ngFor="let status of internshipStatuses"
           (click)="selectStatus(status)"
           class="px-3 py-2 text-sm font-medium transition-colors border-b-2"
           [ngClass]="selectedStatus === status ? 'text-blue-600 border-blue-500' : 'text-gray-600 border-transparent hover:text-gray-900 hover:border-gray-200'"
@@ -41,12 +41,12 @@
 
       <!-- Search -->
       <div class="w-1/3 relative">
-        <input 
-          type="text" 
+        <input
+          type="text"
           [(ngModel)]="searchTerm"
           (input)="applyFilters()"
           placeholder="Rechercher par nom, référence..."
-          class="w-full px-4 py-2 pl-10 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+          class="w-full px-10 py-2 pl-10 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
         >
         <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
       </div>
@@ -65,7 +65,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr 
+          <tr
             *ngFor="let demande of filteredDemandesStage"
             class="border-b last:border-b-0 hover:bg-gray-50 transition-colors"
           >
@@ -81,7 +81,7 @@
               {{ demande.candidat?.formation }}
             </td>
             <td class="px-4 py-3">
-              <span 
+              <span
                 [ngClass]="getInternshipStatusClass(demande.demandeStage.status)"
                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
               >
@@ -90,32 +90,32 @@
             </td>
             <td class="px-4 py-3 text-right">
               <div class="flex justify-end space-x-2">
-                <button 
+                <button
                   (click)="openDetailsModal(demande)"
                   class="text-blue-600 hover:text-blue-800 transition-colors font-semibold mr-2"
                 >
                   Détails <i class="fas fa-chevron-right ml-1"></i>
                 </button>
                 <div class="relative">
-                  <button 
+                  <button
                     class="text-gray-500 hover:text-gray-700 transition-colors"
                     (click)="toggleDropdown(demande)"
                   >
                     <i class="fas fa-ellipsis-v"></i>
                   </button>
-                  <div 
-                    *ngIf="demande.showDropdown" 
+                  <div
+                    *ngIf="demande.showDropdown"
                     class="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
                   >
                     <div class="py-1" role="menu">
-                      <button 
+                      <button
                         (click)="sendWelcomeEmail(demande)"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                         role="menuitem"
                       >
                         Envoyer mail de bienvenue
                       </button>
-                      <button 
+                      <button
                         *ngIf="canViewCV(demande)"
                         (click)="viewCV(demande)"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
@@ -123,7 +123,7 @@
                       >
                         Voir CV
                       </button>
-                      <button 
+                      <button
                         *ngIf="canDownloadCV(demande)"
                         (click)="downloadCV(demande)"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
@@ -131,7 +131,7 @@
                       >
                         Télécharger CV
                       </button>
-                      <button 
+                      <button
                         (click)="proposeToManager(demande)"
                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
                         role="menuitem"
@@ -146,10 +146,10 @@
           </tr>
         </tbody>
       </table>
-      
+
       <!-- Empty State -->
-      <div 
-        *ngIf="filteredDemandesStage.length === 0" 
+      <div
+        *ngIf="filteredDemandesStage.length === 0"
         class="text-center py-12"
       >
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
@@ -160,7 +160,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Modal Placeholder -->
   <ng-container *ngIf="selectedDetailsModal">
     <app-internship-details-modal
