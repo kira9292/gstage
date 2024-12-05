@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -148,8 +149,14 @@ public class ContratService {
 
 
             contrat.setDocs(documentBytes);
-            Candidat c = this.candidatRepository.findByEmail(validation.getCandidat().getEmail());
-            contrat.setCandidat(c);
+            List<Candidat> c = this.candidatRepository.findAllByEmail(validation.getCandidat().getEmail());
+            if (!c.isEmpty()) {
+                Candidat candidat = c.get(c.size() - 1);
+                // Traitez le dernier candidat
+                System.out.println("Dernier candidat : " + c);
+                contrat.setCandidat(candidat);
+            }
+
 
             contratRepository.save(contrat);
             return new ByteArrayResource(documentBytes);

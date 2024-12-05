@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -127,8 +128,15 @@ public class AttestationService {
             aFS.setReference(generateUniqueReference());
 
             aFS.setDocs(documentBytes);
-            Candidat c = this.cRepository.findByEmail(validation.getCandidat().getEmail());
-            c.setAttestationFinStage(aFS);
+            List<Candidat> candidats = this.cRepository.findAllByEmail(validation.getCandidat().getEmail());
+            if (!candidats.isEmpty()) {
+                Candidat c = candidats.get(candidats.size() - 1);
+                // Traitez le dernier candidat
+                System.out.println("Dernier candidat : " + c);
+                c.setAttestationFinStage(aFS);
+            }
+
+
 
             aFinStage.save(aFS);
             return new ByteArrayResource(documentBytes);
@@ -239,8 +247,14 @@ public class AttestationService {
 
 
             aP.setDocs(documentBytes);
-            Candidat c = this.cRepository.findByEmail(request.email());
-            aP.setCandidat(c);
+            List<Candidat> c = this.cRepository.findAllByEmail(request.email());
+            if (!c.isEmpty()) {
+                Candidat candidat = c.get(c.size() - 1);
+                // Traitez le dernier candidat
+                System.out.println("Dernier candidat : " + c);
+                aP.setCandidat(candidat);
+            }
+
 
             aPRepository.save(aP);
             return new ByteArrayResource(documentBytes);

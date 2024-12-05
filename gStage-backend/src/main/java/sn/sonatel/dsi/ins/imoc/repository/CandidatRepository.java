@@ -1,6 +1,7 @@
 package sn.sonatel.dsi.ins.imoc.repository;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sn.sonatel.dsi.ins.imoc.domain.AppUser;
 import sn.sonatel.dsi.ins.imoc.domain.Candidat;
@@ -18,7 +19,8 @@ public interface CandidatRepository extends JpaRepository<Candidat, Long> {
     Candidat findByValidationStatuscandidatCode(String code);
 
 
-    Candidat findByEmail(String email);
+
+    List<Candidat> findAllByEmail(String email);
 
     Candidat findByAppUser(AppUser user);
 }
