@@ -58,9 +58,14 @@ export class DashboardAdminComponent implements OnInit {
   depts: Departement[]=[];
   activeTab: string = 'users';
   serviceForm!: FormGroup;
+  departementsForm!: FormGroup;
   isServiceModalOpen: boolean = false;
+  isDepartementsModalOpen: boolean = false;
+  selectedService: any = null;
+
   isModalOpen1 = false;
   resetPasswordForm!: FormGroup;
+   selectedDept: any=null;
 
 
   constructor(
@@ -100,6 +105,11 @@ export class DashboardAdminComponent implements OnInit {
       name: ['',[Validators.required, Validators.minLength(2)]],
       description: [''],
       departmentId: ['',[Validators.required]],
+
+    });
+    this.departementsForm = this.fb.group({
+      name: ['',[Validators.required, Validators.minLength(2)]],
+      descriptions: [''],
 
     });
 
@@ -188,6 +198,17 @@ export class DashboardAdminComponent implements OnInit {
       this.serviceForm.reset();
     }
   }
+  openDeptModal(dept?: Departement): void {
+    this.isDepartementsModalOpen = true;
+    this.isSubmitting=false;
+    if (dept) {
+      this.selectedDept = dept;
+      this.departementsForm.patchValue(dept);
+    } else {
+      this.selectedDept = null;
+      this.departementsForm.reset();
+    }
+  }
 
   openModal1(userId: number) {
     this.isModalOpen1 = true;
@@ -208,6 +229,11 @@ export class DashboardAdminComponent implements OnInit {
     this.isServiceModalOpen = false;
     this.selectedService = null;
     this.serviceForm.reset();
+  }
+  closeDeptModal(): void {
+    this.isDepartementsModalOpen = false;
+    this.selectedDept = null;
+    this.departementsForm.reset();
   }
 
 
@@ -347,16 +373,59 @@ export class DashboardAdminComponent implements OnInit {
     }
   }
 
+  saveDept(): void {
+    console.log(this.departementsForm.valid);
+    console.log(this.departementsForm.value);
+
+    if (this.departementsForm.valid) {
+      const DeptData = this.departementsForm.value;
+
+      if (this.selectedDept) {
+        this.isSubmitting=true;
+        // Modification d'un service existant
+        const updatedDept = { ...this.selectedDept, ...DeptData };
+        this.adminService.updateDept(updatedDept).subscribe(
+          () => {
+            this.fetchDepartement();
+            this.closeDeptModal();
+          },
+          error => {
+            console.error('Erreur lors de la mise à jour du service:', error);
+          }
+        );
+      } else {
+        // Ajout d'un nouveau service
+        this.adminService.createDept(DeptData).subscribe(
+          () => {
+            this.fetchDepartement();
+            this.closeDeptModal();
+          },
+          error => {
+            console.error('Erreur lors de la création du service:', error);
+          }
+        );
+      }
+    }
+  }
 
 
-
-  selectedService: any = null;
 
   deleteService(serviceId: number): void {
     this.adminService.deleteService(serviceId).subscribe({
       next: () => {
         this.services = this.services.filter(service => service.id !== serviceId);
         console.log('Service supprimé:', serviceId);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la suppression du service:', err);
+      }
+    });
+  }
+  deleteDept(DeptId: number): void {
+    this.adminService.deleteDept(DeptId).subscribe({
+      next: () => {
+        this.depts = this.depts.filter(dept => dept.id !== DeptId);
+        console.log('Service supprimé:', DeptId);
       },
       error: (err) => {
         console.error('Erreur lors de la suppression du service:', err);

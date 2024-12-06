@@ -54,6 +54,32 @@ export class AdminServiceService {
     return this.http.delete<void>(`${this.apiUrl}/services/${serviceId}`);
   }
 
+  createDept(dept: Departement): Observable<Service> {
+    return this.http.post<Service>(this.apiUrl+'/departements', dept);
+  }
+  updateDept(dept: Departement): Observable<Service> {
+    return this.http.put<Service>(this.apiUrl+'/departements/'+dept.id, dept);
+  }
+
+  deleteDept(deptId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/departements/${deptId}`);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   getDepartement():Observable<Departement[]> {
     return this.http.get<Departement[]>(`${this.apiUrl}/departements`);

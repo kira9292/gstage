@@ -10,15 +10,17 @@
     <div class="bg-white rounded-xl shadow-sm p-1 inline-block mb-6">
       <nav class="flex space-x-1">
         <button
-          *ngFor="let tab of ['users', 'services']"
+          *ngFor="let tab of ['users', 'services','departements']"
           [class.bg-blue-100]="activeTab === tab"
           [class.text-blue-600]="activeTab === tab"
+          [class.text-blue-400]="activeTab === tab"
           class="px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
           (click)="activeTab = tab"
         >
           <i class="fas" [ngClass]="{
             'fa-users': tab === 'users',
             'fa-building': tab === 'services',
+            'fa-sitemap': tab === 'departements'
           }"></i>
           {{ tab | titlecase }}
         </button>
@@ -285,84 +287,132 @@
         </div>
       </div>
 
-      <!-- Onglet Rôles -->
-      <div *ngSwitchCase="'departments'" class="bg-white rounded-xl shadow-lg p-6">
+
+
+
+
+
+
+
+      <!-- Onglet departements -->
+      <div *ngSwitchCase="'departements'" class="bg-white rounded-xl shadow-lg p-6">
+
         <div class="flex justify-between items-center mb-6">
-          <h2 class="text-2xl font-bold text-gray-900">Gestion des Départements</h2>
+          <h2 class="text-2xl font-bold text-gray-900">Gestion des departements</h2>
           <button
+            (click)="openDeptModal()"
             class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             <i class="fas fa-plus"></i>
-            Nouveau Département
+            Nouveau separtement
           </button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Exemple de carte pour un département -->
-          <div class="bg-white p-6 rounded-xl border border-gray-200">
-            <div class="flex justify-between items-center mb-4">
-              <h3 class="font-semibold text-lg">Département Informatique</h3>
+          <!-- Cartes des services -->
+          <div
+            *ngFor="let dept of depts"
+            class="bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-500 transition-colors"
+          >
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-semibold text-lg">{{ dept.name }}</h3>
+                <p class="text-sm text-gray-600 mt-1"> description: {{ dept.description }}</p>
+              </div>
               <div class="flex gap-2">
                 <button
-                  class="text-gray-600 hover:text-blue-600"
-                  title="Modifier"
+                  class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                  (click)="openDeptModal(dept)"
                 >
                   <i class="fas fa-edit"></i>
+
                 </button>
                 <button
-                  class="text-gray-600 hover:text-red-600"
-                  title="Supprimer"
+                  class="p-2 text-red-600 hover:bg-red-50 rounded-lg"
+                  (click)="deleteDept(dept.id)"
                 >
-                  <i class="fas fa-trash-alt"></i>
+                  <i class="fas fa-trash"></i>
                 </button>
               </div>
             </div>
-            <p class="text-sm text-gray-600">
-              Responsable: <span class="font-medium text-gray-800">Jean Dupont</span>
-            </p>
-
-            <div class="mt-4">
-              <h4 class="text-sm font-medium text-gray-600">Services associés</h4>
-              <ul class="mt-2 space-y-2">
-                <li class="flex justify-between items-center">
-                  <div class="flex items-center">
-                    <i class="fas fa-circle text-blue-500 text-xs mr-2"></i>
-                    <span class="text-sm">Développement Logiciel</span>
+            <div *ngIf="isDepartementsModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div class="bg-white p-6 rounded-xl w-full max-w-lg">
+                <h2 class="text-xl font-semibold mb-4">{{ selectedDept ? 'Modifier un departement' : 'Ajouter un departement' }}</h2>
+                <form [formGroup]="departementsForm" (ngSubmit)="saveDept()">
+                  <div class="mb-4">
+                    <label class="block text-sm font-medium">Nom</label>
+                    <input
+                      type="text"
+                      formControlName="name"
+                      class="w-full px-4 py-2 border rounded"
+                    />
+                    <div *ngIf="serviceNameError" class="text-red-500 text-sm">
+                      {{ serviceNameError }}
+                    </div>
                   </div>
-                  <div class="flex gap-2">
-                    <button
-                      class="text-gray-600 hover:text-blue-600"
-                      title="Modifier"
-                    >
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button
+                  <div class="mb-4">
+                    <label for="description" class="block text-sm font-medium">Description</label>
+                    <textarea id="descriptions" formControlName="description"
+                              class="w-full px-4 py-2 border rounded"
+                    ></textarea>
+                  </div>
 
-                      class="text-gray-600 hover:text-red-600"
-                      title="Supprimer"
-                    >
-                      <i class="fas fa-trash-alt"></i>
+                  <div class="flex justify-end mt-6">
+                    <button type="button" (click)="closeDeptModal()" class="bg-gray-200 px-4 py-2 rounded mr-2">Annuler</button>
+                    <button type="submit" [disabled]="departementsForm.invalid "
+                            class="bg-blue-500 text-white px-4 py-2 rounded">
+                           Enregistrer
                     </button>
                   </div>
-                </li>
-                <!-- Répétez pour chaque service -->
-              </ul>
-              <button
+                </form>
+              </div>
+            </div>
 
-                class="flex items-center gap-2 text-blue-600 text-sm mt-4"
-              >
-                <i class="fas fa-plus"></i>
-                Ajouter un service
-              </button>
+          </div>
+          <!-- Carte d'ajout -->
+          <div
+            (click)="openDeptModal()"
+            class="bg-gray-50 p-6 rounded-xl border border-dashed border-gray-300 hover:border-blue-500 transition-colors cursor-pointer"
+          >
+            <div class="text-center">
+              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-plus text-blue-600"></i>
+              </div>
+              <h3 class="font-semibold text-gray-900">Ajouter un departements</h3>
+              <p class="text-sm text-gray-600 mt-1">Créer un nouveau departements</p>
             </div>
           </div>
-          <!-- Répétez ce bloc pour chaque département -->
+
+
         </div>
+
+
       </div>
-
-
-    </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!-- Formulaire Modal -->
   <div *ngIf="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -470,6 +520,9 @@
       </form>
     </div>
   </div>
+  </div>
+
+
 
 
 
