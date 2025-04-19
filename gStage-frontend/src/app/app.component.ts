@@ -9,6 +9,7 @@ import { AuthService } from './core/services/auth.service';
 import { SidebarGwteComponent } from './shared/components/sidebar-gwte/sidebar-gwte.component';
 import { SidebarManagerComponent } from "./shared/components/sidebar-manager/sidebar-manager.component";
 import { SidebarAdminComponent } from "./shared/components/sidebar-admin/sidebar-admin.component";
+import { AIAgentComponent } from './shared/components/ai-agent/ai-agent.component';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { SidebarAdminComponent } from "./shared/components/sidebar-admin/sidebar
     CommonModule,
     SidebarGwteComponent,
     SidebarManagerComponent,
-    SidebarAdminComponent
+    SidebarAdminComponent,
+    AIAgentComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
