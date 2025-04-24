@@ -9,7 +9,7 @@ import { AuthService } from './core/services/auth.service';
 import { SidebarGwteComponent } from './shared/components/sidebar-gwte/sidebar-gwte.component';
 import { SidebarManagerComponent } from "./shared/components/sidebar-manager/sidebar-manager.component";
 import { SidebarAdminComponent } from "./shared/components/sidebar-admin/sidebar-admin.component";
-import { AIAgentComponent } from './shared/components/ai-agent/ai-agent.component';
+import {ChatAssistantComponent} from "./shared/chat-assistant/chat-assistant.component";
 
 
 @Component({
@@ -24,8 +24,8 @@ import { AIAgentComponent } from './shared/components/ai-agent/ai-agent.componen
     SidebarGwteComponent,
     SidebarManagerComponent,
     SidebarAdminComponent,
-    AIAgentComponent
-],
+    ChatAssistantComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -41,14 +41,14 @@ export class AppComponent {
   // Vérifie si on est sur une page d'authentification
   isAuthPage(): boolean {
     const currentRoute = this.router.url;
-    return currentRoute.includes('/login') || 
+    return currentRoute.includes('/login') ||
            currentRoute.includes('/register') ||
            currentRoute.includes('/inscription') ||
            currentRoute.includes('/connexion');
   }
 
 
-  
+
     // Affiche le sidebar si l'utilisateur est authentifié et est ROLE_STAGIAIRE
     showSidebarStagiaire(): boolean {
       return this.authService.isAuthenticated() && this.authService.hasRole('ROLE_STAGIAIRE');
@@ -67,7 +67,7 @@ export class AppComponent {
     isAuthenticated(): boolean {
       return this.authService.isAuthenticated();
     }
-  
+
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;

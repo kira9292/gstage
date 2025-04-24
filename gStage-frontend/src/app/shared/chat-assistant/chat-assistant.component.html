@@ -1,0 +1,154 @@
+<!-- src/app/shared/chat-assistant/chat-assistant.component.html -->
+<div class="chat-assistant-container" [class.open]="isOpen">
+  <!-- Icône flottante pour ouvrir le chat -->
+  <div class="chat-button" (click)="toggleChat()" [class.open]="isOpen" matTooltip="Assistant GStage">
+    <div class="chat-button-content">
+      <mat-icon class="agent-icon">support_agent</mat-icon>
+      <div class="pulse-effect"></div>
+    </div>
+  </div>
+
+  <!-- Fenêtre de chat -->
+  <div class="chat-window" *ngIf="isOpen" @fadeInOut>
+    <!-- En-tête du chat -->
+    <div class="chat-header">
+      <div class="assistant-info">
+        <div class="assistant-avatar">
+          <mat-icon>support_agent</mat-icon>
+        </div>
+        <div class="assistant-details">
+          <h3>Assistant GStage</h3>
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span class="status-text">En ligne</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu d'actions -->
+      <div class="header-actions">
+        <button mat-icon-button [matMenuTriggerFor]="roleMenu" aria-label="Menu des actions">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #roleMenu="matMenu" xPosition="before">
+          <button mat-menu-item (click)="confirmClearConversation()">
+            <mat-icon color="warn">delete_sweep</mat-icon>
+            <span>Effacer toute la conversation</span>
+          </button>
+          <button mat-menu-item (click)="toggleChat()">
+            <mat-icon>close</mat-icon>
+            <span>Fermer le chat</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+
+    <!-- Corps du chat -->
+    <div class="chat-body" #chatBody>
+      <div class="messages-container" #messagesContainer>
+        <!-- Message de bienvenue -->
+        <div class="welcome-message" *ngIf="messages.length === 0" @fadeIn>
+          <h3>Bonjour</h3>
+          <p>Je suis l'assistant GStage et je suis là pour vous aider avec
+            {{ getUserRoleDescription() }}.
+          </p>
+          <p>Comment puis-je vous aider aujourd'hui ?</p>
+        </div>
+
+        <!-- Messages -->
+        <div *ngFor="let message of messages" class="message" [ngClass]="message.sender" @messageAnimation>
+          <div class="message-content">
+            {{ formatLongMessage(message.content) }}
+            <div *ngIf="message.content.length > 500" class="read-more">
+              <button mat-button color="primary" (click)="message.showFull = !message.showFull">
+                {{ message.showFull ? 'Voir moins' : 'Voir plus' }}
+              </button>
+            </div>
+            <button mat-icon-button class="delete-message" (click)="deleteMessage(message)" matTooltip="Supprimer le message">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+          <div class="message-time">
+            {{ message.timestamp | date:'HH:mm' }}
+          </div>
+        </div>
+
+        <!-- Indicateur de frappe -->
+        <div *ngIf="isTyping" class="message assistant typing" @fadeIn>
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <!-- Barre de progression d'upload -->
+        <div *ngIf="isUploading" class="upload-progress">
+          <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+          <span class="upload-text">Envoi en cours... {{ uploadProgress }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestions de questions -->
+    <div class="suggested-questions" *ngIf="!isTyping && shouldShowSuggestions()" @fadeIn>
+      <p>Questions fréquentes :</p>
+      <div class="questions-container">
+        <button mat-stroked-button
+                *ngFor="let question of suggestedQuestions"
+                (click)="sendMessage(question.text)">
+          {{ question.text }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Réponses rapides -->
+    <div class="quick-replies" *ngIf="!isTyping && messages.length > 0" @fadeIn>
+      <div class="quick-replies-container">
+        <button mat-stroked-button
+                *ngFor="let reply of quickReplies"
+                (click)="sendQuickReply(reply)">
+          {{ reply }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Pied de page avec zone de saisie -->
+    <div class="chat-footer">
+      <div class="file-upload">
+        <input type="file" 
+               id="fileInput" 
+               (change)="handleFileInput($event)" 
+               [disabled]="isTyping || isUploading"
+               accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+               style="display: none">
+        <label for="fileInput" matTooltip="Joindre un fichier (max 5MB)">
+          <mat-icon>attach_file</mat-icon>
+        </label>
+      </div>
+      
+      <mat-form-field appearance="outline" class="message-input">
+        <input matInput
+               type="text"
+               placeholder="Tapez votre message..."
+               [(ngModel)]="currentMessage"
+               (keyup.enter)="sendMessage()"
+               [disabled]="isTyping || isUploading">
+        <button *ngIf="currentMessage"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                (click)="currentMessage=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      
+      <button mat-fab
+              color="primary"
+              (click)="sendMessage()"
+              [disabled]="!currentMessage || isTyping || isUploading">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
