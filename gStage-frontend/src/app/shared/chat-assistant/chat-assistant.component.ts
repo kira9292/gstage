@@ -124,12 +124,6 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     welcomeMessage: null
   };
 
-  // Préférences utilisateur
-  private userPreferences = {
-    prefersShortAnswers: false,
-    prefersDetailedAnswers: false,
-    prefersTechnicalLanguage: false
-  };
 
   // État interne
   private messageHistory: string[] = [];
@@ -203,7 +197,6 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
   private initializeState(): void {
     this.quickReplies = [...CONFIG.DEFAULT_QUICK_REPLIES];
     this.updateSuggestedQuestions();
-    this.loadUserPreferences();
     this.checkRecentActivity();
 
     if (this.chatService.hasRecentConversation()) {
@@ -256,10 +249,6 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  toggleTheme(): void {
-    document.body.classList.toggle('dark-mode');
-  }
-
   onEnterPress(event: Event): void {
     const keyboardEvent = event as KeyboardEvent;
 
@@ -292,8 +281,6 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     if (this.messageHistory.length > CONFIG.MAX_CONTEXT_MESSAGES) {
       this.messageHistory.shift();
     }
-
-    this.analyzeUserPreferences(message);
   }
 
   private sendWelcomeMessage(): void {
@@ -314,9 +301,6 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     }, typingDelay);
   }
 
-  changeUserRole(role: UserRole): void {
-    this.chatService.setUserRole(role);
-  }
 
   getUserRoleDescription(): string {
     return this.chatService.getRoleDescription(this.userRole);
@@ -409,6 +393,8 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     }, uploadSpeed);
   }
 
+
+
   private completeFileUpload(file: File): void {
     this.isUploading = false;
     this.uploadProgress = 0;
@@ -416,6 +402,32 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     this.chatService.sendMessage(`Fichier "${file.name}" envoyé avec succès`);
     this.scheduleScrollToBottom();
   }
+
+  private getFileIcon(file: File): string {
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+
+    switch (fileExtension) {
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'image';  // Utilise une icône d'image
+      case 'pdf':
+        return 'picture_as_pdf';  // Icône PDF
+      case 'doc':
+      case 'docx':
+        return 'article';  // Icône Word
+      case 'xls':
+      case 'xlsx':
+        return 'table_chart';  // Icône Excel
+      case 'ppt':
+      case 'pptx':
+        return 'presentation';  // Icône PowerPoint
+      default:
+        return 'attach_file';  // Icône générique pour autres fichiers
+    }
+  }
+
 
   // Gestion des réponses rapides
   private handleQuickRepliesDisplay(): void {
@@ -474,7 +486,7 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
     // Ajouter les réponses par défaut
-    replies.push('Merci', 'Plus de détails');
+    replies.push('Merci', 'D\'accord');
 
     // Tronquer les réponses trop longues
     return replies.map(reply =>
@@ -482,44 +494,8 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
     );
   }
 
-  // Préférences utilisateur
-  private loadUserPreferences(): void {
-    const savedPreferences = localStorage.getItem('chat_preferences');
-    if (savedPreferences) {
-      this.userPreferences = JSON.parse(savedPreferences);
-    }
-  }
 
-  private saveUserPreferences(): void {
-    localStorage.setItem('chat_preferences', JSON.stringify(this.userPreferences));
-  }
 
-  private analyzeUserPreferences(message: string): void {
-    const normalizedMessage = message.toLowerCase();
-
-    if (normalizedMessage.includes('court') || normalizedMessage.includes('bref') || normalizedMessage.includes('résumé')) {
-      this.userPreferences.prefersShortAnswers = true;
-      this.userPreferences.prefersDetailedAnswers = false;
-    } else if (normalizedMessage.includes('détail') || normalizedMessage.includes('explication') || normalizedMessage.includes('complet')) {
-      this.userPreferences.prefersDetailedAnswers = true;
-      this.userPreferences.prefersShortAnswers = false;
-    }
-
-    if (normalizedMessage.includes('technique') || normalizedMessage.includes('spécifique') || normalizedMessage.includes('expert')) {
-      this.userPreferences.prefersTechnicalLanguage = true;
-    }
-
-    this.saveUserPreferences();
-  }
-
-  formatLongMessage(message: string): string {
-    if (this.userPreferences.prefersShortAnswers) {
-      return message.length > 300 ? message.substring(0, 300) + '...' : message;
-    } else if (this.userPreferences.prefersDetailedAnswers) {
-      return message;
-    }
-    return message.length > 500 ? message.substring(0, 500) + '...' : message;
-  }
 
   // Gestion des messages personnalisés
   private getPersonalizedWelcomeMessage(): string {
@@ -573,16 +549,5 @@ export class ChatAssistantComponent implements OnInit, AfterViewInit, OnDestroy 
       duration: 3000,
       panelClass: ['error-snackbar']
     });
-  }
-
-  resetDiscussion(): void {
-    this.chatService.resetDiscussion();
-    this.hideQuickReplies();
-    this.welcomeMessageSent = false;
-
-    // Envoyer un nouveau message de bienvenue après réinitialisation
-    if (this.isOpen) {
-      this.sendWelcomeMessage();
-    }
   }
 }

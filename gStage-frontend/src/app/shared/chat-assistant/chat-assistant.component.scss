@@ -282,35 +282,77 @@ $border-color: #E5E7EB;
     flex-direction: column;
 
     .welcome-message {
-      background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
-      padding: 20px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      padding: 24px;
       border-radius: 16px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.1);
+      margin: 20px auto;
+      max-width: 700px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+      animation: fadeInUp 0.5s ease;
 
-      h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        font-weight: 600;
-        color: #4F46E5;
+      .welcome-header {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 20px;
 
-        &::after {
-          content: '👋';
-          margin-left: 8px;
+        .emoji {
+          font-size: 32px;
+        }
+
+        h3 {
+          margin: 0;
           font-size: 20px;
+          font-weight: 600;
+          color: #1F2937;
+        }
+
+        p {
+          margin: 4px 0 0;
+          font-size: 15px;
+          color: #6B7280;
         }
       }
 
-      p {
-        margin: 8px 0;
-        font-size: 14px;
-        line-height: 1.5;
-        color: #4B5563;
+      .welcome-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+
+        .suggestion-btn {
+          background-color: #FFFFFF;
+          color: #374151;
+          border: 1px solid #D1D5DB;
+          padding: 10px 16px;
+          border-radius: 10px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+          &:hover {
+            background-color: #F3F4F6;
+            border-color: #9CA3AF;
+          }
+        }
       }
     }
   }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+
 }
 
 // Message groups - new feature
@@ -1081,133 +1123,89 @@ $border-color: #E5E7EB;
 
 /* Nouveau conteneur pour les interactions (suggestions et réponses rapides) */
 .interactions-container {
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.9);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.95);
   position: sticky;
   bottom: 0;
   z-index: 10;
-  backdrop-filter: blur(5px);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+  border-top: 1px solid #e5e7eb;
 
-  .suggested-questions, .quick-replies {
-    margin-bottom: 0.5rem;
+  .section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-    p {
-      font-size: 0.8rem;
-      color: #666;
-      margin-bottom: 0.5rem;
+  .carousel {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+
+    &::-webkit-scrollbar {
+      height: 4px;
     }
 
-    .questions-carousel, .quick-replies-carousel {
-      display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-
-      &::-webkit-scrollbar {
-        height: 4px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 2px;
-      }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.15);
+      border-radius: 4px;
     }
   }
 
-  .suggestion-chip, .quick-reply-chip {
+  .chip {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 9999px;
     white-space: nowrap;
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    background: #f5f5f5;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-    cursor: pointer;
+    border: 1px solid transparent;
+    background: #f9fafb;
+    color: #374151;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
     &:hover {
-      background: #e0e0e0;
+      background: #eff6ff;
       transform: translateY(-1px);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
     }
 
     &:active {
-      transform: translateY(0);
+      transform: scale(0.97);
       box-shadow: none;
     }
 
     &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
+      opacity: 0.6;
+      pointer-events: none;
     }
   }
-}
 
-/* Style pour les suggestions */
-.suggested-questions {
-  p {
-    margin: 0 0 6px 0;
-    font-size: 12px;
-    color: #666;
-    font-weight: 500;
-  }
-}
+  .suggestion-chip {
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    color: #4f46e5;
 
-.questions-carousel, .quick-replies-carousel {
-  display: flex;
-  overflow-x: auto;
-  gap: 8px;
-  padding-bottom: 6px;
-  scrollbar-width: thin;
-
-  &::-webkit-scrollbar {
-    height: 4px;
+    &:hover {
+      background: #e0e7ff;
+    }
   }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
-}
+  .quick-reply-chip {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    color: #0284c7;
 
-/* Style pour les chips de suggestion et réponse rapide */
-.suggestion-chip, .quick-reply-chip {
-  white-space: nowrap;
-  padding: 4px 12px;
-  border-radius: 18px;
-  font-size: 13px;
-  height: unset;
-  line-height: 24px;
-  background-color: white;
-
-  &:hover {
-    background-color: #f0f4ff;
-  }
-}
-
-.quick-reply-chip {
-  background-color: #f0f4ff;
-  color: #4285f4;
-
-  &:hover {
-    background-color: #e4ebfa;
-  }
-}
-
-/* Animation pour les suggestions */
-@keyframes slideInUp {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
+    &:hover {
+      background: #e0f2fe;
+    }
   }
 }
 

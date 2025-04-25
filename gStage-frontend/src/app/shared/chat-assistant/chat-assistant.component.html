@@ -32,47 +32,12 @@
         </div>
       </div>
 
-      <div class="header-actions">
-        <button mat-icon-button
-                aria-label="Changer de rôle"
-                [matMenuTriggerFor]="roleMenu"
-                matTooltip="Changer de profil"
-                class="role-button">
-          <mat-icon>person</mat-icon>
-        </button>
-        <mat-menu #roleMenu="matMenu">
-          <button mat-menu-item (click)="changeUserRole('candidate')" [class.active]="userRole === 'candidate'">
-            <mat-icon>school</mat-icon>
-            <span>Étudiant</span>
-          </button>
-          <button mat-menu-item (click)="changeUserRole('evaluator')" [class.active]="userRole === 'evaluator'">
-            <mat-icon>business</mat-icon>
-            <span>Évaluateur</span>
-          </button>
-          <button mat-menu-item (click)="changeUserRole('hr')" [class.active]="userRole === 'hr'">
-            <mat-icon>supervisor_account</mat-icon>
-            <span>RH</span>
-          </button>
-        </mat-menu>
+      <button mat-icon-button
+              (click)="confirmClearConversation()"
+              matTooltip="Effacer la conversation">
+        <mat-icon>delete_sweep</mat-icon>
+      </button>
 
-        <button mat-icon-button [matMenuTriggerFor]="optionsMenu" aria-label="Options du chat">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #optionsMenu="matMenu" xPosition="before">
-          <button mat-menu-item (click)="confirmClearConversation()">
-            <mat-icon color="warn">delete_sweep</mat-icon>
-            <span>Effacer la conversation</span>
-          </button>
-          <button mat-menu-item (click)="toggleTheme()">
-            <mat-icon>brightness_6</mat-icon>
-            <span>Changer le thème</span>
-          </button>
-          <button mat-menu-item (click)="toggleChat()">
-            <mat-icon>close</mat-icon>
-            <span>Fermer</span>
-          </button>
-        </mat-menu>
-      </div>
     </div>
 
     <!-- Corps du chat amélioré -->
@@ -80,16 +45,23 @@
       <div class="messages-container" #messagesContainer>
         <!-- Message de bienvenue -->
         <div class="welcome-message" *ngIf="messages.length === 0" @fadeIn>
-          <h3>👋 Bienvenue sur GStage !</h3>
-          <p>Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?</p>
+          <div class="welcome-header">
+            <span class="emoji">👋</span>
+            <div>
+              <h3>Bienvenue sur GStage</h3>
+              <p>Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui&nbsp;?</p>
+            </div>
+          </div>
+
           <div class="welcome-suggestions">
-            <button mat-stroked-button *ngFor="let question of suggestedQuestions"
+            <button *ngFor="let question of suggestedQuestions"
                     (click)="sendMessage(question.text)"
-                    class="welcome-suggestion">
+                    class="suggestion-btn">
               {{ question.text }}
             </button>
           </div>
         </div>
+
 
         <!-- Messages -->
         <div *ngFor="let message of messages"
@@ -133,13 +105,13 @@
 
     <!-- Interactions: suggestions et réponses rapides améliorées -->
     <div class="interactions-container" *ngIf="!isTyping && (shouldShowSuggestions() || showQuickReplies)">
-      <!-- Suggestions améliorées -->
+      <!-- Suggestions -->
       <div class="suggested-questions" *ngIf="shouldShowSuggestions()" @slideInUp>
-        <p>Suggestions pour vous :</p>
-        <div class="questions-carousel">
-          <button mat-stroked-button *ngFor="let question of suggestedQuestions"
+        <div class="section-title">💡 Suggestions pour vous :</div>
+        <div class="carousel questions-carousel">
+          <button *ngFor="let question of suggestedQuestions"
                   (click)="sendMessage(question.text)"
-                  class="suggestion-chip"
+                  class="chip suggestion-chip"
                   [matTooltip]="question.text"
                   [disabled]="isTyping">
             {{ question.text }}
@@ -147,13 +119,13 @@
         </div>
       </div>
 
-      <!-- Réponses rapides améliorées -->
+      <!-- Réponses rapides -->
       <div class="quick-replies" *ngIf="showQuickReplies" @slideInUp>
-        <p>Réponses rapides :</p>
-        <div class="quick-replies-carousel">
-          <button mat-stroked-button *ngFor="let reply of quickReplies"
+        <div class="section-title">⚡ Réponses rapides :</div>
+        <div class="carousel quick-replies-carousel">
+          <button *ngFor="let reply of quickReplies"
                   (click)="sendQuickReply(reply)"
-                  class="quick-reply-chip"
+                  class="chip quick-reply-chip"
                   [matTooltip]="reply"
                   [disabled]="isTyping">
             {{ reply }}
@@ -161,6 +133,8 @@
         </div>
       </div>
     </div>
+
+
 
     <!-- Pied de chat amélioré -->
     <div class="chat-footer">
@@ -206,12 +180,6 @@
               matTooltip="Envoyer">
         <mat-icon class="send-icon">send</mat-icon>
       </button>
-    </div>
-
-    <!-- Indicateur de confidentialité amélioré -->
-    <div class="privacy-notice">
-      <mat-icon class="privacy-icon">lock</mat-icon>
-      <span class="confidentiality">Vos conversations sont confidentielles et ne sont pas conservées</span>
     </div>
   </div>
 </div>

@@ -88,7 +88,7 @@ export class ChatAssistantService {
   private extractTopics(message: string): void {
     const topics = ['candidature', 'entretien', 'cv', 'lettre', 'stage', 'entreprise', 'formation', 'compétences'];
     const normalizedMessage = message.toLowerCase();
-    
+
     topics.forEach(topic => {
       if (normalizedMessage.includes(topic)) {
         this.conversationTopics.add(topic);
@@ -234,7 +234,7 @@ export class ChatAssistantService {
     const baseDelay = 500;
     const lengthDelay = response.length * 5;
     const moodDelay = this.conversationMood === 'positive' ? -200 : this.conversationMood === 'negative' ? 200 : 0;
-    
+
     return Math.min(baseDelay + lengthDelay + moodDelay, 3000);
   }
 
@@ -245,7 +245,7 @@ export class ChatAssistantService {
 
     // Générer une réponse basée sur le contexte et l'humeur
     let response = this.generateBaseResponse(normalizedQuery, currentRole);
-    
+
     // Personnaliser la réponse selon l'humeur
     if (this.conversationMood === 'positive') {
       response = this.addPositiveTone(response);
@@ -268,7 +268,7 @@ export class ChatAssistantService {
     const normalizedQuery = query.toLowerCase();
 
     // Gérer les requêtes liées à l'analyse du CV
-    if (normalizedQuery.includes('analyser') || normalizedQuery.includes('analyse') || normalizedQuery.includes('cv')) {
+    if (normalizedQuery.includes('analyser') || normalizedQuery.includes('analyse')) {
       if (this.cvAnalysisInProgress) {
         return "L'analyse de votre CV est en cours. Veuillez patienter quelques instants...";
       }
@@ -301,40 +301,12 @@ export class ChatAssistantService {
       } else if (normalizedQuery.includes('questions') || normalizedQuery.includes('poser') || normalizedQuery.includes('demander')) {
         return "Questions pertinentes à poser en entretien :\n\n- Quelles seront mes principales missions ?\n- Comment se déroule une journée type ?\n- Quel est le processus d'intégration ?\n- Quelles sont les opportunités de formation ?\n- Comment se passe le suivi et l'évaluation ?\n- Quelles sont les perspectives d'évolution ?\n- Comment se déroule le travail en équipe ?\n- Quels sont les projets en cours ?\n- Quelle est la culture d'entreprise ?\n- Quels sont les défis actuels de l'entreprise ?";
       }
-    } else if (role === 'evaluator') {
-      if (normalizedQuery.includes('critères') || normalizedQuery.includes('évaluation')) {
-        return "Les critères d'évaluation recommandés pour les candidats sont :\n\n- Compétences techniques en adéquation avec le poste\n- Expériences pertinentes (projets, stages précédents)\n- Formation académique\n- Qualités personnelles et soft skills\n- Motivation et connaissance de l'entreprise\n- Potentiel d'intégration à l'équipe\n- Capacité d'adaptation et d'apprentissage\n- Qualité de la communication\n- Réalisations et projets personnels\n- Références et recommandations\n\nVous pouvez créer une grille d'évaluation personnalisée dans l'outil.";
-      } else if (normalizedQuery.includes('entretien') || normalizedQuery.includes('interview')) {
-        return "Pour conduire un entretien efficace :\n\n- Préparez vos questions à l'avance et structurez l'entretien\n- Commencez par mettre le candidat à l'aise\n- Posez des questions ouvertes et comportementales\n- Utilisez la méthode STAR (Situation, Tâche, Action, Résultat)\n- Laissez au candidat l'opportunité de poser ses questions\n- Prenez des notes pendant l'entretien\n- Évaluez la motivation et l'intérêt pour le poste\n- Testez les compétences techniques si nécessaire\n- Observez le langage non-verbal\n- Donnez des informations claires sur le poste et l'entreprise";
-      } else if (normalizedQuery.includes('feedback') || normalizedQuery.includes('retour')) {
-        return "Pour donner un feedback constructif :\n\n1. Remplissez la grille d'évaluation dans l'onglet 'Candidatures'\n2. Soyez spécifique et objectif dans vos commentaires\n3. Équilibrez points forts et axes d'amélioration\n4. Soutenez vos observations par des exemples concrets\n5. Soumettez votre évaluation via la plateforme\n6. Utilisez un langage professionnel et constructif\n7. Proposez des pistes d'amélioration\n8. Respectez les délais impartis\n\nTous les évaluateurs recevront une notification pour consulter vos commentaires.";
-      } else if (normalizedQuery.includes('comparaison') || normalizedQuery.includes('sélection')) {
-        return "Pour comparer efficacement les candidats :\n\n- Utilisez la grille d'évaluation standardisée\n- Comparez les compétences techniques requises\n- Évaluez l'expérience et les réalisations\n- Considérez le potentiel d'évolution\n- Prenez en compte la culture d'entreprise\n- Analysez les références et recommandations\n- Comparez les attentes salariales\n- Évaluez la disponibilité et la flexibilité\n- Considérez les soft skills et l'adaptabilité\n- Organisez des réunions de débriefing avec l'équipe";
-      } else if (normalizedQuery.includes('questions') || normalizedQuery.includes('poser') || normalizedQuery.includes('entretien')) {
-        return "Questions recommandées pour l'entretien :\n\n- Parlez-moi de votre parcours académique\n- Quelles sont vos principales réalisations ?\n- Comment gérez-vous les situations difficiles ?\n- Pourquoi souhaitez-vous ce stage ?\n- Quelles sont vos attentes ?\n- Comment travaillez-vous en équipe ?\n- Quels sont vos points forts et axes d'amélioration ?\n- Où vous voyez-vous dans 5 ans ?\n- Qu'avez-vous appris de vos expériences précédentes ?\n- Comment vous organisez-vous face aux deadlines ?";
-      } else if (normalizedQuery.includes('cas') || normalizedQuery.includes('particulier') || normalizedQuery.includes('difficile')) {
-        return "Pour gérer les cas particuliers :\n\n- Consultez la politique de l'entreprise\n- Documentez tous les cas particuliers\n- Impliquez les RH si nécessaire\n- Respectez la confidentialité\n- Suivez les procédures établies\n- Communiquez clairement avec le candidat\n- Gardez une trace écrite des décisions\n- Consultez les précédents similaires\n- Respectez les délais légaux\n- Assurez-vous de l'équité du processus";
-      }
-    } else if (role === 'hr') {
-      if (normalizedQuery.includes('contrat') || normalizedQuery.includes('convention')) {
-        return "Pour générer une convention de stage :\n\n1. Accédez à l'onglet 'Conventions' dans votre espace RH\n2. Sélectionnez le candidat accepté\n3. Vérifiez/complétez les informations (dates, horaires, gratification)\n4. Générez le document au format PDF\n5. Envoyez-le pour signature via la plateforme ou par email\n6. Suivez l'état d'avancement des signatures\n7. Conservez une copie numérique dans le système\n8. Archivez les documents selon la réglementation\n\nLe système conserve un historique de toutes les conventions émises.";
-      } else if (normalizedQuery.includes('signature') || normalizedQuery.includes('signer')) {
-        return "Le processus de signature des conventions sur GStage :\n\n1. Générez la convention complète depuis l'onglet 'Conventions'\n2. Utilisez l'option 'Envoyer pour signature' pour initier le processus\n3. Le stagiaire, le tuteur et l'établissement recevront un email avec un lien sécurisé\n4. Chaque partie peut signer électroniquement le document\n5. Vous pouvez suivre l'état des signatures dans le tableau de bord\n6. Une fois toutes les signatures obtenues, la convention finale est automatiquement envoyée à tous\n7. Les documents signés sont archivés automatiquement\n8. Vous pouvez exporter les conventions signées au format PDF";
-      } else if (normalizedQuery.includes('gratification') || normalizedQuery.includes('rémunération')) {
-        return "Concernant la gratification des stagiaires :\n\n- La gratification minimale légale est obligatoire pour les stages de plus de 2 mois\n- Le montant horaire minimal est de 15% du plafond horaire de la sécurité sociale\n- Vous pouvez configurer les montants standard dans 'Paramètres'\n- La plateforme calcule automatiquement le montant total en fonction de la durée\n- Les avantages supplémentaires (tickets restaurant, transport) peuvent être ajoutés dans la section dédiée\n- La gratification est soumise à cotisations sociales\n- Les frais de transport peuvent être remboursés\n- Des primes de fin de stage peuvent être prévues\n- La gratification est versée mensuellement";
-      } else if (normalizedQuery.includes('absences') || normalizedQuery.includes('congés')) {
-        return "Gestion des absences et congés des stagiaires :\n\n- Les stagiaires ont droit à 2,5 jours de congés par mois\n- Les absences doivent être justifiées et déclarées\n- Utilisez l'onglet 'Gestion du temps' pour suivre les absences\n- Les congés doivent être approuvés par le tuteur\n- Les absences non justifiées peuvent être sanctionnées\n- Les jours fériés sont chômés\n- Les RTT ne s'appliquent pas aux stagiaires\n- Les absences pour maladie doivent être justifiées par un certificat médical\n- Les absences pour examens sont autorisées sur présentation d'un justificatif";
-      } else if (normalizedQuery.includes('obligations') || normalizedQuery.includes('légales') || normalizedQuery.includes('réglementation')) {
-        return "Obligations légales pour les stages :\n\n- Convention de stage obligatoire\n- Gratification minimale pour stages > 2 mois\n- Assurance responsabilité civile\n- Respect du code du travail\n- Horaires conformes à la réglementation\n- Conditions de travail décentes\n- Suivi et évaluation obligatoires\n- Respect de la confidentialité\n- Protection des données personnelles\n- Égalité de traitement";
-      } else if (normalizedQuery.includes('archivage') || normalizedQuery.includes('documents') || normalizedQuery.includes('conservation')) {
-        return "Archivage des documents :\n\n- Conservation des conventions pendant 5 ans\n- Archivage électronique sécurisé\n- Classement par année et type de document\n- Accès restreint aux documents sensibles\n- Sauvegarde régulière des données\n- Respect du RGPD\n- Traçabilité des modifications\n- Historique des versions\n- Export possible au format PDF\n- Destruction sécurisée après délai légal";
-      }
     }
 
     // Réponses générales si aucune correspondance spécifique n'est trouvée
     if (normalizedQuery.includes('bonjour') || normalizedQuery.includes('salut') || normalizedQuery.includes('hello')) {
       return `Bonjour ! Je suis l'assistant GStage. Comment puis-je vous aider avec ${this.getRoleDescription(role)} ?`;
-    } else if (normalizedQuery.includes('merci')) {
+    } else if (normalizedQuery.includes('merci') || normalizedQuery.includes('d\'accord')) {
       return "Avec plaisir 😊 ! Si vous avez d'autres questions ou besoin d'assistance, je suis toujours là.";
     } else if (normalizedQuery.includes('au revoir') || normalizedQuery.includes('à bientôt')) {
       return "Au revoir ! Bonne continuation dans vos démarches. N'hésitez pas à revenir si vous avez d'autres questions. Je reste à votre disposition.";
@@ -370,20 +342,7 @@ export class ChatAssistantService {
       } else if (recentTopics.includes('cv')) {
         return "Concernant votre CV, je peux vous aider à :\n- Structurer votre CV\n- Mettre en valeur vos compétences\n- Adapter votre CV au poste\n- Choisir le bon format\n- Optimiser votre présentation\n\nQuel aspect voulez-vous améliorer ?";
       }
-    } else if (currentRole === 'evaluator') {
-      if (recentTopics.includes('évaluation')) {
-        return "Pour l'évaluation, je peux vous aider avec :\n- La grille d'évaluation\n- Les critères de sélection\n- Le feedback constructif\n- La comparaison des candidats\n- Les cas particuliers\n\nQuel aspect vous intéresse ?";
-      } else if (recentTopics.includes('entretien')) {
-        return "Pour l'entretien, je peux vous conseiller sur :\n- Les questions à poser\n- La structure de l'entretien\n- L'évaluation des réponses\n- La prise de notes\n- Le debriefing\n\nSur quel point souhaitez-vous des conseils ?";
-      }
-    } else if (currentRole === 'hr') {
-      if (recentTopics.includes('convention')) {
-        return "Pour les conventions, je peux vous aider avec :\n- La génération du document\n- Le processus de signature\n- La gratification\n- Les obligations légales\n- L'archivage\n\nQuelle information vous serait utile ?";
-      } else if (recentTopics.includes('gestion')) {
-        return "Pour la gestion administrative, je peux vous aider avec :\n- Les absences et congés\n- La gratification\n- Les documents obligatoires\n- Le suivi des stagiaires\n- L'archivage\n\nQuel aspect vous intéresse ?";
-      }
     }
-
     // Suggestions générales basées sur la requête
     if (normalizedQuery.includes('postuler') || normalizedQuery.includes('candidature')) {
       return "Pour postuler, vous aurez besoin de :\n- Un CV à jour\n- Une lettre de motivation\n- Vos relevés de notes\n- Vos diplômes/certifications\n- Des références professionnelles\n\nVoulez-vous des conseils pour préparer l'un de ces documents ?";
@@ -467,31 +426,7 @@ Voulez-vous des conseils spécifiques pour améliorer une section en particulier
   }
 
   // Analyser le contexte de la conversation pour réponses plus pertinentes
-  private getConversationContext(messageHistory: ChatMessage[]): string {
-    // Extraire les 3 derniers messages pour le contexte
-    const recentMessages = messageHistory.slice(-3);
 
-    // Si moins de 3 messages, conversation nouvelle
-    if (recentMessages.length < 2) {
-      return 'nouvelle_conversation';
-    }
-
-    // Détecter une série de questions sur un même sujet
-    const userMessages = recentMessages.filter(msg => msg.sender === 'user');
-    const userQueries = userMessages.map(msg => msg.content.toLowerCase());
-
-    if (userQueries.some(q => q.includes('postuler') || q.includes('candidature'))) {
-      return 'process_candidature';
-    } else if (userQueries.some(q => q.includes('entretien') || q.includes('interview'))) {
-      return 'preparation_entretien';
-    } else if (userQueries.some(q => q.includes('cv') || q.includes('lettre'))) {
-      return 'documents_candidature';
-    } else if (userQueries.some(q => q.includes('contrat') || q.includes('convention'))) {
-      return 'documents_administratifs';
-    }
-
-    return 'general';
-  }
 
   // Obtenir des questions suggérées selon le rôle
   getSuggestedQuestions(): SuggestedQuestion[] {
@@ -530,92 +465,6 @@ Voulez-vous des conseils spécifiques pour améliorer une section en particulier
         text: 'Comment suivre l\'état de ma candidature ?',
         forRoles: ['candidate'] as UserRole[]
       },
-
-      // Questions pour les évaluateurs
-      {
-        text: 'Quels critères utiliser pour évaluer ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-      {
-        text: 'Comment organiser un entretien efficace ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-      {
-        text: 'Comment donner un feedback constructif ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-      {
-        text: 'Comment comparer plusieurs candidats ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-      {
-        text: 'Quelles questions poser en entretien ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-      {
-        text: 'Comment évaluer les compétences techniques ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-      {
-        text: 'Comment gérer les cas particuliers ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-      {
-        text: 'Comment collaborer avec les autres évaluateurs ?',
-        forRoles: ['evaluator'] as UserRole[]
-      },
-
-      // Questions pour les RH
-      {
-        text: 'Comment générer une convention de stage ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-      {
-        text: 'Quel est le processus de signature ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-      {
-        text: 'Comment calculer la gratification ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-      {
-        text: 'Comment gérer les absences d\'un stagiaire ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-      {
-        text: 'Quelles sont les obligations légales ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-      {
-        text: 'Comment gérer les congés des stagiaires ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-      {
-        text: 'Comment archiver les documents ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-      {
-        text: 'Comment gérer les cas particuliers ?',
-        forRoles: ['hr'] as UserRole[]
-      },
-
-      // Questions communes à tous les rôles
-      {
-        text: 'Quelles sont les fonctionnalités principales ?',
-        forRoles: ['candidate', 'evaluator', 'hr'] as UserRole[]
-      },
-      {
-        text: 'Comment contacter le support ?',
-        forRoles: ['candidate', 'evaluator', 'hr'] as UserRole[]
-      },
-      {
-        text: 'Où trouver l\'aide en ligne ?',
-        forRoles: ['candidate', 'evaluator', 'hr'] as UserRole[]
-      },
-      {
-        text: 'Comment mettre à jour mon profil ?',
-        forRoles: ['candidate', 'evaluator', 'hr'] as UserRole[]
-      }
     ];
 
     // Filtrer les questions pertinentes pour le rôle actuel
@@ -818,7 +667,7 @@ Voulez-vous des conseils spécifiques pour améliorer une section en particulier
     const roleFollowUps = followUps[role];
     if (!roleFollowUps) return '';
 
-    const mainTopic = Object.keys(roleFollowUps).find(topic => 
+    const mainTopic = Object.keys(roleFollowUps).find(topic =>
       query.includes(topic)
     );
 
