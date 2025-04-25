@@ -5,6 +5,11 @@ export interface ChatMessage {
   sender: 'user' | 'assistant';
   timestamp: Date;
   showFull?: boolean;
+  metadata?: {
+    sentiment: 'neutral' | 'positive' | 'negative';
+    topics: string[];
+    engagementLevel: number;
+  };
 }
 
 export type UserRole = 'candidate' | 'evaluator' | 'hr';
